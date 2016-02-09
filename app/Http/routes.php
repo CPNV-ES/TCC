@@ -15,17 +15,38 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+/*
+ * Admin page
+ */
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
+{
+	Route::get('index', function()
+	{
+		return "My little poney from admin panel";
+	});
+});
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
-|
+| 
 | This route group applies the "web" middleware group to every route
 | it contains. The "web" middleware group is defined in your HTTP
 | kernel and includes session state, CSRF protection, and more.
 |
-*/
+*/ 
 
 Route::group(['middleware' => ['web']], function () {
-    //
+    // 
 });
+
+
+/*
+ * Only auth user can acces to /admin
+ */
+Route::controllers(['auth' => 'Auth\AuthController',
+					'password' => 'Auth\PasswordController']);
