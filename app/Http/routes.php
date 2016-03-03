@@ -11,23 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-/*
- * Admin page
- */
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
-{
-	Route::get('index', function()
-	{
-		return "My little poney from admin panel";
-	});
-});
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -38,15 +21,55 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
 | it contains. The "web" middleware group is defined in your HTTP
 | kernel and includes session state, CSRF protection, and more.
 |
-*/ 
+*/
 
 Route::group(['middleware' => ['web']], function () {
-    // 
+    /*
+     * Index page
+     */
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
+
+    /*
+     * Index page
+     */
+    Route::get('home', function () {
+        return view('welcome');
+
+    });
+
+
+    /*
+    * login page
+    */
+    Route::resource('login', 'SessionController');
+    Route::get('logout', 'SessionController@destroy');
+
+
+    /*
+    * register page
+    */
+    Route::resource('register', 'RegisterController');
+
+
+    /*
+     * Only auth user can access to /profile
+     */
+    Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function ()
+    {
+        Route::resource('/', 'ProfileController');
+
+    });
+
+
+    /*
+     * Only auth user can access to /admin
+     */
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function ()
+    {
+       Route::resource('/', 'AdminController');
+    });
+
 });
-
-
-/*
- * Only auth user can acces to /admin
- */
-Route::controllers(['auth' => 'Auth\AuthController',
-					'password' => 'Auth\PasswordController']);
