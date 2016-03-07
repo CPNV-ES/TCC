@@ -46,7 +46,6 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        //
         // Check form
         //-----------
         $validator = Validator::make($request->all(),

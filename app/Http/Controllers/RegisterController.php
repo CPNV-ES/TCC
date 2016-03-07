@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Member;
 
 use Validator;
 
@@ -42,7 +43,6 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        //
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
@@ -65,10 +65,7 @@ class RegisterController extends Controller
         {
             extract($_POST);
 
-            $duplicate = DB::table('members')
-                ->select('email')
-                ->having('email', '=', $email)
-                ->get();
+            $duplicate = Member::where('email', $email)->count();
 
             if(!empty($duplicate))
             {
@@ -89,21 +86,21 @@ class RegisterController extends Controller
 
         // Insert in DB
         //-------------
-        DB::table('members')->insert(
-            [
-                'last_name'         => $last_name,
-                'first_name'        => $first_name,
-                'address'           => $address,
-                'city'              => $city,
-                'email'             => $email,
-                'phone'             => $phone,
-                'zip_code'          => $zip_code,
-                'inscription_date'  => time(),
-                'active'            => 0,
-                'administrator'     => 0,
-                'validate'          => 0
-            ]
-        );
+        $member = new Member;
+
+        $member->last_name          = $last_name;
+        $member->first_name         = $first_name;
+        $member->address            = $address;
+        $member->city               = $city;
+        $member->email              = $email;
+        $member->phone              = $phone;
+        $member->zip_code           = $zip_code;
+        $member->inscription_date   = time();
+        $member->active             = 0;
+        $member->administrator      = 0;
+        $member->validate           = 0;
+
+        $member->save();
         /////////////////////////////////////////////
 
 
@@ -114,6 +111,7 @@ class RegisterController extends Controller
             $message->to($email)->subject('Votre inscription au Tennis Club Chavornay');
         });
         /////////////////////////////////////////////
+
 
         // Inform the admins that an account has been created and wait validation
         //---------------------------------------------------------------------------------
@@ -127,6 +125,7 @@ class RegisterController extends Controller
             });
         }
         /////////////////////////////////////////////
+
 
         // Return to register page with success message
         //---------------------------------------------

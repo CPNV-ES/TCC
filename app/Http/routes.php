@@ -27,7 +27,8 @@ Route::group(['middleware' => ['web']], function () {
     /*
      * Index page
      */
-    Route::get('/', function () {
+    Route::get('/', function ()
+    {
         return view('welcome');
     });
 
@@ -35,7 +36,8 @@ Route::group(['middleware' => ['web']], function () {
     /*
      * Index page
      */
-    Route::get('home', function () {
+    Route::get('home', function ()
+    {
         return view('welcome');
 
     });
@@ -67,9 +69,9 @@ Route::group(['middleware' => ['web']], function () {
     /*
      * Only auth user can access to /admin
      */
-    Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function ()
+    Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function ()
     {
-       Route::resource('/', 'AdminController');
+       Route::resource('/admin', 'MemberController');
     });
 
 });

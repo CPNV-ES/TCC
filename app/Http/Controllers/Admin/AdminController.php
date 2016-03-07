@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 
@@ -10,11 +10,6 @@ use App\Models\Member;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin');
-    }
 
     /**
      * Display a listing of the resource.
@@ -23,12 +18,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-
-        $members = Member::where('active', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
-
-        return view('admin/home',[
-            'members' => $members,
-        ]);
+        //
     }
 
     /**
@@ -84,7 +74,6 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         //
-        dd($id);
     }
 
     /**

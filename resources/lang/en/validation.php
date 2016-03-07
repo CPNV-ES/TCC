@@ -73,6 +73,7 @@ return [
     'timezone'             => 'Le champ :attribute doit être un fuseau horaire valide.',
     'unique'               => 'La valeur du champ :attribute est déjà utilisée.',
     'url'                  => "Le format de l'URL de :attribute n'est pas valide.",
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -86,6 +87,7 @@ return [
     'custom'               => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+            'login'       => 'Le champ login est obligatoire.',
         ],
     ],
     /*
