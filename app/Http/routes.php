@@ -55,6 +55,10 @@ Route::group(['middleware' => ['web']], function () {
     */
     Route::resource('register', 'RegisterController');
 
+    /*
+     * password page
+     */
+    Route::resource('password', 'PasswordController');
 
     /*
      * Only auth user can access to /profile

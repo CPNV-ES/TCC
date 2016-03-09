@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Models\Member;
 use Validator;
+use Illuminate\Support\Facades\Mail;
 
 class MemberController extends Controller
 {
@@ -123,26 +124,32 @@ class MemberController extends Controller
         /////////////////////////////////////////////
 
 
-        // Insert the login in the database and activate the account
-        //-------------------------------------------------
+        // Insert the login, token and activate account
+        //---------------------------------------------
+        $validationCode = str_random(20);
         $member = Member::find($id);
 
         $member->login = $_POST['login'.$id];
         $member->active = 1;
+        $member->token = $validationCode;
         $member->save();
-        return redirect('admin');
         /////////////////////////////////////////////
 
+        $emailMember = $member->email;
 
         // Send email to the user to choose password
         //-------------------------------------------------
-        //Generate the token
-        //Generer ici le token
-        Mail::send('emails.user.password', ['last_name' => $member->last_name, 'first_name' => $member->first_name, 'email' => $member->email], function ($message) use($email)
+        Mail::send('emails.user.password', ['last_name'         => $member->last_name,
+                                            'first_name'        => $member->first_name,
+                                            'login'             => $member->login,
+                                            'validationCode'    => $member->token],
+        function ($message) use($emailMember)
         {
-            $message->to($email)->subject('Votre compte du Tennis Club Chavornay a été activé');
+            $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
         });
         /////////////////////////////////////////////
+
+        return redirect('admin');
     }
 
     /**
