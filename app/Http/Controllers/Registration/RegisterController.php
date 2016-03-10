@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Registration;
 
 use Illuminate\Http\Request;
 
@@ -129,7 +129,7 @@ class RegisterController extends Controller
 
         // Return to register page with success message
         //---------------------------------------------
-        return view('auth/register/sucess', ['email' => $email]);
+        return view('auth/register/success', ['email' => $email]);
     }
 
     /**

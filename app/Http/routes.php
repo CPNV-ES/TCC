@@ -23,7 +23,8 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['middleware' => ['web']], function ()
+{
     /*
      * Index page
      */
@@ -50,15 +51,23 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('logout', 'SessionController@destroy');
 
 
-    /*
-    * register page
-    */
-    Route::resource('register', 'RegisterController');
 
-    /*
-     * password page
-     */
-    Route::resource('password', 'PasswordController');
+
+    Route::group(['namespace' => 'Registration'], function()
+    {
+        /*
+        * register page
+        */
+        Route::resource('register', 'RegisterController');
+
+            /*
+        * password page
+        */
+        Route::resource('password', 'PasswordController');
+    });
+
+
+
 
     /*
      * Only auth user can access to /profile

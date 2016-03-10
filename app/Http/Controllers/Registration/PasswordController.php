@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Registration;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests;
 
 use Validator;
+use Hash;
 
 class PasswordController extends Controller
 {
@@ -19,7 +20,7 @@ class PasswordController extends Controller
     public function index()
     {
         //
-        return view('auth/passwords/testActivationCode');
+        return view('auth/register/password/activationCode');
     }
 
     /**
@@ -27,11 +28,9 @@ class PasswordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        //
-        //dd($request->session()->get('login'));
-        return view('auth/passwords/definePassword');
+        return view('auth/register/password/definePassword');
     }
 
     /**
@@ -42,6 +41,9 @@ class PasswordController extends Controller
      */
     public function store(Request $request)
     {
+        extract($_POST);
+
+
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
@@ -63,7 +65,7 @@ class PasswordController extends Controller
 
             if(empty($member))
             {
-                $validator->errors()->add('token', 'Cette combinaison de login/code d\'activation n\'est pas valable.');
+                $validator->errors()->add('token', "Cette combinaison de login/code d'activation n'est pas valable.");
             }
         });
         /////////////////////////////////////////////
@@ -77,12 +79,13 @@ class PasswordController extends Controller
         }
         /////////////////////////////////////////////
 
-        //If validator pass, show the page to define password, and store login in session
-        extract($_POST);
-        $request->session()->put('login', $login);
-//        return redirect()->action('PasswordController@create')->with('login', $login);
-        return redirect()->action('PasswordController@create');
 
+        // If validator pass, show the page to define password, and store login in session
+        //--------------------------------------------------------------------------------
+        $request->session()->put('login', $login);
+
+
+        return redirect()->action('Registration\PasswordController@create');
     }
 
     /**
@@ -116,13 +119,19 @@ class PasswordController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        extract($_POST);
+
+        if(!$request->session()->has('login'))
+        {
+            dd('Bien essayé :)');
+        }
+
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'password1'     => 'required',
-                'password2'     => 'required'
+                'password'                  => 'required|confirmed|min:6',
+                'password_confirmation'     => 'required'
             ]);
         /////////////////////////////////////////////
 
@@ -133,13 +142,9 @@ class PasswordController extends Controller
         {
             extract($_POST);
 
-            if($password1 != $password2)
+            if(!preg_match('/(([A-Z]+|[a-z]+)[0-9]+)|([0-9]+([a-z]+|[A-Z]))/', $password))
             {
-                $validator->errors()->add('password2', 'Vos mots de passe ne sont pas identiques.');
-            }
-            if(strlen($password1) < 6 || !preg_match('/[A-Z]+[a-z]+[0-9]+/', $password1))
-            {
-                $validator->errors()->add('password2', 'Ce mot de passe n\'est pas assez fort.');
+                $validator->errors()->add("password", "Le mot de passe n'est pas assez fort.");
             }
         });
         /////////////////////////////////////////////
@@ -153,7 +158,33 @@ class PasswordController extends Controller
         }
         /////////////////////////////////////////////
 
-        return ('poney');
+
+        //Update the member in the DB with the password and remove the token
+        //------------------------------------------------------------------
+        $member = Member::where('login', $request->session()->get('login'))->get();
+
+
+        // Test if the member exists
+        //--------------------------
+        if(empty($member))
+        {
+            return back();
+        }
+
+        // Insert the password
+        //--------------------
+        $member[0]->password = Hash::make($password);
+        $member[0]->token = null;
+        $member[0]->save();
+        ///////////////////////
+
+
+        // Disabled possibility to redifine password through to /password/create
+        //----------------------------------------------------------------------
+        $request->session()->forget('login');
+
+
+        return view("auth/register/password/passwordDefined");
     }
 
     /**

@@ -13,28 +13,28 @@
                             {!! method_field('put') !!}
 
 
-                            <div class="form-group{{ $errors->has('password1') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Mot de passe*</label>
 
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password1">
+                                    <input type="password" class="form-control" name="password">
                                 </div>
-                                @if ($errors->has('password1'))
+                                @if ($errors->has('password'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('password1') }}</strong>
+                                        <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
                             </div>
 
-                            <div class="form-group{{ $errors->has('password2') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Repetez le mot de passe*</label>
+                            <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Répetez le mot de passe*</label>
 
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password2">
+                                    <input type="password" class="form-control" name="password_confirmation">
                                 </div>
-                                @if ($errors->has('password2'))
+                                @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('password2') }}</strong>
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
                                     </span>
                                 @endif
                             </div>

@@ -46,16 +46,19 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
+        extract($_POST);
+
+
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
             [
                 'login'     => 'required',
-                'password'   => 'required'
+                'password'  => 'required'
             ]);
         /////////////////////////////////////////////
 
-        extract($_POST);
+
 
         // Validate connexion user and if account is active
         //-------------------------------------------------
@@ -96,6 +99,8 @@ class SessionController extends Controller
         /////////////////////////////////////////////
 
 
+        // All OK, start session and redirect to his profile page
+        //-------------------------------------------------------
         if(Auth::attempt(['login' => $login, 'password' => $password]))
         {
             return redirect('profile');
