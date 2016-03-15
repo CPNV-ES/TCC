@@ -14,10 +14,9 @@
 
 
     Login : <b>{{ $login }}</b><br/>
-    Code d'activation : <b>{{ $validationCode }}</b><br/>
 
 
-    Veuillez procéder au choix du mot de passe via le lien suivant : <a href="tcc.dev/password"> tcc.dev/password </a><br/><br/>
+    Veuillez procéder au choix du mot de passe via le lien suivant : <a href="tcc.dev/password/create{{ $urlCondition }}"> tcc.dev/password/create{{ $urlCondition }} </a><br/><br/>
 
     Si vous n'avez pas crée de compte sur notre site, veuillez contactez cpnv.es.web@gmail.com en transférant ce mail.<br/><br/>
     Merci

@@ -28,9 +28,41 @@ class PasswordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('auth/register/password/definePassword');
+        extract($_GET);
+
+        // Verify if url contain login and token
+        //--------------------------------------
+        if(isset($login) && isset($token))
+        {
+
+            // Check in DB if exist
+            //---------------------
+            $member = Member::where('login', $login)->where('token', $token)->count();
+
+
+            // If validator pass, show the page to define password, and store login in session
+            //--------------------------------------------------------------------------------
+            if(!empty($member))
+            {
+
+                $request->session()->put('login', $login);
+
+
+                return view('auth/register/password/definePassword');
+            }
+            else
+            {
+                dd('Nope.jpg');
+            }
+        }
+        else
+        {
+            dd('Nope.gif');
+        }
+
+
     }
 
     /**
@@ -41,6 +73,15 @@ class PasswordController extends Controller
      */
     public function store(Request $request)
     {
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+        // N'EST PAS UTILISE POUR LE MOMENT. VA L'ÊTER POUR L'OUBLI DU MOT DE PASSE
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
         extract($_POST);
 
 
@@ -173,8 +214,7 @@ class PasswordController extends Controller
 
         // Insert the password
         //--------------------
-        $member[0]->password = Hash::make($password);
-        $member[0]->token = null;
+        $member[0]->UpdatePassword($password);
         $member[0]->save();
         ///////////////////////
 
@@ -182,7 +222,6 @@ class PasswordController extends Controller
         // Disabled possibility to redifine password through to /password/create
         //----------------------------------------------------------------------
         $request->session()->forget('login');
-
 
         return view("auth/register/password/passwordDefined");
     }

@@ -51,7 +51,7 @@ class RegisterController extends Controller
                 'first_name'    => 'required',
                 'address'       => 'required',
                 'city'          => 'required',
-                'zip_code'      => 'required|integer',
+                'zip_code'      => 'required|integer|digits:4',
                 'email'         => 'required|email',
                 'phone'         => 'required'
             ]);
@@ -88,17 +88,7 @@ class RegisterController extends Controller
         //-------------
         $member = new Member;
 
-        $member->last_name          = $last_name;
-        $member->first_name         = $first_name;
-        $member->address            = $address;
-        $member->city               = $city;
-        $member->email              = $email;
-        $member->phone              = $phone;
-        $member->zip_code           = $zip_code;
-        $member->inscription_date   = time();
-        $member->active             = 0;
-        $member->administrator      = 0;
-        $member->validate           = 0;
+        $member->CreateUser($_POST);
 
         $member->save();
         /////////////////////////////////////////////

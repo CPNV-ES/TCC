@@ -19,6 +19,7 @@ class AdminController extends Controller
     public function index()
     {
         //
+        return view('/admin/home');
     }
 
     /**
@@ -29,6 +30,7 @@ class AdminController extends Controller
     public function create()
     {
         //
+        dd('create');
     }
 
     /**
@@ -40,6 +42,7 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         //
+        dd('store');
     }
 
     /**
@@ -51,6 +54,7 @@ class AdminController extends Controller
     public function show($id)
     {
         //
+        dd('show');
     }
 
     /**
@@ -62,6 +66,7 @@ class AdminController extends Controller
     public function edit($id)
     {
         //
+        dd('edit');
     }
 
     /**
@@ -74,6 +79,7 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         //
+        dd('update');
     }
 
     /**
@@ -85,5 +91,6 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+        dd('destroy');
     }
 }

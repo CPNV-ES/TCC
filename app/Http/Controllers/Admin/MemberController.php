@@ -23,7 +23,7 @@ class MemberController extends Controller
         //
         $members = Member::where('active', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
 
-        return view('admin/home',[
+        return view('admin/member',[
             'members' => $members,
         ]);
     }
@@ -126,30 +126,29 @@ class MemberController extends Controller
 
         // Insert the login, token and activate account
         //---------------------------------------------
-        $validationCode = str_random(20);
+
         $member = Member::find($id);
 
-        $member->login = $_POST['login'.$id];
-        $member->active = 1;
-        $member->token = $validationCode;
+        $member->UpdateLogin($_POST['login'.$id]);
         $member->save();
         /////////////////////////////////////////////
 
         $emailMember = $member->email;
+        $url            = "?login=".$member->login."&token=".$member->token;
 
         // Send email to the user to choose password
         //-------------------------------------------------
         Mail::send('emails.user.password', ['last_name'         => $member->last_name,
                                             'first_name'        => $member->first_name,
                                             'login'             => $member->login,
-                                            'validationCode'    => $member->token],
+                                            'urlCondition'      => $url],
         function ($message) use($emailMember)
         {
             $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
         });
         /////////////////////////////////////////////
 
-        return redirect('admin');
+        return redirect('admin/members');
     }
 
     /**

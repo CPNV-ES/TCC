@@ -72,11 +72,11 @@ Route::group(['middleware' => ['web']], function ()
     /*
      * Only auth user can access to /profile
      */
-    Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function ()
+    Route::group(['namespace' => 'Profile', 'middleware' => 'auth'], function ()
     {
-        Route::resource('/', 'ProfileController');
-
+        Route::resource('/profile', 'ProfileController');
     });
+
 
 
     /*
@@ -84,7 +84,10 @@ Route::group(['middleware' => ['web']], function ()
      */
     Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function ()
     {
-       Route::resource('/admin', 'MemberController');
+
+        Route::resource('/admin/members', 'MemberController');
+
+        Route::resource('/admin', 'AdminController');
     });
 
 });
