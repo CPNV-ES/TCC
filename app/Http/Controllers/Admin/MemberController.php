@@ -20,12 +20,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
-        $members = Member::where('active', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
-
-        return view('admin/member',[
-            'members' => $members,
-        ]);
+        return view('admin/member');
     }
 
     /**
@@ -92,7 +87,8 @@ class MemberController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'login'.$id     => 'required'
+                'login'.$id     => 'required',
+                'status'.$id    => 'required'
             ],
             ['required' => 'Le champ login est obligatoire.']);
         /////////////////////////////////////////////
@@ -124,9 +120,8 @@ class MemberController extends Controller
         /////////////////////////////////////////////
 
 
-        // Insert the login, token and activate account
-        //---------------------------------------------
-
+        // Insert the login, status, token and validate account
+        //-----------------------------------------------------
         $member = Member::find($id);
 
         $member->UpdateLogin($_POST['login'.$id]);

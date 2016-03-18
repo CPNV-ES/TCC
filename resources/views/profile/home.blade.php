@@ -95,15 +95,43 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">N° téléphone</label>
+                        <div class="form-group{{ $errors->has('home_phone') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Téléphone privé</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}">
+                                <input type="text" class="form-control" name="home_phone" value="{{ Auth::user()->home_phone }}">
 
-                                @if ($errors->has('phone'))
+                                @if ($errors->has('home_phone'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('phone') }}</strong>
+                                        <strong>{{ $errors->first('home_phone') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('mobile_phone') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Téléphone mobile</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="mobile_phone" value="{{ Auth::user()->mobile_phone }}">
+
+                                @if ($errors->has('mobile_phone'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mobile_phone') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Date de naissance</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="birth_date" value="{{ date("d.m.Y", strtotime(Auth::user()->birth_date)) }}">
+
+                                @if ($errors->has('birth_date'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('birth_date') }}</strong>
                                     </span>
                                 @endif
                             </div>

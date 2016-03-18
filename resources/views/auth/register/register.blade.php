@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Inscription</div>
-                <div class="panel-body">
+            <div class="head-panel">
+                <div class="title-panel">Inscription</div>
+                <div class="body-panel">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {!! csrf_field() !!}
 
@@ -95,15 +95,43 @@
                             </div>
                         </div>
                         
-                        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">N° téléphone*</label>
+                        <div class="form-group{{ $errors->has('home_phone') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Téléphone privé*</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
+                                <input type="text" class="form-control" name="home_phone" placeholder="123 456 78 90" value="{{ old('home_phone') }}">
 
-                                @if ($errors->has('phone'))
+                                @if ($errors->has('home_phone'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('phone') }}</strong>
+                                        <strong>{{ $errors->first('home_phone') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('mobile_phone') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Téléphone mobile*</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="mobile_phone" placeholder="123 456 78 90" value="{{ old('mobile_phone') }}">
+
+                                @if ($errors->has('mobile_phone'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mobile_phone') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Date de naissance*</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="birth_date" value="{{ old('birth_date') }}">
+
+                                @if ($errors->has('birth_date'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('birth_date') }}</strong>
                                     </span>
                                 @endif
                             </div>

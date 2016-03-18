@@ -17,9 +17,9 @@ class CreateSubscriptionsTable extends Migration
         {
             $table->increments('id');
             
-            $table->string('type');
+            $table->string('status');
             
-            $table->float('amount');
+            $table->decimal('amount');
             
             $table->timestamps();
         });

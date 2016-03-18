@@ -27,28 +27,32 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}"> TCC </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="spark-navbar-collapse">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav navbar-left">
                         <li>
                             <a href="{{ url('/home') }}">Home</a>
                         </li>
+                        <li>
+                            <a href="{{ url('/#') }}">Réservation</a>
+                        </li>
                     </ul>
+
+                    <div class="nav navbar-nav" align="center" style="width:65%">
+                        {{ HTML::image("css/images/logo.gif", "TC Chavornay", array('width'=> '15%')) }}
+                    </div>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                         <li>
-                            <a href="{{ url('/login') }}">Connexion</a>
+                            <a href="{{ url('/register') }}">S'enregistrer</a>
                         </li>
                         <li>
-                            <a href="{{ url('/register') }}">S'enregistrer</a>
+                            <a href="{{ url('/login') }}">Connexion</a>
                         </li>
                         @else
                         <li class="dropdown">
@@ -74,6 +78,9 @@
             </div>
         </nav>
 
+        <div class="background">
+
+        </div>
         @yield('content')
         {{-- <script src="{{ elixir('js/app.js') }}"></script>
         --}}

@@ -60,7 +60,7 @@ Route::group(['middleware' => ['web']], function ()
         */
         Route::resource('register', 'RegisterController');
 
-            /*
+        /*
         * password page
         */
         Route::resource('password', 'PasswordController');
@@ -85,9 +85,20 @@ Route::group(['middleware' => ['web']], function ()
     Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function ()
     {
 
+        Route::resource('/admin/ajax/members', 'AjaxMemberController');
+        Route::resource('/admin/ajax/courts', 'AjaxCourtController');
+        Route::resource('/admin/ajax/subscriptions', 'AjaxSubscriptionController');
+        Route::resource('/admin/ajax/seasons', 'AjaxSeasonController');
+
         Route::resource('/admin/members', 'MemberController');
 
+        Route::resource('/admin/config/courts', 'CourtController');
+        Route::resource('/admin/config/seasons', 'SeasonController');
+        Route::resource('/admin/config/subscriptions', 'SubscriptionController');
+
         Route::resource('/admin', 'AdminController');
+
+
     });
 
 });

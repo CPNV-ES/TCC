@@ -7,11 +7,9 @@ use Illuminate\Support\Facades\Hash;
 
 class Member extends Model
 {
-    //
-
     /*
-     * Create a user with the data givens
-     */
+ * Create a user with the data givens
+ */
     public function CreateUser($data)
     {
         extract($data);
@@ -20,14 +18,14 @@ class Member extends Model
         $this->address            = $address;
         $this->city               = $city;
         $this->email              = $email;
-        $this->phone              = $phone;
+        $this->mobile_phone       = $mobile_phone;
+        $this->home_phone         = $home_phone;
         $this->zip_code           = $zip_code;
-        $this->inscription_date   = time();
         $this->active             = 0;
         $this->administrator      = 0;
         $this->validate           = 0;
+        $this->birth_date         = date("Y-m-d", strtotime($birth_date));
     }
-
     /*
      * Insert the login, token and activate account
      */
@@ -35,10 +33,9 @@ class Member extends Model
     {
         $validationCode = str_random(20);
         $this->login = $login;
-        $this->active = 1;
+        $this->validate = 1;
         $this->token = $validationCode;
     }
-
     public function UpdateUser($data)
     {
         extract($data);
@@ -47,10 +44,11 @@ class Member extends Model
         $this->address            = $address;
         $this->city               = $city;
         $this->email              = $email;
-        $this->phone              = $phone;
+        $this->mobile_phone       = $mobile_phone;
+        $this->home_phone         = $home_phone;
         $this->zip_code           = $zip_code;
+        $this->birth_date         = date("Y-m-d", strtotime($birth_date));
     }
-
     /*
      * Hash and update the password
      */
@@ -59,5 +57,4 @@ class Member extends Model
         $this->password = Hash::make($password);
         $this->token = null;
     }
-
 }

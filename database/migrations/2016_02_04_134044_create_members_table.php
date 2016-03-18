@@ -19,16 +19,16 @@
 				$table->string('last_name');
 				$table->string('first_name');
 				$table->string('address');
+				$table->integer('zip_code');
 				$table->string('city');
 				$table->string('email')->unique();
-				$table->string('phone');
+				$table->string('mobile_phone');
+				$table->string('home_phone');
+				$table->date('birth_date');
 				$table->string('token');
 				$table->string('password');
-				$table->string('login');
+				$table->string('login'); 
 				$table->rememberToken();
-
-				$table->integer('zip_code');
-				$table->integer('inscription_date');
 
 				$table->boolean('active');
 				$table->boolean('administrator');

@@ -53,7 +53,9 @@ class RegisterController extends Controller
                 'city'          => 'required',
                 'zip_code'      => 'required|integer|digits:4',
                 'email'         => 'required|email',
-                'phone'         => 'required'
+                'mobile_phone'  => 'required',
+                'home_phone'    => 'required',
+                'birth_date'    => 'required|date'
             ]);
         /////////////////////////////////////////////
 

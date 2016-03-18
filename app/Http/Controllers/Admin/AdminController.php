@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -19,7 +20,15 @@ class AdminController extends Controller
     public function index()
     {
         //
-        return view('/admin/home');
+
+        $members = Member::where('validate', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
+
+        $status = Subscription::all(['id', 'status'])->pluck('status', 'id');
+
+        return view('admin/home',[
+            'members' => $members,
+            'status'  => $status,
+        ]);
     }
 
     /**

@@ -138,6 +138,7 @@ class PasswordController extends Controller
     public function show($id)
     {
         //
+        return view('/auth/passwords/reset');
     }
 
     /**

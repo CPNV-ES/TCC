@@ -89,9 +89,12 @@ class ProfileController extends Controller
                 'city'          => 'required',
                 'zip_code'      => 'required|integer|digits:4',
                 'email'         => 'required|email',
-                'phone'         => 'required'
+                'mobile_phone'  => 'required',
+                'home_phone'    => 'required',
+                'birth_date'    => 'required|date'
             ]);
         /////////////////////////////////////////////
+
 
         // Verify if email is not already in DB for no duplicate information
         //------------------------------------------------------------------
@@ -109,7 +112,7 @@ class ProfileController extends Controller
         /////////////////////////////////////////////
 
 
-        // Display errors messages, return to profil page
+        // Display errors messages, return to profile page
         //-------------------------------------------------
         if($validator->fails())
         {

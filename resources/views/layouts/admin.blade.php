@@ -9,10 +9,14 @@
 
     {!! Html::style('/css/bootstrap-theme.min.css')!!}
     {!! Html::style('/css/bootstrap.min.css')!!}
-    {!! Html::style('/css/layouts.css')!!}
+
+    {!! Html::style('/css/admin.css')!!}
 
     {!! Html::style('/css/sb-admin-2.css')!!}
     {!! Html::style('/css/timeline.css')!!}
+
+    {!! Html::style('/css/jqx.base.css')!!}
+    {!! Html::style('/css/jqx.bootstrap.css')!!}
 
     {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
 
@@ -26,11 +30,15 @@
     {!! Html::script('/js/morrisjs/morris.min.js') !!}
     {!! Html::script('/js/morris-data.js') !!}
 
+    {!! Html::script('/js/jqwidget/jqx-all.js') !!}
+
+
+
+
 
 </head>
 <body>
 <div id="wrapper">
-
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -76,13 +84,23 @@
                         <a href="{{ url('/admin') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="index.html"><i class="fa fa-cog fa-fw"></i> Configuration</a>
+                    <li>
+                        <a href="#"><i class="fa fa-cog fa-fw"></i> Configuration<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="{{ url('/admin/config/courts') }}">Courts</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/admin/config/seasons') }}">Saisons</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/admin/config/subscriptions') }}">Cotisations & Status</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-second-level -->
                     </li>
                     <li>
                         <a href="{{ url('/admin/members') }}"><i class="fa fa-users fa-fw"></i> Membres</a>
-                    </li>
-                    <li>
-                        <a href="forms.html"><i class="fa fa-columns fa-fw"></i> Courts</a>
                     </li>
                     <li>
                         <a href="forms.html"><i class="fa fa-bar-chart-o fa-fw"></i> Statistiques</a>
@@ -107,6 +125,12 @@
 
 </div>
 <!-- /#wrapper -->
+{!! Html::script('/js/jqwidget/globalize.js') !!}
+{!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
+{!! Html::script('/Ajax/members.js') !!}
+{!! Html::script('/Ajax/courts.js') !!}
+{!! Html::script('/Ajax/subscriptions.js') !!}
+{!! Html::script('/Ajax/seasons.js') !!}
 
 
 </body>
