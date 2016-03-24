@@ -4,9 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Subscription_per_member;
 
 class Member extends Model
 {
+    public function Status()
+    {
+        return $this->belongsToMany('App\Models\Subscription', 'subscriptions_per_member', 'fk_member', 'fk_subscription');
+    }
+
+
     /*
  * Create a user with the data givens
  */
@@ -29,12 +36,16 @@ class Member extends Model
     /*
      * Insert the login, token and activate account
      */
-    public function UpdateLogin($login)
+    public function UpdateLogin($login, $status)
     {
-        $validationCode = str_random(20);
-        $this->login = $login;
-        $this->validate = 1;
-        $this->token = $validationCode;
+        $subscription_per_member = new Subscription_per_member();
+        $subscription_per_member->SetStatus($this->id, $status);
+        $subscription_per_member->save();
+
+        $validationCode     = str_random(20);
+        $this->login        = $login;
+        $this->validate     = 1;
+        $this->token        = $validationCode;
     }
     public function UpdateUser($data)
     {

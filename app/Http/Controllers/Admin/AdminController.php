@@ -17,16 +17,29 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $notMembers = Member::where('validate', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
+        $members    = Member::where('validate', 1)->count();
+        $status     = Subscription::all(['id', 'status'])->pluck('status', 'id');
 
-        $members = Member::where('validate', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
 
-        $status = Subscription::all(['id', 'status'])->pluck('status', 'id');
-
+        // To display message when user is activate
+        //-----------------------------------------
+        if($request->session()->has('message'))
+        {
+            $message = $request->session()->get('message');
+            $request->session()->forget('message');
+            return view('admin/home',[
+                'notmembers' => $notMembers,
+                'members'   => $members,
+                'status'  => $status,
+                'message' => $message,
+            ]);
+        }
         return view('admin/home',[
-            'members' => $members,
+            'notmembers' => $notMembers,
+            'members'   => $members,
             'status'  => $status,
         ]);
     }

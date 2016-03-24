@@ -20,10 +20,22 @@ class ProfileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return view('profile/home');
+        $member = Member::find(Auth::user()->id);
+        $status = $member->status->last();
+
+        if($request->session()->has('message')) {
+            $message = $request->session()->get('message');
+            $request->session()->forget('message');
+            return view('profile/home',[
+                'status' => $status->status,
+                'message' => $message,
+            ]);
+        }
+
+        return view('profile/home', ['status' => $status->status]);
     }
 
     /**
@@ -129,7 +141,7 @@ class ProfileController extends Controller
         $member->save();
         /////////////////////////////////////////////
 
-        return redirect("/profile");
+        return redirect("/profile")->with('message', 'Vos informations ont été mises à jour');
     }
 
     /**

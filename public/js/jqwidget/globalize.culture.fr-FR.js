@@ -56,8 +56,8 @@ Globalize.addCultureInfo( "fr-FR", "default", {
 				namesShort: ["di","lu","ma","me","je","ve","sa"]
 			},
 			months: {
-				names: ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre",""],
-				namesAbbr: ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc.",""]
+				names: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre",""],
+				namesAbbr: ["Janv.","Févr.","Mars","Avr.","Mai","Juin","Juil.","Août","Sept.","Oct.","Nov.","Déc.",""]
 			},
 			AM: null,
 			PM: null,

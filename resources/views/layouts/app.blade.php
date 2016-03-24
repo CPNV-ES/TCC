@@ -9,25 +9,46 @@
 
         {!! Html::style('/css/bootstrap-theme.min.css')!!}
         {!! Html::style('/css/bootstrap.min.css')!!}
+        {!! Html::style('https://fonts.googleapis.com/css?family=Open+Sans')!!}
         {!! Html::style('/css/layouts.css')!!}
+        {!! Html::style('/css/bootstrap-datepicker3.min.css')!!}
+
+
+
+        {!! Html::style('/css/jqx.base.css')!!}
+        {!! Html::style('/css/jqx.bootstrap.css')!!}
+        {!! Html::style('/css/jqx.custom.css')!!}
 
         {!! Html::script('/js/jquery-2.2.0.js') !!}
         {!! Html::script('/js/bootstrap.min.js') !!}
         {!! Html::script('/js/layouts.js') !!}
+
+        {!! Html::script('/js/bootstrap-datepicker.min.js') !!}
+        {!! Html::script('/js/bootstrap-datepicker.fr-CH.min.js') !!}
+
+        {!! Html::script('/js/jqwidget/jqx-all.js') !!}
+        {!! Html::script('/js/jqwidget/globalize.js') !!}
+        {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
+
+        {!! Html::script('/Ajax/register.js') !!}
+
+
     </head>
     <body id="app-layout">
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#spark-navbar-collapse">
+                    <button type="button" class="navbar-toggle collapsed" style="z-index:1" data-toggle="collapse" data-target="#spark-navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                 </div>
+
+
+                    <div class="navbar-brand"><a href="{{ url('/home') }}">{{ HTML::image("css/images/logo.gif", "TC Chavornay", array('width'=> '100px', 'style' => 'display:inline;')) }}</a></div>
 
                 <div class="collapse navbar-collapse" id="spark-navbar-collapse">
                     <!-- Left Side Of Navbar -->
@@ -40,9 +61,7 @@
                         </li>
                     </ul>
 
-                    <div class="nav navbar-nav" align="center" style="width:65%">
-                        {{ HTML::image("css/images/logo.gif", "TC Chavornay", array('width'=> '15%')) }}
-                    </div>
+
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
@@ -82,7 +101,10 @@
 
         </div>
         @yield('content')
-        {{-- <script src="{{ elixir('js/app.js') }}"></script>
-        --}}
+        {!! Html::script('/Ajax/calendar.js') !!}
     </body>
+    <br style="clear:both"/>
+    {{--<footer>--}}
+        {{--<p>© CPNV 2016</p>--}}
+    {{--</footer>--}}
 </html>

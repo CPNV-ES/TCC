@@ -88,7 +88,7 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'login'.$id     => 'required',
-                'status'.$id    => 'required'
+                'status'.$id    => 'required|filled'
             ],
             ['required' => 'Le champ login est obligatoire.']);
         /////////////////////////////////////////////
@@ -123,8 +123,7 @@ class MemberController extends Controller
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
         $member = Member::find($id);
-
-        $member->UpdateLogin($_POST['login'.$id]);
+        $member->UpdateLogin($_POST['login'.$id], $_POST['status'.$id]);
         $member->save();
         /////////////////////////////////////////////
 
@@ -143,7 +142,7 @@ class MemberController extends Controller
         });
         /////////////////////////////////////////////
 
-        return redirect('admin/members');
+        return redirect('admin')->with('message', 'Le login a été crée avec succès');
     }
 
     /**

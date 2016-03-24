@@ -33,9 +33,6 @@
     {!! Html::script('/js/jqwidget/jqx-all.js') !!}
 
 
-
-
-
 </head>
 <body>
 <div id="wrapper">
@@ -125,12 +122,14 @@
 
 </div>
 <!-- /#wrapper -->
+
 {!! Html::script('/js/jqwidget/globalize.js') !!}
-{!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
+{!! Html::script('/js/jqwidget/localization.js') !!}
 {!! Html::script('/Ajax/members.js') !!}
 {!! Html::script('/Ajax/courts.js') !!}
 {!! Html::script('/Ajax/subscriptions.js') !!}
 {!! Html::script('/Ajax/seasons.js') !!}
+
 
 
 </body>

@@ -4,10 +4,20 @@
 <div class="container spark-screen">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">Edition de profile</div>
+            <div class="head-panel">
+                <div class="title-panel">Edition de profile</div>
 
-                <div class="panel-body">
+                <div class="body-panel">
+                    <div class="row">
+                        @if (!empty($message))
+
+                            <div class="alert alert-success alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{ $message }}
+                            </div>
+
+                        @endif
+                    </div>
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/profile/update') }}">
                         {!! method_field('put') !!}
                         {!! csrf_field() !!}
@@ -127,13 +137,21 @@
                             <label class="col-md-4 control-label">Date de naissance</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="birth_date" value="{{ date("d.m.Y", strtotime(Auth::user()->birth_date)) }}">
+                                <input id="birth_date" type="text" class="form-control" name="birth_date" value="{{ date("d.m.Y", strtotime(Auth::user()->birth_date)) }}">
 
                                 @if ($errors->has('birth_date'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('birth_date') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Statut</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="birth_date" value="{{ $status }}" disabled>
                             </div>
                         </div>
 

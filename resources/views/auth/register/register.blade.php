@@ -127,7 +127,7 @@
                             <label class="col-md-4 control-label">Date de naissance*</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="birth_date" value="{{ old('birth_date') }}">
+                                <input type="text" class="form-control" id="birth_date" name="birth_date" value="{{ old('birth_date') }}">
 
                                 @if ($errors->has('birth_date'))
                                     <span class="help-block">

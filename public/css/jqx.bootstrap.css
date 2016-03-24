@@ -68,7 +68,7 @@
 
 .jqx-widget-bootstrap, .jqx-widget-header-bootstrap, .jqx-fill-state-normal-bootstrap,
 .jqx-widget-content-bootstrap, .jqx-fill-state-hover-bootstrap, .jqx-fill-state-pressed-bootstrap {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", Helvetica, Arial, sans-serif;
     -webkit-transition: box-shadow linear 0.2s;
     -moz-transition: box-shadow linear 0.1s;
     -o-transition: box-shadow linear 0.1s;

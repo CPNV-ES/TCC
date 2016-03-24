@@ -4,11 +4,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">
+            <div class="head-panel">
+                <div class="title-panel">
                     Login
                 </div>
-                <div class="panel-body">
+                <div class="body-panel">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {!! csrf_field() !!}
 
@@ -36,21 +36,21 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember">
-                                        Se souvenir </label>
-                                </div>
-                            </div>
-                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<div class="col-md-6 col-md-offset-4">--}}
+                                {{--<div class="checkbox">--}}
+                                    {{--<label>--}}
+                                        {{--<input type="checkbox" name="remember">--}}
+                                        {{--Se souvenir </label>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <a class="btn btn-link" href="{{ '/password/reset' }}">Mot de passe oublié ?</a>
-                            </div>
-                        </div>
+                        {{--<div class="form-group">--}}
+                            {{--<div class="col-md-6 col-md-offset-4">--}}
+                                {{--<a class="btn btn-link" href="{{ '/password/reset' }}">Mot de passe oublié ?</a>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

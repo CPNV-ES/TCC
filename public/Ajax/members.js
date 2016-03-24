@@ -26,6 +26,7 @@ $("#jqxmember").jqxGrid(
         sortable: true,
         autoheight: true,
         showfilterrow: true,
+        localization: getLocalization('fr'),
         filterable: true,
         columns: [
             { text: 'Nom',          datafield: 'last_name',     width: '12%' },

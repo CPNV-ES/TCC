@@ -14,8 +14,8 @@
                             <i class="fa fa-users fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">26</div>
-                            <div>En attente de validation</div>
+                            <div class="huge">{{ $members }}</div>
+                            <div>Nombres de membres</div>
                         </div>
                     </div>
                 </div>
@@ -28,76 +28,85 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-tasks fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">12</div>
-                            <div>New Tasks!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-shopping-cart fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">124</div>
-                            <div>New Orders!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <div class="panel panel-red">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <i class="fa fa-support fa-5x"></i>
-                        </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">13</div>
-                            <div>Support Tickets!</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="panel-footer">
-                        <span class="pull-left">View Details</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
+        {{--<div class="col-lg-3 col-md-6">--}}
+            {{--<div class="panel panel-green">--}}
+                {{--<div class="panel-heading">--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-xs-3">--}}
+                            {{--<i class="fa fa-tasks fa-5x"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-xs-9 text-right">--}}
+                            {{--<div class="huge">12</div>--}}
+                            {{--<div>New Tasks!</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<a href="#">--}}
+                    {{--<div class="panel-footer">--}}
+                        {{--<span class="pull-left">View Details</span>--}}
+                        {{--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>--}}
+                        {{--<div class="clearfix"></div>--}}
+                    {{--</div>--}}
+                {{--</a>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="col-lg-3 col-md-6">--}}
+            {{--<div class="panel panel-yellow">--}}
+                {{--<div class="panel-heading">--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-xs-3">--}}
+                            {{--<i class="fa fa-shopping-cart fa-5x"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-xs-9 text-right">--}}
+                            {{--<div class="huge">124</div>--}}
+                            {{--<div>New Orders!</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<a href="#">--}}
+                    {{--<div class="panel-footer">--}}
+                        {{--<span class="pull-left">View Details</span>--}}
+                        {{--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>--}}
+                        {{--<div class="clearfix"></div>--}}
+                    {{--</div>--}}
+                {{--</a>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="col-lg-3 col-md-6">--}}
+            {{--<div class="panel panel-red">--}}
+                {{--<div class="panel-heading">--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-xs-3">--}}
+                            {{--<i class="fa fa-support fa-5x"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="col-xs-9 text-right">--}}
+                            {{--<div class="huge">13</div>--}}
+                            {{--<div>Support Tickets!</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<a href="#">--}}
+                    {{--<div class="panel-footer">--}}
+                        {{--<span class="pull-left">View Details</span>--}}
+                        {{--<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>--}}
+                        {{--<div class="clearfix"></div>--}}
+                    {{--</div>--}}
+                {{--</a>--}}
+            {{--</div>--}}
+        {{--</div>--}}
     </div>
-
     <div class="row">
-        @foreach ($members as $member)
+        @if (!empty($message))
+
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ $message }}
+        </div>
+
+        @endif
+    </div>
+    <div class="row">
+        @foreach ($notmembers as $member)
             <div class="col-md-3">
                 <div class="box">
                     <div class="box-content">
@@ -122,6 +131,11 @@
 
                             <div class="form-group">
                                 {!! Form::select('status'.$member->id, $status, null, ['class' => 'form-control', 'placeholder' => 'Sélectionner']) !!}
+                                @if ($errors->has('status'.$member->id))
+                                    <span class="help-block">
+                                            <strong>{{$errors->first('status'.$member->id)}}</strong>
+                                        </span>
+                                @endif
                             </div>
 
                             <div class="form-group">
