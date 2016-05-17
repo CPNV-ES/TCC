@@ -45,10 +45,19 @@ Route::group(['middleware' => ['web']], function ()
 
 
     /*
-    * login page
+    * Login page
     */
     Route::resource('login', 'SessionController');
     Route::get('logout', 'SessionController@destroy');
+
+    /*
+     * Booking
+     */
+    Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
+    {
+        Route::resource('booking', 'BookingController');
+    });
+
 
 
 
@@ -59,6 +68,11 @@ Route::group(['middleware' => ['web']], function ()
         * register page
         */
         Route::resource('register', 'RegisterController');
+
+        /*
+         * reset password
+         */
+        Route::resource('password/reset', 'PasswordController@index');
 
         /*
         * password page
@@ -80,15 +94,15 @@ Route::group(['middleware' => ['web']], function ()
 
 
     /*
-     * Only auth user can access to /admin
+     * Only auth user that are admin can access to /admin
      */
-    Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function ()
+    Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'profileIsValide']], function ()
     {
 
-        Route::resource('/admin/ajax/members', 'AjaxMemberController');
-        Route::resource('/admin/ajax/courts', 'AjaxCourtController');
-        Route::resource('/admin/ajax/subscriptions', 'AjaxSubscriptionController');
-        Route::resource('/admin/ajax/seasons', 'AjaxSeasonController');
+//        Route::resource('/admin/ajax/members', 'AjaxMemberController');
+//        Route::resource('/admin/ajax/courts', 'AjaxCourtController');
+//        Route::resource('/admin/ajax/subscriptions', 'AjaxSubscriptionController');
+//        Route::resource('/admin/ajax/seasons', 'AjaxSeasonController');
 
         Route::resource('/admin/members', 'MemberController');
 
@@ -97,7 +111,6 @@ Route::group(['middleware' => ['web']], function ()
         Route::resource('/admin/config/subscriptions', 'SubscriptionController');
 
         Route::resource('/admin', 'AdminController');
-
 
     });
 

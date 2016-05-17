@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Booking;
 
-use App\Http\Controllers\Controller;
-use App\Models\Member;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests;
 
-class AjaxMemberController extends Controller
+class BookingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +15,8 @@ class AjaxMemberController extends Controller
      */
     public function index()
     {
-
-        $members = Member::all();
-        return response()->json($members);
-
+        //
+        return view('booking/home');
     }
 
     /**

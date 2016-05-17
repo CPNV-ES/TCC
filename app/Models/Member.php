@@ -8,6 +8,27 @@ use App\Models\Subscription_per_member;
 
 class Member extends Model
 {
+
+    protected $fillable = [
+        'last_name',
+        'first_name',
+        'address',
+        'city',
+        'email',
+        'mobile_phone',
+        'home_phone',
+        'zip_code'
+    ];
+
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+        $this->active             = 0;
+        $this->administrator      = 0;
+        $this->validate           = 0;
+        $this->to_verify          = 0;
+    }
+
     public function Status()
     {
         return $this->belongsToMany('App\Models\Subscription', 'subscriptions_per_member', 'fk_member', 'fk_subscription');
@@ -15,24 +36,13 @@ class Member extends Model
 
 
     /*
- * Create a user with the data givens
+ * Take the date in EU format and change it to US
  */
-    public function CreateUser($data)
+    public function SetBirthDathe($data)
     {
-        extract($data);
-        $this->last_name          = $last_name;
-        $this->first_name         = $first_name;
-        $this->address            = $address;
-        $this->city               = $city;
-        $this->email              = $email;
-        $this->mobile_phone       = $mobile_phone;
-        $this->home_phone         = $home_phone;
-        $this->zip_code           = $zip_code;
-        $this->active             = 0;
-        $this->administrator      = 0;
-        $this->validate           = 0;
-        $this->birth_date         = date("Y-m-d", strtotime($birth_date));
+        $this->birth_date         = date("Y-m-d", strtotime($data));
     }
+
     /*
      * Insert the login, token and activate account
      */
@@ -47,19 +57,21 @@ class Member extends Model
         $this->validate     = 1;
         $this->token        = $validationCode;
     }
+
     public function UpdateUser($data)
     {
-        extract($data);
-        $this->last_name          = $last_name;
-        $this->first_name         = $first_name;
-        $this->address            = $address;
-        $this->city               = $city;
-        $this->email              = $email;
-        $this->mobile_phone       = $mobile_phone;
-        $this->home_phone         = $home_phone;
-        $this->zip_code           = $zip_code;
-        $this->birth_date         = date("Y-m-d", strtotime($birth_date));
+        $this->last_name          = $data['last_name'];
+        $this->first_name         = $data['first_name'];;
+        $this->address            = $data['address'];;
+        $this->city               = $data['city'];;
+        $this->email              = $data['email'];;
+        $this->mobile_phone       = $data['mobile_phone'];;
+        $this->home_phone         = $data['home_phone'];;
+        $this->zip_code           = $data['zip_code'];;
+        $this->birth_date         = date("Y-m-d", strtotime($data['birth_date']));
+        $this->to_verify          = 0;
     }
+    
     /*
      * Hash and update the password
      */
@@ -67,5 +79,12 @@ class Member extends Model
     {
         $this->password = Hash::make($password);
         $this->token = null;
+    }
+
+    public function EditMember($id, $switch_bool)
+    {
+        $this->id = $id;
+        $this->switch_bool = $switch_bool;
+
     }
 }

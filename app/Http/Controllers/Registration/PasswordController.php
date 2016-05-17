@@ -6,6 +6,7 @@ use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Mail;
 
 use Validator;
 use Hash;
@@ -19,8 +20,7 @@ class PasswordController extends Controller
      */
     public function index()
     {
-        //
-        return view('auth/register/password/activationCode');
+        return view('auth/register/password/reset');
     }
 
     /**
@@ -74,14 +74,6 @@ class PasswordController extends Controller
     public function store(Request $request)
     {
 
-        //////////////////////////////////////////////////////////////////////////////////////////
-        // N'EST PAS UTILISE POUR LE MOMENT. VA L'ÊTER POUR L'OUBLI DU MOT DE PASSE
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
         extract($_POST);
 
 
@@ -89,8 +81,7 @@ class PasswordController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'login'     => 'required',
-                'token'     => 'required'
+                'email'     => 'required'
             ]);
         /////////////////////////////////////////////
 
@@ -102,11 +93,11 @@ class PasswordController extends Controller
 
             extract($_POST);
 
-            $member = Member::where('login', $login)->where('token', $token)->count();
+            $member = Member::where('email', $email)->count();
 
             if(empty($member))
             {
-                $validator->errors()->add('token', "Cette combinaison de login/code d'activation n'est pas valable.");
+                $validator->errors()->add('email', "Cet e-mail n'existe pas.");
             }
         });
         /////////////////////////////////////////////
@@ -121,12 +112,31 @@ class PasswordController extends Controller
         /////////////////////////////////////////////
 
 
-        // If validator pass, show the page to define password, and store login in session
+        // If validator pass, add token in database and send email
         //--------------------------------------------------------------------------------
-        $request->session()->put('login', $login);
 
+        $member = Member::where('email', $email)->get();
+        $member = $member[0];
+        //Generate the token
+        $validationCode     = str_random(20);
 
-        return redirect()->action('Registration\PasswordController@create');
+        $member->token = $validationCode;
+        $member->save();
+
+        // Send email to the user to choose password
+        //-------------------------------------------------
+        $mailMember = $member->email;
+        Mail::send('emails.user.passwordReset', ['last_name'  => $member->last_name,
+            'first_name' => $member->first_name,
+            'login'      => $member->login,
+            'token'      => $member->token],
+            function ($message) use($mailMember)
+            {
+                $message->to($mailMember)->subject('Réinitialisation du mot de passe');
+            });
+        /////////////////////////////////////////////
+
+        return view('auth/login/login')->with('message', 'Un email vous a été envoyé.');
     }
 
     /**

@@ -1,5 +1,5 @@
 
-url = "/admin/ajax/subscriptions";
+url = "/admin/config/subscriptions";
 
 var source =
 {

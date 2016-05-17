@@ -13,8 +13,6 @@ use Validator;
 
 class ProfileController extends Controller
 {
-
-
     /**
      * Display a listing of the resource.
      *
@@ -79,6 +77,7 @@ class ProfileController extends Controller
     public function edit($id)
     {
         //
+        dd('poney edit'.$id);
     }
 
     /**
@@ -112,9 +111,7 @@ class ProfileController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator)
         {
-            extract($_POST);
-
-            $duplicate = Member::where('email', $email)->get();
+            $duplicate = Member::where('email', $request->input('email'))->get();
 
             if(count($duplicate) != 0 && $duplicate[0]->id != Auth::user()->id)
             {
@@ -136,7 +133,7 @@ class ProfileController extends Controller
         //-------------
         $member = Member::find(Auth::user()->id);
 
-        $member->UpdateUser($_POST);
+        $member->UpdateUser($request->all());
 
         $member->save();
         /////////////////////////////////////////////

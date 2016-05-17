@@ -130,6 +130,9 @@ return [
         'time'                  => 'heure',
         'available'             => 'disponible',
         'size'                  => 'taille',
-        'zip_code'              => 'NPA'
+        'zip_code'              => 'NPA',
+        'birth_date'            => 'date de naissance',
+        'home_phone'            => 'téléphone privé',
+        'mobile_phone'          => 'téléphone mobile'
     ],
 ];

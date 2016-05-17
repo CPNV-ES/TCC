@@ -18,8 +18,13 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->ajax())
+        {
+            $members = Member::all();
+            return response()->json($members);
+        }
         return view('admin/member');
     }
 
@@ -61,15 +66,22 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+//        dd('poney'.$id);
+        if($request->ajax())
+        {
+            $members = Member::all();
+            return response()->json($members);
+        }
+
     }
 
     public function messages()
     {
         return [
             'login.required' => 'Le champ login est obligatoire.',
+            'status.required' => 'Le champ statut est obligatoire.',
         ];
     }
 
@@ -83,6 +95,24 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if($request->ajax())
+        {
+            $member = Member::find($id);
+            $field = $request->input('name');
+            if($request->input('value') == 'true')
+            {
+                $member->$field = '0';
+                $member->save();
+                return 'false';
+            }
+            else
+            {
+                $member->$field = '1';
+                $member->save();
+                return 'true';
+            }
+
+        }
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
@@ -90,7 +120,7 @@ class MemberController extends Controller
                 'login'.$id     => 'required',
                 'status'.$id    => 'required|filled'
             ],
-            ['required' => 'Le champ login est obligatoire.']);
+            ['login'.$id.'.required' => 'Le champ login est obligatoire.', 'status'.$id.'.required' => 'Le champ statut est obligatoire.']);
         /////////////////////////////////////////////
 
 
@@ -128,21 +158,20 @@ class MemberController extends Controller
         /////////////////////////////////////////////
 
         $emailMember = $member->email;
-        $url            = "?login=".$member->login."&token=".$member->token;
 
         // Send email to the user to choose password
         //-------------------------------------------------
-        Mail::send('emails.user.password', ['last_name'         => $member->last_name,
-                                            'first_name'        => $member->first_name,
-                                            'login'             => $member->login,
-                                            'urlCondition'      => $url],
+        Mail::send('emails.user.password', ['last_name'  => $member->last_name,
+                                            'first_name' => $member->first_name,
+                                            'login'      => $member->login,
+                                            'token'      => $member->token],
         function ($message) use($emailMember)
         {
             $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
         });
         /////////////////////////////////////////////
 
-        return redirect('admin')->with('message', 'Le login a été crée avec succès');
+        return redirect('admin')->with('message', 'Le login a été créé avec succès, un mail lui a été envoyé');
     }
 
     /**

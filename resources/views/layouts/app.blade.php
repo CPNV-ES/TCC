@@ -31,6 +31,10 @@
         {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
 
         {!! Html::script('/Ajax/register.js') !!}
+        {!! Html::script('/js/weather.js') !!}
+        <script>
+            is_login = "{{ Auth::check() }}";
+        </script>
 
 
     </head>
@@ -54,10 +58,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-left">
                         <li>
-                            <a href="{{ url('/home') }}">Home</a>
+                            <a href="{{ url('/home') }}">Accueil</a>
                         </li>
                         <li>
-                            <a href="{{ url('/#') }}">Réservation</a>
+                            <a href="{{ url('/booking') }}">Réservation</a>
                         </li>
                     </ul>
 
@@ -97,11 +101,12 @@
             </div>
         </nav>
 
-        <div class="background">
-
-        </div>
         @yield('content')
+        {!! Html::script('/js/jqwidget/globalize.js') !!}
+        {!! Html::script('/js/jqwidget/localization.js') !!}
         {!! Html::script('/Ajax/calendar.js') !!}
+        {!! Html::script('/Ajax/booking.js') !!}
+
     </body>
     <br style="clear:both"/>
     {{--<footer>--}}

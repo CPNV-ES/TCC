@@ -16,7 +16,7 @@
     Login : <b>{{ $login }}</b><br/>
 
 
-    Veuillez procéder au choix du mot de passe via le lien suivant : <a href="{{$_SERVER['SERVER_NAME']}}/password/create{{ $urlCondition }}"> {{$_SERVER['SERVER_NAME']}}/password/create{{ $urlCondition }} </a><br/><br/>
+    Veuillez procéder au choix du mot de passe via le lien suivant : <a href="{{ route('password.create', ['token' => $token, 'login' => $login]) }}"> {{ route('password.create', ['token' => $token, 'login' => $login]) }}  </a><br/><br/>
 
     Si vous n'avez pas crée de compte sur notre site, veuillez contactez cpnv.es.web@gmail.com en transférant ce mail.<br/><br/>
     Merci

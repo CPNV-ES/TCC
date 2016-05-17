@@ -1,5 +1,5 @@
 
-url = "/admin/ajax/seasons";
+url = "/admin/config/seasons";
 
 var source =
 {

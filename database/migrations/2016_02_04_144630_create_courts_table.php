@@ -17,9 +17,12 @@
 				$table->increments('id');
                 
                 $table->string('name');
-                
                 $table->boolean('indor');
-                
+				$table->time('start_time');
+				$table->time('end_time');
+				$table->integer('booking_window_member');
+				$table->integer('booking_window_not_member');
+				
 				$table->timestamps();
 			});
 		}

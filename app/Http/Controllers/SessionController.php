@@ -103,7 +103,12 @@ class SessionController extends Controller
         //-------------------------------------------------------
         if(Auth::attempt(['login' => $login, 'password' => $password]))
         {
-            return redirect('profile');
+            //If the member is administrator, redirect to administration panel
+            if(Auth::user()->administrator)
+            {
+                return redirect('admin');
+            }
+            return redirect('home');
         }
     }
 

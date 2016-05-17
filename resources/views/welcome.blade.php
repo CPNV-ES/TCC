@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-
+    <div class="background"></div>
     <div class="row calendar">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
             <div class="box">
                 <div class="box-icon">
                     <span class="fa fa-4x fa-html5">Court 1</span>
@@ -15,7 +15,26 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="box">
+                <div id="weather_picture"></div>
+                <div class="info">
+                    <h1 id="weather_tmp"></h1>
+                    <div id="weather_condition"></div>
+                    <div id="weather_wind"></div>
+                    <div id="weather_hour"></div>
+                </div>
+            </div>
+
+            <div class="box" style="margin-top:40px;">
+                <div class="info">
+                    <a href="{{ url('https://www.facebook.com/tcchavornay/info?tab=overview') }}">{{ Html::image("css/images/fb.jpg", "Actualité Facebook", array('width'=> '50px')) }}</a>
+                    <h5>Suivez-nous !</h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
             <div class="box">
                 <div class="box-icon">
                     <span class="fa fa-4x fa-css3">Court 2</span>

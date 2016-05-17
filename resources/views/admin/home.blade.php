@@ -106,6 +106,7 @@
         @endif
     </div>
     <div class="row">
+        <h2 align="center">Comptes en attente de validation</h2>
         @foreach ($notmembers as $member)
             <div class="col-md-3">
                 <div class="box">

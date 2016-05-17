@@ -1,8 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="background"></div>
 <div class="container">
     <div class="row">
+        <div class="row">
+            @if (!empty($message))
+
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ $message }}
+                </div>
+
+            @endif
+        </div>
         <div class="col-md-8 col-md-offset-2">
             <div class="head-panel">
                 <div class="title-panel">
@@ -33,6 +44,8 @@
                                 @if ($errors->has('password'))
                                 <span class="help-block"> <strong>{{ $errors->first('password') }}</strong> </span>
                                 @endif
+
+                                <a href="{{ url('/password/reset') }}">Mot de passe/login oublié ?</a>
                             </div>
                         </div>
 
@@ -48,7 +61,7 @@
 
                         {{--<div class="form-group">--}}
                             {{--<div class="col-md-6 col-md-offset-4">--}}
-                                {{--<a class="btn btn-link" href="{{ '/password/reset' }}">Mot de passe oublié ?</a>--}}
+                                {{--<a class="btn btn-link" href="{{ '/password/reset' }}">Mot de passe/login oublié ?</a>--}}
                             {{--</div>--}}
                         {{--</div>--}}
 

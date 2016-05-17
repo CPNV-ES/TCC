@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Subscription;
 use App\Http\Requests;
 
 class SubscriptionController extends Controller
@@ -14,9 +14,13 @@ class SubscriptionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax())
+        {
+            $subscriptions = Subscription::all();
+            return response()->json($subscriptions);
+        }
         return view('/admin/configuration/subscriptions');
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Models\Court;
 
 class CourtController extends Controller
 {
@@ -13,9 +14,13 @@ class CourtController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax())
+        {
+            $courts = Court::all();
+            return response()->json($courts);
+        }
         return view('admin/configuration/courts');
     }
 

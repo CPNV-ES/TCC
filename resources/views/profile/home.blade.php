@@ -5,9 +5,20 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="head-panel">
-                <div class="title-panel">Edition de profile</div>
+                <div class="title-panel">Edition de profil</div>
 
                 <div class="body-panel">
+                    <div class="row">
+                        @if (Auth::user()->to_verify == 1)
+
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                Veuillez vérifier vos informations puis cliquez sur le bouton <b><i>Mettre à jour</i></b> en bas de la page.
+                                Merci
+                            </div>
+
+                        @endif
+                    </div>
+
                     <div class="row">
                         @if (!empty($message))
 

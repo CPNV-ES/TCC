@@ -90,7 +90,9 @@ class RegisterController extends Controller
         //-------------
         $member = new Member;
 
-        $member->CreateUser($_POST);
+        $member = Member::create($_POST);
+
+        $member->SetBirthDathe($_POST['birth_date']);
 
         $member->save();
         /////////////////////////////////////////////

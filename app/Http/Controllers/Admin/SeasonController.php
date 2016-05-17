@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Season;
 use App\Http\Requests;
 
 class SeasonController extends Controller
@@ -14,9 +14,13 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if($request->ajax())
+        {
+            $season = Season::all();
+            return response()->json($season);
+        }
         return view('/admin/configuration/seasons');
     }
 

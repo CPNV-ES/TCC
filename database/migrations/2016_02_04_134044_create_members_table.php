@@ -25,14 +25,13 @@
 				$table->string('mobile_phone');
 				$table->string('home_phone');
 				$table->date('birth_date');
-				$table->string('token');
 				$table->string('password');
-				$table->string('login'); 
-				$table->rememberToken();
-
+				$table->string('login');
+				$table->string('token');
 				$table->boolean('active');
-				$table->boolean('administrator');
+				$table->boolean('to_verify');
 				$table->boolean('validate');
+				$table->boolean('administrator');
 
 				$table->timestamps();
 			});

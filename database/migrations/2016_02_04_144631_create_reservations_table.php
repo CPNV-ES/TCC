@@ -15,7 +15,9 @@
 			Schema::create('reservations', function(Blueprint $table)
 			{
 				$table->increments('id');
-                
+
+				$table->timestamp('date_hours');
+
                 $table->integer('fk_court')->unsigned();
                 $table->integer('fk_member_1')->unsigned();
                 $table->integer('fk_member_2')->unsigned();
@@ -25,8 +27,7 @@
                 $table->foreign('fk_member_1')->references('id')->on('members');
                 $table->foreign('fk_member_2')->references('id')->on('members');
                 $table->foreign('fk_season')->references('id')->on('seasons');
-                
-                $table->timestamp('date_hours');
+
 				$table->timestamps();
 			});
 		}

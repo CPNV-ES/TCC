@@ -11,13 +11,13 @@
                  // the first day of the week (0 = Sunday, 1 = Monday, etc)
                  firstDay: 1,
                  days: {
-                     names: ["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"],
+                     names: ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"],
                      namesAbbr: ["dim.","lun.","mar.","mer.","jeu.","ven.","sam."],
                      namesShort: ["di","lu","ma","me","je","ve","sa"]
                  },
 
                  months: {
-                     names: ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre",""],
+                     names: ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre",""],
                      namesAbbr: ["janv.","févr.","mars","avr.","mai","juin","juil.","août","sept.","oct.","nov.","déc.",""]
                  },
                  // AM and PM designators in one of these forms:
@@ -55,6 +55,7 @@
                  pagergotopagestring: "Allez à",
                  pagershowrowsstring: "Zeige Zeile:",
                  pagerrangestring: " von ",
+                 weekViewString: "Hebdomadaire",
                  pagerpreviousbuttonstring: "suivant",
                  pagernextbuttonstring: "précédent",
                  pagerfirstbuttonstring: "first",
@@ -83,7 +84,66 @@
                  filterselectstring: "Sélectionnez un filtre",
                  loadtext: "Chargement...",
                  clearstring: "Effacer",
-                 todaystring: "Aujourd'hui"
+                 todaystring: "Aujourd'hui",
+                 loadingErrorMessage: "Die Daten werden noch geladen und Sie können eine Eigenschaft nicht festgelegt oder eine Methode aufrufen . Sie können tun, dass, sobald die Datenbindung abgeschlossen ist. jqxScheduler wirft die ' bindingComplete ' Ereignis, wenn die Bindung abgeschlossen ist.",
+                 editRecurringAppointmentDialogTitleString: "Bearbeiten Sie wiederkehrenden Termin",
+                 editRecurringAppointmentDialogContentString: "Wollen Sie nur dieses eine Vorkommen oder die Serie zu bearbeiten ?",
+                 editRecurringAppointmentDialogOccurrenceString: "Vorkommen bearbeiten",
+                 editRecurringAppointmentDialogSeriesString: "Bearbeiten Die Serie",
+                 editDialogTitleString: "Termin bearbeiten",
+                 editDialogCreateTitleString: "Nouvelle réservation",
+                 contextMenuEditAppointmentString: "Termin bearbeiten",
+                 contextMenuCreateAppointmentString: "Erstellen Sie Neuer Termin",
+                 editDialogSubjectString: "Sujet",
+                 editDialogLocationString: "Place",
+                 editDialogFromString: "De",
+                 editDialogToString: "à",
+                 editDialogAllDayString: "tout au long de la journée",
+                 editDialogExceptionsString: "Ausnahmen",
+                 editDialogResetExceptionsString: "Zurücksetzen auf Speichern",
+                 editDialogDescriptionString: "Description",
+                 editDialogResourceIdString: "Calendrier",
+                 editDialogStatusString: "Status",
+                 editDialogColorString: "Couleur",
+                 editDialogColorPlaceHolderString: "Sélectionner une couleur",
+                 editDialogTimeZoneString: "Fuseau horaire",
+                 editDialogSelectTimeZoneString: "Sélectionner un fuseau horaire",
+                 editDialogSaveString: "Sauver",
+                 editDialogDeleteString: "Supprimer",
+                 editDialogCancelString: "Annuler",
+                 editDialogRepeatString: "Répétition",
+                 editDialogRepeatEveryString: "Wiederholen alle",
+                 editDialogRepeatEveryWeekString: "woche(n)",
+                 editDialogRepeatEveryYearString: "Jahr (en)",
+                 editDialogRepeatEveryDayString: "Tag (e)",
+                 editDialogRepeatNeverString: "Jamais",
+                 editDialogRepeatDailyString: "Täglich",
+                 editDialogRepeatWeeklyString: "Wöchentlich",
+                 editDialogRepeatMonthlyString: "Monatlich",
+                 editDialogRepeatYearlyString: "Jährlich",
+                 editDialogRepeatEveryMonthString: "Monate (n)",
+                 editDialogRepeatEveryMonthDayString: "Day",
+                 editDialogRepeatFirstString: "erste",
+                 editDialogRepeatSecondString: "zweite",
+                 editDialogRepeatThirdString: "dritte",
+                 editDialogRepeatFourthString: "vierte",
+                 editDialogRepeatLastString: "letzte",
+                 editDialogRepeatEndString: "Ende",
+                 editDialogRepeatAfterString: "Nach",
+                 editDialogRepeatOnString: "Am",
+                 editDialogRepeatOfString: "von",
+                 editDialogRepeatOccurrencesString: "Eintritt (e)",
+                 editDialogRepeatSaveString: "Vorkommen Speichern",
+                 editDialogRepeatSaveSeriesString: "Save Series",
+                 editDialogRepeatDeleteString: "Vorkommen löschen",
+                 editDialogRepeatDeleteSeriesString: "Series löschen",
+                 editDialogStatuses:
+                 {
+                     free: "Libre",
+                     tentative: "Provisoire",
+                     busy: "Occupé",
+                     outOfOffice: "Ausserhaus"
+                 }
              }
             break;
         case "en":
