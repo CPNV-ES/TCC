@@ -2,11 +2,7 @@
 
 @section('content')
     <h1>Réservation</h1>
-    <div class="row">
-        <div class="col-md-6">
-            <div id="booking1"></div>
-        </div>
-    </div>
+    <div id="calendar" class="row"></div>
 
 
 
@@ -20,14 +16,19 @@
                     <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="resume" class="notice notice-info"></div>
+                    <div id="modal-resume" class="notice notice-info"></div>
+                    <div id="modal-panel"></div>
+                    <div id="modal-content"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-primary">Réserver</button>
+                    <button type="button" id="booking" class="btn btn-success">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Réserver
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-    
+
 @endsection
+

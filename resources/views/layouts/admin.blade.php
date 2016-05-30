@@ -28,8 +28,8 @@
 
     {!! Html::script('/js/metisMenu/dist/metisMenu.min.js') !!}
     {!! Html::script('/js/raphael/raphael-min.js') !!}
-    {!! Html::script('/js/morrisjs/morris.min.js') !!}
-    {!! Html::script('/js/morris-data.js') !!}
+{{--    {!! Html::script('/js/morrisjs/morris.min.js') !!}--}}
+{{--    {!! Html::script('/js/morris-data.js') !!}--}}
 
     {!! Html::script('/js/jqwidget/jqx-all.js') !!}
 

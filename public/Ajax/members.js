@@ -1,4 +1,3 @@
-
 url = "/admin/members";
 
 var source =
@@ -43,7 +42,7 @@ $("#jqxmember").jqxGrid(
             { text: 'Validé',       datafield: 'validate',      width: '5%',  columntype:'checkbox'     },
             { text: 'Activé',       datafield: 'active',        width: '5%',  columntype:'checkbox'     },
             { text: 'Verifié',      datafield: 'to_verify',     width: '5%',  columntype:'checkbox'     },
-            ]
+        ]
     });
 
 $('#jqxmember').on('cellclick', function (event) {
@@ -62,3 +61,4 @@ $('#jqxmember').on('cellclick', function (event) {
 
     }
 });
+

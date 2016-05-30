@@ -2,6 +2,10 @@
 
 @section('content')
 <div class="container spark-screen">
+    <div class="reservations">
+        <h2>Réservations</h2>
+        
+    </div>
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="head-panel">

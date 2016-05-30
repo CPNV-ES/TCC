@@ -29,6 +29,7 @@ $("#jqxcourts").jqxGrid(
         autoheight: true,
         showfilterrow: true,
         filterable: true,
+        editable: true,
         columns: [
             { text: 'Nom',                                      datafield: 'name',                          width: '10%' },
             { text: 'Indor',                                    datafield: 'indor',                         width: '10%' },
@@ -41,3 +42,22 @@ $("#jqxcourts").jqxGrid(
         ]
     });
 
+$('#jqxcourts').on('cellendedit', function (event) {
+    if(event.args.datafield == 'name' || event.args.datafield == 'indor' || event.args.datafield == 'start_time' || event.args.datafield == 'end_time' || event.args.datafield == 'booking_window_member' || event.args.datafield == 'booking_window_not_member'){
+        data = {};
+        data['name'] = event.args.datafield;
+        data['value'] = event.args.value;
+        $.ajax({
+            url: '/admin/config/courts/'+ event.args.row.uid,
+            type: 'PUT',
+            data: data,
+            success: function(e) {
+                location.reload();
+            }
+        });
+    }
+    else
+    {
+        alert("Valeurs non modifiables");
+    }
+});

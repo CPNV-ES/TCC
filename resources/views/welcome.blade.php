@@ -10,7 +10,7 @@
                 </div>
                 <div class="info">
                     <div id="jqxcourt1"></div>
-                    <a href="" class="btn">Détails</a>
+                    <a href="{{url('/booking')}}" class="btn">Détails</a>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="info">
                     <div id="jqxcourt2"></div>
-                    <a href="" class="btn">Détails</a>
+                    <a href="{{url('/booking')}}" class="btn">Détails</a>
                 </div>
             </div>
         </div>

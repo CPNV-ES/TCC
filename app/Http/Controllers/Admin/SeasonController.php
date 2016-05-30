@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Season;
 use App\Http\Requests;
 
+use Validator;
+
 class SeasonController extends Controller
 {
     /**
@@ -42,7 +44,35 @@ class SeasonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Check form
+        //-----------
+        $validator = Validator::make($request->all(),
+            [
+                'begin_date'  => 'required|date',
+                'end_date'    => 'required|date'
+            ],
+            ['begin_date.required' => 'Le champ Date de début est obligatoire.', 'end_date.required' => 'Le champ Date de fin est obligatoire.']);
+        /////////////////////////////////////////////
+
+        // Display errors messages, return to the season page
+        //-------------------------------------------------
+        if($validator->fails())
+        {
+            return back()->withInput()->withErrors($validator);
+        }
+        /////////////////////////////////////////////
+        
+        // Insert the season
+        //-----------------------------------------------------
+        $season = Season::create($request->all());
+
+        $season->save();
+
+//        $request->session()->flash('message', 'La saison a été crée avec succès');
+        /////////////////////////////////////////////
+
+
+        return redirect('admin/config/seasons');
     }
 
     /**
@@ -76,7 +106,7 @@ class SeasonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd('update');
     }
 
     /**

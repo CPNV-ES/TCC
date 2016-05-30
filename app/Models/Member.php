@@ -38,7 +38,7 @@ class Member extends Model
     /*
  * Take the date in EU format and change it to US
  */
-    public function SetBirthDathe($data)
+    public function SetBirthDate($data)
     {
         $this->birth_date         = date("Y-m-d", strtotime($data));
     }
@@ -86,5 +86,10 @@ class Member extends Model
         $this->id = $id;
         $this->switch_bool = $switch_bool;
 
+    }
+
+    public function getCurrentStatusAttribute()
+    {
+        return $this->status->last();
     }
 }

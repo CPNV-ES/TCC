@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Admin\AdminController;
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class MemberController extends Controller
 {
@@ -22,7 +25,30 @@ class MemberController extends Controller
     {
         if($request->ajax())
         {
-            $members = Member::all();
+            //If the request has a hours input, it's from the booking plugin
+            if($request->has('hours'))
+            {
+                //Select all the reservation at the same hours as the new one will be
+                $reservations = Reservation::where('date_hours', 'LIKE', '%'.$request->input('hours'))->where('date_hours', '>', Carbon::now())->get(['fk_member_1', 'fk_member_2']);
+
+                //Get all the id from the members having a reservation at the same time
+                $idMember = [];
+                foreach ($reservations as $reservation)
+                {
+                    array_push($idMember, $reservation->fk_member_1);
+                    array_push($idMember, $reservation->fk_member_2);
+                }
+                $idMember = array_unique($idMember);
+
+                //Select all the members that don't have a reservation at the time of the new and return it
+                $members = Member::where('active', 1)->where('validate', 1)->whereNotIn('id', $idMember)->orderBy('last_name')->orderBy('first_name')->get();
+                return response()->json($members);
+            }
+            $members = Member::orderBy('active', 'desc')->get();
+            foreach ($members as $member){
+
+                $member->currentStatusName = $member->CurrentStatus->status;
+            }
             return response()->json($members);
         }
         return view('admin/member');

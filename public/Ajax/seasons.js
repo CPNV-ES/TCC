@@ -32,4 +32,3 @@ $("#jqxseasons").jqxGrid(
             { text: 'Mise à jour le', datafield: 'updated_at',      width: '25%',  cellsformat: 'dd.MM.yyyy' }
         ]
     });
-

@@ -103,6 +103,11 @@ class SessionController extends Controller
         //-------------------------------------------------------
         if(Auth::attempt(['login' => $login, 'password' => $password]))
         {
+            //If the member has to verifiy informations, redirect to profile
+            if(Auth::user()->to_verify)
+            {
+                return redirect('profile');
+            }
             //If the member is administrator, redirect to administration panel
             if(Auth::user()->administrator)
             {

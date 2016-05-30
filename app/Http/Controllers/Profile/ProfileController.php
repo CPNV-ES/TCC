@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
+use App\Models\Reservation;
+use Carbon\Carbon;
 use App\User;
 use Validator;
 
@@ -31,6 +33,17 @@ class ProfileController extends Controller
                 'status' => $status->status,
                 'message' => $message,
             ]);
+        }
+
+        $reservations = Reservation::where('fk_member_1', Auth::user()->id)->orwhere('fk_member_2', Auth::user()->id)->get();
+
+//        where('date_hours', '>', Carbon::now())->
+        foreach($reservations as $reservation)
+        {
+            $player_1 = $reservation['fk_member_1'];
+            $player_2 = $reservation['fk_member_2'];
+            $date = $reservation['date_hours'];
+            $court = $reservation['fk_court'];
         }
 
         return view('profile/home', ['status' => $status->status]);
@@ -109,7 +122,7 @@ class ProfileController extends Controller
 
         // Verify if email is not already in DB for no duplicate information
         //------------------------------------------------------------------
-        $validator->after(function($validator)
+        $validator->after(function($validator) use($request)
         {
             $duplicate = Member::where('email', $request->input('email'))->get();
 
