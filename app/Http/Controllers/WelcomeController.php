@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 use App\Http\Requests;
 
-class BookingController extends Controller
+class WelcomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,8 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
-        return view('booking/home');
+        $reservations = Reservation::where('date_hours', '>', Carbon::now())->where('date_hours', 'LIKE', Carbon::today().'%');
+        return view('welcome');
     }
 
     /**

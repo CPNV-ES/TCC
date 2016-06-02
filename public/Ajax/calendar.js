@@ -23,10 +23,7 @@ calendar.prototype =
             //---------------------------------
             $(response).each(function(item, value)
             {
-                for (i = 1; i <= Object.keys(value).length; i++)
-                {
-                    new booking(self.calendarDiv, value[i]);
-                }
+                new booking(self.calendarDiv, value);
             });
 
             self.modalDisplay();
@@ -225,4 +222,3 @@ $.fn.calendar.defaults = {
  Call
  */
 $('#calendar').calendar();
-

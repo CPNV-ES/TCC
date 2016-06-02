@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="row">
+        <div id="message"></div>
         <div id="jqxmember">
         </div>
     </div>

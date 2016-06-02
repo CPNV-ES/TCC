@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Reservation;
+use App\Models\Season;
+use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
-
+use App\Models\Subscription;
 class MemberController extends Controller
 {
     /**
@@ -41,12 +43,13 @@ class MemberController extends Controller
                 $idMember = array_unique($idMember);
 
                 //Select all the members that don't have a reservation at the time of the new and return it
-                $members = Member::where('active', 1)->where('validate', 1)->whereNotIn('id', $idMember)->orderBy('last_name')->orderBy('first_name')->get();
+                $members = Member::where('active', 1)->where('login', "!=", "")->where('validate', 1)->whereNotIn('id', $idMember)->orderBy('last_name')->orderBy('first_name')->get();
                 return response()->json($members);
             }
-            $members = Member::orderBy('active', 'desc')->get();
-            foreach ($members as $member){
-
+            
+            $members = Member::where('login', "!=", "")->orderBy('active', 'desc')->get();
+            foreach ($members as $member)
+            {
                 $member->currentStatusName = $member->CurrentStatus->status;
             }
             return response()->json($members);
@@ -94,7 +97,6 @@ class MemberController extends Controller
      */
     public function edit(Request $request, $id)
     {
-//        dd('poney'.$id);
         if($request->ajax())
         {
             $members = Member::all();
@@ -125,8 +127,25 @@ class MemberController extends Controller
         {
             $member = Member::find($id);
             $field = $request->input('name');
+            //Special process for the status
+            if($request->has('status_id'))
+            {
+                $member = Member::where('email', $id)->first();
+                $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
+                $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
+                $currentStatus->fk_subscription = (int)$request->input('status_id');
+                $currentStatus->save();
+                return 'true';
+            }
+
+            //Special process for the boolean value
             if($request->input('value') == 'true')
             {
+                //Disable the possibility to self-remove from the admin
+                if($member->id == Auth::user()->id && $field == 'administrator')
+                {
+                    return 'false';
+                }
                 $member->$field = '0';
                 $member->save();
                 return 'false';

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Subscription;
 use App\Http\Requests;
+use Validator;
 
 class SubscriptionController extends Controller
 {
@@ -42,7 +43,32 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Check form
+        //-----------
+        $validator = Validator::make($request->all(),
+            [
+                'status'    => 'required',
+                'amount'    => 'required|numeric'
+            ],
+            ['status.required' => 'Le champ \'Type\' est obligatoire.', 'amount.required' => 'Le champ \'Montant\' est obligatoire.']);
+        /////////////////////////////////////////////
+
+        // Display errors messages, return to the season page
+        //-------------------------------------------------
+        if($validator->fails())
+        {
+            return back()->withInput()->withErrors($validator);
+        }
+        /////////////////////////////////////////////
+
+        // Insert the subscription
+        //-----------------------------------------------------
+        $subscription = Subscription::create($request->all());
+
+        $subscription->save();
+        /////////////////////////////////////////////
+
+        return redirect('admin/config/subscriptions');
     }
 
     /**
@@ -76,7 +102,14 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->ajax())
+        {
+            $subscriptions = Subscription::find($id);
+            $field = $request->input('name');
+            $subscriptions->$field = $request->input('value');
+            $subscriptions->save();
+            return 'success';
+        }
     }
 
     /**

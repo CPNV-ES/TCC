@@ -54,7 +54,7 @@ class CourtController extends Controller
                 'booking_window_not_member'     => 'required|integer',
             ],
             ['name.required' => 'Le champ \'Nom\' est obligatoire.',
-             'start_time.required' => 'Le champ \'Heure d\'ouverture\' de début est obligatoire.',
+             'start_time.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
              'end_time.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
              'booking_window_member.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.',
              'booking_window_not_member.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.']);
@@ -67,8 +67,6 @@ class CourtController extends Controller
             return back()->withInput()->withErrors($validator);
         }
         /////////////////////////////////////////////
-
-        dd($request->check('indor'));
 
         // Insert the court
         //-----------------------------------------------------

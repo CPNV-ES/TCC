@@ -63,11 +63,10 @@ class RegisterController extends Controller
 
         // Verify if email is not already in DB for no duplicate information
         //------------------------------------------------------------------
-        $validator->after(function($validator)
+        $validator->after(function($validator) use ($request)
         {
-            extract($_POST);
 
-            $duplicate = Member::where('email', $email)->count();
+            $duplicate = Member::where('email', $request->input('email'))->count();
 
             if(!empty($duplicate))
             {
@@ -88,11 +87,10 @@ class RegisterController extends Controller
 
         // Insert in DB
         //-------------
-        $member = new Member;
 
-        $member = Member::create($_POST);
+        $member = Member::create($request->all());
 
-        $member->SetBirthDate($_POST['birth_date']);
+        $member->SetBirthDate($request->input('birth_date'));
 
         $member->save();
         /////////////////////////////////////////////
@@ -100,9 +98,9 @@ class RegisterController extends Controller
 
         // Inform the user that the account has been created and wait validation by admin
         //---------------------------------------------------------------------------------
-        Mail::send('emails.user.register', ['last_name' => $last_name, 'first_name' => $first_name, 'email' => $email], function ($message) use($email)
+        Mail::send('emails.user.register', ['last_name' => $request->input('last_name'), 'first_name' => $request->input('first_name'), 'email' => $request->input('email')], function ($message) use($request)
         {
-            $message->to($email)->subject('Votre inscription au Tennis Club Chavornay');
+            $message->to($request->input('email'))->subject('Votre inscription au Tennis Club Chavornay');
         });
         /////////////////////////////////////////////
 
@@ -123,7 +121,7 @@ class RegisterController extends Controller
 
         // Return to register page with success message
         //---------------------------------------------
-        return view('auth/register/success', ['email' => $email]);
+        return view('auth/register/success', ['email' => $request->input('email')]);
     }
 
     /**

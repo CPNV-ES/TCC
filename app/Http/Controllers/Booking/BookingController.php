@@ -28,6 +28,23 @@ class BookingController extends Controller
     {
         if($request->ajax())
         {
+            //Do we want for only one court
+            if($request->has('courtID'))
+            {
+                // Get court configuration
+                //------------------------
+                $configCourt = Court::find($request->input('courtID'));
+
+                $bookingWindow = Carbon::today()->addDay($configCourt->booking_window_member);
+                $bookingCourt = Reservation::where('date_hours', '>', Carbon::today())->where('date_hours', '<', $bookingWindow)->where('fk_court', $configCourt->id)->get();
+                $data['config'] = $configCourt;
+                $data['config']['booking_window'] = $configCourt->booking_window_member;
+                $data['reservation'] = $bookingCourt;
+
+                return response()->json($data);
+            }
+
+
             // Get court configuration
             //------------------------
             $configCourts = Court::all();
@@ -36,27 +53,30 @@ class BookingController extends Controller
             //-----------
             if(!Auth::check())
             {
+                $i = 0;
                 foreach ($configCourts as $configCourt)
                 {
                     $bookingWindow = Carbon::today()->addDay($configCourt->booking_window_not_member);
                     $bookingCourt = Reservation::where('date_hours', '>', Carbon::today())->where('date_hours', '<', $bookingWindow)->where('fk_court', $configCourt->id)->get();
-                    $data[$configCourt->id]['config'] = $configCourt;
-                    $data[$configCourt->id]['config']['booking_window'] = $configCourt->booking_window_not_member;
-                    $data[$configCourt->id]['reservation'] = $bookingCourt;
+                    $data[$i]['config'] = $configCourt;
+                    $data[$i]['config']['booking_window'] = $configCourt->booking_window_not_member;
+                    $data[$i]['reservation'] = $bookingCourt;
+                    $i++;
                 }
                 return response()->json($data);
             }
 
             // Member
             //-------
-
+            $i = 0;
             foreach ($configCourts as $configCourt)
             {
                 $bookingWindow = Carbon::today()->addDay($configCourt->booking_window_member);
                 $bookingCourt = Reservation::where('date_hours', '>', Carbon::today())->where('date_hours', '<', $bookingWindow)->where('fk_court', $configCourt->id)->get();
-                $data[$configCourt->id]['config'] = $configCourt;
-                $data[$configCourt->id]['config']['booking_window'] = $configCourt->booking_window_member;
-                $data[$configCourt->id]['reservation'] = $bookingCourt;
+                $data[$i]['config'] = $configCourt;
+                $data[$i]['config']['booking_window'] = $configCourt->booking_window_member;
+                $data[$i]['reservation'] = $bookingCourt;
+                $i++;
             }
             return response()->json($data);
         }
@@ -186,5 +206,39 @@ class BookingController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function MyBookingIndex(Request $request)
+    {
+        //Get all the reservation of the member
+        $reservations = Reservation::where('fk_member_1', Auth::user()->id)->orWhere('fk_member_2', Auth::user()->id)->orderBy('date_hours', 'DESC')->get();
+//        $reservations = Reservation::where(function($query){
+//            $query->where('fk_member_1', Auth::user()->id)->orWhere('fk_member_2', Auth::user()->id);
+//        })->get();
+
+        $data = [];
+        $i = 0;
+        foreach($reservations as $reservation)
+        {
+            $member1 = Member::find($reservation->fk_member_1);
+            $member2 = Member::find($reservation->fk_member_2);
+            $data[$i]['id']    = $reservation->id;
+            $data[$i]['first_name_1']   = $member1->first_name;
+            $data[$i]['last_name_1']    = $member1->last_name;
+            $data[$i]['first_name_2']   = $member2->first_name;
+            $data[$i]['last_name_2']    = $member2->last_name;
+            $data[$i]['date']           = Carbon::createFromFormat('Y-m-d H:i:s', $reservation['date_hours'])->format('d.m.Y H:i');
+            $data[$i]['court']          = $reservation['fk_court'];
+            if($reservation['date_hours'] > Carbon::now())
+            {
+                $data[$i]['deletable']  = true;
+            }
+            else
+            {
+                $data[$i]['deletable']  = false;
+            }
+            $i++;
+        }
+        return view('myBooking/home')->with('bookings', $data);
     }
 }

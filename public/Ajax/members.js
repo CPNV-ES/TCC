@@ -1,64 +1,152 @@
-url = "/admin/members";
-
-var source =
+// Get Subscription
+//-----------------
+var self = this;
+this.DropDownList = [];
+$.get('/admin/config/subscriptions', function(data)
 {
-    datatype: "json",
-    datafields: [
-        { name: 'last_name',    type: 'string' },
-        { name: 'first_name',   type: 'string' },
-        { name: 'email',        type: 'string' },
-        { name: 'mobile_phone', type: 'string' },
-        { name: 'login',        type: 'string' },
-        { name: 'created_at',   type: 'date'   },
-        { name: 'administrator',type: 'bool'   },
-        { name: 'validate',     type: 'bool'   },
-        { name: 'active',       type: 'bool'   },
-        { name: 'to_verify',    type: 'bool'   },
-    ],
-    id: 'id',
-    url: url,
-    root: 'data'
-};
-
-var dataAdapter = new $.jqx.dataAdapter(source);
-$("#jqxmember").jqxGrid(
+    $(data).each(function (index, value)
     {
-        width: '100%',
-        source: dataAdapter,
-        selectionmode: 'multiplerowsextended',
-        sortable: true,
-        autoheight: true,
-        showfilterrow: true,
-        localization: getLocalization('fr'),
-        filterable: true,
-        columns: [
-            { text: 'Nom',          datafield: 'last_name',     width: '15%' },
-            { text: 'Prénom',       datafield: 'first_name',    width: '15%' },
-            { text: 'Email',        datafield: 'email',         width: '20%' },
-            { text: 'Téléphone',    datafield: 'mobile_phone',  width: '10%' },
-            { text: 'Login',        datafield: 'login',         width: '12%' },
-            { text: 'Inscription',  datafield: 'created_at',    width: '8%',  cellsformat: 'dd.MM.yyyy' },
-            { text: 'Admin',        datafield: 'administrator', width: '5%',  columntype:'checkbox'     },
-            { text: 'Validé',       datafield: 'validate',      width: '5%',  columntype:'checkbox'     },
-            { text: 'Activé',       datafield: 'active',        width: '5%',  columntype:'checkbox'     },
-            { text: 'Verifié',      datafield: 'to_verify',     width: '5%',  columntype:'checkbox'     },
-        ]
+        self.DropDownList.push({value: value['id'], label: value['status']});
+    }).promise().done(Display());
+});
+
+
+function Display()
+{
+
+    var DropDownListSource =
+    {
+        datatype: "array",
+        datafields: [
+            {name: 'label', type: 'string'},
+            {name: 'value', type: 'string'}
+        ],
+        localdata: DropDownList
+    }
+
+    var DropDownListAdapter = new $.jqx.dataAdapter(DropDownListSource, {
+        autoBind: true
     });
 
-$('#jqxmember').on('cellclick', function (event) {
+    url = "/admin/members";
+
+    var source =
+    {
+        datatype: "json",
+        datafields: [
+            { name: 'last_name',            type: 'string' },
+            { name: 'first_name',           type: 'string' },
+            { name: 'email',                type: 'string' },
+            { name: 'mobile_phone',         type: 'string' },
+            { name: 'login',                type: 'string' },
+            { name: 'currentStatusName',    type: 'string'},
+            { name: 'created_at',           type: 'date'   },
+            { name: 'administrator',        type: 'bool'   },
+            { name: 'validate',             type: 'bool'   },
+            { name: 'active',               type: 'bool'   },
+            { name: 'to_verify',            type: 'bool'   },
+            { name: 'status', value: 'DropDownListSource', values: { source: DropDownListAdapter.records, value: 'value', name: 'label' } }
+        ],
+        id: 'id',
+        url: url,
+        root: 'data'
+    };
+
+// Disabled editing row
+//---------------------
+    rowEdit = function (row) {
+        return false;
+    }
+///////////////////////
+
+    var dataAdapter = new $.jqx.dataAdapter(source);
+    $("#jqxmember").jqxGrid(
+        {
+            width: '100%',
+            source: dataAdapter,
+            selectionmode: 'multiplerowsextended',
+            sortable: true,
+            autoheight: true,
+            showfilterrow: true,
+            localization: getLocalization('fr'),
+            filterable: true,
+            editable: true,
+            columns: [
+                { text: 'Nom',          datafield: 'last_name',         width: '9%', cellbeginedit: rowEdit },
+                { text: 'Prénom',       datafield: 'first_name',        width: '9%', cellbeginedit: rowEdit },
+                { text: 'Email',        datafield: 'email',             width: '19%', cellbeginedit: rowEdit },
+                { text: 'Téléphone',    datafield: 'mobile_phone',      width: '10%', cellbeginedit: rowEdit },
+                { text: 'Login',        datafield: 'login',             width: '12%', cellbeginedit: rowEdit },
+                { text: 'Status',       datafield: 'status', userid: 'id', displayfield: 'currentStatusName', width: '13%', columntype:'dropdownlist', createeditor: function (row, value, editor) {
+                    editor.jqxDropDownList({source: DropDownListAdapter, displayMember: 'label', valueMember: 'value'});
+                }},
+                { text: 'Inscription',  datafield: 'created_at',        width: '8%',  cellsformat: 'dd.MM.yyyy', cellbeginedit: rowEdit },
+                { text: 'Admin',        datafield: 'administrator',     width: '5%',  columntype:'checkbox'     },
+                { text: 'Validé',       datafield: 'validate',          width: '5%',  columntype:'checkbox'     },
+                { text: 'Activé',       datafield: 'active',            width: '5%',  columntype:'checkbox'     },
+                { text: 'Verifié',      datafield: 'to_verify',         width: '5%',  columntype:'checkbox'     },
+            ]
+        });
+}
+
+$("#jqxmember").on('cellendedit', function (event)
+{
+    console.log("Value: " +event.args.value.value);
+    console.log(event.args.row.email);
+    // console.log(event);
+    data = {};
+    data['status_id'] = event.args.value.value;
+    data['email'] = event.args.row.email;
+    $.ajax({
+        url: '/admin/members/'+ event.args.row.email,
+        type: 'PUT',
+        data: data,
+        success: function(e)
+        {
+            $('#jqxmember').jqxGrid('updatebounddata');
+            
+            if(e)
+            {
+                $('#message').html('<div class="alert alert-success alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Modification enregistrée</div>');
+            }
+            else
+            {
+                $('#message').html('<div class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Problème lors de l\'enregistrement de la modificaiton</div>');
+            }
+        }
+    });
+});
+
+
+$('#jqxmember').on('cellclick', function (event)
+{
     if(event.args.datafield == 'validate' || event.args.datafield == 'administrator' || event.args.datafield == 'active' || event.args.datafield == 'to_verify'){
         data = {};
         data['name'] = event.args.datafield;
         data['value'] = event.args.value;
+
         $.ajax({
             url: '/admin/members/'+ event.args.row.bounddata.uid,
             type: 'PUT',
             data: data,
-            success: function(e) {
-                location.reload();
+            success: function(e)
+            {
+
+                $('#jqxmember').jqxGrid('updatebounddata');
+
+
+                if(e)
+                {
+                    $('#message').html('<div class="alert alert-success alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Modification enregistrée</div>');
+                }
+                else
+                {
+                    $('#message').html('<div class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Problème lors de l\'enregistrement de la modificaiton</div>');
+                }
             }
         });
 
     }
 });
+
 

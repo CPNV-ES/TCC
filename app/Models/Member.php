@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Subscription_per_member;
@@ -90,6 +91,10 @@ class Member extends Model
 
     public function getCurrentStatusAttribute()
     {
-        return $this->status->last();
+        //Get the current season, then the record for the current season with the current member then the status object
+        $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
+        $subscriptionPerMember = Subscription_per_member::where('fk_member', $this->id)->where('fk_season', $currentSeason->id)->first();
+        $currentStatus = Subscription::find($subscriptionPerMember->fk_subscription);
+        return $currentStatus;
     }
 }

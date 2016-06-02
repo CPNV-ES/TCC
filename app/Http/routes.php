@@ -28,20 +28,8 @@ Route::group(['middleware' => ['web']], function ()
     /*
      * Index page
      */
-    Route::get('/', function ()
-    {
-        return view('welcome');
-    });
-
-
-    /*
-     * Index page
-     */
-    Route::get('home', function ()
-    {
-        return view('welcome');
-
-    });
+    Route::resource('/', 'WelcomeController');
+    Route::resource('home', 'WelcomeController');
 
 
     /*
@@ -58,8 +46,13 @@ Route::group(['middleware' => ['web']], function ()
         Route::resource('booking', 'BookingController');
     });
 
-
-
+    /*
+     * MyBooking
+     */
+    Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
+    {
+        Route::resource('mybooking', 'BookingController@MyBookingIndex');
+    });
 
 
     Route::group(['namespace' => 'Registration'], function()
@@ -98,11 +91,6 @@ Route::group(['middleware' => ['web']], function ()
      */
     Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'profileIsValide']], function ()
     {
-
-//        Route::resource('/admin/ajax/members', 'AjaxMemberController');
-//        Route::resource('/admin/ajax/courts', 'AjaxCourtController');
-//        Route::resource('/admin/ajax/subscriptions', 'AjaxSubscriptionController');
-//        Route::resource('/admin/ajax/seasons', 'AjaxSeasonController');
 
         Route::resource('/admin/members', 'MemberController');
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Subscription;
+use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Member;
-
+use App\Models\Season;
 class AdminController extends Controller
 {
 
@@ -19,10 +20,9 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        $notMembers = Member::where('validate', 0)->OrderBy('first_name')->OrderBy('last_name')->get();
+        $notMembers = Member::where('validate', 0)->orWhere('login', "")->OrderBy('first_name')->OrderBy('last_name')->get();
         $members    = Member::where('validate', 1)->count();
         $status     = Subscription::all(['id', 'status'])->pluck('status', 'id');
-
 
         // To display message when user is activate
         //-----------------------------------------

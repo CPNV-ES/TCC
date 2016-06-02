@@ -4,9 +4,6 @@
     <h1>Réservation</h1>
     <div id="calendar" class="row"></div>
 
-
-
-
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -29,6 +26,7 @@
             </div>
         </div>
     </div>
-
+    {!! Html::script('/Ajax/calendar.js') !!}
+    {!! Html::script('/Ajax/booking.js') !!}
 @endsection
 

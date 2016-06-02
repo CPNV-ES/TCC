@@ -68,7 +68,7 @@
                             <a href="{{ url('/home') }}">Accueil</a>
                         </li>
                         <li>
-                            <a href="{{ url('/booking') }}">Réservation</a>
+                            <a href="{{ url('/booking') }}">Réservations</a>
                         </li>
                     </ul>
 
@@ -98,6 +98,10 @@
                                     <a href="{{ url('/profile') }}"><i class="fa fa-btn fa-sign-out"></i>Profile</a>
                                 </li>
                                 <li>
+                                    <a href="{{ url('/mybooking') }}"><i class="fa fa-btn fa-sign-out"></i>Mes réservations</a>
+                                </li>
+                                <hr />
+                                <li>
                                     <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
                                 </li>
                             </ul>
@@ -111,9 +115,6 @@
         @yield('content')
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/localization.js') !!}
-        {!! Html::script('/Ajax/calendar.js') !!}
-        {!! Html::script('/Ajax/booking.js') !!}
-
     </body>
     <br style="clear:both"/>
     {{--<footer>--}}

@@ -10,7 +10,6 @@
                 </div>
                 <div class="info">
                     <div id="jqxcourt1"></div>
-                    <a href="{{url('/booking')}}" class="btn">Détails</a>
                 </div>
             </div>
         </div>
@@ -32,6 +31,12 @@
                     <h5>Suivez-nous !</h5>
                 </div>
             </div>
+
+            <div class="box" style="margin-top:40px;">
+                <div class="info">
+                    <a href="{{ url('/booking') }}"><button class="btn btn-primary btn-lg">Je réserve !</button></a>
+                </div>
+            </div>
         </div>
 
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
@@ -41,7 +46,6 @@
                 </div>
                 <div class="info">
                     <div id="jqxcourt2"></div>
-                    <a href="{{url('/booking')}}" class="btn">Détails</a>
                 </div>
             </div>
         </div>
@@ -119,4 +123,6 @@
            </div>
         </div>
     </div>
+
+    {!! Html::script('/Ajax/disponibility.js') !!}
 @endsection

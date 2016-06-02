@@ -33,8 +33,8 @@
                 <label class="col-md-4 control-label">Indor</label>
 
                 <div class="col-md-4">
-                    <input type="checkbox" class="form-control" name="indor" value="{{ old('indor') }}">
-{{--                    {{ Form::checkbox('indor', old('indor'), null, ['type' => 'checkbox', 'class' => 'form-control']) }}--}}
+{{--                    <input type="checkbox" class="form-control" name="indor" value="{{ old('indor') }}">--}}
+                    {{ Form::checkbox('indor', old('indor'), null, ['type' => 'checkbox', 'class' => 'form-control']) }}
                     @if ($errors->has('indor'))
                         <span class="help-block">
                         <strong>{{ $errors->first('indor') }}</strong>

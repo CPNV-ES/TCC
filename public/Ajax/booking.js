@@ -34,6 +34,7 @@ booking.prototype =
         var j = 0;
         var data = [];
 
+
         var date = new Date();
         date.setHours(parseInt(this.bookingStart));
 
@@ -53,7 +54,10 @@ booking.prototype =
 
         for (i = 0; i < this.bookingRow; i++)
         {
-            $('<th align="center"/>').appendTo(tr).html((this.date.getUTCDate() + i) +"."+ (this.date.getUTCMonth()+1) +"."+ this.date.getUTCFullYear());
+            var newdate = new Date(this.date);
+            newdate.setDate(newdate.getDate() + i);
+
+            $('<th align="center"/>').appendTo(tr).html((newdate.getUTCDate()) +"."+ (newdate.getUTCMonth()+1) +"."+ newdate.getUTCFullYear());
         }
         //////////////////
 
@@ -69,12 +73,15 @@ booking.prototype =
 
             for (i = 0; i < this.bookingRow; i++)
             {
-                this.rowDate =  this.date.getUTCFullYear() +"-"+ ("0"+(self.date.getUTCMonth()+1)).slice(-2) +"-"+(this.date.getUTCDate() + i);
+                var newdate = new Date(this.date);
+                newdate.setDate(newdate.getDate() + i);
+
+                this.rowDate =  newdate.getUTCFullYear() +"-"+ ("0"+(newdate.getUTCMonth()+1)).slice(-2) +"-"+("0"+(newdate.getUTCDate())).slice(-2);
 
                 td = $('<td/>').appendTo($(tr)).attr("data-start", ("0"+(date.getHours() + j)).slice(-2) +":00").attr("data-end", ("0"+(date.getHours() + j+1)).slice(-2) + ":00").attr("data-date", self.rowDate).attr("data-court", self.courtId)
 
 
-                if($.inArray(self.date.getUTCFullYear() +"-"+ ("0"+(self.date.getUTCMonth()+1)).slice(-2) +"-"+ (self.date.getUTCDate() + i)+" "+("0"+(date.getHours() + j)).slice(-2) + ":00:00", data) != -1)
+                if($.inArray(newdate.getUTCFullYear() +"-"+ ("0"+(newdate.getUTCMonth()+1)).slice(-2) +"-"+ ("0"+(newdate.getUTCDate())).slice(-2)+" "+("0"+(date.getHours() + j)).slice(-2) + ":00:00", data) != -1)
                 {
                     td.addClass('danger');
                 }

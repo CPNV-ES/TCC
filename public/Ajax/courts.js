@@ -47,12 +47,17 @@ $('#jqxcourts').on('cellendedit', function (event) {
         data = {};
         data['name'] = event.args.datafield;
         data['value'] = event.args.value;
+        //Format the value if it's the start_time or the end_time
+        if(event.args.datafield == 'start_time' || event.args.datafield == 'end_time')
+        {
+            data['value'] = ("0" + event.args.value.getHours()).slice(-2) + ":" + ("0" + event.args.value.getMinutes()).slice(-2);
+        }
         $.ajax({
             url: '/admin/config/courts/'+ event.args.row.uid,
             type: 'PUT',
             data: data,
             success: function(e) {
-                location.reload();
+                $('#jqxcourts').jqxGrid('updatebounddata');
             }
         });
     }
