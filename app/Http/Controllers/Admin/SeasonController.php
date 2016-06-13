@@ -18,7 +18,7 @@ class SeasonController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax())
+        if ($request->ajax())
         {
             $season = Season::all();
             return response()->json($season);
@@ -67,8 +67,6 @@ class SeasonController extends Controller
         $season = Season::create($request->all());
 
         $season->save();
-
-//        $request->session()->flash('message', 'La saison a été crée avec succès');
         /////////////////////////////////////////////
 
 
@@ -106,7 +104,7 @@ class SeasonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd('update');
+        //
     }
 
     /**

@@ -31,14 +31,21 @@
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
 
-        {!! Html::script('/Ajax/register.js') !!}
+        {!! Html::script('/ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
         <script>
-            is_login = "{{ Auth::check() }}";
+            is_logged = "{{ Auth::check() }}";
+            @if (Auth::check())
+                    member_last_name = "{{ Auth::user()->last_name }}";
+            @endif
 
             $.ajaxSetup({
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('Accept', 'application/json');
+                    xhr.setRequestHeader('X-Accept', 'application/json');
+                },
                 headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }
             });
         </script>
@@ -115,6 +122,7 @@
         @yield('content')
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/localization.js') !!}
+
     </body>
     <br style="clear:both"/>
     {{--<footer>--}}

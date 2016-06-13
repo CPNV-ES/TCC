@@ -81,31 +81,43 @@ function Display()
                     editor.jqxDropDownList({source: DropDownListAdapter, displayMember: 'label', valueMember: 'value'});
                 }},
                 { text: 'Inscription',  datafield: 'created_at',        width: '8%',  cellsformat: 'dd.MM.yyyy', cellbeginedit: rowEdit },
-                { text: 'Admin',        datafield: 'administrator',     width: '5%',  columntype:'checkbox'     },
-                { text: 'Validé',       datafield: 'validate',          width: '5%',  columntype:'checkbox'     },
-                { text: 'Activé',       datafield: 'active',            width: '5%',  columntype:'checkbox'     },
-                { text: 'Verifié',      datafield: 'to_verify',         width: '5%',  columntype:'checkbox'     },
+                { text: 'Admin',        datafield: 'administrator',     width: '5%',  columntype:'checkbox'},
+                { text: 'Validé',       datafield: 'validate',          width: '5%',  columntype:'checkbox'},
+                { text: 'Activé',       datafield: 'active',            width: '5%',  columntype:'checkbox'},
+                { text: 'Verifié',      datafield: 'to_verify',         width: '5%',  columntype:'checkbox'},
             ]
         });
 }
 
-$("#jqxmember").on('cellendedit', function (event)
+// Edit of member in admin panel
+//------------------------------
+$('#jqxmember').on('cellendedit', function (event)
 {
-    console.log("Value: " +event.args.value.value);
-    console.log(event.args.row.email);
-    // console.log(event);
-    data = {};
-    data['status_id'] = event.args.value.value;
-    data['email'] = event.args.row.email;
+
+    var data = {};
+
+    if(event.args.datafield == 'validate' || event.args.datafield == 'administrator' || event.args.datafield == 'active' || event.args.datafield == 'to_verify')
+    {
+        data['name'] = event.args.datafield;
+        data['value'] = event.args.value;
+        var url = '/admin/members/'+ event.args.row.uid;
+    }
+    else
+    {
+        data['status_id']   = event.args.value.value;
+        data['email']       = event.args.row.email;
+        var url = '/admin/members/'+ event.args.row.email;
+    }
+
     $.ajax({
-        url: '/admin/members/'+ event.args.row.email,
+        url: url,
         type: 'PUT',
         data: data,
         success: function(e)
         {
             $('#jqxmember').jqxGrid('updatebounddata');
-            
-            if(e)
+
+            if(e == "true")
             {
                 $('#message').html('<div class="alert alert-success alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Modification enregistrée</div>');
             }
@@ -117,36 +129,5 @@ $("#jqxmember").on('cellendedit', function (event)
     });
 });
 
-
-$('#jqxmember').on('cellclick', function (event)
-{
-    if(event.args.datafield == 'validate' || event.args.datafield == 'administrator' || event.args.datafield == 'active' || event.args.datafield == 'to_verify'){
-        data = {};
-        data['name'] = event.args.datafield;
-        data['value'] = event.args.value;
-
-        $.ajax({
-            url: '/admin/members/'+ event.args.row.bounddata.uid,
-            type: 'PUT',
-            data: data,
-            success: function(e)
-            {
-
-                $('#jqxmember').jqxGrid('updatebounddata');
-
-
-                if(e)
-                {
-                    $('#message').html('<div class="alert alert-success alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Modification enregistrée</div>');
-                }
-                else
-                {
-                    $('#message').html('<div class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Problème lors de l\'enregistrement de la modificaiton</div>');
-                }
-            }
-        });
-
-    }
-});
 
 

@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 
-class WelcomeController extends Controller
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+use Validator;
+
+class RegisterController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('welcome');
+        return view('auth/register');
     }
 
     /**
@@ -22,10 +26,25 @@ class WelcomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),
+        [
+            'last_name'     => 'required',
+            'first_name'    => 'required',
+            'address'       => 'required',
+            'city'          => 'required',
+            'zip_code'      => 'required',
+            'email'         => 'required|email',
+            'phone'         => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            return back()->withInput()->withErrors($validator);
+        }
     }
+
 
     /**
      * Store a newly created resource in storage.

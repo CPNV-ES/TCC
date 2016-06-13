@@ -19,10 +19,17 @@ var source =
     root: 'data'
 };
 
+// Disabled editing row
+//---------------------
+rowEdit = function (row) {
+    return false;
+}
+///////////////////////
+
 var dataAdapter = new $.jqx.dataAdapter(source);
 $("#jqxcourts").jqxGrid(
     {
-        width: '90%',
+        width: '100%',
         source: dataAdapter,
         selectionmode: 'multiplerowsextended',
         sortable: true,
@@ -37,8 +44,8 @@ $("#jqxcourts").jqxGrid(
             { text: 'Heure de fermeture',                       datafield: 'end_time',                      width: '12%',  cellsformat: 'HH:mm' },
             { text: 'Fenêtre de reservation membre',            datafield: 'booking_window_member',         width: '20%' },
             { text: 'Fenêtre de reservation non membre',        datafield: 'booking_window_not_member',     width: '20%' },
-            { text: 'Ajouté le',                                datafield: 'created_at',                    width: '8%',  cellsformat: 'dd.MM.yyyy' },
-            { text: 'Mis à jour le',                            datafield: 'updated_at',                    width: '8%',  cellsformat: 'dd.MM.yyyy' }
+            { text: 'Ajouté le',                                datafield: 'created_at',                    width: '8%', cellbeginedit: rowEdit,  cellsformat: 'dd.MM.yyyy' },
+            { text: 'Mis à jour le',                            datafield: 'updated_at',                    width: '8%', cellbeginedit: rowEdit, cellsformat: 'dd.MM.yyyy' }
         ]
     });
 
@@ -56,13 +63,19 @@ $('#jqxcourts').on('cellendedit', function (event) {
             url: '/admin/config/courts/'+ event.args.row.uid,
             type: 'PUT',
             data: data,
-            success: function(e) {
+            success: function(e)
+            {
                 $('#jqxcourts').jqxGrid('updatebounddata');
+
+                if(e == "true")
+                {
+                    $('#message').html('<div class="alert alert-success alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Modification enregistrée</div>');
+                }
+                else
+                {
+                    $('#message').html('<div class="alert alert-danger alert-dismissible" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>Problème lors de l\'enregistrement de la modificaiton</div>');
+                }
             }
         });
-    }
-    else
-    {
-        alert("Valeurs non modifiables");
     }
 });

@@ -18,7 +18,8 @@ class Court extends Model
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
-        //Check if the there is a 'indor' = on in the attributes, if yes, it's a indor court
+
+        //Check if there is a 'indor' = on in the attributes, if yes, it's a indor court
         if(array_key_exists('indor', $attributes) && $attributes['indor'] == 'on')
         {
             $this->indor = 1;

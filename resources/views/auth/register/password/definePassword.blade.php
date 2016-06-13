@@ -7,11 +7,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Choix du mot de passe</div>
                     <div class="panel-body">
-                        <div>Votre mot de passe doit faire minimum 6 caractères et contenir des lettres et des chiffres<br /></div>
+                        <div>Votre mot de passe doit faire minimum 6 caractères et contenir des lettres et des
+                            chiffres<br/></div>
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/login') }}">
                             {!! csrf_field() !!}
                             {!! method_field('put') !!}
-
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Mot de passe*</label>
@@ -20,9 +20,11 @@
                                     <input type="password" class="form-control" name="password">
                                 </div>
                                 @if ($errors->has('password'))
+
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
+
                                 @endif
                             </div>
 
@@ -33,9 +35,11 @@
                                     <input type="password" class="form-control" name="password_confirmation">
                                 </div>
                                 @if ($errors->has('password_confirmation'))
+
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password_confirmation') }}</strong>
                                     </span>
+
                                 @endif
                             </div>
 

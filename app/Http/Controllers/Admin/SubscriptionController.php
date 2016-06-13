@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax())
+        if ($request->ajax())
         {
             $subscriptions = Subscription::all();
             return response()->json($subscriptions);
@@ -102,13 +102,13 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->ajax())
+        if ($request->ajax())
         {
             $subscriptions = Subscription::find($id);
             $field = $request->input('name');
             $subscriptions->$field = $request->input('value');
             $subscriptions->save();
-            return 'success';
+            return 'true';
         }
     }
 

@@ -6,11 +6,12 @@
 
 @section('content')
     <div class="row">
-    <div id="jqxcourts"></div>
+        <div id="message"></div>
+        <div id="jqxcourts"></div>
     </div>
 
     <div class="row" align="center"><h3>Ajouter un court</h3></div>
-    <br />
+    <br/>
     <div class="row">
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/config/courts') }}">
             {!! csrf_field() !!}
@@ -33,7 +34,6 @@
                 <label class="col-md-4 control-label">Indor</label>
 
                 <div class="col-md-4">
-{{--                    <input type="checkbox" class="form-control" name="indor" value="{{ old('indor') }}">--}}
                     {{ Form::checkbox('indor', old('indor'), null, ['type' => 'checkbox', 'class' => 'form-control']) }}
                     @if ($errors->has('indor'))
                         <span class="help-block">
@@ -42,8 +42,6 @@
                     @endif
                 </div>
             </div>
-
-
 
             <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label">Heure d'ouverture</label>
@@ -76,7 +74,8 @@
                 <label class="col-md-4 control-label">Fenêtre de reservation membre</label>
 
                 <div class="col-md-4">
-                    <input type="number" class="form-control" name="booking_window_member" value="{{ old('booking_window_member') }}">
+                    <input type="number" class="form-control" name="booking_window_member"
+                           value="{{ old('booking_window_member') }}">
 
                     @if ($errors->has('booking_window_member'))
                         <span class="help-block">
@@ -90,7 +89,8 @@
                 <label class="col-md-4 control-label">Fenêtre de reservation non membre</label>
 
                 <div class="col-md-4">
-                    <input type="number" class="form-control" name="booking_window_not_member" value="{{ old('booking_window_not_member') }}">
+                    <input type="number" class="form-control" name="booking_window_not_member"
+                           value="{{ old('booking_window_not_member') }}">
 
                     @if ($errors->has('booking_window_not_member'))
                         <span class="help-block">
@@ -102,7 +102,7 @@
 
             <div class="form-group" align="center">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-btn">Ajouter</i>
+                   Ajouter
                 </button>
             </div>
         </form>

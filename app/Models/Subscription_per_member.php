@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription_per_member extends Model
 {
-    //
     protected $table = 'subscriptions_per_member';
     public function SetStatus($id_member, $status)
     {

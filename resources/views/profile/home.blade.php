@@ -170,7 +170,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user">Mettre à jour</i>
+                                    Mettre à jour
                                 </button>
                             </div>
                         </div>

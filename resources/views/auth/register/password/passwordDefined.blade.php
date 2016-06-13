@@ -8,7 +8,7 @@
                     <div class="panel-heading">Mot de passe défini</div>
 
                     <div class="panel-body">
-                        Votre mot de passe a été défini avec succés.<br />
+                        Votre mot de passe a été défini avec succés.<br/>
                         Vous pouvez maintenant vous <a href="/login">connecter</a>.
                     </div>
                 </div>

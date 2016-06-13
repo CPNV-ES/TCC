@@ -2,6 +2,12 @@
 
 @section('content')
     <h1>Réservation</h1>
+
+    <div style="width:510px;color:#000;margin:auto;">
+        <iframe height="85" frameborder="0" width="510" scrolling="no" src="http://www.prevision-meteo.ch/services/html/chavornay-vd/horizontal" allowtransparency="true"></iframe>
+        <a style="text-decoration:none;font-size:0.75em;" title="Prévisions à 4 jours pour Chavornay (VD)" href="http://www.prevision-meteo.ch/meteo/localite/chavornay-vd">Prévisions à 4 jours pour Chavornay (VD)</a>
+    </div>
+
     <div id="calendar" class="row"></div>
 
     <!-- Modal -->
@@ -26,7 +32,7 @@
             </div>
         </div>
     </div>
-    {!! Html::script('/Ajax/calendar.js') !!}
-    {!! Html::script('/Ajax/booking.js') !!}
+    {!! Html::script('/ajax/calendar.js') !!}
+    {!! Html::script('/ajax/booking.js') !!}
 @endsection
 

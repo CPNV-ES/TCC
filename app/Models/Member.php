@@ -5,11 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Subscription_per_member;
 
 class Member extends Model
 {
-
     protected $fillable = [
         'last_name',
         'first_name',
@@ -37,12 +35,13 @@ class Member extends Model
 
 
     /*
- * Take the date in EU format and change it to US
- */
+     * Take the date in EU format and change it to US
+     */
     public function SetBirthDate($data)
     {
         $this->birth_date         = date("Y-m-d", strtotime($data));
     }
+
 
     /*
      * Insert the login, token and activate account
@@ -72,7 +71,8 @@ class Member extends Model
         $this->birth_date         = date("Y-m-d", strtotime($data['birth_date']));
         $this->to_verify          = 0;
     }
-    
+
+
     /*
      * Hash and update the password
      */

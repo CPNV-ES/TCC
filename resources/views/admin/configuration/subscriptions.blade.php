@@ -2,15 +2,19 @@
 
 @section('title')
     Gestion des statuts & cotisations
+
 @endsection
 
 @section('content')
+
     <div class="row">
+        <div id="message"></div>
         <div id="jqxsubscriptions"></div>
     </div>
 
     <div class="row" align="center"><h3>Ajouter un statut et sa cotisation</h3></div>
-    <br />
+    <br/>
+
     <div class="row">
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/config/subscriptions') }}">
             {!! csrf_field() !!}
@@ -29,7 +33,6 @@
                 </div>
             </div>
 
-
             <div class="form-group{{ $errors->has('amount') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label">Montant</label>
 
@@ -45,7 +48,7 @@
 
             <div class="form-group" align="center">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-btn">Ajouter</i>
+                    Ajouter
                 </button>
             </div>
         </form>

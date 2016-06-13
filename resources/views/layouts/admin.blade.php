@@ -130,10 +130,10 @@
 
 {!! Html::script('/js/jqwidget/globalize.js') !!}
 {!! Html::script('/js/jqwidget/localization.js') !!}
-{!! Html::script('/Ajax/members.js') !!}
-{!! Html::script('/Ajax/courts.js') !!}
-{!! Html::script('/Ajax/subscriptions.js') !!}
-{!! Html::script('/Ajax/seasons.js') !!}
+{!! Html::script('/ajax/members.js') !!}
+{!! Html::script('/ajax/courts.js') !!}
+{!! Html::script('/ajax/subscriptions.js') !!}
+{!! Html::script('/ajax/seasons.js') !!}
 
 <script>
     $.ajaxSetup({

@@ -4,11 +4,11 @@
 
 function disponibility(div, id)
 {
-    this.disponibilityDiv    = div;
-    this.bookingDate    = "";
-    this.bookingStart   = "";
-    this.bookingEnd     = "";
-    this.courtId        = id;
+    this.disponibilityDiv   = div;
+    this.bookingDate        = "";
+    this.bookingStart       = "";
+    this.bookingEnd         = "";
+    this.courtId            = id;
     this.init();
 }
 
@@ -33,9 +33,11 @@ disponibility.prototype =
 
     display: function(dataCourt)
     {
-        var self = this;
-        var data = [];
 
+        var self            = this;
+        var data            = [];
+        var members         = [];
+        var k               = 0;
         var bookingStart   = dataCourt['config']['start_time'];
         var bookingEnd     = dataCourt['config']['end_time'];
         var reservation    = dataCourt['reservation'];
@@ -52,7 +54,11 @@ disponibility.prototype =
         //-------------------------------------------
         $(reservation).each(function(index, value)
         {
-            data.push(value['date_hours']);
+            members[k] = [];
+            data.push(value['data']['date_hours']);
+            members[k]['member_1'] = value['member_1'];
+            members[k]['member_2'] = value['member_2'];
+            k++;
         });
 
 
@@ -69,28 +75,45 @@ disponibility.prototype =
         //-----------------
         var tbody = $('<tbody/>').appendTo($(disponibilityTable));
 
+
+        // Line
+        //-----
         for (j = 0; j < bookingLine; j++)
         {
+            var newdate = new Date(this.date);
+            newdate.setDate(newdate.getDate() + j);
+
+            // Display hours
+            //--------------
             var tr = $('<tr/>').appendTo($(tbody));
             $('<th/>').appendTo($(tr)).html(date.getHours() + j + ":00");
+            //////////////////////////////////////////////
 
 
+            // Define settings html5 data
+            //---------------------------
             var rowDate =  date.getUTCFullYear() +"-"+ ("0"+(date.getUTCMonth()+1)).slice(-2) +"-"+("0"+(date.getUTCDate())).slice(-2);
+            var td      = $('<td/>').appendTo($(tr)).attr("data-start", ("0"+(date.getHours() + j)).slice(-2) +":00").attr("data-end", ("0"+(date.getHours() + j+1)).slice(-2) + ":00").attr("data-date", rowDate).attr("data-court", self.courtId)
+            //////////////////////////////////////////////
 
-            var td = $('<td/>').appendTo($(tr)).attr("data-start", ("0"+(date.getHours() + j)).slice(-2) +":00").attr("data-end", ("0"+(date.getHours() + j+1)).slice(-2) + ":00").attr("data-date", rowDate).attr("data-court", self.courtId)
 
-
+            // Check current day:hour with reservation list
+            //---------------------------------------------
             if($.inArray(date.getUTCFullYear() +"-"+ ("0"+(date.getUTCMonth()+1)).slice(-2) +"-"+ ("0"+(date.getUTCDate())).slice(-2)+" "+("0"+(date.getHours() + j)).slice(-2) + ":00:00", data) != -1)
             {
+                var index = $.inArray(date.getUTCFullYear() +"-"+ ("0"+(date.getUTCMonth()+1)).slice(-2) +"-"+ ("0"+(date.getUTCDate())).slice(-2)+" "+("0"+(date.getHours() + j)).slice(-2) + ":00:00", data)
+
                 td.addClass('danger');
+
+                if (is_logged)
+                {
+                    td.html("<div class='booking'>" + members[index]['member_1'] + " - " + members[index]['member_2'] + "</div>");
+                }
             }
+            //////////////////////////////////////////////
 
         }
         ////////////////////
-
-
-
-
     }
 };
 disponibility.prototype.constructor = disponibility;

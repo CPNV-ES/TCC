@@ -27,7 +27,7 @@
 
             <div class="box" style="margin-top:40px;">
                 <div class="info">
-                    <a href="{{ url('https://www.facebook.com/tcchavornay/info?tab=overview') }}">{{ Html::image("css/images/fb.jpg", "Actualité Facebook", array('width'=> '50px')) }}</a>
+                    <a href="{{ url('https://www.facebook.com/tcchavornay/info?tab=overview') }}" target="_blank">{{ Html::image("css/images/fb.jpg", "Actualité Facebook", array('width'=> '50px')) }}</a>
                     <h5>Suivez-nous !</h5>
                 </div>
             </div>
@@ -35,6 +35,13 @@
             <div class="box" style="margin-top:40px;">
                 <div class="info">
                     <a href="{{ url('/booking') }}"><button class="btn btn-primary btn-lg">Je réserve !</button></a>
+                </div>
+            </div>
+
+            <div class="box" style="margin-top:40px;">
+                <div class="info">
+                    <a href="{{ url('https://www.google.ch/maps/place/Tennis+Club+de+Chavornay/@46.7100609,6.5010883,12z/data=!4m8!1m2!2m1!1stennis+club+%C3%A0+proximit%C3%A9+de+Chavornay!3m4!1s0x0000000000000000:0x2007be33c2832496!8m2!3d46.7047773!4d6.5773129') }}" target="_blank">{{ Html::image("css/images/google_maps.ico", "Actualité Facebook", array('width'=> '50px')) }}</a>
+                    <h5>Nous trouver !</h5>
                 </div>
             </div>
         </div>
@@ -124,5 +131,5 @@
         </div>
     </div>
 
-    {!! Html::script('/Ajax/disponibility.js') !!}
+    {!! Html::script('/ajax/disponibility.js') !!}
 @endsection

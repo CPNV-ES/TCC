@@ -6,6 +6,7 @@ function calendar(div)
     this.bookingStart   = "";
     this.bookingEnd     = "";
     this.courtId        = "";
+
     this.init();
 
 }
@@ -53,7 +54,7 @@ calendar.prototype =
                 // Convert for user
                 //-----------------
                 bookingDateArray    = self.bookingDate.split("-");
-                bookingDateAjax     = bookingDateArray[1] + "." + bookingDateArray[2] + "." + bookingDateArray[0];
+                bookingDateAjax     = bookingDateArray[2] + "." + bookingDateArray[1] + "." + bookingDateArray[0];
 
 
                 // Title
@@ -70,7 +71,7 @@ calendar.prototype =
 
                 // If person is login
                 //-------------------
-                if (is_login)
+                if (is_logged)
                 {
 
                     // Convert for database
@@ -80,7 +81,8 @@ calendar.prototype =
 
                     // Get members list
                     //-----------------
-                    $.get("/admin/members?hours=" +  self.bookingStart + ":00", function (data) {
+                    $.get("/admin/members?hours=" +  self.bookingStart + ":00", function (data)
+                    {
 
                         // Clear modal content
                         //--------------------
@@ -94,9 +96,9 @@ calendar.prototype =
                         panel.append('<li role="presentation" class="active"><a href="#members" aria-controls="members" role="tab" data-toggle="tab">Membre</a></li>');
                         panel.append('<li role="presentation"><a href="#invit" aria-controls="invit" role="tab" data-toggle="tab">Invité</a></li>');
 
-                        panelContent = $('<div class="tab-content">').appendTo("#modal-content");
+                        panelContent        = $('<div class="tab-content">').appendTo("#modal-content");
                         panelContentMembers = $('<div role="tabpanel" class="tab-pane active" id="members">').appendTo(panelContent);
-                        panelContentInvit = $('<div role="tabpanel" class="tab-pane" id="invit">').appendTo(panelContent);
+                        panelContentInvit   = $('<div role="tabpanel" class="tab-pane" id="invit">').appendTo(panelContent);
                         /////////////////////////////////////////////
 
 
@@ -168,15 +170,17 @@ calendar.prototype =
                         data: data,
                         success: function(e)
                         {
+                            var name = $("#memberList option:selected").text().split(' ');
                             $('#booking').hide();
                             $('#modal-panel').empty();
                             $('#modal-content').html('<div class="alert alert-info" role="alert">'+ e[0] +'</div>');
 
                             $('#myModal').on('hidden.bs.modal', function ()
-                            {;
+                            {
                                 if(e[1])
                                 {
                                     $(self.cell).addClass('danger');
+                                    $(self.cell).html("<div class='booking'>" + member_last_name + " - " + name[0] + "</div>");
                                 }
                             });
                         }

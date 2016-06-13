@@ -38,6 +38,7 @@ Route::group(['middleware' => ['web']], function ()
     Route::resource('login', 'SessionController');
     Route::get('logout', 'SessionController@destroy');
 
+
     /*
      * Booking
      */
@@ -46,12 +47,14 @@ Route::group(['middleware' => ['web']], function ()
         Route::resource('booking', 'BookingController');
     });
 
+
     /*
      * MyBooking
      */
     Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
     {
-        Route::resource('mybooking', 'BookingController@MyBookingIndex');
+        Route::delete('mybooking/{id}', 'BookingController@destroy');
+        Route::get('mybooking', 'BookingController@MyBookingIndex');
     });
 
 
@@ -74,8 +77,6 @@ Route::group(['middleware' => ['web']], function ()
     });
 
 
-
-
     /*
      * Only auth user can access to /profile
      */
@@ -83,7 +84,6 @@ Route::group(['middleware' => ['web']], function ()
     {
         Route::resource('/profile', 'ProfileController');
     });
-
 
 
     /*
@@ -99,7 +99,5 @@ Route::group(['middleware' => ['web']], function ()
         Route::resource('/admin/config/subscriptions', 'SubscriptionController');
 
         Route::resource('/admin', 'AdminController');
-
     });
-
 });

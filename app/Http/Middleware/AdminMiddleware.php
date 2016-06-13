@@ -16,7 +16,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->administrator != 1)
+        if (Auth::user()->administrator != 1)
         {
             return response()->view('errors/access');
         }

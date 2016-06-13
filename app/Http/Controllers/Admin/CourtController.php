@@ -114,7 +114,7 @@ class CourtController extends Controller
         {
             $court = Court::find($id);
             $field = $request->input('name');
-            //if for the indoor field wich is a boolean
+            //if for the indoor field which is a boolean
             if($request->input('name') == 'indor')
             {
                 if($request->input('value') == '0')
@@ -134,7 +134,7 @@ class CourtController extends Controller
             {
                 $court->$field = $request->input('value');
                 $court->save();
-                return 'success';
+                return 'true';
             }
 
         }

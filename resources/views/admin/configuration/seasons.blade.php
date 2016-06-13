@@ -8,20 +8,11 @@
     <div class="row">
         <div id="jqxseasons"></div>
     </div>
-    <br />
+    <br/>
     <div class="row">
-
-        {{--@if (!empty(Session::has('message')))--}}
-
-            {{--<div class="alert alert-success alert-dismissible" role="alert">--}}
-                {{--<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>--}}
-                {{--{{ Session::flash() }}--}}
-            {{--</div>--}}
-
-        {{--@endif--}}
     </div>
     <div class="row" align="center"><h3>Ajouter une saison</h3></div>
-    <br />
+    <br/>
     <div class="row">
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/config/seasons') }}">
             {!! csrf_field() !!}
@@ -55,9 +46,9 @@
             </div>
 
             <div class="form-group" align="center">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-btn">Ajouter</i>
-                    </button>
+                <button type="submit" class="btn btn-primary">
+                    Ajouter
+                </button>
             </div>
         </form>
     </div>

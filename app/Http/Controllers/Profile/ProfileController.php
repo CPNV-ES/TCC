@@ -6,13 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
-use App\Models\Reservation;
-use Carbon\Carbon;
 use App\User;
-use Illuminate\Support\Facades\View;
 use Validator;
 
 class ProfileController extends Controller
@@ -24,11 +20,10 @@ class ProfileController extends Controller
      */
     public function index(Request $request)
     {
-        //
         $member = Member::find(Auth::user()->id);
         $status = $member->status->last();
 
-        if($request->session()->has('message')) {
+        if ($request->session()->has('message')) {
             $message = $request->session()->get('message');
             $request->session()->forget('message');
             return view('profile/home',[
@@ -36,7 +31,6 @@ class ProfileController extends Controller
                 'message' => $message,
             ]);
         }
-
         return view('profile/home', ['status' => $status->status]);
     }
 
@@ -81,7 +75,6 @@ class ProfileController extends Controller
     public function edit($id)
     {
         //
-        dd('poney edit'.$id);
     }
 
     /**
@@ -93,7 +86,6 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
@@ -111,13 +103,13 @@ class ProfileController extends Controller
         /////////////////////////////////////////////
 
 
-        // Verify if email is not already in DB for no duplicate information
+        // Verify if email is not already in DB for to not duplicate the information
         //------------------------------------------------------------------
         $validator->after(function($validator) use($request)
         {
             $duplicate = Member::where('email', $request->input('email'))->get();
 
-            if(count($duplicate) != 0 && $duplicate[0]->id != Auth::user()->id)
+            if (count($duplicate) != 0 && $duplicate[0]->id != Auth::user()->id)
             {
                 $validator->errors()->add('email', 'Cet e-mail est déjà utilisé.');
             }
@@ -127,11 +119,12 @@ class ProfileController extends Controller
 
         // Display errors messages, return to profile page
         //-------------------------------------------------
-        if($validator->fails())
+        if ($validator->fails())
         {
             return back()->withInput()->withErrors($validator);
         }
         /////////////////////////////////////////////
+
 
         // Update in DB
         //-------------

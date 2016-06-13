@@ -6,16 +6,14 @@ use App\Models\Reservation;
 use App\Models\Season;
 use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Admin\AdminController;
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
-use App\Models\Subscription;
+
 class MemberController extends Controller
 {
     /**
@@ -30,19 +28,21 @@ class MemberController extends Controller
             //If the request has a hours input, it's from the booking plugin
             if($request->has('hours'))
             {
-                //Select all the reservation at the same hours as the new one will be
-                $reservations = Reservation::where('date_hours', 'LIKE', '%'.$request->input('hours'))->where('date_hours', '>', Carbon::now())->get(['fk_member_1', 'fk_member_2']);
+                //Select all the reservation in the futur
+                $reservations = Reservation::where('date_hours', '>', Carbon::now())->get(['fk_member_1', 'fk_member_2']);
 
-                //Get all the id from the members having a reservation at the same time
+                //Get all the id from the members having a reservation in the futur
                 $idMember = [];
                 foreach ($reservations as $reservation)
                 {
                     array_push($idMember, $reservation->fk_member_1);
                     array_push($idMember, $reservation->fk_member_2);
                 }
+                //Add the id of the connected user so he isn't in the dropdowmlist
+                array_push($idMember, Auth::user()->id);
                 $idMember = array_unique($idMember);
 
-                //Select all the members that don't have a reservation at the time of the new and return it
+                //Select all the members that don't have a reservation in the futur
                 $members = Member::where('active', 1)->where('login', "!=", "")->where('validate', 1)->whereNotIn('id', $idMember)->orderBy('last_name')->orderBy('first_name')->get();
                 return response()->json($members);
             }
@@ -141,6 +141,12 @@ class MemberController extends Controller
             //Special process for the boolean value
             if($request->input('value') == 'true')
             {
+                $member->$field = '1';
+                $member->save();
+                return 'true';
+            }
+            else if($request->input('value') == 'false')
+            {
                 //Disable the possibility to self-remove from the admin
                 if($member->id == Auth::user()->id && $field == 'administrator')
                 {
@@ -148,14 +154,9 @@ class MemberController extends Controller
                 }
                 $member->$field = '0';
                 $member->save();
-                return 'false';
-            }
-            else
-            {
-                $member->$field = '1';
-                $member->save();
                 return 'true';
             }
+            return 'error';
 
         }
         // Check form
@@ -171,12 +172,9 @@ class MemberController extends Controller
 
         // Verify if login is not already in DB for no duplicate information
         //------------------------------------------------------------------
-        $validator->after(function($validator)
+        $validator->after(function($validator) use ($request, $id)
         {
-
-            extract($_POST);
-
-            $duplicate = Member::where('login', $_POST['login'.$id])->count();
+            $duplicate = Member::where('login', $request->input('login'.$id))->count();
 
             if(!empty($duplicate))
             {
@@ -184,7 +182,6 @@ class MemberController extends Controller
             }
         });
         /////////////////////////////////////////////
-
 
         // Display errors messages, return to register page
         //-------------------------------------------------
@@ -194,11 +191,10 @@ class MemberController extends Controller
         }
         /////////////////////////////////////////////
 
-
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
         $member = Member::find($id);
-        $member->UpdateLogin($_POST['login'.$id], $_POST['status'.$id]);
+        $member->UpdateLogin($request->input('login'.$id), $request->input('status'.$id));
         $member->save();
         /////////////////////////////////////////////
 

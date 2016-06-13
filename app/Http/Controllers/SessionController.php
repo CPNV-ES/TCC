@@ -3,18 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
-
-
 
 class SessionController extends Controller
 {
@@ -46,9 +40,6 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        extract($_POST);
-
-
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
@@ -58,22 +49,17 @@ class SessionController extends Controller
             ]);
         /////////////////////////////////////////////
 
-
-
         // Validate connexion user and if account is active
         //-------------------------------------------------
-        $validator->after(function($validator)
+        $validator->after(function($validator) use ($request)
         {
-            extract($_POST);
+            $userDbPassword = Member::where('login', $request->input('login'))->get();
 
-            $userDbPassword = Member::where('login', $login)->get();
-
-            if(count($userDbPassword) AND Hash::check($password, $userDbPassword[0]->password))
+            if (count($userDbPassword) AND Hash::check($request->input('password'), $userDbPassword[0]->password))
             {
+                $unActive = Member::where('login', $request->input('login'))->where('validate', 0)->count();
 
-                $unActive = Member::where('login', $login)->where('validate', 0)->count();
-
-                if($unActive)
+                if ($unActive)
                 {
                     $validator->errors()->add('password', 'Le compte est désactivé.');
                 }
@@ -83,33 +69,30 @@ class SessionController extends Controller
             {
                 $validator->errors()->add('password', 'Les informations fournies sont incorrectes.');
             }
-
-
-
         });
         /////////////////////////////////////////////
 
 
         // Display errors messages, return to register page
         //-------------------------------------------------
-        if($validator->fails())
+        if ($validator->fails())
         {
             return back()->withInput()->withErrors($validator);
         }
         /////////////////////////////////////////////
 
 
-        // All OK, start session and redirect to his profile page
+        // All OK, start session and redirect
         //-------------------------------------------------------
-        if(Auth::attempt(['login' => $login, 'password' => $password]))
+        if (Auth::attempt(['login' => $request->input('login'), 'password' => $request->input('password')]))
         {
-            //If the member has to verifiy informations, redirect to profile
-            if(Auth::user()->to_verify)
+            //If the member has to verify information, redirect to profile, test here because we can't use the middleware
+            if (Auth::user()->to_verify)
             {
                 return redirect('profile');
             }
-            //If the member is administrator, redirect to administration panel
-            if(Auth::user()->administrator)
+            // If the member is administrator, redirect to administration panel
+            if (Auth::user()->administrator)
             {
                 return redirect('admin');
             }
@@ -159,9 +142,7 @@ class SessionController extends Controller
      */
     public function destroy()
     {
-        //
         Auth::logout();
-
         return view('welcome');
     }
 }

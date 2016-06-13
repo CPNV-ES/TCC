@@ -30,8 +30,6 @@ class PasswordController extends Controller
      */
     public function create(Request $request)
     {
-        extract($_GET);
-
         // Verify if url contain login and token
         //--------------------------------------
         if(isset($login) && isset($token))
@@ -39,30 +37,25 @@ class PasswordController extends Controller
 
             // Check in DB if exist
             //---------------------
-            $member = Member::where('login', $login)->where('token', $token)->count();
-
+            $member = Member::where('login', $request->input('login'))->where('token', $request->input('token'))->count();
 
             // If validator pass, show the page to define password, and store login in session
             //--------------------------------------------------------------------------------
             if(!empty($member))
             {
-
                 $request->session()->put('login', $login);
-
 
                 return view('auth/register/password/definePassword');
             }
             else
             {
-                dd('Nope.jpg');
+                redirect('home');
             }
         }
         else
         {
-            dd('Nope.gif');
+            redirect('home');
         }
-
-
     }
 
     /**
@@ -73,10 +66,6 @@ class PasswordController extends Controller
      */
     public function store(Request $request)
     {
-
-        extract($_POST);
-
-
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
@@ -85,15 +74,11 @@ class PasswordController extends Controller
             ]);
         /////////////////////////////////////////////
 
-
         // Verify if login and activation code are corresponding with the DB
         //------------------------------------------------------------------
-        $validator->after(function($validator)
+        $validator->after(function($validator) use ($request)
         {
-
-            extract($_POST);
-
-            $member = Member::where('email', $email)->count();
+            $member = Member::where('email', $request->input('email'))->count();
 
             if(empty($member))
             {
@@ -114,8 +99,7 @@ class PasswordController extends Controller
 
         // If validator pass, add token in database and send email
         //--------------------------------------------------------------------------------
-
-        $member = Member::where('email', $email)->get();
+        $member = Member::where('email', $request->input('email'))->get();
         $member = $member[0];
         //Generate the token
         $validationCode     = str_random(20);
@@ -147,7 +131,6 @@ class PasswordController extends Controller
      */
     public function show($id)
     {
-        //
         return view('/auth/passwords/reset');
     }
 
@@ -171,8 +154,6 @@ class PasswordController extends Controller
      */
     public function update(Request $request, $id)
     {
-        extract($_POST);
-
         if(!$request->session()->has('login'))
         {
             dd('Bien essayé :)');
@@ -187,14 +168,11 @@ class PasswordController extends Controller
             ]);
         /////////////////////////////////////////////
 
-
         // Verify if password are strong enough
         //------------------------------------------------------------------
-        $validator->after(function($validator)
+        $validator->after(function($validator) use ($request)
         {
-            extract($_POST);
-
-            if(!preg_match('/(([A-Z]+|[a-z]+)[0-9]+)|([0-9]+([a-z]+|[A-Z]))/', $password))
+            if(!preg_match('/(([A-Z]+|[a-z]+)[0-9]+)|([0-9]+([a-z]+|[A-Z]))/', $request->input('password')))
             {
                 $validator->errors()->add("password", "Le mot de passe n'est pas assez fort.");
             }
@@ -225,7 +203,7 @@ class PasswordController extends Controller
 
         // Insert the password
         //--------------------
-        $member[0]->UpdatePassword($password);
+        $member[0]->UpdatePassword($request->input('password'));
         $member[0]->save();
         ///////////////////////
 
