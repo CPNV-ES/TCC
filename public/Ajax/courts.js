@@ -42,8 +42,8 @@ $("#jqxcourts").jqxGrid(
             { text: 'Indor',                                    datafield: 'indor',                         width: '10%' },
             { text: 'Heure d\'ouverture',                       datafield: 'start_time',                    width: '12%',  cellsformat: 'HH:mm'},
             { text: 'Heure de fermeture',                       datafield: 'end_time',                      width: '12%',  cellsformat: 'HH:mm' },
-            { text: 'Fenêtre de reservation membre',            datafield: 'booking_window_member',         width: '20%' },
-            { text: 'Fenêtre de reservation non membre',        datafield: 'booking_window_not_member',     width: '20%' },
+            { text: 'Fenêtre de réservation membre',            datafield: 'booking_window_member',         width: '20%' },
+            { text: 'Fenêtre de réservation non membre',        datafield: 'booking_window_not_member',     width: '20%' },
             { text: 'Ajouté le',                                datafield: 'created_at',                    width: '8%', cellbeginedit: rowEdit,  cellsformat: 'dd.MM.yyyy' },
             { text: 'Mis à jour le',                            datafield: 'updated_at',                    width: '8%', cellbeginedit: rowEdit, cellsformat: 'dd.MM.yyyy' }
         ]

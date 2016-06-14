@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+    <div class="background"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Choix du mot de passe</div>
-                    <div class="panel-body">
+                <div class="head-panel">
+                    <div class="title-panel">Choix du mot de passe</div>
+                    <div class="body-panel">
                         <div>Votre mot de passe doit faire minimum 6 caractères et contenir des lettres et des
                             chiffres<br/></div>
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/login') }}">

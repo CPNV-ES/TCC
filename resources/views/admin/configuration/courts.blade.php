@@ -71,7 +71,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('booking_window_member') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Fenêtre de reservation membre</label>
+                <label class="col-md-4 control-label">Fenêtre de réservation membre</label>
 
                 <div class="col-md-4">
                     <input type="number" class="form-control" name="booking_window_member"
@@ -86,7 +86,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('booking_window_not_member') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Fenêtre de reservation non membre</label>
+                <label class="col-md-4 control-label">Fenêtre de réservation non membre</label>
 
                 <div class="col-md-4">
                     <input type="number" class="form-control" name="booking_window_not_member"

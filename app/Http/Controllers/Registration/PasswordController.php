@@ -30,9 +30,10 @@ class PasswordController extends Controller
      */
     public function create(Request $request)
     {
+
         // Verify if url contain login and token
         //--------------------------------------
-        if(isset($login) && isset($token))
+        if($request->has('login') && $request->has('token'))
         {
 
             // Check in DB if exist
@@ -43,7 +44,7 @@ class PasswordController extends Controller
             //--------------------------------------------------------------------------------
             if(!empty($member))
             {
-                $request->session()->put('login', $login);
+                $request->session()->put('login', $request->input('login'));
 
                 return view('auth/register/password/definePassword');
             }
