@@ -1,3 +1,18 @@
+# TTC
+
+## Getting started
+
+1. To install homestead follow the instructions on their website [Laravel Homestead](https://laravel.com/docs/5.3/homestead).
+2. Download the zip from the github repository [TTC](https://github.com/CPNV-ES/TCC). Unzip the content into the syncronised folder for homestead.
+3. Connect to homestead
+4. Navigate to the projects folder
+5. Execute the commande `composer install`
+6. Execute the commande `php artisan migrate --seed`
+7. Copie the `.env.exemple`, rename it to `.env` and modify the necessary settings.
+8. Open your navigator of choise and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commandes).
+
+
+<!-- Previous readme -->
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
