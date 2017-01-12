@@ -17,12 +17,13 @@ class CourtController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
-            $courts = Court::all();
-            return response()->json($courts);
-        }
-        return view('admin/configuration/courts');
+        $courts = Court::all();
+//        if($request->ajax())
+//        {
+//            $courts = Court::all();
+//            return response()->json($courts);
+//        }
+        return view('admin/configuration/courts', compact('courts'));
     }
 
     /**
