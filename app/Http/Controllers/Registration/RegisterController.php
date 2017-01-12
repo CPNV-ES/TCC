@@ -63,6 +63,19 @@ class RegisterController extends Controller
         {
             $duplicate = Member::where('email', $request->input('email'))->count();
 
+            if(!$validator->errors()->has('birth_date')){
+              $bdate= new \DateTime($request->input('birth_date'));
+              $now= new \DateTime();
+              if($bdate->format('Ymd') > $now->format('Ymd')) {
+                $validator->errors()->add('birth_date', 'Il est difficile de naître dans le futur.');
+              }
+              if($bdate->diff($now)->y<6){
+                $validator->errors()->add('birth_date', 'Vous êtes trop jeunes pour vous inscrire. (6 ans révolus minimum)');
+              }
+            }
+
+            //dd($bdate->format('Ymd'));
+
             if (!empty($duplicate))
             {
                 $validator->errors()->add('email', 'Cet e-mail est déjà utilisé.');
