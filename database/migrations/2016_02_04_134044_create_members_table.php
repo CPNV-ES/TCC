@@ -28,6 +28,7 @@
 				$table->string('password');
 				$table->string('login');
 				$table->string('token');
+				$table->string('remember_token');
 				$table->boolean('active');
 				$table->boolean('to_verify');
 				$table->boolean('validate');
