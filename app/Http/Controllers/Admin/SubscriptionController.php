@@ -17,12 +17,13 @@ class SubscriptionController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax())
-        {
-            $subscriptions = Subscription::all();
-            return response()->json($subscriptions);
-        }
-        return view('/admin/configuration/subscriptions');
+        $subscriptions = Subscription::all();
+//        if ($request->ajax())
+//        {
+//            $subscriptions = Subscription::all();
+//            return response()->json($subscriptions);
+//        }
+        return view('/admin/configuration/subscriptions', compact('subscriptions'));
     }
 
     /**
