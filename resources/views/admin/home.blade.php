@@ -70,17 +70,6 @@
                             {!! csrf_field() !!}
                             {!! method_field('put') !!}
 
-                            <div class="form-group">
-                                {!! Form::select('status'.$member->id, $status, null, ['class' => 'form-control', 'placeholder' => 'Sélectionner']) !!}
-
-                                @if ($errors->has('status'.$member->id))
-
-                                    <span class="help-block">
-                                            <strong>{{$errors->first('status'.$member->id)}}</strong>
-                                        </span>
-
-                                @endif
-                            </div>
 
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Saisissez un login"

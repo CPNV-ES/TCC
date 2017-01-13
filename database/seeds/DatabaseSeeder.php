@@ -31,5 +31,17 @@ class DatabaseSeeder extends Seeder
          'created_at' => '2017-01-10 13:58:14',
          'updated_at' => '2017-01-10 13:58:14'
        ]);
+       DB::table('subscriptions')->insert([
+          'status' => 'member',
+          'amount' => '10',
+        ]);
+        DB::table('subscriptions')->insert([
+           'status' => 'responsible',
+           'amount' => '0',
+        ]);
+        DB::table('seasons')->insert([
+           'begin_date' => (new \DateTime())->sub(new DateInterval('P10D'))->format('Y-m-d'),
+           'end_date' => (new \DateTime())->add(new DateInterval('P6M'))->format('Y-m-d'),
+        ]);
     }
 }

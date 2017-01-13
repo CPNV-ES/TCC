@@ -46,7 +46,7 @@ class MemberController extends Controller
                 $members = Member::where('active', 1)->where('login', "!=", "")->where('validate', 1)->whereNotIn('id', $idMember)->orderBy('last_name')->orderBy('first_name')->get();
                 return response()->json($members);
             }
-            
+
             $members = Member::where('login', "!=", "")->orderBy('active', 'desc')->get();
             foreach ($members as $member)
             {
@@ -164,9 +164,8 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'login'.$id     => 'required',
-                'status'.$id    => 'required|filled'
             ],
-            ['login'.$id.'.required' => 'Le champ login est obligatoire.', 'status'.$id.'.required' => 'Le champ statut est obligatoire.']);
+            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
         /////////////////////////////////////////////
 
 
@@ -194,7 +193,7 @@ class MemberController extends Controller
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
         $member = Member::find($id);
-        $member->UpdateLogin($request->input('login'.$id), $request->input('status'.$id));
+        $member->UpdateLogin($request->input('login'.$id));
         $member->save();
         /////////////////////////////////////////////
 
