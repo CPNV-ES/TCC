@@ -40,3 +40,7 @@
     color:#515c66;
     text-transform:none;
 }
+
+.clickable-row {
+    cursor: pointer;
+}

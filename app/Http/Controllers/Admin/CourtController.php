@@ -88,7 +88,9 @@ class CourtController extends Controller
      */
     public function show($id)
     {
-        //
+        $courts = Court::all();
+        $singleCourt = Court::find($id);
+        return view('admin/configuration/courts', compact('singleCourt', 'courts'));
     }
 
     /**
