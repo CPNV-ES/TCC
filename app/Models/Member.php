@@ -46,10 +46,10 @@ class Member extends Model
     /*
      * Insert the login, token and activate account
      */
-    public function UpdateLogin($login, $status)
+    public function UpdateLogin($login)
     {
         $subscription_per_member = new Subscription_per_member();
-        $subscription_per_member->SetStatus($this->id, $status);
+        $subscription_per_member->SetStatus($this->id, 1);
         $subscription_per_member->save();
 
         $validationCode     = str_random(20);

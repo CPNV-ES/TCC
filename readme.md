@@ -12,6 +12,23 @@
 8. Open your navigator of choise and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commandes).
 
 
+## SMTP Settings for a gmail account
+
+1. Modifier le .env de la maniere suivante :
+```
+MAIL_DRIVER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=cpnv.tcc@gmail.com
+MAIL_PASSWORD=****
+MAIL_ENCRYPTION=tls
+```
+
+2. Edit security settings for your google account. Go to [Gmail Settings](https://www.google.com/settings/security/lesssecureapps)
+3. Thats done.
+
+
+
 <!-- Previous readme -->
 ## Laravel PHP Framework
 
