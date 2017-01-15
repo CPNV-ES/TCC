@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Reservation;
 use App\Models\Season;
+use App\Models\Member;
 use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Member;
+
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Support\Facades\Mail;
@@ -54,7 +55,8 @@ class MemberController extends Controller
             }
             return response()->json($members);
         }
-        return view('admin/member');
+        $members = Member::all();
+        return view('admin/member',compact('members'));
     }
 
     /**
@@ -86,7 +88,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -102,6 +104,8 @@ class MemberController extends Controller
             $members = Member::all();
             return response()->json($members);
         }
+        $user = Member::find($id);
+        return view('admin/configuration/user',compact('user'));
 
     }
 
@@ -123,47 +127,53 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->ajax())
-        {
-            $member = Member::find($id);
-            $field = $request->input('name');
-            //Special process for the status
-            if($request->has('status_id'))
-            {
-                $member = Member::where('email', $id)->first();
-                $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
-                $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
-                $currentStatus->fk_subscription = (int)$request->input('status_id');
-                $currentStatus->save();
-                return 'true';
-            }
+      //TODO: - check if we use the UpdateUser or do it the hard way
+      //      - check valitator what is really need
+      //      - 
+      //
+      if($request->ajax){
+          $member = Member::find($id);
+          $field = $request->input('name');
+          //Special process for the status
+          if($request->has('status_id'))
+          {
+              $member = Member::where('email', $id)->first();
+              $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
+              $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
+              $currentStatus->fk_subscription = (int)$request->input('status_id');
+              $currentStatus->save();
+              return 'true';
+          }
 
-            //Special process for the boolean value
-            if($request->input('value') == 'true')
-            {
-                $member->$field = '1';
-                $member->save();
-                return 'true';
-            }
-            else if($request->input('value') == 'false')
-            {
-                //Disable the possibility to self-remove from the admin
-                if($member->id == Auth::user()->id && $field == 'administrator')
-                {
-                    return 'false';
-                }
-                $member->$field = '0';
-                $member->save();
-                return 'true';
-            }
-            return 'error';
+          //Special process for the boolean value
+          if($request->input('value') == 'true')
+          {
+              $member->$field = '1';
+              $member->save();
+              return 'true';
+          }
+          else if($request->input('value') == 'false')
+          {
+              //Disable the possibility to self-remove from the admin
+              if($member->id == Auth::user()->id && $field == 'administrator')
+              {
+                  return 'false';
+              }
+              $member->$field = '0';
+              $member->save();
+              return 'true';
+          }
+          return 'error';
 
-        }
+      }
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
             [
                 'login'.$id     => 'required',
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'city' => 'required',
             ],
             ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
         /////////////////////////////////////////////
@@ -173,8 +183,11 @@ class MemberController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request, $id)
         {
-            $duplicate = Member::where('login', $request->input('login'.$id))->count();
-
+            //previous request
+            //$duplicate = Member::where('login', $request->input('login'.$id))->count();
+            //This request doesn't count the records that correspond to the actual user this way you can change your own name
+            $duplicate = Member::where([['login','=',$request->input('login'.$id)],
+                                        ['id','<>', $id]])->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
@@ -188,15 +201,16 @@ class MemberController extends Controller
         {
             return back()->withInput()->withErrors($validator);
         }
+
         /////////////////////////////////////////////
 
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
         $member = Member::find($id);
-        $member->UpdateLogin($request->input('login'.$id));
+        $member->UpdateUser($request->all());
+        $member->last_name = $request->input('last_name');
         $member->save();
         /////////////////////////////////////////////
-
         $emailMember = $member->email;
 
         // Send email to the user to choose password
