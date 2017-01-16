@@ -7,6 +7,7 @@
 3. Connect to homestead
 4. Navigate to the projects folder
 5. Execute the commande `composer install`
+5. If you already have an instance of the database, drop all tables and make sure the credentials in config/database.php are correct
 6. Execute the commande `php artisan migrate --seed`
 7. Copie the `.env.exemple`, rename it to `.env` and modify the necessary settings.
 8. Open your navigator of choise and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commandes).
@@ -14,7 +15,7 @@
 
 ## SMTP Settings for a gmail account
 
-1. Modifier le .env de la maniere suivante :
+1. Modify `.env` as follows :
 ```
 MAIL_DRIVER=smtp
 MAIL_HOST=smtp.gmail.com
