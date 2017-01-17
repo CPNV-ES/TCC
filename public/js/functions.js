@@ -11,8 +11,7 @@ $(document).ready(function () {
                break;
 
            case "delete":
-               var courtName = $("table tbody tr td").first().text();
-               if (confirm("Etes-vous sûr de vouloir supprimer le court : " + courtName + " ?")) {
+               if (confirm("Etes-vous sûr de vouloir supprimer le court : " + $(this).data("court") + " ?")) {
                    $(".delete").submit();
                }
                else {
