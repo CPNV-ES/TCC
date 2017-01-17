@@ -22,17 +22,30 @@
                     <th>Heure de fermeture</th>
                     <th>Fenêtre de réservation membre</th>
                     <th>Fenêtre de réservation non-membre</th>
+                    <th>Options</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($courts as $court)
-                    <tr class="clickable-row" data-url="/admin/config/courts/{{$court->id}}/edit">
+                    <tr>
                         <td>{{$court->name}}</td>
                         <td>{{$court->indor}}</td>
                         <td>{{$court->start_time}}</td>
                         <td>{{$court->end_time}}</td>
                         <td>{{$court->booking_window_member}}</td>
                         <td>{{$court->booking_window_not_member}}</td>
+                        <td class="option-zone">
+                            <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/courts/{{$court->id}}/edit">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <form class="delete" role="form" method="POST" action="/admin/config/courts/{{$court->id}}">
+                                {!! csrf_field() !!}
+                                {!! method_field('DELETE') !!}
+                                <button class="btn btn-danger option" data-action="delete">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

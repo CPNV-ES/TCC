@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Court;
 use Validator;
-use Illuminate\Validation\Rule;
 
 class CourtController extends Controller
 {
@@ -194,6 +193,9 @@ class CourtController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $court = Court::findOrFail($id);
+        $court->delete();
+
+        return redirect('admin/config/courts');
     }
 }

@@ -3,7 +3,23 @@
  */
 
 $(document).ready(function () {
-   $(".clickable-row").click(function () {
-       window.location = $(this).data("url");
+   $(".option").click(function () {
+       switch ($(this).data("action")) {
+
+           case "edit":
+               window.location = $(this).data("url");
+               break;
+
+           case "delete":
+               var courtName = $("table tbody tr td").first().text();
+               if (confirm("Etes-vous sûr de vouloir supprimer le court : " + courtName + " ?")) {
+                   $(".delete").submit();
+               }
+               else {
+                   return false;
+               }
+               break;
+
+       }
    });
 });

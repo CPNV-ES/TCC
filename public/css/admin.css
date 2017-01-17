@@ -41,6 +41,10 @@
     text-transform:none;
 }
 
-.clickable-row {
-    cursor: pointer;
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.option-zone form {
+    display: inline-block;
 }
