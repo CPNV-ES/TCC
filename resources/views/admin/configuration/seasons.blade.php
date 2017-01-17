@@ -7,13 +7,13 @@
 
 @section('content')
     <div class="row">
-        {{--<div id="jqxseasons"></div>--}}
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead>
                 <tr>
                     <th>Date de début</th>
                     <th>Date de fin</th>
+                    <th>Options</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,6 +21,18 @@
                     <tr>
                         <td>{{date_format(date_create($season->begin_date), "d.m.Y")}}</td>
                         <td>{{date_format(date_create($season->end_date), "d.m.Y")}}</td>
+                        <td class="option-zone">
+                            <button class="btn btn-warning" data-action="edit" data-url="/admin/config/seasons/{{$season->id}}/edit">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <form class="delete" role="form" method="POST" action="/admin/config/seasons/{{$season->id}}">
+                                {!! csrf_field() !!}
+                                {!! method_field('DELETE') !!}
+                                <button class="btn btn-danger" data-action="delete" data-season="{{$season->id}}">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
