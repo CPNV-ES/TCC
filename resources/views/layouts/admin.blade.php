@@ -28,10 +28,10 @@
 
     {!! Html::script('/js/metisMenu/dist/metisMenu.min.js') !!}
     {!! Html::script('/js/raphael/raphael-min.js') !!}
-    {!! Html::script('/js/morrisjs/morris.min.js') !!}
-    {!! Html::script('/js/morris-data.js') !!}
+    {{--{!! Html::script('/js/morrisjs/morris.min.js') !!}--}}
+    {{--{!! Html::script('/js/morris-data.js') !!}--}}
 
-    {!! Html::script('/js/jqwidget/jqx-all.js') !!}
+    {{--{!! Html::script('/js/jqwidget/jqx-all.js') !!}--}}
 
 
 </head>
@@ -130,10 +130,11 @@
 
 {!! Html::script('/js/jqwidget/globalize.js') !!}
 {!! Html::script('/js/jqwidget/localization.js') !!}
-{!! Html::script('/ajax/members.js') !!}
-{!! Html::script('/ajax/courts.js') !!}
-{!! Html::script('/ajax/subscriptions.js') !!}
-{!! Html::script('/ajax/seasons.js') !!}
+{{--{!! Html::script('/ajax/members.js') !!}--}}
+{{--{!! Html::script('/ajax/courts.js') !!}--}}
+{{--{!! Html::script('/ajax/subscriptions.js') !!}--}}
+{{--{!! Html::script('/ajax/seasons.js') !!}--}}
+{!! Html::script('/js/functions.js') !!}
 
 <script>
     $.ajaxSetup({
