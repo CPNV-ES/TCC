@@ -31,6 +31,31 @@ class DatabaseSeeder extends Seeder
          'created_at' => '2017-01-10 13:58:14',
          'updated_at' => '2017-01-10 13:58:14'
        ]);
+      // A REVOIR Essayer de prendre des valeurs réaliste
+//      for($i=1;$i<10;$i++)
+//      {
+//
+//          DB::table('members')->insert([
+//              'last_name' => 'test'.$i,
+//              'first_name' => 'Nom'.$i,
+//              'address' => 'CPNV',
+//              'zip_code' => '1450',
+//              'city' => 'CPNV',
+//              'email' => 'test.test'.$i.'@test.dev',
+//              'mobile_phone'=>'000000000',
+//              'home_phone'=>'000000000',
+//              'birth_date'=>'1980-01-01',
+//              'password' => 'test',
+//              'login' => 'test'.$i,
+//              'token' => '',
+//              'active' => $i%2,
+//              'to_verify' => '0',
+//              'validate' => '1',
+//              'administrator' => '0',
+//              'created_at' => '2017-01-10 13:58:14',
+//              'updated_at' => '2017-01-10 13:58:14'
+//          ]);
+//      }
        DB::table('subscriptions')->insert([
           'status' => 'member',
           'amount' => '10',

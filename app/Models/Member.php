@@ -48,6 +48,7 @@ class Member extends Model
      */
     public function UpdateLogin($login)
     {
+
         $subscription_per_member = new Subscription_per_member();
         $subscription_per_member->SetStatus($this->id, 1);
         $subscription_per_member->save();
@@ -61,6 +62,7 @@ class Member extends Model
     public function UpdateUser($data)
     {
         $this->last_name          = $data['last_name'];
+        $this->login              = $data['username'];;
         $this->first_name         = $data['first_name'];;
         $this->address            = $data['address'];;
         $this->city               = $data['city'];;
@@ -68,7 +70,7 @@ class Member extends Model
         $this->mobile_phone       = $data['mobile_phone'];;
         $this->home_phone         = $data['home_phone'];;
         $this->zip_code           = $data['zip_code'];;
-        $this->birth_date         = date("Y-m-d", strtotime($data['birth_date']));
+        //$this->birth_date         = date("Y-m-d", strtotime($data['birth_date']));
         $this->to_verify          = 0;
     }
 

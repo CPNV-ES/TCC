@@ -10,7 +10,7 @@
         <div id="jqxmember">
         </div>
     </div>-->
-    <div id="">
+
 
       <table id="members-table" class="display" width="100%" cellspacing="0">
         <thead>
@@ -42,10 +42,12 @@
               <td>{{$member->last_name}}</td>
               <td>{{$member->first_name}}</td>
               <td>{{$member->city}}</td>
-              <td>{{$member->active}}</td>
-              <td>{{$member->validate}}</td>
+              <td>@if($member->active == 1) Oui @else Non @endif</td>
+              <td>@if($member->validate == 1) Oui @else Non @endif</td>
               <td><a class="btn btn-primary" href="/admin/members/{{$member->id}}/edit" >Modifier</a></td>
           </tr>
           @endforeach
-    </div>
+      </tbody>
+      </table>
+
 @endsection

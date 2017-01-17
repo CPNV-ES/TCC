@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
@@ -24,6 +25,7 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
+
         if($request->ajax())
         {
             //If the request has a hours input, it's from the booking plugin
@@ -104,8 +106,8 @@ class MemberController extends Controller
             $members = Member::all();
             return response()->json($members);
         }
-        $user = Member::find($id);
-        return view('admin/configuration/user',compact('user'));
+        $member = Member::find($id);
+        return view('admin/configuration/user',compact('member'));
 
     }
 
@@ -170,12 +172,28 @@ class MemberController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'login'.$id     => 'required',
+//                'login'.$id     => 'required',
+                'username' => 'required',
                 'first_name' => 'required',
                 'last_name' => 'required',
+                'address' => 'required',
+                'zip_code' => 'required',
+                'home_phone' => 'required',
+                'mobile_phone' => 'required',
+                'email' => 'required|email',
                 'city' => 'required',
             ],
-            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
+//            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
+            [
+                'username.required' => 'Le champ login est obligatoire',
+                'home_phone.required' => 'Le champ téléphone fixe doit être renseigné',
+                'home_mobile.required' => 'Le champ téléphone portable doit être renseigné',
+                'address.required' => 'Le champ adresse doit être renseigné',
+                'zip_code.required' => 'Le champ NPA doit être renseigné',
+                'city.required' => 'Le champ localité doit être renseigné',
+
+            ]);
+
         /////////////////////////////////////////////
 
 
@@ -186,11 +204,12 @@ class MemberController extends Controller
             //previous request
             //$duplicate = Member::where('login', $request->input('login'.$id))->count();
             //This request doesn't count the records that correspond to the actual user this way you can change your own name
-            $duplicate = Member::where([['login','=',$request->input('login'.$id)],
+
+            $duplicate = Member::where([['login','=',$request->input('username')],
                                         ['id','<>', $id]])->count();
             if(!empty($duplicate))
             {
-                $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
+                $validator->errors()->add('username', 'Ce login est déjà utilisé.');
             }
         });
         /////////////////////////////////////////////
@@ -206,6 +225,7 @@ class MemberController extends Controller
 
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
+        dd($request->input('active'));
         $member = Member::find($id);
         $member->UpdateUser($request->all());
         $member->last_name = $request->input('last_name');
@@ -225,8 +245,80 @@ class MemberController extends Controller
         });
         /////////////////////////////////////////////
 
+
+        return redirect('admin')->with('message', 'Le login a été créer avec succès');
+
+    }
+    /**
+     * Update the login of a specific members
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $
+     * @return \Illuminate\Http\Response
+     */
+    public function updateLogin(Request $request, $id)
+    {
+
+        // Check form
+        //-----------
+        $validator = Validator::make($request->all(),
+            [
+                'login'.$id     => 'required',
+            ],
+            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
+
+        /////////////////////////////////////////////
+        // Verify if login is not already in DB for no duplicate information
+        //------------------------------------------------------------------
+        $validator->after(function($validator) use ($request, $id)
+        {
+            $duplicate = Member::where('login', $request->input('login'.$id))->count();
+            if(!empty($duplicate))
+            {
+                $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
+            }
+        });
+
+
+        /////////////////////////////////////////////
+        // Display errors messages, return to register page
+        //-------------------------------------------------
+        if($validator->fails())
+        {
+
+            return back()->withInput()->withErrors($validator);
+
+        }
+        /////////////////////////////////////////////
+        // Insert the login, status, token and validate account
+        //-----------------------------------------------------
+
+        $member = Member::find($id);
+
+        $member->UpdateLogin($request->input('login'.$id));
+
+
+        $member->save();
+
+
+
+
+        /////////////////////////////////////////////
+        $emailMember = $member->email;
+        // Send email to the user to choose password
+        //-------------------------------------------------
+        Mail::send('emails.user.password', ['last_name'  => $member->last_name,
+            'first_name' => $member->first_name,
+            'login'      => $member->login,
+            'token'      => $member->token],
+            function ($message) use($emailMember)
+            {
+                $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
+            });
+        /////////////////////////////////////////////
         return redirect('admin')->with('message', 'Le login a été créé avec succès, un mail lui a été envoyé');
     }
+        /////////////////////////////////////////////
 
     /**
      * Remove the specified resource from storage.

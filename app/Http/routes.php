@@ -97,7 +97,7 @@ Route::group(['middleware' => ['web']], function ()
         Route::resource('/admin/config/courts', 'CourtController');
         Route::resource('/admin/config/seasons', 'SeasonController');
         Route::resource('/admin/config/subscriptions', 'SubscriptionController');
-
+        Route::put('/admin/login/update/{id?}', 'MemberController@updateLogin');
         Route::resource('/admin', 'AdminController');
     });
 });
