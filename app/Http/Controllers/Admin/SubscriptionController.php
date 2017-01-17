@@ -122,6 +122,9 @@ class SubscriptionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subscription = Subscription::findOrFail($id);
+        $subscription->delete();
+
+        return redirect("/admin/config/subscriptions");
     }
 }

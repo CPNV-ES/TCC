@@ -40,3 +40,11 @@
     color:#515c66;
     text-transform:none;
 }
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.option-zone form {
+    display: inline-block;
+}

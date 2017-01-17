@@ -15,6 +15,7 @@
                 <tr>
                     <th>Type</th>
                     <th>Montant</th>
+                    <th>Options</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,6 +23,18 @@
                     <tr>
                         <td>{{$subscription->status}}</td>
                         <td>{{$subscription->amount}}</td>
+                        <td class="option-zone">
+                            <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/subscriptions/{{$subscription->id}}/edit">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <form class="delete" role="form" method="POST" action="/admin/config/subscriptions/{{$subscription->id}}">
+                                {!! csrf_field() !!}
+                                {!! method_field('DELETE') !!}
+                                <button class="btn btn-danger option" data-action="delete-subscription" data-subscription="{{$subscription->status}}">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
