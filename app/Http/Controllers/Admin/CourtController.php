@@ -149,10 +149,8 @@ class CourtController extends Controller
 
         // Insert the court
         //-----------------------------------------------------
-        $court = Court::find($id);
+        $court = Court::findOrFail($id);
         $court->update($request->all());
-
-        $court->save();
 
         return redirect('admin/config/courts');
 //        if($request->ajax())

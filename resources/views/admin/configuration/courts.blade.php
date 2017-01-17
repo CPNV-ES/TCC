@@ -103,18 +103,14 @@
                 @php
                     $checked = '';
                     if (!empty($singleCourt)) {
-                        $indor = $singleCourt->indor;
-                        if ($indor == 1) {
-                            $indor = 'on';
+                        if ($singleCourt->indor == 1) {
                             $checked = 'checked';
                         }
                     }
-                    else{
-                        $indor = old('indor');
-                    }
                 @endphp
                 <div class="col-md-4">
-                    {{ Form::checkbox('indor', $indor, null, ['type' => 'checkbox', 'class' => 'form-control', $checked]) }}
+                    <input type="hidden" name="indor" value="0">
+                    <input type="checkbox" class="form-control" name="indor" value="1" {{$checked}}>
                     @if ($errors->has('indor'))
                         <p class="help-block">{{ $errors->first('indor') }}</p>
                     @endif
