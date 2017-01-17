@@ -18,13 +18,12 @@ class SeasonController extends Controller
      */
     public function index(Request $request)
     {
-        $seasons = Season::all();
-//        if ($request->ajax())
-//        {
-//            $seasons = Season::all();
-//            return response()->json($seasons);
-//        }
-        return view('/admin/configuration/seasons', compact('seasons'));
+        if ($request->ajax())
+        {
+            $season = Season::all();
+            return response()->json($season);
+        }
+        return view('/admin/configuration/seasons');
     }
 
     /**
