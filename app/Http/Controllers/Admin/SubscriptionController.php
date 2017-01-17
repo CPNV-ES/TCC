@@ -15,14 +15,10 @@ class SubscriptionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $subscriptions = Subscription::all();
-//        if ($request->ajax())
-//        {
-//            $subscriptions = Subscription::all();
-//            return response()->json($subscriptions);
-//        }
+
         return view('/admin/configuration/subscriptions', compact('subscriptions'));
     }
 
@@ -48,10 +44,15 @@ class SubscriptionController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'status'    => 'required',
-                'amount'    => 'required|numeric'
+                'status'    => 'required|unique:subscriptions,status',
+                'amount'    => 'numeric|min:0'
             ],
-            ['status.required' => 'Le champ \'Type\' est obligatoire.', 'amount.required' => 'Le champ \'Montant\' est obligatoire.']);
+            [
+                'status.required' => 'Le champ \'Type\' est obligatoire.',
+                'status.unique' => 'La valeur du champ \'Type\' status est déjà utilisée.',
+                'amount.numeric' => 'Le champ \'Montant\' doit contenir un nombre.',
+                'amount.min' => 'La valeur du champ \'Montant\' doit être positif ou nul.'
+            ]);
         /////////////////////////////////////////////
 
         // Display errors messages, return to the season page
