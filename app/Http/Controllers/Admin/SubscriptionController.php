@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Subscription;
@@ -18,6 +19,21 @@ class SubscriptionController extends Controller
     public function index()
     {
         $subscriptions = Subscription::all();
+        $payedSubscriptions = Subscription_per_member::all();
+
+        for ($i = 0; $i < sizeof($subscriptions); $i++) {
+
+            $hasSubscription = false;
+
+            foreach ($payedSubscriptions as $payedSubscription) {
+                if ($payedSubscription->fk_subscription == $subscriptions[$i]->id) {
+                    $hasSubscription = true;
+                }
+            }
+
+            $subscriptions[$i]['hasSubscription'] = $hasSubscription;
+
+        }
 
         return view('/admin/configuration/subscriptions', compact('subscriptions'));
     }
@@ -92,7 +108,26 @@ class SubscriptionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subscriptions = Subscription::all();
+        $payedSubscriptions = Subscription_per_member::all();
+
+        for ($i = 0; $i < sizeof($subscriptions); $i++) {
+
+            $hasSubscription = false;
+
+            foreach ($payedSubscriptions as $payedSubscription) {
+                if ($payedSubscription->fk_subscription == $subscriptions[$i]->id) {
+                    $hasSubscription = true;
+                }
+            }
+
+            $subscriptions[$i]['hasSubscription'] = $hasSubscription;
+
+        }
+
+        $singleSubscription = Subscription::findOrFail($id);
+
+        return view("/admin/configuration/subscriptions", compact('subscriptions', 'singleSubscription'));
     }
 
     /**
@@ -104,14 +139,38 @@ class SubscriptionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->ajax())
+        // Check form
+        //-----------
+        $validator = Validator::make($request->all(),
+            [
+                'status'    => 'required|unique:subscriptions,status,' . $id,
+                'amount'    => 'numeric|min:0'
+            ],
+            [
+                'status.required' => 'Le champ \'Type\' est obligatoire.',
+                'status.unique' => 'La valeur du champ \'Type\' status est déjà utilisée.',
+                'amount.numeric' => 'Le champ \'Montant\' doit contenir un nombre.',
+                'amount.min' => 'La valeur du champ \'Montant\' doit être positif ou nul.'
+            ]);
+        /////////////////////////////////////////////
+
+        // Display errors messages, return to the season page
+        //-------------------------------------------------
+        if($validator->fails())
         {
-            $subscriptions = Subscription::find($id);
-            $field = $request->input('name');
-            $subscriptions->$field = $request->input('value');
-            $subscriptions->save();
-            return 'true';
+            return back()->withInput()->withErrors($validator);
         }
+        /////////////////////////////////////////////
+
+        // Insert the subscription
+        //-----------------------------------------------------
+        $subscription = Subscription::findOrFail($id);
+        $subscription->update($request->all());
+
+        $subscription->save();
+        /////////////////////////////////////////////
+
+        return redirect('admin/config/subscriptions');
     }
 
     /**
