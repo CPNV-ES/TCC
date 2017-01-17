@@ -93,7 +93,11 @@
 
             <div class="form-group" align="center">
                 <button type="submit" class="btn btn-primary">
-                    Ajouter
+                    @if(!empty($singleSubscription))
+                        Sauvegarder
+                    @else
+                        Ajouter
+                    @endif
                 </button>
             </div>
         </form>
