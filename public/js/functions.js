@@ -19,6 +19,15 @@ $(document).ready(function () {
                }
                break;
 
+            case "delete-season":
+                if (confirm("Etes-vous sûr de vouloir supprimer la saison : " + $(this).data("season") + " ?")) {
+                    $(".delete").submit();
+                }
+                else {
+                    return false;
+                }
+                break;
+
        }
    });
 });

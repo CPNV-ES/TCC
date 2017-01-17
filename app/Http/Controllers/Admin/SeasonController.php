@@ -16,14 +16,16 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if ($request->ajax())
-        {
-            $season = Season::all();
-            return response()->json($season);
+        $seasons = Season::orderBy('begin_date', 'desc')->get();
+
+        if (sizeof($seasons) > 0) {
+            $newSeasonStart = date('Y-m-d', strtotime($seasons->first()->end_date . " +1 day"));
+            $newSeasonEnd = date('Y-m-d', strtotime($newSeasonStart . " +1 year"));
         }
-        return view('/admin/configuration/seasons');
+
+        return view('/admin/configuration/seasons', compact('seasons', 'newSeasonStart', 'newSeasonEnd'));
     }
 
     /**
@@ -49,9 +51,13 @@ class SeasonController extends Controller
         $validator = Validator::make($request->all(),
             [
                 'begin_date'  => 'required|date',
-                'end_date'    => 'required|date'
+                'end_date'    => 'required|date|after:' . date('Y-m-d', strtotime($request->begin_date . " +6 months -1 day"))
             ],
-            ['begin_date.required' => 'Le champ Date de début est obligatoire.', 'end_date.required' => 'Le champ Date de fin est obligatoire.']);
+            [
+                'begin_date.required'   => 'Le champ \'Date de début\' est obligatoire.',
+                'end_date.required'     => 'Le champ \'Date de fin\' est obligatoire.',
+                'end_date.after'       => 'Le champ \'Date de fin\' doit être postérieure au ' . date('d.m.Y', strtotime($request->begin_date . " +6 months")) . "."
+            ]);
         /////////////////////////////////////////////
 
         // Display errors messages, return to the season page
@@ -68,7 +74,6 @@ class SeasonController extends Controller
 
         $season->save();
         /////////////////////////////////////////////
-
 
         return redirect('admin/config/seasons');
     }
@@ -92,7 +97,7 @@ class SeasonController extends Controller
      */
     public function edit($id)
     {
-        //
+        return redirect("/admin/config/seasons");
     }
 
     /**
@@ -115,6 +120,9 @@ class SeasonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $season = Season::findOrFail($id);
+        $season->delete();
+
+        return redirect("/admin/config/seasons");
     }
 }
