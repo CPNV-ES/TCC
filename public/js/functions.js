@@ -28,6 +28,15 @@ $(document).ready(function () {
                 }
                 break;
 
-       }
-   });
+            case "delete-subscription":
+                if (confirm("Etes-vous sûr de vouloir supprimer la cotisation : " + $(this).data("subscription") + " ?")) {
+                    $(".delete").submit();
+                }
+                else {
+                    return false;
+                }
+                break;
+
+        }
+    });
 });
