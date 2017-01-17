@@ -13,7 +13,7 @@
                     <th>#</th>
                     <th>Date de début</th>
                     <th>Date de fin</th>
-                    <th>Options</th>
+                    <th>Option</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,9 +23,6 @@
                         <td>{{date_format(date_create($season->begin_date), "d.m.Y")}}</td>
                         <td>{{date_format(date_create($season->end_date), "d.m.Y")}}</td>
                         <td class="option-zone">
-                            <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/seasons/{{$season->id}}/edit">
-                                <span class="fa fa-edit"></span>
-                            </button>
                             <form class="delete" role="form" method="POST" action="/admin/config/seasons/{{$season->id}}">
                                 {!! csrf_field() !!}
                                 {!! method_field('DELETE') !!}
