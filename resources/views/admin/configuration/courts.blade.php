@@ -41,7 +41,7 @@
                             <form class="delete" role="form" method="POST" action="/admin/config/courts/{{$court->id}}">
                                 {!! csrf_field() !!}
                                 {!! method_field('DELETE') !!}
-                                <button class="btn btn-danger option" data-action="delete" data-court="{{$court->name}}">
+                                <button class="btn btn-danger option" data-action="delete-court" data-court="{{$court->name}}">
                                     <span class="fa fa-trash"></span>
                                 </button>
                             </form>

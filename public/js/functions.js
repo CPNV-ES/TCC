@@ -10,7 +10,7 @@ $(document).ready(function () {
                window.location = $(this).data("url");
                break;
 
-           case "delete":
+           case "delete-court":
                if (confirm("Etes-vous sûr de vouloir supprimer le court : " + $(this).data("court") + " ?")) {
                    $(".delete").submit();
                }
