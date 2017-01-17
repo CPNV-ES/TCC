@@ -15,14 +15,10 @@ class CourtController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $courts = Court::all();
-//        if($request->ajax())
-//        {
-//            $courts = Court::all();
-//            return response()->json($courts);
-//        }
+
         return view('admin/configuration/courts', compact('courts'));
     }
 
@@ -153,34 +149,7 @@ class CourtController extends Controller
         $court->update($request->all());
 
         return redirect('admin/config/courts');
-//        if($request->ajax())
-//        {
-//            $court = Court::find($id);
-//            $field = $request->input('name');
-//            //if for the indoor field which is a boolean
-//            if($request->input('name') == 'indor')
-//            {
-//                if($request->input('value') == '0')
-//                {
-//                    $court->$field = '0';
-//                    $court->save();
-//                    return 'false';
-//                }
-//                else
-//                {
-//                    $court->$field = '1';
-//                    $court->save();
-//                    return 'true';
-//                }
-//            }
-//            else
-//            {
-//                $court->$field = $request->input('value');
-//                $court->save();
-//                return 'true';
-//            }
-//
-//        }
+
     }
 
     /**

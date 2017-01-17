@@ -53,16 +53,7 @@
         </div>
     </div>
 
-
-    @php
-    if (!empty($singleCourt)) {
-        $prefix = 'Editer';
-    }
-    else {
-        $prefix = 'Ajouter';
-    }
-    @endphp
-    <div class="row" align="center"><h3>{{$prefix}} un court</h3></div>
+    <div class="row" align="center"><h3>{{(!empty($singleCourt) ? 'Modifier' : 'Ajouter')}} un court</h3></div>
     <br/>
     <div class="row">
         @php
@@ -80,17 +71,10 @@
             @endif
 
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Nom</label>
-                @php
-                    if (!empty($singleCourt)) {
-                        $name = $singleCourt->name;
-                    }
-                    else{
-                        $name = old('name');
-                    }
-                @endphp
+                <label class="col-md-4 control-label" for="name">Nom</label>
                 <div class="col-md-4">
-                    <input type="text" class="form-control" name="name" value="{{ $name }}">
+                    <input id="name" type="text" class="form-control" name="name"
+                           value="{{ (old('name') != '' ? old('name') : (!empty($singleCourt) ? $singleCourt->name : '')) }}">
 
                     @if ($errors->has('name'))
                         <p class="help-block">{{ $errors->first('name') }}</p>
@@ -99,7 +83,7 @@
             </div>
 
             <div class="form-group{{ $errors->has('indor') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Indor</label>
+                <label class="col-md-4 control-label" for="indor">Indor</label>
                 @php
                     $checked = '';
                     if (!empty($singleCourt)) {
@@ -110,7 +94,8 @@
                 @endphp
                 <div class="col-md-4">
                     <input type="hidden" name="indor" value="0">
-                    <input type="checkbox" class="form-control" name="indor" value="1" {{$checked}}>
+                    <input id="indor" type="checkbox" class="form-control" name="indor"
+                           value="1" {{$checked}}>
                     @if ($errors->has('indor'))
                         <p class="help-block">{{ $errors->first('indor') }}</p>
                     @endif
@@ -118,17 +103,10 @@
             </div>
 
             <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Heure d'ouverture</label>
-                @php
-                    if (!empty($singleCourt)) {
-                        $startTime = date_format(date_create($singleCourt->start_time), "H:i");
-                    }
-                    else{
-                        $startTime = old('start_time');
-                    }
-                @endphp
+                <label class="col-md-4 control-label" for="start_time">Heure d'ouverture</label>
                 <div class="col-md-4">
-                    <input type="time" class="form-control" name="start_time" value="{{ $startTime }}">
+                    <input id="start_time" type="time" class="form-control" name="start_time"
+                           value="{{ (old('start_time') != '' ? old('start_time') : (!empty($singleCourt) ? date_format(date_create($singleCourt->start_time), "H:i") : '')) }}">
                     @if ($errors->has('start_time'))
                         <p class="help-block">{{ $errors->first('start_time') }}</p>
                     @endif
@@ -136,17 +114,10 @@
             </div>
 
             <div class="form-group{{ $errors->has('end_time') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Heure de fermeture</label>
-                @php
-                    if (!empty($singleCourt)) {
-                        $endTime = date_format(date_create($singleCourt->end_time), "H:i");
-                    }
-                    else{
-                        $endTime = old('end_time');
-                    }
-                @endphp
+                <label class="col-md-4 control-label" for="end_time">Heure de fermeture</label>
                 <div class="col-md-4">
-                    <input type="time" class="form-control" name="end_time" value="{{ $endTime }}">
+                    <input id="end_time" type="time" class="form-control" name="end_time"
+                           value="{{ (old('end_time') != '' ? old('end_time') : (!empty($singleCourt) ? date_format(date_create($singleCourt->end_time), "H:i") : '')) }}">
 
                     @if ($errors->has('end_time'))
                         <p class="help-block">{{ $errors->first('end_time') }}</p>
@@ -155,18 +126,10 @@
             </div>
 
             <div class="form-group{{ $errors->has('booking_window_member') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Fenêtre de réservation membre</label>
-                @php
-                    if (!empty($singleCourt)) {
-                        $member = $singleCourt->booking_window_member;
-                    }
-                    else{
-                        $member = old('booking_window_member');
-                    }
-                @endphp
+                <label class="col-md-4 control-label" for="booking_window_member">Fenêtre de réservation membre</label>
                 <div class="col-md-4">
-                    <input type="number" class="form-control" name="booking_window_member"
-                           value="{{ $member }}">
+                    <input id="booking_window_member" type="number" class="form-control" name="booking_window_member"
+                           value="{{ (old('booking_window_member') != '' ? old('booking_window_member') : (!empty($singleCourt) ? $singleCourt->booking_window_member : '')) }}">
 
                     @if ($errors->has('booking_window_member'))
                         <p class="help-block">{{ $errors->first('booking_window_member') }}</p>
@@ -175,18 +138,10 @@
             </div>
 
             <div class="form-group{{ $errors->has('booking_window_not_member') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Fenêtre de réservation non membre</label>
-                @php
-                if (!empty($singleCourt)) {
-                    $nonMember = $singleCourt->booking_window_not_member;
-                }
-                else{
-                    $nonMember = old('booking_window_not_member');
-                }
-                @endphp
+                <label class="col-md-4 control-label" for="booking_window_not_member">Fenêtre de réservation non membre</label>
                 <div class="col-md-4">
-                    <input type="number" class="form-control" name="booking_window_not_member"
-                           value="{{ $nonMember }}">
+                    <input id="booking_window_not_member" type="number" class="form-control" name="booking_window_not_member"
+                           value="{{ (old('booking_window_not_member') != '' ? old('booking_window_not_member') : (!empty($singleCourt) ? $singleCourt->booking_window_not_member : '')) }}">
 
                     @if ($errors->has('booking_window_not_member'))
                         <p class="help-block">{{ $errors->first('booking_window_not_member') }}</p>
