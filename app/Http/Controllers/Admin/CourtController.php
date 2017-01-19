@@ -53,11 +53,15 @@ class CourtController extends Controller
             ['name.required' => 'Le champ \'Nom\' est obligatoire.',
              'name.unique' => 'Le \'Nom\' saisie existe déjà.',
              'start_time.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
+             'start_time.date_format' => 'Le champ \'Heure d\'ouverture\' ne correspond pas au format HH:mm.',
              'end_time.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
+             'end_time.date_format' => 'Le champ \'Heure de fermeture\' ne correspond pas au format HH:mm.',
              'end_time.after' => 'Le champ \'Heure de fermeture\' doit être supérieur à \'Heure d\'ouverture\'.',
              'booking_window_member.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.',
+             'booking_window_member.integer' => 'Le champ \'Fenêtre de reservation membre\' doit contenir des chiffres.',
              'booking_window_member.min' => 'La valeur de \'Fenêtre de reservation membre\' doit être supérieure à 1.',
              'booking_window_not_member.required' => 'Le champ \'Fenêtre de reservation non membre\' est obligatoire.',
+             'booking_window_not_member.integer' => 'Le champ \'Fenêtre de reservation non membre\' doit contenir des chiffres.',
              'booking_window_not_member.min' => 'La valeur de \'Fenêtre de reservation non membre\' doit être supérieure à 1.'
             ]);
         /////////////////////////////////////////////
