@@ -11,7 +11,6 @@
 
     <div class="row">
         <div id="message"></div>
-        {{--<div id="jqxsubscriptions"></div>--}}
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead>
@@ -71,9 +70,9 @@
                     <input id="status" type="text" class="form-control" name="status" value="{{ (old('status') != '' ? old('status') : (!empty($singleSubscription) ? $singleSubscription->status : '')) }}">
 
                     @if ($errors->has('status'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('status') }}</strong>
-                        </span>
+                        <p class="help-block">
+                            {{ $errors->first('status') }}
+                        </p>
                     @endif
                 </div>
             </div>
@@ -84,9 +83,9 @@
                 <div class="col-md-4">
                     <input id="amount" type="number" class="form-control" name="amount" value="{{ (old('amount') != '' ? old('amount') : (!empty($singleSubscription) ? $singleSubscription->amount : '')) }}">
                     @if ($errors->has('amount'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('amount') }}</strong>
-                        </span>
+                        <p class="help-block">
+                            {{ $errors->first('amount') }}
+                        </p>
                     @endif
                 </div>
             </div>
