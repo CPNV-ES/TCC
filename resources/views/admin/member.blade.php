@@ -47,7 +47,7 @@
               <td>{{$member->city}}</td>
               <td>@if($member->active == 1) Oui @else Non @endif</td>
               <td>@if($member->validate == 1) Oui @else Non @endif</td>
-              <td><a class="btn btn-primary" href="/admin/members/{{$member->id}}/edit" >Modifier</a></td>
+              <td><a class="btn btn-primary" href="/admin/members/{{$member->id}}/edit" >Voir info</a></td>
           </tr>
           @endforeach
       </tbody>

@@ -63,7 +63,6 @@ class Member extends Model
     public function UpdateUser($data)
     {
         $this->last_name          = $data['last_name'];
-        $this->login              = $data['username'];;
         $this->first_name         = $data['first_name'];;
         $this->address            = $data['address'];;
         $this->city               = $data['city'];;
@@ -96,7 +95,6 @@ class Member extends Model
     */
     public function UpdateAccount($data)
     {
-
       $this->to_verify = (array_key_exists('to_verify',$data)) ? $data['to_verify'] : '0';
       $this->administrator = (array_key_exists('administrator',$data)) ? $data['administrator'] : '0'; 
       $this->validate = (array_key_exists('validate',$data)) ? $data['validate'] : '0';

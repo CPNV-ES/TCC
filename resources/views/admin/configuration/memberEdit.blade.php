@@ -1,38 +1,35 @@
 @extends('layouts.admin')
 
 @section('title')
-    Modification de l'utilisateur {{$member->first_name}} {{$member->last_name}}
+    Membre : {{$member->first_name}} {{$member->last_name}}
 @endsection
 @section('content')
 <div class="container">
-{{--@if (count($errors) > 0)--}}
-    {{--<div class="alert alert-danger">--}}
-        {{--<ul>--}}
-            {{--@foreach ($errors->all() as $error)--}}
-                {{--<li>{{ $error }}</li>--}}
-            {{--@endforeach--}}
-        {{--</ul>--}}
-    {{--</div>--}}
-{{--@endif--}}
-<!--
-TODO: - demander pour le numero de rue car inexistant actuellement (old db)
-      -(implement client side verification)
+    <div class="row">
+
+        @if (!empty($message))
+
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                {{ $message }}
+            </div>
+        @else
+            {{'NTM'}}
+        @endif
+    </div>
+{{--TODO: - demander pour le numero de rue car inexistant actuellement (old db)--}}
+      {{---(implement client side verification)--}}
 
 
--->
-<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/members/'.$member->id) }}">
+<form id="form-edit-member" class="form-vertical" role="form" method="POST" action="{{ url('/admin/members/'.$member->id) }}">
     {{ csrf_field() }}
     {{ method_field('PUT') }}
 
     <div class="form-group row">
-        <label for="example-text-input" class="col-2 col-form-label">Pseudonyme*</label>
         <div class="col-10">
-            <input class="form-control" name="username" type="text" value="{{$member->login}}" >
-            @if ($errors->has('username'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('username') }}</strong>
-                </span>
-            @endif
+            <h4>Pseudo: {{$member->login}}</h4>
+
         </div>
     </div>
 
@@ -100,13 +97,14 @@ TODO: - demander pour le numero de rue car inexistant actuellement (old db)
 
     <div class="form-group row @if($errors->has('city')) {{'has-error'}} @endif">
         <label for="example-text-input" name="lbl_city "class="col-2 col-form-label">Localité*</label>
-        <div class="col-10">
-            <input class="form-control" name="city" type="text" value="{{$member->city}}" >
-            @if ($errors->has('city'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('city') }}</strong>
-                </span>
-            @endif
+        <div class="col-10" >
+            <select class="form-control" name="city">
+                @foreach($localities as $locality)
+
+                <option value="{{$locality}}" @if($locality == $member->city) selected @endif > {{$locality}} </option>
+
+                @endforeach
+            </select>
         </div>
     </div>
     <div class="form-group row @if($errors->has('mobile_phone')) {{'has-error'}} @endif">
@@ -161,10 +159,13 @@ TODO: - demander pour le numero de rue car inexistant actuellement (old db)
 
     </div>
     <div class="form-group row">
-        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
+        <button id="btn-member-edit"  class="btn btn-primary" type="button">Déverouiller</button>
+        <button id="btn-member-save" type="submit"  class="btn btn-primary">Sauvegarder</button>
     </div>
 </form>
 </div>
+{!! Html::script('/js/editMember.js') !!}
 @endsection
 <!--
 CHAMPS POSSIBLE

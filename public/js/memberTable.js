@@ -67,5 +67,6 @@ $(document).ready(function(){
 // display user details when we click on a row
 $("#members-table tbody tr").on("click", function(event){
    var id = table.row(this).data()[0];
-   window.location.replace('/admin/members/'+id);
+   window.location.replace('/admin/members/'+id+'/edit');
  });
+

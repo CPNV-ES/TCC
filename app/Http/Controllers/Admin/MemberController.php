@@ -110,7 +110,8 @@ class MemberController extends Controller
             return response()->json($members);
         }
         $member = Member::find($id);
-        return view('admin/configuration/memberEdit',compact('member'));
+        $localities = ['Provence','Ste-Croix','Rochelles','Yverdon'];
+        return view('admin/configuration/memberEdit',compact('member','localities'));
 
     }
 
@@ -176,7 +177,6 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(),
             [
 //                'login'.$id     => 'required',
-                'username' => 'required',
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'address' => 'required',
@@ -188,7 +188,7 @@ class MemberController extends Controller
             ],
 //            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
             [
-                'username.required' => 'Le champ login est obligatoire',
+
                 'home_phone.required' => 'Le champ téléphone fixe doit être renseigné',
                 'home_mobile.required' => 'Le champ téléphone portable doit être renseigné',
                 'address.required' => 'Le champ adresse doit être renseigné',
@@ -233,31 +233,12 @@ class MemberController extends Controller
         //-----------------------------------------------------
 
         $member->UpdateUser($request->all());
-        Log::debug('pouet pouet cacahouet');
         $member->UpdateAccount($request->all());
         $member->save();
         /////////////////////////////////////////////
-        $emailMember = $member->email;
-
-        if($flagUsernameChange)
-        {
-          // Send email to the user to choose password
-          //-------------------------------------------------
-          Mail::send('emails.user.username', ['last_name'  => $member->last_name,
-                                              'first_name' => $member->first_name,
-                                              'login'      => $member->login,
-                                              'token'      => $member->token],
-          function ($message) use($emailMember)
-          {
-              $message->to($emailMember)->subject('Votre nom d\'utilisateur pour le site du tennis club de Chavornay a été changé');
-          });
-        }
-
 
         /////////////////////////////////////////////
-
-
-        return redirect('admin/members')->with('message', 'L\' uilisateur a été modifié avec succès');
+        return redirect('admin/members/'.$member->id.'/edit')->with('message', 'L\' uilisateur a été modifié avec succès');
 
     }
     /*
