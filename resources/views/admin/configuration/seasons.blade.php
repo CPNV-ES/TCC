@@ -51,9 +51,9 @@
                     <input type="date" class="form-control" name="begin_date" value="{{ (old('begin_date') != '' ? old('begin_date') : (!empty($newSeasonStart) ? $newSeasonStart : '')) }}">
 
                     @if ($errors->has('begin_date'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('begin_date') }}</strong>
-                        </span>
+                        <p class="help-block">
+                            {{ $errors->first('begin_date') }}
+                        </p>
                     @endif
                 </div>
             </div>
@@ -65,9 +65,9 @@
                     <input type="date" class="form-control" name="end_date" value="{{ (old('end_date') != '' ? old('end_date') : (!empty($newSeasonEnd) ? $newSeasonEnd : '')) }}">
 
                     @if ($errors->has('end_date'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('end_date') }}</strong>
-                        </span>
+                        <p class="help-block">
+                            {{ $errors->first('end_date') }}
+                        </p>
                     @endif
                 </div>
             </div>

@@ -55,7 +55,9 @@ class SeasonController extends Controller
             ],
             [
                 'begin_date.required'   => 'Le champ \'Date de début\' est obligatoire.',
+                'begin_date.date'   => 'Le champ \'Date de début\' n\'est pas une date valide.',
                 'end_date.required'     => 'Le champ \'Date de fin\' est obligatoire.',
+                'end_date.date'     => 'Le champ \'Date de fin\' n\'est pas une date valide.',
                 'end_date.after'       => 'Le champ \'Date de fin\' doit être postérieure au ' . date('d.m.Y', strtotime($request->begin_date . " +6 months")) . "."
             ]);
         /////////////////////////////////////////////
