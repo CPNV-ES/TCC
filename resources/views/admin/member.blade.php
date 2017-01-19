@@ -15,6 +15,7 @@
       <table id="members-table" class="display" width="100%" cellspacing="0">
         <thead>
             <tr>
+              <th>id</th>
                 <th>Pseudonyme</th>
                 <th>Nom</th>
                 <th>Prénom</th>
@@ -26,7 +27,8 @@
         </thead>
         <tfoot>
             <tr>
-              <th> Pseudonyme</th>
+              <th>id</th>
+              <th>Pseudonyme</th>
               <th>Nom</th>
               <th>Prénom</th>
               <th>Ville</th>
@@ -38,6 +40,7 @@
       <tbody>
           @foreach($members as $member)
           <tr>
+              <td>{{$member->id}}</td>
               <td>{{$member->login}}</td>
               <td>{{$member->last_name}}</td>
               <td>{{$member->first_name}}</td>

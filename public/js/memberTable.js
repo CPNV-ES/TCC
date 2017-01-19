@@ -1,6 +1,12 @@
+/*
+Author : DataTable Crew
+Modified by : I.Goujgali
+last modification: 18.01.2017
+Description: This code is used to initalised an make reseach in the member table
+*/
+
 //TODO: - enlever flèche
-//      - bouton option
-//      - enlever sort sur bouton column
+
 $(document).ready(function(){
   //This table contain the column to filter with a checkbox
   var chkBoxList = ['Actif','Validé'];
@@ -24,7 +30,21 @@ $(document).ready(function(){
 
  } );
 
- var table = $('#members-table').DataTable();
+ table = $('#members-table').DataTable({
+    //Column configuration
+    "columnDefs": [
+    {
+        "targets": [ 0 ],
+        "visible": false,
+        "searchable":false
+    },
+    {
+        "targets": [ 7 ],
+        "searchable": false
+    }
+    ]
+
+ });
 
  // Apply the search
  table.columns().every( function () {
@@ -39,6 +59,13 @@ $(document).ready(function(){
          }
      });
  } );
+
  // put the filters at the top of the table.
  $('#members-table tfoot tr').appendTo('#members-table thead');
 });
+
+// display user details when we click on a row
+$("#members-table tbody tr").on("click", function(event){
+   var id = table.row(this).data()[0];
+   window.location.replace('/admin/members/'+id);
+ });

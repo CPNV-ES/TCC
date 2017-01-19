@@ -15,6 +15,8 @@ use Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+//to debug, could be delete
+use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
@@ -90,7 +92,8 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-
+      $member = Member::find($id);
+      return view('admin/configuration/memberShow',compact('member'));
     }
 
     /**
@@ -107,7 +110,7 @@ class MemberController extends Controller
             return response()->json($members);
         }
         $member = Member::find($id);
-        return view('admin/configuration/user',compact('member'));
+        return view('admin/configuration/memberEdit',compact('member'));
 
     }
 
@@ -129,9 +132,9 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-      //TODO: - check if we use the UpdateUser or do it the hard way
+      //TODO:
       //      - check valitator what is really need
-      //      - 
+      //      -
       //
       if($request->ajax){
           $member = Member::find($id);
@@ -177,7 +180,7 @@ class MemberController extends Controller
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'address' => 'required',
-                'zip_code' => 'required',
+                'zip_code' => 'required|integer|digits:4',
                 'home_phone' => 'required',
                 'mobile_phone' => 'required',
                 'email' => 'required|email',
@@ -203,18 +206,19 @@ class MemberController extends Controller
         {
             //previous request
             //$duplicate = Member::where('login', $request->input('login'.$id))->count();
-            //This request doesn't count the records that correspond to the actual user this way you can change your own name
 
+            //This request doesn't count the records that correspond to the actual user.
             $duplicate = Member::where([['login','=',$request->input('username')],
                                         ['id','<>', $id]])->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('username', 'Ce login est déjà utilisé.');
             }
+
         });
         /////////////////////////////////////////////
 
-        // Display errors messages, return to register page
+        // Display errors messages, return to update page
         //-------------------------------------------------
         if($validator->fails())
         {
@@ -222,38 +226,45 @@ class MemberController extends Controller
         }
 
         /////////////////////////////////////////////
-
+        $member = Member::find($id);
+        $flagUsernameChange = false;
+        if($member->login != $request->input('username')) $flagUsernameChange = true;
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
-        dd($request->input('active'));
-        $member = Member::find($id);
+
         $member->UpdateUser($request->all());
-        $member->last_name = $request->input('last_name');
+        Log::debug('pouet pouet cacahouet');
+        $member->UpdateAccount($request->all());
         $member->save();
         /////////////////////////////////////////////
         $emailMember = $member->email;
 
-        // Send email to the user to choose password
-        //-------------------------------------------------
-        Mail::send('emails.user.password', ['last_name'  => $member->last_name,
-                                            'first_name' => $member->first_name,
-                                            'login'      => $member->login,
-                                            'token'      => $member->token],
-        function ($message) use($emailMember)
+        if($flagUsernameChange)
         {
-            $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
-        });
+          // Send email to the user to choose password
+          //-------------------------------------------------
+          Mail::send('emails.user.username', ['last_name'  => $member->last_name,
+                                              'first_name' => $member->first_name,
+                                              'login'      => $member->login,
+                                              'token'      => $member->token],
+          function ($message) use($emailMember)
+          {
+              $message->to($emailMember)->subject('Votre nom d\'utilisateur pour le site du tennis club de Chavornay a été changé');
+          });
+        }
+
+
         /////////////////////////////////////////////
 
 
-        return redirect('admin')->with('message', 'Le login a été créer avec succès');
+        return redirect('admin/members')->with('message', 'L\' uilisateur a été modifié avec succès');
 
     }
-    /**
+    /*
      * Update the login of a specific members
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $
+     * @param  int  $id member id
      * @return \Illuminate\Http\Response
      */
     public function updateLogin(Request $request, $id)
@@ -296,7 +307,6 @@ class MemberController extends Controller
         $member = Member::find($id);
 
         $member->UpdateLogin($request->input('login'.$id));
-
 
         $member->save();
 
