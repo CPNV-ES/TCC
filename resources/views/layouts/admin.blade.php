@@ -133,8 +133,7 @@
 {!! Html::script('/js/jqwidget/globalize.js') !!}
 {!! Html::script('/js/jqwidget/localization.js') !!}
 -->
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
-{!! Html::script('/js/MemberTable.js') !!}
+
 <!--
 {!! Html::script('/ajax/members.js') !!}
 {!! Html::script('/ajax/courts.js') !!}

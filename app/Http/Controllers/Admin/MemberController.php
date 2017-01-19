@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 //to debug, could be delete
 use Illuminate\Support\Facades\Log;
+//use Session;
 
 class MemberController extends Controller
 {
@@ -177,25 +178,17 @@ class MemberController extends Controller
         $validator = Validator::make($request->all(),
             [
 //                'login'.$id     => 'required',
-                'first_name' => 'required',
-                'last_name' => 'required',
-                'address' => 'required',
+                'first_name' => 'required|max:255',
+                'last_name' => 'required|max:255',
+                'address' => 'required|max:255',
                 'zip_code' => 'required|integer|digits:4',
-                'home_phone' => 'required',
-                'mobile_phone' => 'required',
-                'email' => 'required|email',
-                'city' => 'required',
-            ],
+                'home_phone' => 'required|digits:10',
+                'mobile_phone' => 'required|digits:10',
+                'email' => 'required|email|max:255',
+                'city' => 'required|max:255',
+            ]
 //            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
-            [
-
-                'home_phone.required' => 'Le champ téléphone fixe doit être renseigné',
-                'home_mobile.required' => 'Le champ téléphone portable doit être renseigné',
-                'address.required' => 'Le champ adresse doit être renseigné',
-                'zip_code.required' => 'Le champ NPA doit être renseigné',
-                'city.required' => 'Le champ localité doit être renseigné',
-
-            ]);
+            );
 
         /////////////////////////////////////////////
 
@@ -235,11 +228,9 @@ class MemberController extends Controller
         $member->UpdateUser($request->all());
         $member->UpdateAccount($request->all());
         $member->save();
-        /////////////////////////////////////////////
 
-        /////////////////////////////////////////////
-        return redirect('admin/members/'.$member->id.'/edit')->with('message', 'L\' uilisateur a été modifié avec succès');
-
+        Session::flash('message', "Les modifications ont bien été apportées");
+        return redirect('admin/members/'.$member->id.'/edit');
     }
     /*
      * Update the login of a specific members

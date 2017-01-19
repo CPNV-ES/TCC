@@ -1,3 +1,9 @@
+<!-- Author: ...
+Modified by : I.Goujgali
+Last Modif.: 20.01.17
+Description : Displays a table of the members implements with Datatable https://datatables.net/.
+              to view/edit a member click on 'Voir info' or simply on the row
+-->
 @extends('layouts.admin')
 
 @section('title')
@@ -52,5 +58,6 @@
           @endforeach
       </tbody>
       </table>
-
+      <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
+      {!! Html::script('/js/MemberTable.js') !!}
 @endsection
