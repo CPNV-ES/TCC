@@ -6,8 +6,23 @@
 
 @section('content')
     <div class="row">
+
+        {{-- SFH: Added to informe the user if an action was successful or not --}}
+        <div class="flash-message">
+            @foreach (['danger', 'warning', 'success', 'info'] as $message)
+                @if(Session::has('alert-' . $message))
+                    <p class="alert alert-{{ $message }} fade in">
+                        {{ Session::get('alert-' . $message) }}
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    </p>
+                @endif
+            @endforeach
+        </div>
+        {{-- End --}}
+
+        {{-- SFH: Added simple display table for the seasons --}}
         <div class="table-responsive">
-            <table class="table table-hover table-striped">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -22,7 +37,9 @@
                         <td>{{$season->id}}</td>
                         <td>{{date_format(date_create($season->begin_date), "d.m.Y")}}</td>
                         <td>{{date_format(date_create($season->end_date), "d.m.Y")}}</td>
+                        {{-- SFH: This zone is used for the 'delete' buttons --}}
                         <td class="option-zone">
+                            {{-- SFH: Only methode found to call the 'destroy' methode in the controler. Trying to find a better way. --}}
                             <form class="delete" role="form" method="POST" action="/admin/config/seasons/{{$season->id}}">
                                 {!! csrf_field() !!}
                                 {!! method_field('DELETE') !!}
@@ -36,12 +53,19 @@
                 </tbody>
             </table>
         </div>
+        {{-- End --}}
     </div>
-    <br/>
-    <div class="row">
+
+    <div class="row" align="center">
+        <h3>Ajouter une saison</h3>
     </div>
-    <div class="row" align="center"><h3>Ajouter une saison</h3></div>
-    <br/>
+
+    {{--
+        SFH: Added the conditions in the 'value' fields.
+        1) If the was an old value display it.
+        2) If in edit mode display the data from the database.
+        3) Display nothing.
+    --}}
     <div class="row">
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/config/seasons') }}">
             {!! csrf_field() !!}
@@ -51,7 +75,9 @@
 
                 <div class="col-md-4">
 
-                    <input type="date" class="form-control" name="begin_date" value="{{ (old('begin_date') != '' ? old('begin_date') : (!empty($newSeasonStart) ? $newSeasonStart : '')) }}">
+                    <input type="date" class="form-control" name="begin_date"
+                           value="{{ (old('begin_date') != '' ? old('begin_date') : (!empty($newSeasonStart) ? $newSeasonStart : '')) }}">
+
                     @if ($errors->has('begin_date'))
                         <p class="help-block">
                             {{ $errors->first('begin_date') }}
@@ -64,7 +90,8 @@
                 <label class="col-md-6 control-label">Date de fin (format jj.mm.aaaa)*</label>
 
                 <div class="col-md-4">
-                    <input type="date" class="form-control" name="end_date" value="{{ (old('end_date') != '' ? old('end_date') : (!empty($newSeasonEnd) ? $newSeasonEnd : '')) }}">
+                    <input type="date" class="form-control" name="end_date"
+                           value="{{ (old('end_date') != '' ? old('end_date') : (!empty($newSeasonEnd) ? $newSeasonEnd : '')) }}">
 
                     @if ($errors->has('end_date'))
                         <p class="help-block">
