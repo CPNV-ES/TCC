@@ -33,6 +33,10 @@
 
         {!! Html::script('/ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
+        {!! Html::script('/js/verif.js') !!}
+
+
+
         <script>
             is_logged = "{{ Auth::check() }}";
             @if (Auth::check())
@@ -122,7 +126,6 @@
         @yield('content')
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/localization.js') !!}
-        {!! Html::script('/js/verif.js') !!}
 
 
     </body>
