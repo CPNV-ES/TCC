@@ -10,7 +10,7 @@ $(document).ready(function () {
                window.location = $(this).data("url");
                break;
 
-           case "delete":
+           case "delete-court":
                if (confirm("Etes-vous sûr de vouloir supprimer le court : " + $(this).data("court") + " ?")) {
                    $(".delete").submit();
                }
@@ -19,6 +19,24 @@ $(document).ready(function () {
                }
                break;
 
-       }
-   });
+            case "delete-season":
+                if (confirm("Etes-vous sûr de vouloir supprimer la saison : " + $(this).data("season") + " ?")) {
+                    $(".delete").submit();
+                }
+                else {
+                    return false;
+                }
+                break;
+
+            case "delete-subscription":
+                if (confirm("Etes-vous sûr de vouloir supprimer la cotisation : " + $(this).data("subscription") + " ?")) {
+                    $(".delete").submit();
+                }
+                else {
+                    return false;
+                }
+                break;
+
+        }
+    });
 });

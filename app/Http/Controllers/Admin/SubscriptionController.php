@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Subscription;
-use App\Http\Requests;
 use Validator;
 
-class SubscriptionController extends Controller
-{
+class SubscriptionController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        if ($request->ajax())
-        {
-            $subscriptions = Subscription::all();
-            return response()->json($subscriptions);
-        }
-        return view('/admin/configuration/subscriptions');
+    public function index() {
+        // SFH: Call function to get all subscriptions
+        $subscriptions = $this->getSubscriptions();
+
+        // SFH: Added compact for the subscriptions
+        return view('/admin/configuration/subscriptions', compact('subscriptions'));
     }
 
     /**
@@ -30,8 +27,7 @@ class SubscriptionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -41,22 +37,31 @@ class SubscriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         // Check form
         //-----------
+        // SFH: Added 'max', 'unique', 'min' validators for the check of a subscription
+        //      also added a better french version of the error messages (max, unique, min)
         $validator = Validator::make($request->all(),
             [
-                'status'    => 'required',
-                'amount'    => 'required|numeric'
+                'status'    => 'required|max:50|unique:subscriptions,status',
+                'amount'    => 'numeric|min:0'
             ],
-            ['status.required' => 'Le champ \'Type\' est obligatoire.', 'amount.required' => 'Le champ \'Montant\' est obligatoire.']);
+            [
+                'status.required' => 'Le champ \'Type\' est obligatoire.',
+                'status.max' => 'Le texte de \'Type\' ne peut contenir plus de 50 caractères.',
+                'status.unique' => 'La valeur du champ \'Type\' status est déjà utilisée.',
+                'amount.numeric' => 'Le champ \'Montant\' doit contenir un nombre.',
+                'amount.min' => 'La valeur du champ \'Montant\' doit être positif ou nul.'
+            ]);
         /////////////////////////////////////////////
 
-        // Display errors messages, return to the season page
+        // Display errors messages, return to the subscription page
         //-------------------------------------------------
-        if($validator->fails())
-        {
+        if($validator->fails()) {
+            // SFH: Return an error message to be displayed
+            $request->session()->flash('alert-danger', 'Veuillez vérifier les informations saisies!');
+
             return back()->withInput()->withErrors($validator);
         }
         /////////////////////////////////////////////
@@ -64,9 +69,11 @@ class SubscriptionController extends Controller
         // Insert the subscription
         //-----------------------------------------------------
         $subscription = Subscription::create($request->all());
-
         $subscription->save();
         /////////////////////////////////////////////
+
+        // SFH: Return a success message to be displayed
+        $request->session()->flash('alert-success', 'La cotisation a été ajoutée avec succès!');
 
         return redirect('admin/config/subscriptions');
     }
@@ -77,8 +84,7 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -88,9 +94,13 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        // SFH: Added the edit function
+        $subscriptions = $this->getSubscriptions();
+        $singleSubscription = Subscription::findOrFail($id);
+
+        return view("/admin/configuration/subscriptions", compact('subscriptions', 'singleSubscription'));
+        // End
     }
 
     /**
@@ -100,26 +110,96 @@ class SubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        if ($request->ajax())
-        {
-            $subscriptions = Subscription::find($id);
-            $field = $request->input('name');
-            $subscriptions->$field = $request->input('value');
-            $subscriptions->save();
-            return 'true';
+    public function update(Request $request, $id) {
+        // Check form
+        //-----------
+        // SFH: Added 'max', 'unique', 'min' validators for the check of a subscription
+        //      also added a better french version of the error messages (max, unique, min)
+        $validator = Validator::make($request->all(),
+            [
+                'status'    => 'required|max:50|unique:subscriptions,status,' . $id,
+                'amount'    => 'numeric|min:0'
+            ],
+            [
+                'status.required' => 'Le champ \'Type\' est obligatoire.',
+                'status.max' => 'Le texte de \'Type\' ne peut contenir plus de 50 caractères.',
+                'status.unique' => 'La valeur du champ \'Type\' status est déjà utilisée.',
+                'amount.numeric' => 'Le champ \'Montant\' doit contenir un nombre.',
+                'amount.min' => 'La valeur du champ \'Montant\' doit être positif ou nul.'
+            ]);
+        /////////////////////////////////////////////
+
+        // Display errors messages, return to the subscription page
+        //-------------------------------------------------
+        if($validator->fails()) {
+            // SFH: Return an error message to be displayed
+            $request->session()->flash('alert-danger', 'Veuillez vérifier les informations saisies!');
+
+            return back()->withInput()->withErrors($validator);
         }
+        /////////////////////////////////////////////
+
+        // Update the subscription
+        //-----------------------------------------------------
+        $subscription = Subscription::findOrFail($id);
+        $subscription->update($request->all());
+        /////////////////////////////////////////////
+
+        // SFH: Return a success message to be displayed
+        $request->session()->flash('alert-success', 'La cotisation a été modifiée avec succès!');
+
+        return redirect('admin/config/subscriptions');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Request $request, $id) {
+        // SFH: Added the delete function
+        $subscription = Subscription::findOrFail($id);
+        $subscription->delete();
+
+        // SFH: Return a success message to be displayed
+        $request->session()->flash('alert-success', 'La cotisation a été supprimée avec succès!');
+
+        return redirect("/admin/config/subscriptions");
+        // End
     }
+
+    /**
+     *  Get all the subscriptions from the database.
+     *  Adds a column to see if the subscription has been assigned to a user.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     *
+     * @author Struan Forsyth
+     */
+    private function getSubscriptions() {
+
+        // SFH: Ordered them alphabetically
+        $subscriptions = Subscription::orderby('status', 'asc')->get();
+        $payedSubscriptions = Subscription_per_member::all();
+
+        for ($i = 0; $i < sizeof($subscriptions); $i++) {
+
+            $hasMember = false;
+
+            // SFH: This needs to be optimised. Laravel probably was a better way to manage this
+            foreach ($payedSubscriptions as $payedSubscription) {
+                if ($payedSubscription->fk_subscription == $subscriptions[$i]->id) {
+                    $hasMember = true;
+                }
+            }
+
+            $subscriptions[$i]['hasMember'] = $hasMember;
+
+        }
+
+        return $subscriptions;
+    }
+
 }

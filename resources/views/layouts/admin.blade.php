@@ -95,7 +95,7 @@
                                 <a href="{{ url('/admin/config/seasons') }}">Saisons</a>
                             </li>
                             <li>
-                                <a href="{{ url('/admin/config/subscriptions') }}">Cotisations & Status</a>
+                                <a href="{{ url('/admin/config/subscriptions') }}">Cotisations</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
