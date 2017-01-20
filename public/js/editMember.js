@@ -12,7 +12,7 @@ $("#btn-member-edit").on('click',function(){
     if(lockedForm)
     {
         $("#btn-member-save").show();
-        $("#btn-member-edit").html('Vérouiller');
+        $("#btn-member-edit").html('Verrouiller');
         $("#form-edit-member :input").each(function(){
             if($(this).prev().prop('type') != 'button')$(this).prop('disabled', false);
         });
@@ -22,7 +22,7 @@ $("#btn-member-edit").on('click',function(){
     else
     {
         $("#btn-member-save").hide();
-        $("#btn-member-edit").html('Dévérouiller');
+        $("#btn-member-edit").html('Déverrouiller');
         $("#form-edit-member :input").each(function(){
             if($(this).prev().prop('type') != 'button') $(this).prop('disabled', true);
         });

@@ -177,12 +177,11 @@ class MemberController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-//                'login'.$id     => 'required',
                 'first_name' => 'required|max:255',
                 'last_name' => 'required|max:255',
                 'address' => 'required|max:255',
                 'zip_code' => 'required|integer|digits:4',
-                'home_phone' => 'required|digits:10',
+                'home_phone' => 'required|integer|digits:10',
                 'mobile_phone' => 'required|digits:10',
                 'email' => 'required|email|max:255',
                 'city' => 'required|max:255',
@@ -229,7 +228,7 @@ class MemberController extends Controller
         $member->UpdateAccount($request->all());
         $member->save();
 
-        Session::flash('message', "Les modifications ont bien été apportées");
+        Session::flash('message', "Les modifications ont bien été enregistrées");
         return redirect('admin/members/'.$member->id.'/edit');
     }
     /*

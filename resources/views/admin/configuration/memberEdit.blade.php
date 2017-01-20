@@ -12,14 +12,11 @@ Description: Displays a form with the informations of a member. The inputs of th
     Membre : {{$member->first_name}} {{$member->last_name}}
 @endsection
 @section('content')
-<div class="container">
     <div class="row">
       @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
       @endif
     </div>
-<!--TODO: -(implement client side verification)-->
-
 
     <form id="form-edit-member" class="form-vertical" role="form" method="POST" action="{{ url('/admin/members/'.$member->id) }}">
         {{ csrf_field() }}
@@ -78,12 +75,14 @@ Description: Displays a form with the informations of a member. The inputs of th
         </div>
         <!-- ********************************************** -->
         <!-- Doesn't exist in the actual database -->
+
         <!--<div class="form-group row">-->
             <!--<label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue</label>-->
             <!--<div class="col-10">-->
                 <!--<input class="form-control" name="address" type="text" value="{{$member->address}}" >-->
             <!--</div>-->
         <!--</div>-->
+
         <!-- ********************************************** -->
         <div class="form-group row @if($errors->has('zip_code')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_zip_code" class="col-2 col-form-label">NPA*</label>
@@ -160,10 +159,9 @@ Description: Displays a form with the informations of a member. The inputs of th
         </div>
         <div class="form-group row">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
-            <button id="btn-member-edit"  class="btn btn-primary" type="button">Déverouiller</button>
+            <button id="btn-member-edit"  class="btn btn-primary" type="button">Déverrouiller</button>
             <button id="btn-member-save" type="submit"  class="btn btn-primary">Sauvegarder</button>
         </div>
     </form>
-</div>
 {!! Html::script('/js/editMember.js') !!}
 @endsection

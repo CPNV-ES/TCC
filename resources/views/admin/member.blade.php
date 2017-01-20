@@ -18,7 +18,7 @@ Description : Displays a table of the members implements with Datatable https://
     </div>-->
 
 
-      <table id="members-table" class="display" width="100%" cellspacing="0">
+      <table id="members-table" class="display table" width="100%" cellspacing="0">
         <thead>
             <tr>
               <th>id</th>
@@ -58,6 +58,6 @@ Description : Displays a table of the members implements with Datatable https://
           @endforeach
       </tbody>
       </table>
-      <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.js"></script>
-      {!! Html::script('/js/MemberTable.js') !!}
+      {!! Html::script('/js/datatables/dataTables.min.js') !!}
+      {!! Html::script('/js/datatables/MemberTable.js') !!}
 @endsection

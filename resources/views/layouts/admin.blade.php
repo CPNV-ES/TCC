@@ -15,6 +15,7 @@
 
     {!! Html::style('/css/sb-admin-2.css')!!}
     {!! Html::style('/css/timeline.css')!!}
+    {!! Html::style('/css/datatables.css')!!}
 
     <!--{!! Html::style('/css/jqx.base.css')!!}
     {!! Html::style('/css/jqx.bootstrap.css')!!}-->
@@ -34,7 +35,7 @@
 
     {!! Html::script('/js/jqwidget/jqx-all.js') !!}
 -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/datatables.min.css"/>
+
 
 </head>
 <body>
