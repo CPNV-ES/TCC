@@ -1,7 +1,6 @@
 const VERIF={
   init:()=>{
     let elems=document.querySelectorAll('[data-verif]');
-    console.log(elems);
     elems.forEach((item)=>{
       item.addEventListener('blur', (ev)=>{
         VERIF.verif(item);
@@ -49,10 +48,10 @@ const VERIF={
   },
   verifGroup:(groupId)=>{
     let isOk=true;
-    let elems=document.querySelectorAll('[data-verif-group="{0}"] [data-verif]'
+    let elems=document.querySelectorAll('[data-verif-group="{0}"][data-verif]'
                                         .replace(/\{0\}/,groupId));
-    for(let item in elems){
-      if(!VERIF.verif(item)) isOk=false;
+    for(let i=0;i<elems.length;i++){
+      if(!VERIF.verif(elems[i])) isOk=false;
     }
 
     return isOk;
