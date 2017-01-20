@@ -95,8 +95,9 @@ class Member extends Model
     */
     public function UpdateAccount($data)
     {
+      // IGI- update account parameters
       $this->to_verify = (array_key_exists('to_verify',$data)) ? $data['to_verify'] : '0';
-      $this->administrator = (array_key_exists('administrator',$data)) ? $data['administrator'] : '0'; 
+      $this->administrator = (array_key_exists('administrator',$data)) ? $data['administrator'] : '0';
       $this->validate = (array_key_exists('validate',$data)) ? $data['validate'] : '0';
       $this->active = (array_key_exists('active',$data)) ? $data['active'] : '0';
     }

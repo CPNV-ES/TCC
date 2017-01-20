@@ -134,10 +134,6 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-      //TODO:
-      //      - check valitator what is really need
-      //      -
-      //
       if($request->ajax){
           $member = Member::find($id);
           $field = $request->input('name');
@@ -175,19 +171,18 @@ class MemberController extends Controller
       }
         // Check form
         //-----------
+        //IGI - added needed rules
         $validator = Validator::make($request->all(),
             [
-                'first_name' => 'required|max:255',
-                'last_name' => 'required|max:255',
-                'address' => 'required|max:255',
+                'first_name' => 'required|max:50',
+                'last_name' => 'required|max:50',
+                'address' => 'required|max:100',
                 'zip_code' => 'required|integer|digits:4',
-                'home_phone' => 'required|integer|digits:10',
+                'home_phone' => 'required|digits:10',
                 'mobile_phone' => 'required|digits:10',
-                'email' => 'required|email|max:255',
-                'city' => 'required|max:255',
-            ]
-//            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
-            );
+                'email' => 'required|email|max:100',
+                'city' => 'required|max:100',
+            ]);
 
         /////////////////////////////////////////////
 
@@ -196,17 +191,13 @@ class MemberController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request, $id)
         {
-            //previous request
-            //$duplicate = Member::where('login', $request->input('login'.$id))->count();
-
-            //This request doesn't count the records that correspond to the actual user.
-            $duplicate = Member::where([['login','=',$request->input('username')],
+            //IGI - check if the email is already used by another members
+            $duplicate = Member::where([['email','=',$request->input('email')],
                                         ['id','<>', $id]])->count();
             if(!empty($duplicate))
             {
-                $validator->errors()->add('username', 'Ce login est déjà utilisé.');
+                $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
             }
-
         });
         /////////////////////////////////////////////
 
@@ -219,15 +210,14 @@ class MemberController extends Controller
 
         /////////////////////////////////////////////
         $member = Member::find($id);
-        $flagUsernameChange = false;
-        if($member->login != $request->input('username')) $flagUsernameChange = true;
-        // Insert the login, status, token and validate account
-        //-----------------------------------------------------
 
+        //IGI- Update member info and member account parameters and save it
+        //-----------------------------------------------------
         $member->UpdateUser($request->all());
         $member->UpdateAccount($request->all());
         $member->save();
 
+        //IGI - flash message and come back to the edit member page
         Session::flash('message', "Les modifications ont bien été enregistrées");
         return redirect('admin/members/'.$member->id.'/edit');
     }

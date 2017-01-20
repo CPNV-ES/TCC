@@ -6,15 +6,18 @@ Description: This code is used to initalised an make reseach in the member table
 */
 
 $(document).ready(function(){
-  //This table contain the column to filter with a checkbox
-  var chkBoxList = ['Actif','Validé'];
+  //IGI - This table contains the columns to filter with a dropdown list
+  var arrayDropDown = ['Actif','Validé'];
+  //IGI - This table contains the columns which don't need filter input
   var exclude = [''];
 
 
-  // Setup - add a text input or dropdownlist to each footer cell
+  // add a text input or dropdownlist to each footer cell
  $('#members-table tfoot th').each( function () {
      var title = $(this).text();
-     if(chkBoxList.indexOf(title) != -1)
+     //IGI- We check if title exists in one of tables arrayDropDown or exclude. if it exists in arrayDropDown we put a dropdown list if it exits in exclude we display the title
+     //otherwise we display a simple input text
+     if(arrayDropDown.indexOf(title) != -1)
      {
        $(this).html('<select class="form-control"><option value="" selected>All</option><option value="Oui">Yes</option><option value="Non">No</option></select>');
      }
@@ -29,6 +32,7 @@ $(document).ready(function(){
  } );
 
  table = $('#members-table').DataTable({
+
      //https://datatables.net/plug-ins/i18n/French
      "language":
      {
@@ -53,17 +57,17 @@ $(document).ready(function(){
                  "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
              }
      },
-    //Columns configuration
+    //IGI - Columns configuration - we don't display the id column and we don't search in the the columns id and action( button Voir info)
     "columnDefs": [
-    {
-        "targets": [ 0 ],
-        "visible": false,
-        "searchable":false
-    },
-    {
-        "targets": [ 7 ],
-        "searchable": false
-    }
+        {
+            "targets": [ 0 ],
+            "visible": false,
+            "searchable":false
+        },
+        {
+            "targets": [ 7 ],
+            "searchable": false
+        }
     ]
 
  });
@@ -86,7 +90,7 @@ $(document).ready(function(){
  $('#members-table tfoot tr').appendTo('#members-table thead');
 });
 
-// display user details when we click on a row
+// IGI - when we clicked on a row we display the edit form of the members
 $("#members-table tbody tr").on("click", function(event){
    var id = table.row(this).data()[0];
    window.location.replace('/admin/members/'+id+'/edit');

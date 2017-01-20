@@ -17,7 +17,7 @@ Description : Displays a table of the members implements with Datatable https://
         </div>
     </div>-->
 
-
+{{--IGI - display the table of members--}}
       <table id="members-table" class="display table" width="100%" cellspacing="0">
         <thead>
             <tr>
@@ -60,4 +60,5 @@ Description : Displays a table of the members implements with Datatable https://
       </table>
       {!! Html::script('/js/datatables/dataTables.min.js') !!}
       {!! Html::script('/js/datatables/MemberTable.js') !!}
+{{------------------------------------------    --}}
 @endsection
