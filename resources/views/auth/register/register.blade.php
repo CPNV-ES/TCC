@@ -16,6 +16,7 @@
 
                                 <div class="col-md-6">
                                     <input type="text" class="form-control" name="first_name"
+                                          data-verif="required|min_l:2|max_l:30"
                                            value="{{ old('first_name') }}">
                                     @if ($errors->has('first_name'))
 
@@ -31,7 +32,7 @@
                                 <label class="col-md-4 control-label">Nom*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="last_name"
+                                    <input type="text" data-verif="required|min_l:2|max_l:30" class="form-control" name="last_name"
                                            value="{{ old('last_name') }}">
                                     @if ($errors->has('last_name'))
 
@@ -47,7 +48,7 @@
                                 <label class="col-md-4 control-label">Adresse*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="address" value="{{ old('address') }}">
+                                    <input type="text" data-verif="required|min_l:2|max_l:60" class="form-control" name="address" value="{{ old('address') }}">
                                     @if ($errors->has('address'))
 
                                         <span class="help-block">
@@ -62,7 +63,7 @@
                                 <label class="col-md-4 control-label">NPA*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="zip_code"
+                                    <input type="text" data-verif="required|int|min_l:4|max_l:4" class="form-control" name="zip_code"
                                            value="{{ old('zip_code') }}">
 
                                     @if ($errors->has('zip_code'))
@@ -77,7 +78,7 @@
                                 <label class="col-md-4 control-label">Ville*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="city" value="{{ old('city') }}">
+                                    <input type="text" data-verif="required|min_l:2|max_l:45" class="form-control" name="city" value="{{ old('city') }}">
 
                                     @if ($errors->has('city'))
                                         <span class="help-block">
@@ -91,7 +92,7 @@
                                 <label class="col-md-4 control-label">E-mail*</label>
 
                                 <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}">
+                                    <input type="email" data-verif="required|email" class="form-control" name="email" value="{{ old('email') }}">
                                     @if ($errors->has('email'))
 
                                         <span class="help-block">
@@ -106,7 +107,7 @@
                                 <label class="col-md-4 control-label">Téléphone privé*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="home_phone"
+                                    <input type="text" data-verif="required" class="form-control" name="home_phone"
                                            placeholder="123 456 78 90" value="{{ old('home_phone') }}">
                                     @if ($errors->has('home_phone'))
 
@@ -122,7 +123,7 @@
                                 <label class="col-md-4 control-label">Téléphone mobile*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="mobile_phone"
+                                    <input type="text" data-verif="required" class="form-control" name="mobile_phone"
                                            placeholder="123 456 78 90" value="{{ old('mobile_phone') }}">
                                     @if ($errors->has('mobile_phone'))
 
@@ -138,7 +139,7 @@
                                 <label class="col-md-4 control-label">Date de naissance*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" id="birth_date" name="birth_date"
+                                    <input type="text" data-verif="required|date|date_past|date_more_diff:72" class="form-control" id="birth_date" name="birth_date"
                                            value="{{ old('birth_date') }}">
                                     @if ($errors->has('birth_date'))
 

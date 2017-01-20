@@ -413,3 +413,9 @@ footer p {
     font-weight: bold;
     color: #FFFFFF;
 }
+.verif_message_error {
+    color: #da5d5d;
+}
+.verif_error {
+    border: 1px solid #da5d5d;
+}
