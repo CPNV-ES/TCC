@@ -122,6 +122,8 @@
         @yield('content')
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/localization.js') !!}
+        {!! Html::script('/js/verif.js') !!}
+
 
     </body>
     <br style="clear:both"/>

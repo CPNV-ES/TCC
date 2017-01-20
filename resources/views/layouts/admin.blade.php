@@ -134,6 +134,7 @@
 {{--{!! Html::script('/ajax/subscriptions.js') !!}--}}
 {{--{!! Html::script('/ajax/seasons.js') !!}--}}
 {!! Html::script('/js/functions.js') !!}
+{!! Html::script('/js/verif.js') !!}
 
 <script>
     $.ajaxSetup({
