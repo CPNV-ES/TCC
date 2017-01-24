@@ -74,7 +74,7 @@ const VERIF={
       errorText:'Ce champs dois être alphanumerique [A-Za-z0-9_ ]'
     },
     int:{
-      control:(data)=>{return /^\d+$/.test(data.trim());},
+      control:(data)=>{return /^[+-]\d+|\d+$/.test(data.trim());},
       errorText:'Ce champs dois être nombre entier'
     },
     double:{
@@ -102,11 +102,11 @@ const VERIF={
       errorText:'Ce champs dois avoir plus de {0} caractères.'
     },
     max:{
-      control:(data,max)=>{return (0+data.trim()<=max);},
+      control:(data,max)=>{return (data.trim()<=max);},
       errorText:'Doit être inférieur ou égale à {0}'
     },
     min:{
-      control:(data,min)=>{return (0+data.trim()>=min);},
+      control:(data,min)=>{return (data.trim()>=min);},
       errorText:'Doit être supérieur ou égale à {0}'
     },
     date_past:{
