@@ -40,3 +40,9 @@
     color:#515c66;
     text-transform:none;
 }
+.verif_error{
+    border-color: #ff3c08;
+}
+.verif_message_error{
+    color: #ff3c08;
+}

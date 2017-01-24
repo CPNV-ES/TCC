@@ -221,6 +221,24 @@ class MemberController extends Controller
         Session::flash('message', "Les modifications ont bien été enregistrées");
         return redirect('admin/members/'.$member->id.'/edit');
     }
+    public function checkMailUse(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $duplicate = Member::where([['email','=',$request->input('email')],
+            ['id','<>', $request->input('idMember')]])->count();
+            if($duplicate>0)
+            {
+                return response()->json(['response' => false]);
+            }
+            else{
+                return response()->json(['response' => true]);
+            }
+        }
+        else{
+            return false;
+        }
+    }
     /*
      * Update the login of a specific members
      *
