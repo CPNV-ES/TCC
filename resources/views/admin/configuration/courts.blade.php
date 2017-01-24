@@ -82,7 +82,7 @@
     --}}
     <div class="row">
         {{-- SFH: Change the url if editing or adding --}}
-        <form class="form-horizontal" role="form" method="POST"
+        <form class="form-horizontal" name="courtForm" role="form" method="POST"
               action="{{ url('/admin/config/courts') . (!empty($singleCourt) ? '/' . $singleCourt->id : '') }}">
 
             {!! csrf_field() !!}
@@ -94,7 +94,7 @@
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label" for="name">Nom</label>
                 <div class="col-md-4">
-                    <input id="name" type="text" class="form-control" name="name"
+                    <input id="name" type="text" class="form-control" name="name" data-verif="required|max_l:50" data-verif-group="courtCheck"
                            value="{{ (old('name') != '' ? old('name') : (!empty($singleCourt) ? $singleCourt->name : '')) }}">
 
                     @if ($errors->has('name'))
@@ -130,7 +130,7 @@
             <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label" for="start_time">Heure d'ouverture</label>
                 <div class="col-md-4">
-                    <input id="start_time" type="time" class="form-control" name="start_time"
+                    <input id="start_time" type="time" class="form-control" name="start_time" data-verif="required|time" data-verif-group="courtCheck"
                            value="{{ (old('start_time') != '' ? old('start_time') : (!empty($singleCourt) ? date_format(date_create($singleCourt->start_time), "H:i") : '')) }}">
 
                     @if ($errors->has('start_time'))
@@ -142,7 +142,7 @@
             <div class="form-group{{ $errors->has('end_time') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label" for="end_time">Heure de fermeture</label>
                 <div class="col-md-4">
-                    <input id="end_time" type="time" class="form-control" name="end_time"
+                    <input id="end_time" type="time" class="form-control" name="end_time" data-verif="required|time|time_greater:start_time" data-verif-group="courtCheck"
                            value="{{ (old('end_time') != '' ? old('end_time') : (!empty($singleCourt) ? date_format(date_create($singleCourt->end_time), "H:i") : '')) }}">
 
                     @if ($errors->has('end_time'))
@@ -154,7 +154,7 @@
             <div class="form-group{{ $errors->has('booking_window_member') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label" for="booking_window_member">Fenêtre de réservation membre</label>
                 <div class="col-md-4">
-                    <input id="booking_window_member" type="number" class="form-control" name="booking_window_member"
+                    <input id="booking_window_member" type="number" class="form-control" name="booking_window_member" data-verif="required|int_neg|min:1" data-verif-group="courtCheck"
                            value="{{ (old('booking_window_member') != '' ? old('booking_window_member') : (!empty($singleCourt) ? $singleCourt->booking_window_member : '')) }}">
 
                     @if ($errors->has('booking_window_member'))
@@ -166,7 +166,7 @@
             <div class="form-group{{ $errors->has('booking_window_not_member') ? ' has-error' : '' }}">
                 <label class="col-md-4 control-label" for="booking_window_not_member">Fenêtre de réservation non membre</label>
                 <div class="col-md-4">
-                    <input id="booking_window_not_member" type="number" class="form-control" name="booking_window_not_member"
+                    <input id="booking_window_not_member" type="number" class="form-control" name="booking_window_not_member" data-verif="required|int_neg|min:1" data-verif-group="courtCheck"
                            value="{{ (old('booking_window_not_member') != '' ? old('booking_window_not_member') : (!empty($singleCourt) ? $singleCourt->booking_window_not_member : '')) }}">
 
                     @if ($errors->has('booking_window_not_member'))
@@ -176,7 +176,7 @@
             </div>
 
             <div class="form-group" align="center">
-                <button type="submit" class="btn btn-primary" name="save">
+                <button id="btnCourtCheck" type="button" class="btn btn-primary" name="save">
                     {{-- SFH: Change button text if editing or adding --}}
                     {{ (!empty($singleCourt) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>

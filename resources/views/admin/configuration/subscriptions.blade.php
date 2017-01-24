@@ -78,7 +78,7 @@
     --}}
     <div class="row">
         {{-- SFH: Change the url if editing or adding --}}
-        <form class="form-horizontal" role="form" method="POST"
+        <form class="form-horizontal" name="subscriptionForm" role="form" method="POST"
               action="{{ url('/admin/config/subscriptions') . (!empty($singleSubscription) ? '/' . $singleSubscription->id : '') }}">
 
             {!! csrf_field() !!}
@@ -91,7 +91,7 @@
                 <label class="col-md-4 control-label" for="status">Type</label>
 
                 <div class="col-md-4">
-                    <input id="status" type="text" class="form-control" name="status"
+                    <input id="status" type="text" class="form-control" name="status" data-verif="required|max_l:50" data-verif-group="subscriptionCheck"
                            value="{{ (old('status') != '' ? old('status') : (!empty($singleSubscription) ? $singleSubscription->status : '')) }}">
 
                     @if ($errors->has('status'))
@@ -106,7 +106,7 @@
                 <label class="col-md-4 control-label" for="amount">Montant</label>
 
                 <div class="col-md-4">
-                    <input id="amount" type="number" class="form-control" name="amount"
+                    <input id="amount" type="number" step="0.05" class="form-control" name="amount" data-verif="double_neg|min:0" data-verif-group="subscriptionCheck"
                            value="{{ (old('amount') != '' ? old('amount') : (!empty($singleSubscription) ? $singleSubscription->amount : '')) }}">
                     @if ($errors->has('amount'))
                         <p class="help-block">
@@ -117,7 +117,7 @@
             </div>
 
             <div class="form-group" align="center">
-                <button type="submit" class="btn btn-primary">
+                <button type="btnSubscriptionCheck" class="btn btn-primary">
                     {{-- SFH: Change button text if editing or adding --}}
                     {{ (!empty($singleSubscription) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>

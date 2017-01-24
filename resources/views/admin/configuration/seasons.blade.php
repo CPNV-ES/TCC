@@ -67,7 +67,7 @@
         3) Display nothing.
     --}}
     <div class="row">
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/config/seasons') }}">
+        <form class="form-horizontal" name="seasonForm" role="form" method="POST" action="{{ url('/admin/config/seasons') }}">
             {!! csrf_field() !!}
 
             <div class="form-group{{ $errors->has('begin_date') ? ' has-error' : '' }}">
@@ -75,7 +75,7 @@
 
                 <div class="col-md-4">
 
-                    <input type="date" class="form-control" name="begin_date"
+                    <input id="begin_date" type="date" class="form-control" name="begin_date" data-verif="required|date_us" data-verif-group="seasonCheck"
                            value="{{ (old('begin_date') != '' ? old('begin_date') : (!empty($newSeasonStart) ? $newSeasonStart : '')) }}">
 
                     @if ($errors->has('begin_date'))
@@ -90,7 +90,7 @@
                 <label class="col-md-6 control-label">Date de fin (format jj.mm.aaaa)*</label>
 
                 <div class="col-md-4">
-                    <input type="date" class="form-control" name="end_date"
+                    <input type="date" class="form-control" name="end_date" data-verif="required|date_us|date_us_greater:begin_date" data-verif-group="seasonCheck"
                            value="{{ (old('end_date') != '' ? old('end_date') : (!empty($newSeasonEnd) ? $newSeasonEnd : '')) }}">
 
                     @if ($errors->has('end_date'))
@@ -102,7 +102,7 @@
             </div>
 
             <div class="form-group" align="center">
-                <button type="submit" class="btn btn-primary">
+                <button id="btnSeasonCheck" type="button" class="btn btn-primary">
                     Ajouter
                 </button>
             </div>
