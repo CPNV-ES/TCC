@@ -74,7 +74,7 @@ const VERIF={
       errorText:'Ce champs dois être alphanumerique [A-Za-z0-9_ ]'
     },
     int:{
-      control:(data)=>{return /^[+-]\d+|\d+$/.test(data.trim());},
+      control:(data)=>{return /^\d+$/.test(data.trim());},
       errorText:'Ce champs dois être nombre entier'
     },
     double:{
