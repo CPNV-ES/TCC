@@ -56,14 +56,21 @@ const VERIF={
 
     return isOk;
   },
+  verifOnCLick:(elem,formName,formGroup)=>{
+    elem.addEventListener('click', (e)=>{
+      if(VERIF.verifGroup(formGroup))
+        document.forms[formName].submit();
+    });
+  },
+  addRule:(name,control,errorText)=>{
+    VERIF.RULES[name]={};
+    VERIF.RULES[name].control=control;
+    VERIF.RULES[name].errorText=errorText;
+  },
   RULES:{
     required:{
       control:(data)=>{return (data.trim().length>0);},
       errorText:'Ce champs est requis'
-    },
-    email:{
-      control:(data)=>{return /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,12}$/i.test(data.trim());},
-      errorText:'Veuillez entrer un email correcte'
     },
     alphanumerique:{
       control:(data)=>{return /^\w+$/.test(data.trim());},
@@ -108,6 +115,18 @@ const VERIF={
     min:{
       control:(data,min)=>{return (data.trim()>=min);},
       errorText:'Doit être supérieur ou égale à {0}'
+    },
+    email:{
+      control:(data)=>{return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                              .test(data.trim());},
+      errorText:'Veuillez entrer un email correcte'
+    },
+    phone:{
+      control:(data)=>{
+        return /^(((\+|00)\d{2,3})|0)([./ -]?\d){9}$/
+               .test(data.trim());
+      },
+      errorText:'Ce champs dois être un numéro de téléphone valide'
     },
     date_past:{
       control:(data)=>{
