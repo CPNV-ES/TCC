@@ -34,6 +34,7 @@
     {{--{!! Html::script('/js/jqwidget/jqx-all.js') !!}--}}
     
     {!! Html::script('/js/verif.js') !!}
+    {!! Html::script('/js/customVerif.js') !!}
 
 
 </head>
