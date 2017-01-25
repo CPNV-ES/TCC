@@ -4,15 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Reservation;
 use App\Models\Season;
+use App\Models\Member;
 use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Member;
+
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+//to debug, could be delete
+use Illuminate\Support\Facades\Log;
+//use Session;
 
 class MemberController extends Controller
 {
@@ -23,6 +28,7 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
+
         if($request->ajax())
         {
             //If the request has a hours input, it's from the booking plugin
@@ -54,7 +60,8 @@ class MemberController extends Controller
             }
             return response()->json($members);
         }
-        return view('admin/member');
+        $members = Member::all();
+        return view('admin/member',compact('members'));
     }
 
     /**
@@ -86,7 +93,8 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-        //
+      $member = Member::find($id);
+      return view('admin/configuration/memberShow',compact('member'));
     }
 
     /**
@@ -102,6 +110,9 @@ class MemberController extends Controller
             $members = Member::all();
             return response()->json($members);
         }
+        $member = Member::find($id);
+        $localities = ['Provence','Ste-Croix','Rochelles','Yverdon'];
+        return view('admin/configuration/memberEdit',compact('member','localities'));
 
     }
 
@@ -123,49 +134,56 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->ajax())
-        {
-            $member = Member::find($id);
-            $field = $request->input('name');
-            //Special process for the status
-            if($request->has('status_id'))
-            {
-                $member = Member::where('email', $id)->first();
-                $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
-                $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
-                $currentStatus->fk_subscription = (int)$request->input('status_id');
-                $currentStatus->save();
-                return 'true';
-            }
+      if($request->ajax){
+          $member = Member::find($id);
+          $field = $request->input('name');
+          //Special process for the status
+          if($request->has('status_id'))
+          {
+              $member = Member::where('email', $id)->first();
+              $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
+              $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
+              $currentStatus->fk_subscription = (int)$request->input('status_id');
+              $currentStatus->save();
+              return 'true';
+          }
 
-            //Special process for the boolean value
-            if($request->input('value') == 'true')
-            {
-                $member->$field = '1';
-                $member->save();
-                return 'true';
-            }
-            else if($request->input('value') == 'false')
-            {
-                //Disable the possibility to self-remove from the admin
-                if($member->id == Auth::user()->id && $field == 'administrator')
-                {
-                    return 'false';
-                }
-                $member->$field = '0';
-                $member->save();
-                return 'true';
-            }
-            return 'error';
+          //Special process for the boolean value
+          if($request->input('value') == 'true')
+          {
+              $member->$field = '1';
+              $member->save();
+              return 'true';
+          }
+          else if($request->input('value') == 'false')
+          {
+              //Disable the possibility to self-remove from the admin
+              if($member->id == Auth::user()->id && $field == 'administrator')
+              {
+                  return 'false';
+              }
+              $member->$field = '0';
+              $member->save();
+              return 'true';
+          }
+          return 'error';
 
-        }
+      }
         // Check form
         //-----------
+        //IGI - added needed rules
         $validator = Validator::make($request->all(),
             [
-                'login'.$id     => 'required',
-            ],
-            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
+                'first_name' => 'required|max:50',
+                'last_name' => 'required|max:50',
+                'address' => 'required|max:100',
+                'zip_code' => 'required|integer|digits:4',
+                'home_phone' => 'required|digits:10',
+                'mobile_phone' => 'required|digits:10',
+                'email' => 'required|email|max:100',
+                'city' => 'required|max:100',
+            ]);
+
         /////////////////////////////////////////////
 
 
@@ -173,46 +191,123 @@ class MemberController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request, $id)
         {
-            $duplicate = Member::where('login', $request->input('login'.$id))->count();
-
+            //IGI - check if the email is already used by another members
+            $duplicate = Member::where([['email','=',$request->input('email')],
+                                        ['id','<>', $id]])->count();
             if(!empty($duplicate))
             {
-                $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
+                $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
             }
         });
         /////////////////////////////////////////////
 
-        // Display errors messages, return to register page
+        // Display errors messages, return to update page
         //-------------------------------------------------
         if($validator->fails())
         {
             return back()->withInput()->withErrors($validator);
         }
-        /////////////////////////////////////////////
 
+        /////////////////////////////////////////////
+        $member = Member::find($id);
+
+        //IGI- Update member info and member account parameters and save it
+        //-----------------------------------------------------
+        $member->UpdateUser($request->all());
+        $member->UpdateAccount($request->all());
+        $member->save();
+
+        //IGI - flash message and come back to the edit member page
+        Session::flash('message', "Les modifications ont bien été enregistrées");
+        return redirect('admin/members/'.$member->id.'/edit');
+    }
+    public function checkMailUse(Request $request)
+    {
+        if ($request->isMethod('post'))
+        {
+            $duplicate = Member::where([['email','=',$request->input('email')],
+            ['id','<>', $request->input('idMember')]])->count();
+            if($duplicate>0)
+            {
+                return response()->json(['response' => false]);
+            }
+            else{
+                return response()->json(['response' => true]);
+            }
+        }
+        else{
+            return false;
+        }
+    }
+    /*
+     * Update the login of a specific members
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id member id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateLogin(Request $request, $id)
+    {
+
+        // Check form
+        //-----------
+        $validator = Validator::make($request->all(),
+            [
+                'login'.$id     => 'required',
+            ],
+            ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
+
+        /////////////////////////////////////////////
+        // Verify if login is not already in DB for no duplicate information
+        //------------------------------------------------------------------
+        $validator->after(function($validator) use ($request, $id)
+        {
+            $duplicate = Member::where('login', $request->input('login'.$id))->count();
+            if(!empty($duplicate))
+            {
+                $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
+            }
+        });
+
+
+        /////////////////////////////////////////////
+        // Display errors messages, return to register page
+        //-------------------------------------------------
+        if($validator->fails())
+        {
+
+            return back()->withInput()->withErrors($validator);
+
+        }
+        /////////////////////////////////////////////
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
+
         $member = Member::find($id);
+
         $member->UpdateLogin($request->input('login'.$id));
+
         $member->save();
+
+
+
+
         /////////////////////////////////////////////
-
         $emailMember = $member->email;
-
         // Send email to the user to choose password
         //-------------------------------------------------
         Mail::send('emails.user.password', ['last_name'  => $member->last_name,
-                                            'first_name' => $member->first_name,
-                                            'login'      => $member->login,
-                                            'token'      => $member->token],
-        function ($message) use($emailMember)
-        {
-            $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
-        });
+            'first_name' => $member->first_name,
+            'login'      => $member->login,
+            'token'      => $member->token],
+            function ($message) use($emailMember)
+            {
+                $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');
+            });
         /////////////////////////////////////////////
-
         return redirect('admin')->with('message', 'Le login a été créé avec succès, un mail lui a été envoyé');
     }
+        /////////////////////////////////////////////
 
     /**
      * Remove the specified resource from storage.

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class Member extends Model
 {
+  //birth_date
     protected $fillable = [
         'last_name',
         'first_name',
@@ -48,6 +49,7 @@ class Member extends Model
      */
     public function UpdateLogin($login)
     {
+
         $subscription_per_member = new Subscription_per_member();
         $subscription_per_member->SetStatus($this->id, 1);
         $subscription_per_member->save();
@@ -68,7 +70,7 @@ class Member extends Model
         $this->mobile_phone       = $data['mobile_phone'];;
         $this->home_phone         = $data['home_phone'];;
         $this->zip_code           = $data['zip_code'];;
-        $this->birth_date         = date("Y-m-d", strtotime($data['birth_date']));
+        //$this->birth_date         = date("Y-m-d", strtotime($data['birth_date']));
         $this->to_verify          = 0;
     }
 
@@ -87,6 +89,17 @@ class Member extends Model
         $this->id = $id;
         $this->switch_bool = $switch_bool;
 
+    }
+    /*
+    * update parameters of a account
+    */
+    public function UpdateAccount($data)
+    {
+      // IGI- update account parameters
+      $this->to_verify = (array_key_exists('to_verify',$data)) ? $data['to_verify'] : '0';
+      $this->administrator = (array_key_exists('administrator',$data)) ? $data['administrator'] : '0';
+      $this->validate = (array_key_exists('validate',$data)) ? $data['validate'] : '0';
+      $this->active = (array_key_exists('active',$data)) ? $data['active'] : '0';
     }
 
     public function getCurrentStatusAttribute()

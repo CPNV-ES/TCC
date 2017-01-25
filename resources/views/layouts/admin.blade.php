@@ -15,9 +15,10 @@
 
     {!! Html::style('/css/sb-admin-2.css')!!}
     {!! Html::style('/css/timeline.css')!!}
+    {!! Html::style('/css/datatables.css')!!}
 
-    {!! Html::style('/css/jqx.base.css')!!}
-    {!! Html::style('/css/jqx.bootstrap.css')!!}
+    <!--{!! Html::style('/css/jqx.base.css')!!}
+    {!! Html::style('/css/jqx.bootstrap.css')!!}-->
 
     {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
 
@@ -27,6 +28,7 @@
     {!! Html::script('/js/sb-admin-2.js') !!}
 
     {!! Html::script('/js/metisMenu/dist/metisMenu.min.js') !!}
+<!--
     {!! Html::script('/js/raphael/raphael-min.js') !!}
     {{--{!! Html::script('/js/morrisjs/morris.min.js') !!}--}}
     {{--{!! Html::script('/js/morris-data.js') !!}--}}
@@ -130,7 +132,7 @@
 
 </div>
 <!-- /#wrapper -->
-
+<!--
 {!! Html::script('/js/jqwidget/globalize.js') !!}
 {!! Html::script('/js/jqwidget/localization.js') !!}
 {{--{!! Html::script('/ajax/members.js') !!}--}}

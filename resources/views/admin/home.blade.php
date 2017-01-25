@@ -65,7 +65,7 @@
                         </p>
                         <hr/>
                         <p>
-                        <form action="{{url('admin/members/'. $member->id)}}" method="post">
+                        <form action="{{url('/admin/login/update/'. $member->id)}}" method="post">
 
                             {!! csrf_field() !!}
                             {!! method_field('put') !!}
