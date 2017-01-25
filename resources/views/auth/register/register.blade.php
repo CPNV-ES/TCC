@@ -105,7 +105,7 @@
                                 <label class="col-md-4 control-label">Téléphone privé*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required" class="form-control" name="home_phone"
+                                    <input type="text" data-verif-group="register_form" data-verif="required|phone" class="form-control" name="home_phone"
                                            placeholder="123 456 78 90" value="{{ old('home_phone') }}">
                                @if ($errors->has('home_phone'))
 
@@ -121,7 +121,7 @@
                                 <label class="col-md-4 control-label">Téléphone mobile*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required" class="form-control" name="mobile_phone"
+                                    <input type="text" data-verif-group="register_form" data-verif="required|phone" class="form-control" name="mobile_phone"
                                            placeholder="123 456 78 90" value="{{ old('mobile_phone') }}">
                                    @if ($errors->has('mobile_phone'))
 

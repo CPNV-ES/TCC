@@ -55,7 +55,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group row @if($errors->has('email')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_email" class="col-2 col-form-label">Mail*</label>
             <div class="col-10">
-                <input class="form-control" name="email" data-verif-group="edit-group-form" data-verif="required|email|mailOk|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $member->email }}" >
+                <input class="form-control" name="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $member->email }}" >
                 @if ($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -111,7 +111,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group row @if($errors->has('mobile_phone')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_mobile_phone" class="col-2 col-form-label">Téléphone mobile*</label>
             <div class="col-10">
-                <input class="form-control" name="mobile_phone" data-verif-group="edit-group-form" data-verif="required|int|min_l:10|max_l:10" type="text" value="{{ old('mobile_phone') ? old('mobile_phone') : $member->mobile_phone }}" >
+                <input class="form-control" name="mobile_phone" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('mobile_phone') ? old('mobile_phone') : $member->mobile_phone }}" >
                 @if ($errors->has('mobile_phone'))
                     <span class="help-block">
                         <strong>{{ $errors->first('mobile_phone') }}</strong>
@@ -122,7 +122,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group row" @if($errors->has('home_phone')) {{'has-error'}} @endif>
             <label for="example-text-input" name="lbl_home_phone" class="col-2 col-form-label">Téléphone fixe*</label>
             <div class="col-10">
-                <input class="form-control" name="home_phone" data-verif-group="edit-group-form" data-verif="required|int|min_l:10|max_l:10" type="text" value="{{ old('home_phone') ? old('home_phone') : $member->home_phone }}" >
+                <input class="form-control" name="home_phone" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('home_phone') ? old('home_phone') : $member->home_phone }}" >
                 @if ($errors->has('username'))
                     <span class="help-block">
                         <strong>{{ $errors->first('home-phone') }}</strong>

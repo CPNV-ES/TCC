@@ -178,8 +178,8 @@ class MemberController extends Controller
                 'last_name' => 'required|max:50',
                 'address' => 'required|max:100',
                 'zip_code' => 'required|integer|digits:4',
-                'home_phone' => 'required|digits:10',
-                'mobile_phone' => 'required|digits:10',
+                'home_phone' => 'required|max:12|min:9',
+                'mobile_phone' => 'required|max:12|min:9',
                 'email' => 'required|email|max:100',
                 'city' => 'required|max:100',
             ]);

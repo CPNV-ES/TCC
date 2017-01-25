@@ -8,10 +8,9 @@
 4. Navigate to the projects folder
 5. Execute the commande `composer install`
 5. If you already have an instance of the database, drop all tables and make sure the credentials in config/database.php are correct
-6. Execute the commande `php artisan migrate --seed`
-7. Copie the `.env.exemple`, rename it to `.env` and modify the necessary settings.
+6. Copie the `.env.exemple`, rename it to `.env` and modify the necessary settings.
+7. Execute the commande `php artisan key:generate` and `php artisan migrate --seed`
 8. Open your navigator of choise and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commandes).
-9. If you run the app on a LAMP server, you may have an error (No supported encrypter found). Fix it with `php artisan key:generate`
 
 ## SMTP Settings for a gmail account
 

@@ -77,7 +77,7 @@ const VERIF={
       errorText:'Ce champs dois être alphanumerique sans espace [A-Za-z0-9_]'
     },
     text:{
-      control:(data)=>{return /^[\w\ ]+$/.test(data.trim());},
+      control:(data)=>{return /^[\w\ \.éàèêöëïôâùüî\"\'-]+$/i.test(data.trim());},
       errorText:'Ce champs dois être alphanumerique [A-Za-z0-9_ ]'
     },
     int:{
