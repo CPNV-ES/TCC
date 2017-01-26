@@ -117,11 +117,21 @@
             </div>
 
             <div class="form-group" align="center">
-                <button type="btnSubscriptionCheck" class="btn btn-primary">
+                <button id="btnSubscriptionCheck" type="button" class="btn btn-primary">
                     {{-- SFH: Change button text if editing or adding --}}
                     {{ (!empty($singleSubscription) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>
             </div>
+
+            {{-- SFH: Added to check form before send --}}
+            <script type="text/javascript">
+                document.querySelector('#btnSubscriptionCheck').addEventListener('click', function(e) {
+                    if(VERIF.verifGroup('subscriptionCheck'))
+                        document.forms["subscriptionForm"].submit();
+                });
+            </script>
+            {{-- SFH: End --}}
+
         </form>
     </div>
 @endsection

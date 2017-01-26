@@ -181,6 +181,16 @@
                     {{ (!empty($singleCourt) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>
             </div>
+
+            {{-- SFH: Added to check form before send --}}
+            <script type="text/javascript">
+                document.querySelector('#btnCourtCheck').addEventListener('click', function(e) {
+                    if(VERIF.verifGroup('courtCheck'))
+                        document.forms["courtForm"].submit();
+                });
+            </script>
+            {{-- SFH: End --}}
+
         </form>
     </div>
 @endsection

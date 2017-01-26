@@ -131,6 +131,6 @@ class SeasonController extends Controller {
         $request->session()->flash('alert-success', 'La saison a été supprimée avec succès!');
 
         return redirect("/admin/config/seasons");
-        // End
+        // SFH: End
     }
 }

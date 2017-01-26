@@ -40,22 +40,4 @@ $(document).ready(function () {
         }
     });
 
-   $("#btnCourtCheck").click(function () {
-        if (VERIF.verifGroup("courtCheck")) {
-            document.forms["courtForm"].submit();
-        }
-    });
-
-    $("#btnSeasonCheck").click(function () {
-        if (VERIF.verifGroup("seasonCheck")) {
-            document.forms["seasonForm"].submit();
-        }
-    });
-
-    $("#btnSubscriptionCheck").click(function () {
-        if (VERIF.verifGroup("subscriptionCheck")) {
-            document.forms["subscriptionForm"].submit();
-        }
-    });
-
 });
