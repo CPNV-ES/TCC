@@ -170,5 +170,5 @@ Description: Displays a form with the informations of a member. The inputs of th
     </script>
 
 
-{{--{!! Html::script('/js/editMember.js') !!}--}}
+
 @endsection

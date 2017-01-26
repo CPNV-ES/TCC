@@ -1,5 +1,6 @@
 /**
  * Created by Struan.FORSYTH on 13.01.2017.
+ * Modified by Ilias.GOUJGALI on 26.01.2017
  */
 
 $(document).ready(function () {
@@ -40,12 +41,24 @@ $(document).ready(function () {
         }
 
     });
+    /*$("#btn-member-save").hide();
+    $("#form-edit-member :input").each(function(){
+        if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
+    });
+    $("#btn-member-edit").prop('disabled',false);*/
 
 });
 
+//IGI lock/ unlock form
+var lockedForm= true;
 function lockForm(idForm, idBtnEdit, idBtnSave)
 {
-    lockedForm= true;
+
+    $(idBtnSave).hide();
+    $(idForm+" :input").each(function(){
+        if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
+    });
+    $(idBtnEdit).prop('disabled',false);
     $(idBtnEdit).on('click',function(){
         if(lockedForm)
         {
@@ -70,6 +83,5 @@ function lockForm(idForm, idBtnEdit, idBtnSave)
         }
     });
 }
-// let btn=document.getElementById('btn-member-save');
-// VERIF.verifOnCLick(btn,'form-edit-member','edit-group-form');
+
 
