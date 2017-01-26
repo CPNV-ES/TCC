@@ -111,7 +111,7 @@ class CourtController extends Controller {
         $singleCourt = Court::findOrFail($id);
 
         return view('admin/configuration/courts', compact('singleCourt', 'courts'));
-        // End
+        // SFH: End
     }
 
     /**
@@ -167,7 +167,7 @@ class CourtController extends Controller {
         // SFH: Added court update
         $court = Court::findOrFail($id);
         $court->update($request->all());
-        // End
+        // SFH: End
 
         ////////////////////////////////////////////
 
@@ -194,6 +194,6 @@ class CourtController extends Controller {
         $request->session()->flash('alert-success', 'Le court a été supprimé avec succès!');
 
         return redirect('admin/config/courts');
-        // End
+        // SFH: End
     }
 }

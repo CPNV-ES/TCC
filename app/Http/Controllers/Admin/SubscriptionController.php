@@ -100,7 +100,7 @@ class SubscriptionController extends Controller {
         $singleSubscription = Subscription::findOrFail($id);
 
         return view("/admin/configuration/subscriptions", compact('subscriptions', 'singleSubscription'));
-        // End
+        // SFH: End
     }
 
     /**
@@ -167,7 +167,7 @@ class SubscriptionController extends Controller {
         $request->session()->flash('alert-success', 'La cotisation a été supprimée avec succès!');
 
         return redirect("/admin/config/subscriptions");
-        // End
+        // SFH: End
     }
 
 }

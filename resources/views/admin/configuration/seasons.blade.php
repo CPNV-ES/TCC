@@ -19,7 +19,7 @@
                 @endif
             @endforeach
         </div>
-        {{-- End --}}
+        {{-- SFH: End --}}
 
         {{-- SFH: Added simple display table for the seasons --}}
         <div class="table-responsive">
@@ -57,7 +57,7 @@
                 </tbody>
             </table>
         </div>
-        {{-- End --}}
+        {{-- SFH: End --}}
     </div>
 
     <div class="row" align="center">
@@ -110,6 +110,16 @@
                     Ajouter
                 </button>
             </div>
+
+            {{-- SFH: Added to check form before send --}}
+            <script type="text/javascript">
+                document.querySelector('#btnSeasonCheck').addEventListener('click', function(e) {
+                    if(VERIF.verifGroup('seasonCheck'))
+                        document.forms["seasonForm"].submit();
+                });
+            </script>
+            {{-- SFH: End --}}
+
         </form>
     </div>
 
