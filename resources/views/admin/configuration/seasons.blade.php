@@ -4,6 +4,7 @@
     Gestion des saisons
 @endsection
 
+
 @section('content')
     <div class="row">
 
@@ -39,14 +40,17 @@
                         <td>{{date_format(date_create($season->end_date), "d.m.Y")}}</td>
                         {{-- SFH: This zone is used for the 'delete' buttons --}}
                         <td class="option-zone">
-                            {{-- SFH: Only methode found to call the 'destroy' methode in the controler. Trying to find a better way. --}}
-                            <form class="delete" role="form" method="POST" action="/admin/config/seasons/{{$season->id}}">
-                                {!! csrf_field() !!}
-                                {!! method_field('DELETE') !!}
-                                <button class="btn btn-danger option" data-action="delete-season" data-season="{{$season->id}}">
-                                    <span class="fa fa-trash"></span>
-                                </button>
-                            </form>
+                            {{-- SFH: Check if allowed to delete --}}
+                            @if(sizeof($season->subscriptions) == 0)
+                                {{-- SFH: Only methode found to call the 'destroy' methode in the controler. Trying to find a better way. --}}
+                                <form class="delete" role="form" method="POST" action="/admin/config/seasons/{{$season->id}}">
+                                    {!! csrf_field() !!}
+                                    {!! method_field('DELETE') !!}
+                                    <button class="btn btn-danger option" data-action="delete-season" data-season="{{$season->id}}">
+                                        <span class="fa fa-trash"></span>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

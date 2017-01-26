@@ -15,4 +15,14 @@ class Season extends Model
     {
         parent::__construct($attributes);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
+     * @author Struan Forsyth
+     */
+    public function subscriptions()
+    {
+        return $this->belongsToMany('App\Models\Subscription', 'subscriptions_per_member', 'fk_season', 'fk_subscription');
+    }
 }
