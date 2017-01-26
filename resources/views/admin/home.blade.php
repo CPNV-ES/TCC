@@ -72,7 +72,7 @@
 
 
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Saisissez un login"
+                                <input type="text" class="form-control" data-verif="required|alphanumerique|min_l:5|max_l:25" placeholder="Saisissez un login"
                                        name="login{{$member->id}}" value="{{ old('login'.$member->id) }}">
 
                                 @if ($errors->has('login'.$member->id))
