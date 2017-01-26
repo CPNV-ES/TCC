@@ -11,7 +11,6 @@ $(document).ready(function(){
     $("#form-edit-member :input").each(function(){
         if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
     });
-
     $("#btn-member-edit").prop('disabled',false);
 });
 lockedForm= true;

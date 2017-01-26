@@ -37,6 +37,7 @@
 
     {!! Html::script('/js/verif.js') !!}
     {!! Html::script('/js/customVerif.js') !!}
+    {!! Html::script('/js/functions.js') !!}
 
 
 </head>
@@ -139,7 +140,7 @@
 {{--{!! Html::script('/ajax/courts.js') !!}--}}
 {{--{!! Html::script('/ajax/subscriptions.js') !!}--}}
 {{--{!! Html::script('/ajax/seasons.js') !!}--}} -->
-{!! Html::script('/js/functions.js') !!}
+
 
 <script>
     $.ajaxSetup({

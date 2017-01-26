@@ -160,10 +160,15 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group row">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
             <button id="btn-member-edit"  class="btn btn-primary" type="button">Déverrouiller</button>
-            <button id="btn-member-save" type="submit"  class="btn btn-primary">Sauvegarder</button>
+            <button id="btn-member-save" type="button"  class="btn btn-primary">Sauvegarder</button>
         </div>
     </form>
+    <script>
+        lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save');
+        let btn=document.getElementById('btn-member-save');
+        VERIF.verifOnCLick(btn,'form-edit-member','edit-group-form');
+    </script>
 
-{!! Html::script('/js/verif.js') !!}
-{!! Html::script('/js/editMember.js') !!}
+
+{{--{!! Html::script('/js/editMember.js') !!}--}}
 @endsection

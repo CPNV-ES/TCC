@@ -32,6 +32,19 @@ class DatabaseSeeder extends Seeder
          'created_at' => '2017-01-10 13:58:14',
          'updated_at' => '2017-01-10 13:58:14'
        ]);
+        DB::table('subscriptions')->insert([
+            'status' => 'member',
+            'amount' => '10',
+        ]);
+        DB::table('subscriptions')->insert([
+            'status' => 'responsible',
+            'amount' => '0',
+        ]);
+        DB::table('seasons')->insert([
+            'begin_date' => (new \DateTime())->sub(new DateInterval('P10D'))->format('Y-m-d'),
+            'end_date' => (new \DateTime())->add(new DateInterval('P6M'))->format('Y-m-d'),
+        ]);
+
         $first_name = ['Franklin','Micheal','Joesph','Jérémie','Christian', 'Gabrielle','Kim','Tiffany','Lee','Emilie'];
         $last_name = ['Favre','Jeanmonot','De la Gouj', 'L\'Eplattenier','Gaille','Major','Adma','Rizz','Bergerman','Bakerman'];
 
@@ -44,39 +57,34 @@ class DatabaseSeeder extends Seeder
             $addr = $address[mt_rand(0,sizeof($address)-1)];
             $local = $locality[mt_rand(0,sizeof($address)-1)];
             DB::table('members')->insert([
+                'id' => '1'.$i,
                 'last_name' => $lName,
                 'first_name' => $fName,
                 'address' => $addr,
                 'zip_code' => mt_rand(1000,9999),
                 'city' => $local,
                 'email' => $fName.$i.'@test.dev',
-                'mobile_phone'=>mt_rand(1000000000,9999999999),
-                'home_phone'=>mt_rand(1000000000,9999999999),
-                'birth_date'=>date("Y-M-d",mt_rand('1',time()-72*30)),//'1980-01-01',
+                'mobile_phone'=>'0'.mt_rand(100000000,999999999),
+                'home_phone'=>'0'.mt_rand(100000000,999999999),
+                'birth_date'=>date("Y-m-d",mt_rand('1',time()-72*30)),//'1980-01-01',
                 'password' => bcrypt('test'),
                 'login' => $fName.$i,
                 'token' => '',
                 'active' => mt_rand(0,1),
                 'to_verify' => mt_rand(0,1),
-                'validate' => mt_rand(0,1),
+                'validate' => '1',
                 'administrator' => '0',
                 'created_at' => '2017-01-10 13:58:14',
                 'updated_at' => '2017-01-10 13:58:14'
             ]);
+            DB::table('subscriptions_per_member')->insert([
+                'fk_member' => '1'.$i,
+                'fk_season' => '1',
+                'fk_subscription' => '1'
+
+            ]);
         }
 
-       // ESO: add of subscriptions and seasons
-       DB::table('subscriptions')->insert([
-          'status' => 'member',
-          'amount' => '10',
-        ]);
-        DB::table('subscriptions')->insert([
-           'status' => 'responsible',
-           'amount' => '0',
-        ]);
-        DB::table('seasons')->insert([
-           'begin_date' => (new \DateTime())->sub(new DateInterval('P10D'))->format('Y-m-d'),
-           'end_date' => (new \DateTime())->add(new DateInterval('P6M'))->format('Y-m-d'),
-        ]);
+
     }
 }

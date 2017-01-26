@@ -38,6 +38,38 @@ $(document).ready(function () {
                 break;
 
         }
+
     });
 
 });
+
+function lockForm(idForm, idBtnEdit, idBtnSave)
+{
+    lockedForm= true;
+    $(idBtnEdit).on('click',function(){
+        if(lockedForm)
+        {
+            $(idBtnSave).show();
+            $(idBtnEdit).html('Verrouiller');
+            $(idForm+" :input").each(function(){
+                if($(this).prev().prop('type') != 'button')$(this).prop('disabled', false);
+            });
+            $(idBtnEdit).prop('disabled',false);
+            lockedForm = false;
+        }
+        else
+        {
+            $(idBtnSave).hide();
+            $(idBtnEdit).html('Déverrouiller');
+            $(idForm+" :input").each(function(){
+                if($(this).prev().prop('type') != 'button') $(this).prop('disabled', true);
+            });
+            $(idBtnEdit).prop('disabled',false);
+            lockedForm = true;
+
+        }
+    });
+}
+// let btn=document.getElementById('btn-member-save');
+// VERIF.verifOnCLick(btn,'form-edit-member','edit-group-form');
+
