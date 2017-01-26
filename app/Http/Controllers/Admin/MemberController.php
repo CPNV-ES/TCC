@@ -180,7 +180,7 @@ class MemberController extends Controller
                 'zip_code' => 'required|integer|digits:4',
                 'home_phone' => 'required|max:12|min:9',
                 'mobile_phone' => 'required|max:12|min:9',
-                'email' => 'required|email|max:100',
+                'email' => 'required|email|max:255',
                 'city' => 'required|max:100',
             ]);
 
