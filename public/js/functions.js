@@ -41,12 +41,6 @@ $(document).ready(function () {
         }
 
     });
-    /*$("#btn-member-save").hide();
-    $("#form-edit-member :input").each(function(){
-        if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
-    });
-    $("#btn-member-edit").prop('disabled',false);*/
-
 });
 
 //IGI lock/ unlock form
