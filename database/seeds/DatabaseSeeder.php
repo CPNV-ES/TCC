@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             'begin_date' => (new \DateTime())->sub(new DateInterval('P10D'))->format('Y-m-d'),
             'end_date' => (new \DateTime())->add(new DateInterval('P6M'))->format('Y-m-d'),
         ]);
-
+        //IGI adding test value
         $first_name = ['Franklin','Micheal','Joesph','Jérémie','Christian', 'Gabrielle','Kim','Tiffany','Lee','Emilie'];
         $last_name = ['Favre','Jeanmonot','De la Gouj', 'L\'Eplattenier','Gaille','Major','Adma','Rizz','Bergerman','Bakerman'];
 
