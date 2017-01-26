@@ -111,7 +111,7 @@ class MemberController extends Controller
             return response()->json($members);
         }
         $member = Member::find($id);
-        $localities = ['Provence','Ste-Croix','Rochelles','Yverdon'];
+        $localities = ['Provence', 'Ste-Croix','Vuitevoeuf','Baumes','Charvonnay','Yverdon'];
         return view('admin/configuration/memberEdit',compact('member','localities'));
 
     }
