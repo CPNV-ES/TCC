@@ -1,3 +1,7 @@
+/**
+ * Created by Esteban Sotillo
+ * git : https://github.com/Westixy/VerifJS
+ */
 const VERIF={
   init:()=>{
     let elems=document.querySelectorAll('[data-verif]');

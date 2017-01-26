@@ -51,7 +51,7 @@ class Member extends Model
     {
 
         $subscription_per_member = new Subscription_per_member();
-        $subscription_per_member->SetStatus($this->id, 1);
+        $subscription_per_member->SetStatus($this->id, 1); // ESO : set status to member by default
         $subscription_per_member->save();
 
         $validationCode     = str_random(20);

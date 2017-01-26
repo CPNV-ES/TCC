@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+      // ESO: Adding default admin
       DB::table('members')->insert([
          'last_name' => 'admin',
          'first_name' => 'admin',
@@ -64,6 +65,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+       // ESO: add of subscriptions and seasons
        DB::table('subscriptions')->insert([
           'status' => 'member',
           'amount' => '10',

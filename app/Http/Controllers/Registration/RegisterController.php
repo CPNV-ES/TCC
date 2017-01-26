@@ -63,6 +63,7 @@ class RegisterController extends Controller
         {
             $duplicate = Member::where('email', $request->input('email'))->count();
 
+            // ESO : verify if the user is older than 6 years
             if(!$validator->errors()->has('birth_date')){
               $bdate= new \DateTime($request->input('birth_date'));
               $now= new \DateTime();
@@ -73,8 +74,7 @@ class RegisterController extends Controller
                 $validator->errors()->add('birth_date', 'Vous êtes trop jeunes pour vous inscrire. (6 ans révolus minimum)');
               }
             }
-
-            //dd($bdate->format('Ymd'));
+            // END OF ESO
 
             if (!empty($duplicate))
             {
