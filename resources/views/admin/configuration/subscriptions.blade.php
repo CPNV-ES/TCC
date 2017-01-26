@@ -43,7 +43,7 @@
                         {{-- SFH: This zone is used for the 'edit' and 'delete' buttons --}}
                         <td class="option-zone">
                             {{-- SFH: Check if allowed to edit and delete --}}
-                            @if(!$subscription->hasMember)
+                            @if(sizeof($subscription->seasons) == 0)
                                 <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/subscriptions/{{$subscription->id}}/edit">
                                     <span class="fa fa-edit"></span>
                                 </button>

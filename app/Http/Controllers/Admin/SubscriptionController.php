@@ -15,8 +15,8 @@ class SubscriptionController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        // SFH: Call function to get all subscriptions
-        $subscriptions = $this->getSubscriptions();
+        // SFH: Ordered them by latest first
+        $subscriptions = Subscription::orderby('status', 'asc')->get();
 
         // SFH: Added compact for the subscriptions
         return view('/admin/configuration/subscriptions', compact('subscriptions'));
@@ -96,7 +96,7 @@ class SubscriptionController extends Controller {
      */
     public function edit($id) {
         // SFH: Added the edit function
-        $subscriptions = $this->getSubscriptions();
+        $subscriptions = Subscription::orderby('status', 'asc')->get();
         $singleSubscription = Subscription::findOrFail($id);
 
         return view("/admin/configuration/subscriptions", compact('subscriptions', 'singleSubscription'));
@@ -168,38 +168,6 @@ class SubscriptionController extends Controller {
 
         return redirect("/admin/config/subscriptions");
         // End
-    }
-
-    /**
-     *  Get all the subscriptions from the database.
-     *  Adds a column to see if the subscription has been assigned to a user.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|static[]
-     *
-     * @author Struan Forsyth
-     */
-    private function getSubscriptions() {
-
-        // SFH: Ordered them alphabetically
-        $subscriptions = Subscription::orderby('status', 'asc')->get();
-        $payedSubscriptions = Subscription_per_member::all();
-
-        for ($i = 0; $i < sizeof($subscriptions); $i++) {
-
-            $hasMember = false;
-
-            // SFH: This needs to be optimised. Laravel probably was a better way to manage this
-            foreach ($payedSubscriptions as $payedSubscription) {
-                if ($payedSubscription->fk_subscription == $subscriptions[$i]->id) {
-                    $hasMember = true;
-                }
-            }
-
-            $subscriptions[$i]['hasMember'] = $hasMember;
-
-        }
-
-        return $subscriptions;
     }
 
 }
