@@ -167,19 +167,6 @@ class PasswordController extends Controller
                 'password'                  => 'required|confirmed|min:6',
                 'password_confirmation'     => 'required'
             ]);
-        /////////////////////////////////////////////
-
-        // Verify if password are strong enough
-        //------------------------------------------------------------------
-        $validator->after(function($validator) use ($request)
-        {
-            if(!preg_match('/(([A-Z]+|[a-z]+)[0-9]+)|([0-9]+([a-z]+|[A-Z]))/', $request->input('password')))
-            {
-                $validator->errors()->add("password", "Le mot de passe n'est pas assez fort.");
-            }
-        });
-        /////////////////////////////////////////////
-
 
         // Display errors messages, return to password page
         //-------------------------------------------------

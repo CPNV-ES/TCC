@@ -18,7 +18,7 @@
                                 <label class="col-md-4 control-label">Mot de passe*</label>
 
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password">
+                                    <input type="password" class="form-control" data-verif="required|min_l:6" name="password">
                                 </div>
                                 @if ($errors->has('password'))
 
@@ -33,7 +33,7 @@
                                 <label class="col-md-4 control-label">Répetez le mot de passe*</label>
 
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="password_confirmation">
+                                    <input type="password" data-verif="required|min_l:6" class="form-control" name="password_confirmation">
                                 </div>
                                 @if ($errors->has('password_confirmation'))
 
