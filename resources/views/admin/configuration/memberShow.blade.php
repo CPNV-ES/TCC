@@ -5,13 +5,6 @@
 @endsection
 @section('content')
 <div class="container">
-
-<!--
-TODO: - demander pour le numero de rue car inexistant actuellement (old db)
-      -(implement client side verification)
--->
-
-
       <table class="table table-user-information">
         <tbody>
           <tr>
@@ -57,18 +50,4 @@ TODO: - demander pour le numero de rue car inexistant actuellement (old db)
       <a href="/admin/members" class="btn btn-primary">Retour</a>
       <a href="/admin/members/{{$member->id}}/edit" class="btn btn-primary">Modifier</a>
 </div>
-
-<!-- | id | last_name | first_name | address | zip_code | city | email         | mobile_phone | home_phone | birth_date | password
-          | login | token | remember_token | active | to_verify | validate | administrator | created_at          | updated_at
-
- -->
-
-
 @endsection
-<!--
-CHAMPS POSSIBLE
-last_name | first_name | address | zip_code | city | email| mobile_phone | home_phone | birth_date
-
-champ demandé
-[firstnameV, lastnameV,streetV, streetnbrX, telephoneV, emailV, usernameV].
--->

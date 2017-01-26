@@ -60,5 +60,5 @@ Description : Displays a table of the members implements with Datatable https://
       </table>
       {!! Html::script('/js/datatables/dataTables.min.js') !!}
       {!! Html::script('/js/datatables/MemberTable.js') !!}
-{{------------------------------------------    --}}
+{{-- END IGI--}}
 @endsection
