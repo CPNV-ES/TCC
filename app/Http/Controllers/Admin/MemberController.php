@@ -221,6 +221,7 @@ class MemberController extends Controller
         Session::flash('message', "Les modifications ont bien été enregistrées");
         return redirect('admin/members/'.$member->id.'/edit');
     }
+    //IGI- actually not used - will be used to check (in AJAX) in the edit member form if the email is already used in the db.
     public function checkMailUse(Request $request)
     {
         if ($request->isMethod('post'))

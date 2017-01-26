@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
                 'address' => $addr,
                 'zip_code' => mt_rand(1000,9999),
                 'city' => $local,
-                'email' => $lName.'.'.$fName.$i.'@test.dev',
+                'email' => $fName.$i.'@test.dev',
                 'mobile_phone'=>mt_rand(1000000000,9999999999),
                 'home_phone'=>mt_rand(1000000000,9999999999),
                 'birth_date'=>date("Y-M-d",mt_rand('1',time()-72*30)),//'1980-01-01',
