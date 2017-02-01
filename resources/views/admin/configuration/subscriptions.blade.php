@@ -1,3 +1,11 @@
+<!--
+Author : -
+Created : -
+Modified by : S. Forsyth
+Last Modif.: 01.02.2017
+Description : Displays a table with the inforamtion of the subscriptions form the database.
+              The user has the possibility to edit and delete the subscriptions.
+-->
 @extends('layouts.admin')
 
 @section('title')

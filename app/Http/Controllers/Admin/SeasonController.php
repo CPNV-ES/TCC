@@ -1,5 +1,11 @@
 <?php
-
+/*
+Author : -
+Created : -
+Modified by : S. Forsyth
+Last Modif.: 01.02.2017
+Description : Manages the requests from the Season view.
+*/
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
@@ -71,7 +77,7 @@ class SeasonController extends Controller {
             return back()->withInput()->withErrors($validator);
         }
         /////////////////////////////////////////////
-        
+
         // Insert the season
         //-----------------------------------------------------
         $season = Season::create($request->all());

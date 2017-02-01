@@ -1,5 +1,11 @@
 <?php
-
+/*
+Author : -
+Created : -
+Modified by : S. Forsyth
+Last Modif.: 01.02.2017
+Description : Manages requests related to the database.
+*/
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

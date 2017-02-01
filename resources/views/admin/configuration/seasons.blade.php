@@ -1,9 +1,16 @@
+<!--
+Author : -
+Created : -
+Modified by : S. Forsyth
+Last Modif.: 01.02.2017
+Description : Displays a table with the inforamtion of the seasons form the database.
+              The user has the possibility to delete the seasons.
+-->
 @extends('layouts.admin')
 
 @section('title')
     Gestion des saisons
 @endsection
-
 
 @section('content')
     <div class="row">

@@ -1,5 +1,11 @@
 <?php
-
+/*
+Author : -
+Created : -
+Modified by : S. Forsyth
+Last Modif.: 01.02.2017
+Description : Manages the requests from the Subscription view.
+*/
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Subscription_per_member;

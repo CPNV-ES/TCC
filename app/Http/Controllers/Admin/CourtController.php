@@ -1,5 +1,10 @@
 <?php
-
+/*
+Author : -
+Created : -
+Modified by : S. Forsyth
+Last Modif.: 01.02.2017 Description : Manages the requests from the Court view.
+*/
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
