@@ -26,7 +26,6 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Date de début</th>
                     <th>Date de fin</th>
                     <th>Option</th>
@@ -35,7 +34,6 @@
                 <tbody>
                 @foreach($seasons as $season)
                     <tr>
-                        <td>{{$season->id}}</td>
                         <td>{{date_format(date_create($season->begin_date), "d.m.Y")}}</td>
                         <td>{{date_format(date_create($season->end_date), "d.m.Y")}}</td>
                         {{-- SFH: This zone is used for the 'delete' buttons --}}
