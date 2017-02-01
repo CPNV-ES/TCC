@@ -21,7 +21,7 @@ class SeasonController extends Controller {
         //      define new season stat and end dates
         if (sizeof($seasons) > 0) {
             $newSeasonStart = date('Y-m-d', strtotime($seasons->first()->end_date . " +1 day"));
-            $newSeasonEnd = date('Y-m-d', strtotime($newSeasonStart . " +1 year"));
+            $newSeasonEnd = date('Y-m-d', strtotime($newSeasonStart . " +1 year -1 day"));
         }
 
         // SFH: Added compact for the seasons, newSeasonStart and newSeasonEnd
