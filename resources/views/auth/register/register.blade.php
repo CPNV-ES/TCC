@@ -11,76 +11,90 @@
                         <form class="form-horizontal" name="register_form" role="form" method="POST" action="{{ url('/register') }}">
                             {!! csrf_field() !!}
 
-                            <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Prénom*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" class="form-control" name="first_name"
+                                    <input type="text" data-verif-group="register_form" class="form-control" name="firstname"
                                           data-verif="required|min_l:2|max_l:30"
-                                           value="{{ old('first_name') }}">
-                                           @if ($errors->has('first_name'))
+                                           value="{{ old('firstname') }}">
+                                           @if ($errors->has('firstname'))
 
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                        <strong>{{ $errors->first('firstname') }}</strong>
                                     </span>
 
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Nom*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:30" class="form-control" name="last_name"
-                                           value="{{ old('last_name') }}">
-                                           @if ($errors->has('last_name'))
+                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:30" class="form-control" name="lastname"
+                                           value="{{ old('lastname') }}">
+                                           @if ($errors->has('lastname'))
 
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('last_name') }}</strong>
+                                        <strong>{{ $errors->first('lastname') }}</strong>
                                     </span>
 
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Adresse*</label>
+                            <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Rue*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:60" class="form-control" name="address" value="{{ old('address') }}">
-                                    @if ($errors->has('address'))
+                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:60" class="form-control" name="street" value="{{ old('street') }}">
+                                    @if ($errors->has('street'))
 
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('address') }}</strong>
+                                        <strong>{{ $errors->first('street') }}</strong>
+                                    </span>
+
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('streetNbr') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Numéro*</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:10" class="form-control" name="streetNbr" value="{{ old('streetNbr') }}">
+                                    @if ($errors->has('streetNbr'))
+
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('streetNbr') }}</strong>
                                     </span>
 
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('zip_code') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('npa') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">NPA*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|int|min_l:4|max_l:4" class="form-control" name="zip_code"
-                                           value="{{ old('zip_code') }}">
-                                           @if ($errors->has('zip_code'))
+                                    <input type="text" data-verif-group="register_form" data-verif="required|int|min_l:4|max_l:4" class="form-control" name="npa"
+                                           value="{{ old('npa') }}">
+                                           @if ($errors->has('npa'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('zip_code') }}</strong>
+                                        <strong>{{ $errors->first('npa') }}</strong>
                                     </span>
                                     @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('locality') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Ville*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:45" class="form-control" name="city" value="{{ old('city') }}">
-                                    @if ($errors->has('city'))
+                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:45" class="form-control" name="locality" value="{{ old('locality') }}">
+                                    @if ($errors->has('locality'))
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('city') }}</strong>
+                                        <strong>{{ $errors->first('locality') }}</strong>
                                     </span>
                                     @endif
                                 </div>
@@ -101,48 +115,32 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('home_phone') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Téléphone privé*</label>
+                            <div class="form-group{{ $errors->has('telephone') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label">Téléphone*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|phone" class="form-control" name="home_phone"
-                                           placeholder="123 456 78 90" value="{{ old('home_phone') }}">
-                               @if ($errors->has('home_phone'))
+                                    <input type="text" data-verif-group="register_form" data-verif="required|phone" class="form-control" name="telephone"
+                                           placeholder="123 456 78 90" value="{{ old('telephone') }}">
+                               @if ($errors->has('telephone'))
 
                                      <span class="help-block">
-                                     <strong>{{ $errors->first('home_phone') }}</strong>
+                                     <strong>{{ $errors->first('telephone') }}</strong>
                                  </span>
 
                                  @endif
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('mobile_phone') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Téléphone mobile*</label>
-
-                                <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|phone" class="form-control" name="mobile_phone"
-                                           placeholder="123 456 78 90" value="{{ old('mobile_phone') }}">
-                                   @if ($errors->has('mobile_phone'))
-
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('mobile_phone') }}</strong>
-                                    </span>
-
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('birthDate') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label">Date de naissance*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|date|date_past|date_more_diff:72" class="form-control" id="birth_date" name="birth_date"
-                                           value="{{ old('birth_date') }}">
-                                           @if ($errors->has('birth_date'))
+                                    <input type="text" data-verif-group="register_form" data-verif="required|date|date_past|date_more_diff:72" class="form-control" id="birth_date" name="birthDate"
+                                           value="{{ old('birthDate') }}">
+                                           @if ($errors->has('birthDate'))
 
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('birth_date') }}</strong>
+                                        <strong>{{ $errors->first('birthDate') }}</strong>
                                     </span>
 
                                     @endif

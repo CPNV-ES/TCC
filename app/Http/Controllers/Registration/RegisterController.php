@@ -7,7 +7,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Member;
+use App\User;
+use App\PersonalInformation;
 use Validator;
 
 class RegisterController extends Controller
@@ -45,15 +46,15 @@ class RegisterController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'last_name'     => 'required',
-                'first_name'    => 'required',
-                'address'       => 'required',
-                'city'          => 'required',
-                'zip_code'      => 'required|integer|digits:4',
-                'email'         => 'required|email',
-                'mobile_phone'  => 'required',
-                'home_phone'    => 'required',
-                'birth_date'    => 'required|date'
+                'lastname'     => 'required',
+                'firstname'    => 'required',
+                'street'       => 'required',
+                'streetNbr'    => 'required',
+                'locality'     => 'required',
+                'npa'          => 'required|integer|digits:4',
+                'email'        => 'required|email',
+                'telephone'    => 'required',
+                'birthDate'    => 'required|date'
             ]);
         /////////////////////////////////////////////
 
@@ -61,17 +62,18 @@ class RegisterController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request)
         {
-            $duplicate = Member::where('email', $request->input('email'))->count();
+
+            $duplicate = PersonalInformation::where('email', $request->input('email'))->count();
 
             // ESO : verify if the user is older than 6 years
-            if(!$validator->errors()->has('birth_date')){
-              $bdate= new \DateTime($request->input('birth_date'));
+            if(!$validator->errors()->has('birthDate')){
+              $bdate= new \DateTime($request->input('birthDate'));
               $now= new \DateTime();
               if($bdate->format('Ymd') > $now->format('Ymd')) {
-                $validator->errors()->add('birth_date', 'Il est difficile de naître dans le futur.');
+                $validator->errors()->add('birthDate', 'Il est difficile de naître dans le futur.');
               }
               if($bdate->diff($now)->y<6){
-                $validator->errors()->add('birth_date', 'Vous êtes trop jeunes pour vous inscrire. (6 ans révolus minimum)');
+                $validator->errors()->add('birthDate', 'Vous êtes trop jeunes pour vous inscrire. (6 ans révolus minimum)');
               }
             }
             // END OF ESO
@@ -93,16 +95,18 @@ class RegisterController extends Controller
 
         // Insert in DB
         //-------------
-        $member = Member::create($request->all());
-
-        $member->SetBirthDate($request->input('birth_date'));
+        //var_dump($request->all());die;
+        $locid = PersonalInformation::setLocality($request->input('npa'),$request->input('locality'));
+        $rq = $request->all();
+        $rq['fkLocality']=$locid;
+        $member = PersonalInformation::create($rq);
 
         $member->save();
         /////////////////////////////////////////////
 
         // Inform the user that the account has been created and to wait for the admin validation
         //---------------------------------------------------------------------------------------
-        Mail::send('emails.user.register', ['last_name' => $request->input('last_name'), 'first_name' => $request->input('first_name'), 'email' => $request->input('email')], function ($message) use($request)
+        Mail::send('emails.user.register', ['lastname' => $request->input('lastname'), 'firstname' => $request->input('firstname'), 'email' => $request->input('email')], function ($message) use($request)
         {
             $message->to($request->input('email'))->subject('Votre inscription au Tennis Club Chavornay');
         });
@@ -110,13 +114,13 @@ class RegisterController extends Controller
 
         // Inform the admins that an account has been created and wait validation
         //---------------------------------------------------------------------------------
-        $admins = DB::table('members')->where('administrator', 1)->get();
+        $admins = User::where('isAdmin', 1)->get();
 
         foreach ($admins as $admin)
         {
-            Mail::send('emails.admin.register', ['last_name' => $admin->last_name, 'first_name' => $admin->first_name, 'email' => $admin->email], function ($message) use($admin)
+            Mail::send('emails.admin.register', ['lastname' => $admin->personal_information->lastname, 'firstname' => $admin->personal_information->firstname, 'email' => $admin->personal_information->email], function ($message) use($admin)
             {
-                $message->to($admin->email)->subject('Nouveau compte sur Tennis Club Chavornay');
+                $message->to($admin->personal_information->email)->subject('Nouveau compte sur Tennis Club Chavornay');
             });
         }
         /////////////////////////////////////////////

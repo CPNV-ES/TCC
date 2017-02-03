@@ -21,6 +21,8 @@ class CreatePersonalInformationsTable extends Migration
             $table->string('telephone',45);
             $table->string('email',255);
             $table->integer('toVerify');
+            $table->date('birthDate',255);
+            $table->string('_token',255);
             $table->integer('fkLocality')->unsigned();
             $table->timestamps();
             $table->softDeletes();
