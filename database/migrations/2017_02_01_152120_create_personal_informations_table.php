@@ -23,6 +23,7 @@ class CreatePersonalInformationsTable extends Migration
             $table->integer('toVerify');
             $table->integer('fkLocality')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('fkLocality')->references('id')->on('localities');
         });

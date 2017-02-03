@@ -17,6 +17,7 @@ class CreateSeasonsTable extends Migration
            $table->increments('id');
            $table->date('dateStart');
            $table->date('dateEnd');
+           $table->softDeletes();
            $table->timestamps();
         });
     }

@@ -23,6 +23,7 @@ class CreateReservationsTable extends Migration
            $table->integer('fkTypeReservation')->unsigned();
            $table->integer('fkCourt')->unsigned();
            $table->timestamps();
+           $table->softDeletes();
 
            $table->foreign('fkWho')->references('id')->on('personal_informations');
            $table->foreign('fkWithWho')->references('id')->on('personal_informations');

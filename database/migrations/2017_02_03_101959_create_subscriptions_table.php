@@ -19,6 +19,7 @@ class CreateSubscriptionsTable extends Migration
            $table->integer('fkTypeSubscription')->unsigned();
            $table->integer('fkUser')->unsigned();
            $table->timestamps();
+           $table->softDeletes();
            $table->foreign('fkSeason')->references('id')->on('seasons');
            $table->foreign('fkTypeSubscription')->references('id')->on('type_subscriptions');
            $table->foreign('fkUser')->references('id')->on('users');

@@ -18,6 +18,7 @@ class CreateConfigsTable extends Migration
            $table->time('courtOpenTime');
            $table->time('courtCloseTime');
            $table->timestamps();
+           $table->softDeletes();
         });
     }
 
