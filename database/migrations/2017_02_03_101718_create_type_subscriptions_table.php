@@ -17,6 +17,7 @@ class CreateTypeSubscriptionsTable extends Migration
             $table->increments('id');
             $table->string('status',45);
             $table->double('amount',10,2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

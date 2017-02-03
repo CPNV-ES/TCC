@@ -21,6 +21,7 @@ class CreateInvitationsTable extends Migration
            $table->integer('fkInvitationAmount')->unsigned();
            $table->integer('fkReservation')->unsigned();
            $table->timestamps();
+           $table->softDeletes();
            $table->foreign('fkInvitationAmount')->references('id')->on('invitation_amounts');
            $table->foreign('fkReservation')->references('id')->on('reservations');
 

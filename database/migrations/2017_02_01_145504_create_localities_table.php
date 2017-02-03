@@ -18,6 +18,7 @@ class CreateLocalitiesTable extends Migration
            $table->string('name',255);
            $table->string('npa',45);
            $table->timestamps();
+           $table->softDeletes();
         });
 
     }

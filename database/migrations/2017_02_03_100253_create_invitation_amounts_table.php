@@ -16,6 +16,7 @@ class CreateInvitationAmountsTable extends Migration
         {
            $table->increments('id');
            $table->double('amount',10,2);
+           $table->softDeletes();
            $table->timestamps();
         });
     }

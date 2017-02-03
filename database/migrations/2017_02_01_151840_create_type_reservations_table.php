@@ -17,6 +17,7 @@ class CreateTypeReservationsTable extends Migration
             $table->increments('id');
             $table->string('type',45);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
