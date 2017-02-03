@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionsTable extends Migration
+class CreateTypeReservationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,10 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table)
-        
-        {
+        //
+        Schema::create('type_reservations' ,function(Blueprint $table){
             $table->increments('id');
-            
-            $table->string('status');
-            
-            $table->decimal('amount');
-            
+            $table->string('type',45);
             $table->timestamps();
         });
     }
@@ -32,6 +27,7 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('subscriptions');
+        //
+        Schema::drop('type_reservations');
     }
 }
