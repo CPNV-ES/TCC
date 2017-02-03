@@ -16,7 +16,7 @@ class ProfileIsValideMiddleware
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check() && Auth::user()->to_verify == 1)
+        if (Auth::guard($guard)->check() && false /*Auth::user()->to_verify == 1*/)
         {
             return redirect('/profile');
         }

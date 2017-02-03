@@ -40,7 +40,7 @@
         <script>
             is_logged = "{{ Auth::check() }}";
             @if (Auth::check())
-                    member_last_name = "{{ Auth::user()->personal_information->lastname }}";
+                    member_last_name = "{{ Auth::user()->username }}";
             @endif
 
             $.ajaxSetup({
@@ -97,7 +97,7 @@
                         </li>
                         @else
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ Auth::user()->personal_information->lastname }} {{ Auth::user()->personal_information->firstname }} <span class="caret"></span> </a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ Auth::user()->username }} {{ Auth::user()->username }} <span class="caret"></span> </a>
 
                             <ul class="dropdown-menu" role="menu">
                                 @if(Auth::user()->isAdmin == 1)

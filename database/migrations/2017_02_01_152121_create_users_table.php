@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('isMember');
             $table->integer('isTrainer');
             $table->integer('fkPersonalInformation')->unsigned();
+            $table->string('remember_token',255);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fkPersonalInformation')->references('id')->on('personal_informations');
