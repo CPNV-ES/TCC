@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Personal_information extends Model
+class PersonalInformation extends Model
 {
 
     public function localities() {

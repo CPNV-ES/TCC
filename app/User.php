@@ -8,7 +8,7 @@ class User extends Model
 {
 
     public function personal_information() {
-        return $this->belongsTo('App\Personal_information', 'fkPersonalInformation');
+        return $this->belongsTo('App\PersonalInformation', 'fkPersonalInformation');
     }
 
     public function subscriptions() {
