@@ -6,6 +6,11 @@ use App\Models\Reservation;
 use App\Models\Season;
 use App\Models\Member;
 use App\Models\Subscription_per_member;
+
+use App\User;
+use App\PersonalInformation;
+use App\Localitie;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -60,8 +65,9 @@ class MemberController extends Controller
             }
             return response()->json($members);
         }
-        $members = Member::all();
-        return view('admin/member',compact('members'));
+        //infoUser are information of member and no-members
+        $infoUsers = PersonalInformation::all();
+        return view('admin/member',compact('infoUsers'));
     }
 
     /**
@@ -110,9 +116,9 @@ class MemberController extends Controller
             $members = Member::all();
             return response()->json($members);
         }
-        $member = Member::find($id);
-        $localities = ['Provence', 'Ste-Croix','Vuitevoeuf','Baumes','Charvonnay','Yverdon'];
-        return view('admin/configuration/memberEdit',compact('member','localities'));
+        $user = User::find($id);
+        $localities = Localitie::all();
+        return view('admin/configuration/memberEdit',compact('user','localities'));
 
     }
 
