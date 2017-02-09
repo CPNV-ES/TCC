@@ -32,7 +32,8 @@ $(document).ready(function(){
  } );
 
  table = $('#members-table').DataTable({
-
+      //https://datatables.net/reference/option/dom
+     "dom": 'lrtip',
      //https://datatables.net/plug-ins/i18n/French
      "language":
      {
@@ -70,12 +71,12 @@ $(document).ready(function(){
         }
     ]
 
+
  });
 
  // Apply the search
  table.columns().every( function () {
      var that = this;
-
      $( ':input', this.footer() ).on( 'keyup change click', function () {
 
          if ( that.search() !== this.value ) {
@@ -95,4 +96,3 @@ $("#members-table tbody tr").on("click", function(event){
    var id = table.row(this).data()[0];
    window.location.replace('/admin/members/'+id+'/edit');
  });
-

@@ -180,14 +180,13 @@ class MemberController extends Controller
         //IGI - added needed rules
         $validator = Validator::make($request->all(),
             [
-                'first_name' => 'required|max:50',
-                'last_name' => 'required|max:50',
-                'address' => 'required|max:100',
-                'zip_code' => 'required|integer|digits:4',
-                'home_phone' => 'required|max:12|min:9',
-                'mobile_phone' => 'required|max:12|min:9',
+                'firstname' => 'required|max:50',
+                'lastname' => 'required|max:50',
+                'street' => 'required|max:100',
+                'npa' => 'required|integer|digits:4',
+                'telephone' => 'required|max:12|min:9',
                 'email' => 'required|email|max:255',
-                'city' => 'required|max:100',
+                'locality' => 'required|max:100',
             ]);
 
         /////////////////////////////////////////////
@@ -198,8 +197,8 @@ class MemberController extends Controller
         $validator->after(function($validator) use ($request, $id)
         {
             //IGI - check if the email is already used by another members
-            $duplicate = Member::where([['email','=',$request->input('email')],
-                                        ['id','<>', $id]])->count();
+
+            $duplicate = User::whereHas('personal_information', function($query) { $query->where('email',  $request->input('email'));})->where('id','<>',$id)->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
@@ -215,7 +214,7 @@ class MemberController extends Controller
         }
 
         /////////////////////////////////////////////
-        $member = Member::find($id);
+        $member = User::find($id);
 
         //IGI- Update member info and member account parameters and save it
         //-----------------------------------------------------
