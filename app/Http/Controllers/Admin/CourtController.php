@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Court;
+use App\Court;
 use Validator;
 
 class CourtController extends Controller {
@@ -43,27 +43,16 @@ class CourtController extends Controller {
         //      also added a better french version of the error messages (max, unique, date_format, after, integer, min)
         $validator = Validator::make($request->all(),
             [
-                'name'                          => 'required|max:50|unique:courts,name',
-                'start_time'                    => 'required|date_format:H:i',
-                'end_time'                      => 'required|date_format:H:i|after:start_time',
-                'booking_window_member'         => 'required|integer|min:1',
-                'booking_window_not_member'     => 'required|integer|min:1',
+                'name'      => 'required|max:50|unique:courts,name',
+                'nbDays'    => 'required|integer|min:1',
             ],
             [
                 'name.required' => 'Le champ \'Nom\' est obligatoire.',
                 'name.max' => 'Le texte de \'Nom\' ne peut contenir plus de 50 caractères.',
                 'name.unique' => 'Le \'Nom\' saisie existe déjà.',
-                'start_time.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
-                'start_time.date_format' => 'Le champ \'Heure d\'ouverture\' ne correspond pas au format HH:mm.',
-                'end_time.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
-                'end_time.date_format' => 'Le champ \'Heure de fermeture\' ne correspond pas au format HH:mm.',
-                'end_time.after' => 'Le champ \'Heure de fermeture\' doit être supérieur à \'Heure d\'ouverture\'.',
-                'booking_window_member.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.',
-                'booking_window_member.integer' => 'Le champ \'Fenêtre de reservation membre\' doit contenir des chiffres.',
-                'booking_window_member.min' => 'La valeur de \'Fenêtre de reservation membre\' doit être supérieure à 1.',
-                'booking_window_not_member.required' => 'Le champ \'Fenêtre de reservation non membre\' est obligatoire.',
-                'booking_window_not_member.integer' => 'Le champ \'Fenêtre de reservation non membre\' doit contenir des chiffres.',
-                'booking_window_not_member.min' => 'La valeur de \'Fenêtre de reservation non membre\' doit être supérieure à 1.'
+                'nbDays.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.',
+                'nbDays.integer' => 'Le champ \'Fenêtre de reservation membre\' doit contenir des chiffres.',
+                'nbDays.min' => 'La valeur de \'Fenêtre de reservation membre\' doit être supérieure à 1.'
             ]);
         /////////////////////////////////////////////
 
@@ -106,8 +95,8 @@ class CourtController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        // SFH: Added the edit function
-        $courts = Court::all();
+        // SFH: Ordered them alphabetically
+        $courts = Court::orderby('name', 'asc')->get();
         $singleCourt = Court::findOrFail($id);
 
         return view('admin/configuration/courts', compact('singleCourt', 'courts'));
@@ -128,27 +117,16 @@ class CourtController extends Controller {
         //      also added a better french version of the error messages (max, unique, date_format, after, integer, min)
         $validator = Validator::make($request->all(),
             [
-                'name'                          => 'required|max:50|unique:courts,name,' . $id,
-                'start_time'                    => 'required|date_format:H:i',
-                'end_time'                      => 'required|date_format:H:i|after:start_time',
-                'booking_window_member'         => 'required|integer|min:1',
-                'booking_window_not_member'     => 'required|integer|min:1',
+                'name'      => 'required|max:50|unique:courts,name,' . $id,
+                'nbDays'    => 'required|integer|min:1',
             ],
             [
                 'name.required' => 'Le champ \'Nom\' est obligatoire.',
                 'name.max' => 'Le texte de \'Nom\' ne peut contenir plus de 50 caractères.',
                 'name.unique' => 'Le \'Nom\' saisie existe déjà.',
-                'start_time.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
-                'start_time.date_format' => 'Le champ \'Heure d\'ouverture\' ne correspond pas au format HH:mm.',
-                'end_time.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
-                'end_time.date_format' => 'Le champ \'Heure de fermeture\' ne correspond pas au format HH:mm.',
-                'end_time.after' => 'Le champ \'Heure de fermeture\' doit être supérieur à \'Heure d\'ouverture\'.',
-                'booking_window_member.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.',
-                'booking_window_member.integer' => 'Le champ \'Fenêtre de reservation membre\' doit contenir des chiffres.',
-                'booking_window_member.min' => 'La valeur de \'Fenêtre de reservation membre\' doit être supérieure à 1.',
-                'booking_window_not_member.required' => 'Le champ \'Fenêtre de reservation non membre\' est obligatoire.',
-                'booking_window_not_member.integer' => 'Le champ \'Fenêtre de reservation non membre\' doit contenir des chiffres.',
-                'booking_window_not_member.min' => 'La valeur de \'Fenêtre de reservation non membre\' doit être supérieure à 1.'
+                'nbDays.required' => 'Le champ \'Fenêtre de reservation membre\' est obligatoire.',
+                'nbDays.integer' => 'Le champ \'Fenêtre de reservation membre\' doit contenir des chiffres.',
+                'nbDays.min' => 'La valeur de \'Fenêtre de reservation membre\' doit être supérieure à 1.'
             ]);
         /////////////////////////////////////////////
 

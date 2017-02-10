@@ -46,7 +46,7 @@ Description: Displays a form with the informations of a member. The inputs of th
                 <input class="form-control" name="lastname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $user->personal_information->lastname }}" >
                 @if ($errors->has('lastname'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('last_name') }}</strong>
+                        <strong>{{ $errors->first('lastname') }}</strong>
                     </span>
                 @endif
             </div>
@@ -99,7 +99,7 @@ Description: Displays a form with the informations of a member. The inputs of th
                 <select class="form-control" name="locality">
                     @foreach($localities as $locality)
                      <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                     <option value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $user->personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->name}} </option>
+                     <option value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $user->personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
                     @endforeach
                 </select>
             </div>
@@ -115,25 +115,39 @@ Description: Displays a form with the informations of a member. The inputs of th
                 @endif
             </div>
         </div>
-        {{--<div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 " @if($errors->has('home_phone')) {{'has-error'}} @endif>
-            <label for="example-text-input" name="lbl_home_phone" class="col-2 col-form-label">Téléphone fixe*</label>
-            <div >
-                <input class="form-control" name="home_phone" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('home_phone') ? old('home_phone') : $user->home_phone }}" >
-                @if ($errors->has('username'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('home-phone') }}</strong>
-                    </span>
-                @endif
+        {{--  ACCOUNT TYPE WITH DROPDOWN LIST
+              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                  <label>Type de compte</label>
+                  <select class="form-control" name="typeCompte">
+                      <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
+                          <option value="0" {{old('localitie') == 0 ? 'selected': $user->personal_information->isMember ==1 ? 'selected':''}} >Membre</option>
+                          <option value="1" {{old('localitie') == 1 ? 'selected': $user->personal_information->isTrainer ==1 ? 'selected':''}} >Responsable</option>
+                          <option value="2" {{old('localitie') == 2 ? 'selected': $user->personal_information->isAdmin ==1 ? 'selected':''}} >Administrateur</option>
+                  </select>
+              </div>--}}
+        <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
+            <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Type de compte</label>
+            <div class="checkbox">
+                <div class="col-lg-4">
+                    <label>
+                        <input type="checkbox"  value="1" name="isAdmin" {{ old('isAdmin')==1 ? 'checked' : $user->isAdmin==1 ? 'checked':'' }}>
+                        Administrateur
+                    </label>
+                </div>
+                <div class="col-lg-4">
+                    <label>
+                        <input type="checkbox" id="checkboxError" value="1" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : $user->isTrainer==1 ? 'checked':'' }}>
+                        Responsable / entraîneur
+                    </label>
+                </div>
+                <div class="col-lg-4">
+                    <label>
+                        <input type="checkbox" id="checkboxError" value="1" name="isMember" {{ old('isMember')==1 ? 'checked' : $user->isMember==1 ? 'checked':'' }}>
+                        Membre
+                    </label>
+                </div>
             </div>
-        </div> --}}
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-            <label>Type de compte</label>
-            <select class="form-control" name="typeCompte">
-                <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                    <option value="0" {{old('localitie') == 0 ? 'selected': $user->personal_information->isMember ==1 ? 'selected':''}} >Membre</option>
-                    <option value="1" {{old('localitie') == 1 ? 'selected': $user->personal_information->isTrainer ==1 ? 'selected':''}} >Responsable</option>
-                    <option value="2" {{old('localitie') == 2 ? 'selected': $user->personal_information->isAdmin ==1 ? 'selected':''}} >Administrateur</option>
-            </select>
+
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Options du compte</label>
@@ -155,6 +169,12 @@ Description: Displays a form with the informations of a member. The inputs of th
                         Valider le compte
                     </label>
                 </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="checkboxError" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : $user->invitRight==1 ? 'checked':'' }}>
+                    Donner le droit d'invitation
+                </label>
+            </div>
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
@@ -163,7 +183,8 @@ Description: Displays a form with the informations of a member. The inputs of th
         </div>
     </form>
     <script>
-        lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save', {{($errors->any()) ? 'false' : 'true' }});
+
+        lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save',{{($errors->any()) ? 'false' : 'true' }});
         let btn=document.getElementById('btn-member-save');
         VERIF.verifOnCLick(btn,'form-edit-member','edit-group-form');
     </script>

@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Localitie;
+use App\Locality;
 
 class PersonalInformation extends Model
 {
@@ -15,11 +15,12 @@ class PersonalInformation extends Model
         'email',
         'telephone',
         'birthDate',
-        'fkLocality'
+        'fkLocality',
+        'toVerify'
     ];
 
     public function localities() {
-        return $this->belongsTo('App\Localitie', 'fkLocality');
+        return $this->belongsTo('App\Locality', 'fkLocality');
     }
 
     public function user() {
@@ -36,6 +37,6 @@ class PersonalInformation extends Model
 
 
     public static function setLocality($npa,$name){
-        return Localitie::firstOrCreate(['NPA'=>$npa,'name'=>ucwords($name)])->id;
+        return Locality::firstOrCreate(['NPA'=>$npa,'name'=>ucwords($name)])->id;
     }
 }
