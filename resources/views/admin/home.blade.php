@@ -51,17 +51,17 @@
             <div class="col-md-3">
                 <div class="box">
                     <div class="box-content">
-                        <h4 class="tag-title text-center">{{ $member->first_name }} {{ $member->last_name }}</h4>
+                        <h4 class="tag-title text-center">{{ $member->personal_information->firstname }} {{ $member->personal_information->lastname }}</h4>
                         <hr/>
                         <p>
-                            {{ $member->address }}<br/>
-                            {{ $member->zip_code }}<br/>
+                            {{ $member->personal_information->street }} <br/>
+                            {{ $member->personal_information->streetNbr }}<br/>
                             {{ $member->city }}<br/>
                         </p>
                         <hr/>
                         <p>
-                            {{ $member->email }}<br/>
-                            {{ $member->phone }}
+                            {{ $member->personal_information->email }}<br/>
+                            {{ $member->personal_information->telephone }}
                         </p>
                         <hr/>
                         <p>

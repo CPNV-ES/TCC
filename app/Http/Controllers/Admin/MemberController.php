@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Reservation;
 use App\Models\Season;
-use App\Models\Member;
 use App\Models\Subscription_per_member;
 
 use App\User;
@@ -268,7 +267,7 @@ class MemberController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request, $id)
         {
-            $duplicate = Member::where('login', $request->input('login'.$id))->count();
+            $duplicate = User::where('username', $request->input('login'.$id))->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
@@ -289,7 +288,7 @@ class MemberController extends Controller
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
 
-        $member = Member::find($id);
+        $member = User::find($id);
 
         $member->UpdateLogin($request->input('login'.$id));
 
@@ -299,13 +298,13 @@ class MemberController extends Controller
 
 
         /////////////////////////////////////////////
-        $emailMember = $member->email;
+        $emailMember = $member->personal_information->email;
         // Send email to the user to choose password
         //-------------------------------------------------
-        Mail::send('emails.user.password', ['last_name'  => $member->last_name,
-            'first_name' => $member->first_name,
-            'login'      => $member->login,
-            'token'      => $member->token],
+        Mail::send('emails.user.password', ['last_name'  => $member->personal_information->lastname,
+            'first_name' => $member->personal_information->firstname,
+            'login'      => $member->username,
+            'token'      => $member->personal_information->token],
             function ($message) use($emailMember)
             {
                 $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');

@@ -68,6 +68,7 @@ class RegisterController extends Controller
             // ESO : verify if the user is older than 6 years
             if(!$validator->errors()->has('birthDate')){
               $bdate= new \DateTime($request->input('birthDate'));
+              $request['birthDate']=$bdate->format('Y-m-d');
               $now= new \DateTime();
               if($bdate->format('Ymd') > $now->format('Ymd')) {
                 $validator->errors()->add('birthDate', 'Il est difficile de naître dans le futur.');
@@ -99,9 +100,24 @@ class RegisterController extends Controller
         $locid = PersonalInformation::setLocality($request->input('npa'),$request->input('locality'));
         $rq = $request->all();
         $rq['fkLocality']=$locid;
-        $member = PersonalInformation::create($rq);
 
+        // retransformation de la date
+        $bdate= new \DateTime($request['birthDate']);
+        $request['birthDate']=$bdate->format('d.m.Y');
+
+        $member = PersonalInformation::create($rq);
         $member->save();
+
+        $user = User::create([
+            'active'=>1,
+            'invitRight'=>1,
+            'validated'=>0,
+            'isAdmin'=>0,
+            'isMember'=>1,
+            'isTrainer'=>0,
+            'fkPersonalInformation'=>$member->id
+        ]);
+
         /////////////////////////////////////////////
 
         // Inform the user that the account has been created and to wait for the admin validation

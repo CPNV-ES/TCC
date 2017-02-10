@@ -17,4 +17,14 @@ class Subscription extends Model
     public function type_subscription() {
         return $this->belongsTo('App\Type_subscription', 'fkTypeSubscription');
     }
+
+    public function SetStatus($id_member, $status)
+    {
+        $date = getdate();
+        $season = Season::where('dateStart', 'LIKE', '%'.$date['year'].'%')->get();
+        if(count($season)==0) $season=[Season::all()->last];
+        $this->fkUser = $id_member;
+        $this->fkSeason =  $season[0]->id;
+        $this->fkTypeSubscription = $status;
+    }
 }

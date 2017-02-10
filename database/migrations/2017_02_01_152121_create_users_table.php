@@ -15,8 +15,8 @@ class CreateUsersTable extends Migration
         //
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username', 45);
-            $table->string('password',255);
+            $table->string('username', 45)->nullable();
+            $table->string('password',255)->nullable();
             $table->integer('active');
             $table->integer('invitRight');
             $table->integer('validated');
@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('isMember');
             $table->integer('isTrainer');
             $table->integer('fkPersonalInformation')->unsigned();
-            $table->string('remember_token',255);
+            $table->string('remember_token',255)->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fkPersonalInformation')->references('id')->on('personal_informations');
