@@ -51,12 +51,12 @@ class PasswordController extends Controller
             }
             else
             {
-                redirect('home');
+                return redirect('home');
             }
         }
         else
         {
-            redirect('home');
+            return redirect('home');
         }
     }
 
