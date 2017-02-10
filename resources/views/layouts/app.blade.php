@@ -34,6 +34,7 @@
         {!! Html::script('/ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
         {!! Html::script('/js/verif.js') !!}
+        {!! Html::script('/js/customVerif.js') !!}
 
 
 
