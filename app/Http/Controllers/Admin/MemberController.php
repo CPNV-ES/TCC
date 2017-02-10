@@ -182,7 +182,7 @@ class MemberController extends Controller
                 'firstname' => 'required|max:50',
                 'lastname' => 'required|max:50',
                 'street' => 'required|max:100',
-                'telephone' => 'required|max:12|min:9',
+                'telephone' => 'required',
                 'email' => 'required|email|max:255',
                 'locality' => 'required|max:100',
             ]);
@@ -201,6 +201,12 @@ class MemberController extends Controller
             {
                 $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
             }
+            $regexTel = "/^(((\+|00)\d{2,3})|0)([.\/ -]?\d){9}$/";
+            if(!preg_match($regexTel, $request->input('telephone')))
+            {
+                $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 0244521212)');
+            }
+
         });
 
         /////////////////////////////////////////////

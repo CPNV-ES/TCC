@@ -21,7 +21,7 @@ Description: Displays a form with the informations of a member. The inputs of th
     <form id="form-edit-member" class="form-vertical" role="form" method="POST" action="{{ url('/admin/members/'.$user->id) }}">
         {{ csrf_field() }}
         {{ method_field('PUT') }}
-        <input class="form-control" name="member-id" type="hidden" value="{{$user->id}}">
+        <input class="form-control"  name="member-id" type="hidden" value="{{$user->id}}">
 
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12  ">
             <div >
@@ -32,7 +32,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 @if($errors->has('firstname')) {{'has-error'}} @endif  ">
             <label for="example-text-input" class="col-2 col-form-label">Prénom*</label>
             <div >
-                <input class="form-control" name="firstname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $user->personal_information->firstname }}" >
+                <input class="form-control" id="firstname" name="firstname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $user->personal_information->firstname }}" >
                 @if ($errors->has('firstname'))
                     <span class="help-block">
                         <strong>{{ $errors->first('firstname') }}</strong>
@@ -54,7 +54,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('email')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_email" class="col-2 col-form-label">Mail*</label>
             <div >
-                <input class="form-control" name="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $user->personal_information->email }}" >
+                <input class="form-control" name="email" id="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $user->personal_information->email }}" >
                 @if ($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -65,7 +65,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('street')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_street" class="col-2 col-form-label">Rue*</label>
             <div>
-                <input class="form-control" name="street" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $user->personal_information->street }}" >
+                <input class="form-control" name="street" id="street" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $user->personal_information->street }}" >
                 @if ($errors->has('street'))
                     <span class="help-block">
                         <strong>{{ $errors->first('street') }}</strong>
@@ -77,7 +77,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('streetNbr')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue</label>
             <div >
-                <input class="form-control" name="streetNbr" data-verif-group="edit-group-form" data-verif="required|text|min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $user->personal_information->streetNbr }}" >
+                <input class="form-control" name="streetNbr" id="streetNbr" data-verif-group="edit-group-form" data-verif="required|text|min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $user->personal_information->streetNbr }}" >
             </div>
         </div>
 
@@ -96,10 +96,10 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('locality')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_locality "class="col-2 col-form-label">Localité*</label>
             <div  >
-                <select class="form-control" name="locality">
+                <select class="form-control" id="locality" name="locality">
                     @foreach($localities as $locality)
                      <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                     <option value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $user->personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
+                     <option id="locality{{$user->personal_information->fkLocality}}" value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $user->personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
                     @endforeach
                 </select>
             </div>
@@ -107,7 +107,7 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('telephone')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_telephone class="col-2 col-form-label">Téléphone*</label>
             <div >
-                <input class="form-control" name="telephone" placeholder="0244542112" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('telephone') ? old('telephone') : $user->personal_information->telephone }}" >
+                <input class="form-control" name="telephone" id="telephone" placeholder="0244542112" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('telephone') ? old('telephone') : $user->personal_information->telephone }}" >
                 @if ($errors->has('mobile_phone'))
                     <span class="help-block">
                         <strong>{{ $errors->first('telephone') }}</strong>
@@ -130,19 +130,19 @@ Description: Displays a form with the informations of a member. The inputs of th
             <div class="checkbox">
                 <div class="col-lg-4">
                     <label>
-                        <input type="checkbox"  value="1" name="isAdmin" {{ old('isAdmin')==1 ? 'checked' : $user->isAdmin==1 ? 'checked':'' }}>
+                        <input type="checkbox"  value="1" id="isAdmin" name="isAdmin" {{ old('isAdmin')==1 ? 'checked' : $user->isAdmin==1 ? 'checked':'' }}>
                         Administrateur
                     </label>
                 </div>
                 <div class="col-lg-4">
                     <label>
-                        <input type="checkbox" id="checkboxError" value="1" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : $user->isTrainer==1 ? 'checked':'' }}>
+                        <input type="checkbox" id="checkboxError"  value="1"  id="isTrainer" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : $user->isTrainer==1 ? 'checked':'' }}>
                         Responsable / entraîneur
                     </label>
                 </div>
                 <div class="col-lg-4">
                     <label>
-                        <input type="checkbox" id="checkboxError" value="1" name="isMember" {{ old('isMember')==1 ? 'checked' : $user->isMember==1 ? 'checked':'' }}>
+                        <input type="checkbox" id="isMember" value="1" name="isMember" {{ old('isMember')==1 ? 'checked' : $user->isMember==1 ? 'checked':'' }}>
                         Membre
                     </label>
                 </div>
@@ -153,25 +153,25 @@ Description: Displays a form with the informations of a member. The inputs of th
             <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Options du compte</label>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="checkboxError" value="1" name="active" {{ old('active')==1 ? 'checked' : $user->active==1 ? 'checked':'' }}>
+                        <input type="checkbox" id="active" value="1" name="active" {{ old('active')==1 ? 'checked' : $user->active==1 ? 'checked':'' }}>
                         Rendre le compte actif
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="checkboxError" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $user->personal_information->toVerify==1 ? 'checked':'' }}>
+                        <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $user->personal_information->toVerify==1 ? 'checked':'' }}>
                         Demander une vérification
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" id="checkboxError" value="1" name="validated" {{ old('validated')==1 ? 'checked' : $user->validated==1 ? 'checked':'' }}>
+                        <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : $user->validated==1 ? 'checked':'' }}>
                         Valider le compte
                     </label>
                 </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" id="checkboxError" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : $user->invitRight==1 ? 'checked':'' }}>
+                    <input type="checkbox" id="invitRight" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : $user->invitRight==1 ? 'checked':'' }}>
                     Donner le droit d'invitation
                 </label>
             </div>
@@ -179,14 +179,53 @@ Description: Displays a form with the informations of a member. The inputs of th
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
             <button id="btn-member-edit"  class="btn btn-primary" type="button">Modifier</button>
-            <button id="btn-member-save" type="button"  class="btn btn-primary">Sauvegarder</button>
+            <button id="btn-member-save" type="submit"  class="btn btn-primary">Sauvegarder</button>
         </div>
     </form>
     <script>
+        {{--var user =  {--}}
+            {{--firstname : "",--}}
+            {{--lastname : "{{$user->personal_information->lastname}}",--}}
+            {{--email : "{{$user->personal_information->email}}",--}}
+            {{--street : "{{$user->personal_information->street}}",--}}
+            {{--telephone : "{{$user->personal_information->telephone}}",--}}
+            {{--streetNbr : "{{$user->personal_information->streetNbr}}",--}}
+            {{--locality : "{{$user->personal_information->fkLocality}}",--}}
+            {{--isAdmin :"{{$user->isAdmin}}", V--}}
+            {{--isTrainer : "{{$user->isTrainer}}", V--}}
+            {{--isMember : "{{$user->isMember}}", V--}}
+            {{--active : "{{$user->active}}",--}}
+            {{--toVerify : "{{$user->personal_information->toVerify}}",--}}
+            {{--invitRight :"{{$user->invitRight}}"--}}
+         {{--};--}}
+
+        $("#btn-member-edit").click(function(){
+            if(lockedForm == false)
+            {
+                $("#firstname").val("{{$user->personal_information->firstname}}");
+                $("#lastname").val("{{$user->personal_information->lastname}}");
+                $("#email").val("{{$user->personal_information->email}}");
+                $("#street").val("{{$user->personal_information->street}}");
+                $("#telephone").val("{{$user->personal_information->telephone}}");
+                $("#streetNbr").val("{{$user->personal_information->streetNbr}}");
+                $("#isAdmin").prop('checked', {{($user->isAdmin == 1) ? "true": "false"}});
+                $("#isTrainer").prop('checked', {{($user->isTrainer == 1) ? "true": "false"}});
+                $("#isMember").prop('checked', {{($user->isMember == 1) ? "true": "false"}});
+                $("#active").prop('checked', {{($user->isMember == 1) ? "true": "false"}});
+                $("#toVerify").prop('checked', {{($user->personal_information->toVerify == 1) ? "true": "false"}});
+                $("#invitRight").prop('checked', {{($user->invitRight == 1) ? "true": "false"}});
+                $("#validated").prop('checked', {{($user->validated == 1) ? "true": "false"}})
+                $("#locality{{$user->personal_information->fkLocality}}").prop('selected', true);
+            }
+        });
+
 
         lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save',{{($errors->any()) ? 'false' : 'true' }});
         let btn=document.getElementById('btn-member-save');
-        VERIF.verifOnCLick(btn,'form-edit-member','edit-group-form');
+        VERIF.onClickSubmitAfterVerifGroup(btn,'form-edit-member','edit-group-form');
+
+
+
     </script>
 
 
