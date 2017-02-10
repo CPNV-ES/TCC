@@ -16,6 +16,7 @@ class PersonalInformation extends Model
         'telephone',
         'birthDate',
         'fkLocality',
+        '_token',
         'toVerify'
     ];
 
