@@ -134,10 +134,7 @@
 
             {{-- SFH: Added to check form before send --}}
             <script type="text/javascript">
-                document.querySelector('#btnSubscriptionCheck').addEventListener('click', function(e) {
-                    if(VERIF.verifGroup('subscriptionCheck'))
-                        document.forms["subscriptionForm"].submit();
-                });
+                VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnSubscriptionCheck'),'subscriptionForm');
             </script>
             {{-- SFH: End --}}
 
