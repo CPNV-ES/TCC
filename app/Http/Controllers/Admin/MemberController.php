@@ -9,7 +9,7 @@ use App\Models\Subscription_per_member;
 
 use App\User;
 use App\PersonalInformation;
-use App\Localitie;
+use App\Locality;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -117,7 +117,7 @@ class MemberController extends Controller
             return response()->json($members);
         }
         $user = User::find($id);
-        $localities = Localitie::all();
+        $localities = Locality::all();
         return view('admin/configuration/memberEdit',compact('user','localities'));
 
     }
@@ -183,7 +183,6 @@ class MemberController extends Controller
                 'firstname' => 'required|max:50',
                 'lastname' => 'required|max:50',
                 'street' => 'required|max:100',
-                'npa' => 'required|integer|digits:4',
                 'telephone' => 'required|max:12|min:9',
                 'email' => 'required|email|max:255',
                 'locality' => 'required|max:100',
@@ -197,13 +196,14 @@ class MemberController extends Controller
         $validator->after(function($validator) use ($request, $id)
         {
             //IGI - check if the email is already used by another members
-
-            $duplicate = User::whereHas('personal_information', function($query) { $query->where('email',  $request->input('email'));})->where('id','<>',$id)->count();
+            // $request->input('email')
+            $duplicate = User::whereHas('personal_information', function($query) use ($request) { $query->where('email', $request["email"]);})->where('id','<>',$id)->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
             }
         });
+
         /////////////////////////////////////////////
 
         // Display errors messages, return to update page
@@ -214,17 +214,28 @@ class MemberController extends Controller
         }
 
         /////////////////////////////////////////////
-        $member = User::find($id);
+        $userAccount = User::find($id);
+        $userInfo = PersonalInformation::find($userAccount->fkPersonalInformation);
+
 
         //IGI- Update member info and member account parameters and save it
         //-----------------------------------------------------
-        $member->UpdateUser($request->all());
-        $member->UpdateAccount($request->all());
-        $member->save();
+        $userAccount->UpdateAccountParam($request->all());
+
+        //sorry...
+        ($request->exists("toVerify")) ? $request["toVerify"]= "1": $request["toVerify"]= "0" ;
+        $request["birthDate"] = $userInfo->birthDate;
+
+        $userInfo->update($request->all());
+        //$member->UpdateAccount($request->all());
+
+        $userAccount->save();
+        $userInfo->save();
+
 
         //IGI - flash message and come back to the edit member page
         Session::flash('message', "Les modifications ont bien été enregistrées");
-        return redirect('admin/members/'.$member->id.'/edit');
+        return redirect('admin/members/'.$userAccount->id.'/edit');
     }
     //IGI- actually not used - will be used to check (in AJAX) in the edit member form if the email is already used in the db.
     public function checkMailUse(Request $request)
@@ -288,6 +299,7 @@ class MemberController extends Controller
         /////////////////////////////////////////////
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
+
 
         $member = Member::find($id);
 
