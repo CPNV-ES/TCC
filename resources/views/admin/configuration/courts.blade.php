@@ -142,10 +142,7 @@
 
             {{-- SFH: Added to check form before send --}}
             <script type="text/javascript">
-                document.querySelector('#btnCourtCheck').addEventListener('click', function(e) {
-                    if(VERIF.verifGroup('courtCheck'))
-                        document.forms["courtForm"].submit();
-                });
+                    VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnCourtCheck'),'courtForm');
             </script>
             {{-- SFH: End --}}
 

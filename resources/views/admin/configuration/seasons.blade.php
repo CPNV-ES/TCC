@@ -113,10 +113,7 @@
 
             {{-- SFH: Added to check form before send --}}
             <script type="text/javascript">
-                document.querySelector('#btnSeasonCheck').addEventListener('click', function(e) {
-                    if(VERIF.verifGroup('seasonCheck'))
-                        document.forms["seasonForm"].submit();
-                });
+              VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnSeasonCheck'),'seasonForm');
             </script>
             {{-- SFH: End --}}
 

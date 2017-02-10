@@ -3,7 +3,7 @@
 @section('title')
     Gestion des cotisations
     {{-- SFH: Display a return button if in edit mode --}}
-    @if(!empty($singleSubscription))
+    @if(!empty($singleTypeSubscription))
         <a type="button" class="btn btn-primary" href="/admin/config/subscriptions">Retour</a>
     @endif
 @endsection
@@ -36,22 +36,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($subscriptions as $subscription)
+                @foreach($typeSubscriptions as $typeSubscription)
                     <tr>
-                        <td>{{$subscription->status}}</td>
-                        <td>{{$subscription->amount}}</td>
+                        <td>{{$typeSubscription->status}}</td>
+                        <td>{{$typeSubscription->amount}}</td>
                         {{-- SFH: This zone is used for the 'edit' and 'delete' buttons --}}
                         <td class="option-zone">
                             {{-- SFH: Check if allowed to edit and delete --}}
-                            @if(sizeof($subscription->seasons) == 0)
-                                <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/subscriptions/{{$subscription->id}}/edit">
+                            @php
+                            $paid = false;
+                            $subscriptions = $typeSubscription->subscriptions;
+                            foreach($subscriptions as $subscription) {
+                                if ($subscription->paid == 1) {
+                                    $paid = true;
+                                }
+                            }
+                            @endphp
+                            @if(!$paid)
+                                <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/subscriptions/{{$typeSubscription->id}}/edit">
                                     <span class="fa fa-edit"></span>
                                 </button>
                                 {{-- SFH: Only methode found to call the 'destroy' methode in the controler. Trying to find a better way. --}}
-                                <form class="delete" role="form" method="POST" action="/admin/config/subscriptions/{{$subscription->id}}">
+                                <form class="delete" role="form" method="POST" action="/admin/config/subscriptions/{{$typeSubscription->id}}">
                                     {!! csrf_field() !!}
                                     {!! method_field('DELETE') !!}
-                                    <button class="btn btn-danger option" data-action="delete-subscription" data-subscription="{{$subscription->status}}">
+                                    <button class="btn btn-danger option" data-action="delete-subscription" data-subscription="{{$typeSubscription->status}}">
                                         <span class="fa fa-trash"></span>
                                     </button>
                                 </form>
@@ -67,7 +76,7 @@
 
     <div class="row" align="center">
         {{-- SFH: Added to change the title if editing or adding --}}
-        <h3>{{(!empty($singleSubscription) ? 'Modifier' : 'Ajouter')}} une cotisation</h3>
+        <h3>{{(!empty($singleTypeSubscription) ? 'Modifier' : 'Ajouter')}} une cotisation</h3>
     </div>
 
     {{--
@@ -79,11 +88,11 @@
     <div class="row">
         {{-- SFH: Change the url if editing or adding --}}
         <form class="form-horizontal" name="subscriptionForm" role="form" method="POST"
-              action="{{ url('/admin/config/subscriptions') . (!empty($singleSubscription) ? '/' . $singleSubscription->id : '') }}">
+              action="{{ url('/admin/config/subscriptions') . (!empty($singleTypeSubscription) ? '/' . $singleTypeSubscription->id : '') }}">
 
             {!! csrf_field() !!}
             {{-- SFH: Used to know which methode in the controller to call --}}
-            @if(!empty($singleSubscription))
+            @if(!empty($singleTypeSubscription))
                 {!! method_field('PUT') !!}
             @endif
 
@@ -92,7 +101,7 @@
 
                 <div class="col-md-4">
                     <input id="status" type="text" class="form-control" name="status" data-verif="required|max_l:50" data-verif-group="subscriptionCheck"
-                           value="{{ (old('status') != '' ? old('status') : (!empty($singleSubscription) ? $singleSubscription->status : '')) }}">
+                           value="{{ (old('status') != '' ? old('status') : (!empty($singleTypeSubscription) ? $singleTypeSubscription->status : '')) }}">
 
                     @if ($errors->has('status'))
                         <p class="help-block">
@@ -107,7 +116,7 @@
 
                 <div class="col-md-4">
                     <input id="amount" type="number" step="0.05" class="form-control" name="amount" data-verif="double_neg|min:0" data-verif-group="subscriptionCheck"
-                           value="{{ (old('amount') != '' ? old('amount') : (!empty($singleSubscription) ? $singleSubscription->amount : '')) }}">
+                           value="{{ (old('amount') != '' ? old('amount') : (!empty($singleTypeSubscription) ? $singleTypeSubscription->amount : '')) }}">
                     @if ($errors->has('amount'))
                         <p class="help-block">
                             {{ $errors->first('amount') }}
@@ -119,16 +128,13 @@
             <div class="form-group" align="center">
                 <button id="btnSubscriptionCheck" type="button" class="btn btn-primary">
                     {{-- SFH: Change button text if editing or adding --}}
-                    {{ (!empty($singleSubscription) ? 'Sauvegarder' : 'Ajouter') }}
+                    {{ (!empty($singleTypeSubscription) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>
             </div>
 
             {{-- SFH: Added to check form before send --}}
             <script type="text/javascript">
-                document.querySelector('#btnSubscriptionCheck').addEventListener('click', function(e) {
-                    if(VERIF.verifGroup('subscriptionCheck'))
-                        document.forms["subscriptionForm"].submit();
-                });
+                VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnSubscriptionCheck'),'subscriptionForm');
             </script>
             {{-- SFH: End --}}
 

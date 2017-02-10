@@ -321,7 +321,7 @@ class MemberController extends Controller
         Mail::send('emails.user.password', ['last_name'  => $member->personal_information->lastname,
             'first_name' => $member->personal_information->firstname,
             'login'      => $member->username,
-            'token'      => $member->personal_information->token],
+            'token'      => $member->personal_information->_token],
             function ($message) use($emailMember)
             {
                 $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');

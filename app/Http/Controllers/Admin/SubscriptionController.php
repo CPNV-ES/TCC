@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Subscription_per_member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Subscription;
+use App\Type_subscription;
 use Validator;
 
 class SubscriptionController extends Controller {
@@ -16,10 +15,10 @@ class SubscriptionController extends Controller {
      */
     public function index() {
         // SFH: Ordered them by latest first
-        $subscriptions = Subscription::orderby('status', 'asc')->get();
+        $typeSubscriptions = Type_subscription::orderby('status', 'asc')->get();
 
         // SFH: Added compact for the subscriptions
-        return view('/admin/configuration/subscriptions', compact('subscriptions'));
+        return view('/admin/configuration/subscriptions', compact('typeSubscriptions'));
     }
 
     /**
@@ -44,7 +43,7 @@ class SubscriptionController extends Controller {
         //      also added a better french version of the error messages (max, unique, min)
         $validator = Validator::make($request->all(),
             [
-                'status'    => 'required|max:50|unique:subscriptions,status',
+                'status'    => 'required|max:50|unique:type_subscriptions,status',
                 'amount'    => 'numeric|min:0'
             ],
             [
@@ -56,6 +55,7 @@ class SubscriptionController extends Controller {
             ]);
         /////////////////////////////////////////////
 
+
         // Display errors messages, return to the subscription page
         //-------------------------------------------------
         if($validator->fails()) {
@@ -66,10 +66,11 @@ class SubscriptionController extends Controller {
         }
         /////////////////////////////////////////////
 
+
         // Insert the subscription
         //-----------------------------------------------------
-        $subscription = Subscription::create($request->all());
-        $subscription->save();
+        $typeSubscriptions = Type_subscription::create($request->all());
+        $typeSubscriptions->save();
         /////////////////////////////////////////////
 
         // SFH: Return a success message to be displayed
@@ -96,10 +97,10 @@ class SubscriptionController extends Controller {
      */
     public function edit($id) {
         // SFH: Added the edit function
-        $subscriptions = Subscription::orderby('status', 'asc')->get();
-        $singleSubscription = Subscription::findOrFail($id);
+        $typeSubscriptions = Type_subscription::orderby('status', 'asc')->get();
+        $singleTypeSubscription = Type_subscription::findOrFail($id);
 
-        return view("/admin/configuration/subscriptions", compact('subscriptions', 'singleSubscription'));
+        return view("/admin/configuration/subscriptions", compact('typeSubscriptions', 'singleTypeSubscription'));
         // SFH: End
     }
 
@@ -117,7 +118,7 @@ class SubscriptionController extends Controller {
         //      also added a better french version of the error messages (max, unique, min)
         $validator = Validator::make($request->all(),
             [
-                'status'    => 'required|max:50|unique:subscriptions,status,' . $id,
+                'status'    => 'required|max:50|unique:type_subscriptions,status,' . $id,
                 'amount'    => 'numeric|min:0'
             ],
             [
@@ -141,8 +142,8 @@ class SubscriptionController extends Controller {
 
         // Update the subscription
         //-----------------------------------------------------
-        $subscription = Subscription::findOrFail($id);
-        $subscription->update($request->all());
+        $typeSubscriptions = Type_subscription::findOrFail($id);
+        $typeSubscriptions->update($request->all());
         /////////////////////////////////////////////
 
         // SFH: Return a success message to be displayed
@@ -160,8 +161,8 @@ class SubscriptionController extends Controller {
      */
     public function destroy(Request $request, $id) {
         // SFH: Added the delete function
-        $subscription = Subscription::findOrFail($id);
-        $subscription->delete();
+        $typeSubscriptions = Type_subscription::findOrFail($id);
+        $typeSubscriptions->delete();
 
         // SFH: Return a success message to be displayed
         $request->session()->flash('alert-success', 'La cotisation a été supprimée avec succès!');

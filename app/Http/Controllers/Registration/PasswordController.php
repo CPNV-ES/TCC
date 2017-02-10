@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Mail;
 
+use App\User;
+use App\PersonalInformation;
+
 use Validator;
 use Hash;
 
@@ -38,24 +41,22 @@ class PasswordController extends Controller
 
             // Check in DB if exist
             //---------------------
-            $member = Member::where('login', $request->input('login'))->where('token', $request->input('token'))->count();
-
+            $member = User::where('username', $request->input('login'))->get()[0];
             // If validator pass, show the page to define password, and store login in session
             //--------------------------------------------------------------------------------
-            if(!empty($member))
+            if(!empty($member) && $member->personal_information->_token == $request->input('token') )
             {
                 $request->session()->put('login', $request->input('login'));
-
                 return view('auth/register/password/definePassword');
             }
             else
             {
-                redirect('home');
+                return redirect('home');
             }
         }
         else
         {
-            redirect('home');
+            return redirect('home');
         }
     }
 
@@ -179,7 +180,7 @@ class PasswordController extends Controller
 
         //Update the member in the DB with the password and remove the token
         //------------------------------------------------------------------
-        $member = Member::where('login', $request->session()->get('login'))->get();
+        $member = User::where('username', $request->session()->get('login'))->get();
 
 
         // Test if the member exists
