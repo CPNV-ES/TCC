@@ -55,6 +55,9 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
         });
         $(idBtnEdit).prop('disabled',false);
     }
+    else {
+        $(idBtnEdit).html('Annuler');
+    }
     $(idBtnEdit).on('click',function(){
         if(lockedForm)
         {
@@ -79,5 +82,3 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
         }
     });
 }
-
-

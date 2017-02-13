@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
+use App\User;
 class ProfileIsValideMiddleware
 {
     /**
@@ -16,7 +16,7 @@ class ProfileIsValideMiddleware
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check() && false /*Auth::user()->to_verify == 1*/)
+       if (Auth::guard($guard)->check() &&  User::find(Auth::user()->id)->personal_information->toVerify == 1)
         {
             return redirect('/profile');
         }

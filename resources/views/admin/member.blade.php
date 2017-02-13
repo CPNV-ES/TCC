@@ -20,7 +20,7 @@ Description : Displays a table of the members implements with Datatable https://
     </div>-->
 
 {{--IGI - display the table of members--}}
-      <table id="members-table" class="display table" width="100%" cellspacing="0">
+      <table id="members-table" class="display table member-list" width="100%" cellspacing="0">
         <thead>
             <tr>
               <th>id</th>
@@ -30,7 +30,7 @@ Description : Displays a table of the members implements with Datatable https://
                 <th>Ville</th>
                 <th>Actif</th>
                 <th>Validé</th>
-                <th>Action</th>
+
             </tr>
         </thead>
         <tfoot>
@@ -42,7 +42,7 @@ Description : Displays a table of the members implements with Datatable https://
               <th>Ville</th>
               <th>Actif</th>
               <th>Validé</th>
-              <th></th>
+
             </tr>
         </tfoot>
       <tbody>
@@ -56,7 +56,7 @@ Description : Displays a table of the members implements with Datatable https://
               <td>{{$infoUser->localities->name}}</td>
               <td>@if($infoUser->user->active == 1) Oui @else Non @endif</td>
               <td>@if($infoUser->toVerify == 1) Oui @else Non @endif</td>
-              <td>{!! $infoUser->user->username != null ? '<a class="btn btn-primary" href="/admin/members/'.$infoUser->user->id.'/edit" >Voir info</a>' : "" !!}  </td>
+              <!-- <td>{!! $infoUser->user->username != null ? '<a class="btn btn-primary" href="/admin/members/'.$infoUser->user->id.'/edit" >Voir info</a>' : "" !!}  </td> -->
 
           </tr>
           @endforeach

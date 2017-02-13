@@ -181,7 +181,8 @@ class MemberController extends Controller
             [
                 'firstname' => 'required|max:50',
                 'lastname' => 'required|max:50',
-                'street' => 'required|max:100',
+                'street' => 'max:100',
+                'streetNbr' => 'max:45',
                 'telephone' => 'required',
                 'email' => 'required|email|max:255',
                 'locality' => 'required|max:100',
@@ -206,6 +207,7 @@ class MemberController extends Controller
             {
                 $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 0244521212)');
             }
+        
 
         });
 

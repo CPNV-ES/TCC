@@ -64,10 +64,6 @@ $(document).ready(function(){
             "targets": [ 0 ],
             "visible": false,
             "searchable":false
-        },
-        {
-            "targets": [ 7 ],
-            "searchable": false
         }
     ]
 

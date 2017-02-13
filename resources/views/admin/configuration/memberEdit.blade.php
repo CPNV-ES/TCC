@@ -12,12 +12,12 @@ Description: Displays a form with the informations of a member. The inputs of th
     Membre : {{$user->personal_information->firstname}} {{$user->personal_information->lastname}}
 @endsection
 @section('content')
-    <div class=" ">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
       @if (Session::has('message'))
         <div class="alert alert-info">{{ Session::get('message') }}</div>
       @endif
     </div>
-
+<div class="row" style="padding-left: 10px; padding-right:10px;">
     <form id="form-edit-member" class="form-vertical" role="form" method="POST" action="{{ url('/admin/members/'.$user->id) }}">
         {{ csrf_field() }}
         {{ method_field('PUT') }}
@@ -28,58 +28,61 @@ Description: Displays a form with the informations of a member. The inputs of th
                 <h4>Pseudo: {{$user->username}}</h4>
             </div>
         </div>
-
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 @if($errors->has('firstname')) {{'has-error'}} @endif  ">
-            <label for="example-text-input" class="col-2 col-form-label">Prénom*</label>
-            <div >
-                <input class="form-control" id="firstname" name="firstname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $user->personal_information->firstname }}" >
-                @if ($errors->has('firstname'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('firstname') }}</strong>
-                    </span>
-                @endif
+        <div class="row">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 @if($errors->has('firstname')) {{'has-error'}} @endif  ">
+              <label for="example-text-input" class="col-2 col-form-label">Prénom*</label>
+              <div >
+                  <input class="form-control" id="firstname" name="firstname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $user->personal_information->firstname }}" >
+                  @if ($errors->has('firstname'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('firstname') }}</strong>
+                      </span>
+                  @endif
+              </div>
+          </div>
+            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('lastname')) {{'has-error'}} @endif">
+              <label for="example-text-input" name="lbl_lastname" class="col-2 col-form-label">Nom*</label>
+              <div >
+                  <input class="form-control" id="lastname" name="lastname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $user->personal_information->lastname }}" >
+                  @if ($errors->has('lastname'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('lastname') }}</strong>
+                      </span>
+                  @endif
+              </div>
             </div>
         </div>
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('lastname')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_lastname" class="col-2 col-form-label">Nom*</label>
-            <div >
-                <input class="form-control" name="lastname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $user->personal_information->lastname }}" >
-                @if ($errors->has('lastname'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('lastname') }}</strong>
-                    </span>
-                @endif
-            </div>
+        <div class="row">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('email')) {{'has-error'}} @endif">
+              <label for="example-text-input" name="lbl_email" class="col-2 col-form-label">E-Mail*</label>
+              <div >
+                  <input class="form-control" name="email" id="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $user->personal_information->email }}" >
+                  @if ($errors->has('email'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('email') }}</strong>
+                      </span>
+                  @endif
+              </div>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('street')) {{'has-error'}} @endif">
+              <label for="example-text-input" name="lbl_street" class="col-2 col-form-label">Rue</label>
+              <div>
+                  <input class="form-control" name="street" id="street" data-verif-group="edit-group-form" data-verif="text|min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $user->personal_information->street }}" >
+                  @if ($errors->has('street'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('street') }}</strong>
+                      </span>
+                  @endif
+              </div>
+          </div>
         </div>
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('email')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_email" class="col-2 col-form-label">Mail*</label>
-            <div >
-                <input class="form-control" name="email" id="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $user->personal_information->email }}" >
-                @if ($errors->has('email'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('street')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_street" class="col-2 col-form-label">Rue*</label>
-            <div>
-                <input class="form-control" name="street" id="street" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $user->personal_information->street }}" >
-                @if ($errors->has('street'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('street') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>
-
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('streetNbr')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue</label>
-            <div >
-                <input class="form-control" name="streetNbr" id="streetNbr" data-verif-group="edit-group-form" data-verif="required|text|min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $user->personal_information->streetNbr }}" >
-            </div>
-        </div>
+        <div class="row">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('streetNbr')) {{'has-error'}} @endif">
+              <label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue</label>
+              <div >
+                  <input class="form-control" name="streetNbr" id="streetNbr" data-verif-group="edit-group-form" data-verif="text|min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $user->personal_information->streetNbr }}" >
+              </div>
+          </div>
 
 {{--        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('npa')) {{'has-error'}} @endif">
             <label for="example-text-input" name="lbl_npa" class="col-2 col-form-label">NPA*</label>
@@ -104,11 +107,13 @@ Description: Displays a form with the informations of a member. The inputs of th
                 </select>
             </div>
         </div>
+      </div>
+      <div class="row">
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('telephone')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_telephone class="col-2 col-form-label">Téléphone*</label>
+            <label for="example-text-input" name="lbl_telephone class="col-2 col-form-label">Téléphone (format : 012 123 12 12)*</label>
             <div >
-                <input class="form-control" name="telephone" id="telephone" placeholder="0244542112" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('telephone') ? old('telephone') : $user->personal_information->telephone }}" >
-                @if ($errors->has('mobile_phone'))
+                <input class="form-control" name="telephone" id="telephone" placeholder="024 454 21 12" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('telephone') ? old('telephone') : $user->personal_information->telephone }}" >
+                @if ($errors->has('telephone'))
                     <span class="help-block">
                         <strong>{{ $errors->first('telephone') }}</strong>
                     </span>
@@ -136,8 +141,8 @@ Description: Displays a form with the informations of a member. The inputs of th
                 </div>
                 <div class="col-lg-4">
                     <label>
-                        <input type="checkbox" id="checkboxError"  value="1"  id="isTrainer" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : $user->isTrainer==1 ? 'checked':'' }}>
-                        Responsable / entraîneur
+                        <input type="checkbox"  value="1"  id="isTrainer" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : $user->isTrainer==1 ? 'checked':'' }}>
+                        Responsable
                     </label>
                 </div>
                 <div class="col-lg-4">
@@ -147,8 +152,8 @@ Description: Displays a form with the informations of a member. The inputs of th
                     </label>
                 </div>
             </div>
-
         </div>
+      </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Options du compte</label>
                 <div class="checkbox">
@@ -178,27 +183,12 @@ Description: Displays a form with the informations of a member. The inputs of th
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
-            <button id="btn-member-edit"  class="btn btn-primary" type="button">Modifier</button>
-            <button id="btn-member-save" type="submit"  class="btn btn-primary">Sauvegarder</button>
+            <button id="btn-member-edit" type="button"  class="btn btn-primary" >Modifier</button>
+            <button id="btn-member-save" type="button"  class="btn btn-primary">Sauvegarder</button>
         </div>
     </form>
+  </div>
     <script>
-        {{--var user =  {--}}
-            {{--firstname : "",--}}
-            {{--lastname : "{{$user->personal_information->lastname}}",--}}
-            {{--email : "{{$user->personal_information->email}}",--}}
-            {{--street : "{{$user->personal_information->street}}",--}}
-            {{--telephone : "{{$user->personal_information->telephone}}",--}}
-            {{--streetNbr : "{{$user->personal_information->streetNbr}}",--}}
-            {{--locality : "{{$user->personal_information->fkLocality}}",--}}
-            {{--isAdmin :"{{$user->isAdmin}}", V--}}
-            {{--isTrainer : "{{$user->isTrainer}}", V--}}
-            {{--isMember : "{{$user->isMember}}", V--}}
-            {{--active : "{{$user->active}}",--}}
-            {{--toVerify : "{{$user->personal_information->toVerify}}",--}}
-            {{--invitRight :"{{$user->invitRight}}"--}}
-         {{--};--}}
-
         $("#btn-member-edit").click(function(){
             if(lockedForm == false)
             {
@@ -218,8 +208,6 @@ Description: Displays a form with the informations of a member. The inputs of th
                 $("#locality{{$user->personal_information->fkLocality}}").prop('selected', true);
             }
         });
-
-
         lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save',{{($errors->any()) ? 'false' : 'true' }});
         let btn=document.getElementById('btn-member-save');
         VERIF.onClickSubmitAfterVerifGroup(btn,'form-edit-member','edit-group-form');
