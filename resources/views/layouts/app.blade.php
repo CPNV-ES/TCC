@@ -30,6 +30,7 @@
         {!! Html::script('/js/jqwidget/jqx-all.js') !!}
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
+        {!! Html::script('/js/ee.js') !!}
 
         {!! Html::script('/ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
