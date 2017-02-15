@@ -136,15 +136,7 @@ class DatabaseSeeder extends Seeder
             'NPA' => 1450
         ]);
 
-        // *** INVITATION AMOUNT ***
-        DB::table('invitation_amounts')->insert([
-            'id' =>1,
-            'amount' => 20.10
-        ]);
-        DB::table('invitation_amounts')->insert([
-            'id' =>2,
-            'amount' => 10.20
-        ]);
+
 
         // *** SEASONS ***
         DB::table('seasons')->insert([
@@ -223,7 +215,9 @@ class DatabaseSeeder extends Seeder
             'fkWho' => 2,
             'fkWithWho' => 3,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         DB::table('reservations')->insert([
             'id' => 2,
@@ -234,7 +228,9 @@ class DatabaseSeeder extends Seeder
             'fkWho' => 1,
             'fkWithWho' => 2,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         DB::table('reservations')->insert([
             'id' => 3,
@@ -244,17 +240,11 @@ class DatabaseSeeder extends Seeder
             'hourEnd' => '08:00:00',
             'fkWho' => 1,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         //*** INVITATIONS ***
-        DB::table('invitations')->insert([
-            'id' => 1,
-            'firstname' => 'Léa',
-            'lastname' => 'Dada',
-            'paid' => 0,
-            'fkInvitationAmount' => 1,
-            'fkReservation' => 2
-        ]);
         DB::table('users')->insert([
             'id' => 1,
             'username' => "franky",
