@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Validator;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Member;
 
 class SessionController extends Controller
 {
@@ -53,11 +52,11 @@ class SessionController extends Controller
         //-------------------------------------------------
         $validator->after(function($validator) use ($request)
         {
-            $userDbPassword = Member::where('login', $request->input('login'))->get();
+            $userDbPassword = User::where('username', $request->input('login'))->get();
 
             if (count($userDbPassword) AND Hash::check($request->input('password'), $userDbPassword[0]->password))
             {
-                $unActive = Member::where('login', $request->input('login'))->where('validate', 0)->count();
+                $unActive = User::where('username', $request->input('login'))->where('validated', 0)->count();
 
                 if ($unActive)
                 {
@@ -84,15 +83,15 @@ class SessionController extends Controller
 
         // All OK, start session and redirect
         //-------------------------------------------------------
-        if (Auth::attempt(['login' => $request->input('login'), 'password' => $request->input('password')]))
+        if (Auth::attempt(['username' => $request->input('login'), 'password' => $request->input('password')]))
         {
             //If the member has to verify information, redirect to profile, test here because we can't use the middleware
-            if (Auth::user()->to_verify)
+            /*if (Auth::user()->personal_information->toVerify)
             {
                 return redirect('profile');
-            }
+            }*/
             // If the member is administrator, redirect to administration panel
-            if (Auth::user()->administrator)
+            if (Auth::user()->isAdmin)
             {
                 return redirect('admin');
             }

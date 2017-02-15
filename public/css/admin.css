@@ -55,3 +55,7 @@
 .verif_error {
     border: 1px solid #da5d5d;
 }
+.member-list tr, .member-list td{
+  height:10px;
+  padding: 3px !important;
+}

@@ -63,7 +63,7 @@
                     <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    @if(Auth::user()->administrator == 1)
+                    @if(Auth::user()->isAdmin == 1)
                         <li>
                             <a href="{{ url('/admin') }}"><i class="fa fa-gear fa-fw"></i> Administration</a>
                         </li>

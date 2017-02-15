@@ -38,11 +38,8 @@ Description : Displays a table with the inforamtion of the courts form the datab
                 <thead>
                 <tr>
                     <th>Nom</th>
-                    <th>Interieur</th>
-                    <th>Heure d'ouverture</th>
-                    <th>Heure de fermeture</th>
+                    <th>Ouvert</th>
                     <th>Fenêtre de réservation membre</th>
-                    <th>Fenêtre de réservation non-membre</th>
                     <th>Options</th>
                 </tr>
                 </thead>
@@ -50,11 +47,8 @@ Description : Displays a table with the inforamtion of the courts form the datab
                 @foreach($courts as $court)
                     <tr>
                         <td>{{$court->name}}</td>
-                        <td>{{$court->indor}}</td>
-                        <td>{{$court->start_time}}</td>
-                        <td>{{$court->end_time}}</td>
-                        <td>{{$court->booking_window_member}}</td>
-                        <td>{{$court->booking_window_not_member}}</td>
+                        <td>{{$court->state}}</td>
+                        <td>{{$court->nbDays}}</td>
                         {{-- SFH: This zone is used for the 'edit' and 'delete' buttons --}}
                         <td class="option-zone">
                             <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/courts/{{$court->id}}/edit">
@@ -111,13 +105,13 @@ Description : Displays a table with the inforamtion of the courts form the datab
                 </div>
             </div>
 
-            <div class="form-group{{ $errors->has('indor') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="indor">Indor</label>
+            <div class="form-group{{ $errors->has('state') ? ' has-error' : '' }}">
+                <label class="col-md-4 control-label" for="state">Ouvert</label>
                 {{-- SFH: Checks if its an indoor court --}}
                 @php
                     $checked = '';
                     if (!empty($singleCourt)) {
-                        if ($singleCourt->indor == 1) {
+                        if ($singleCourt->state == 1) {
                             $checked = 'checked';
                         }
                     }
@@ -125,60 +119,24 @@ Description : Displays a table with the inforamtion of the courts form the datab
 
                 <div class="col-md-4">
                     {{-- SFH: Hidden value is overridden if the checkbox if checked --}}
-                    <input type="hidden" name="indor" value="0">
-                    <input id="indor" type="checkbox" class="form-control" name="indor"
+                    <input type="hidden" name="state" value="0">
+                    <input id="state" type="checkbox" class="form-control" name="state"
                            value="1" {{$checked}}>
 
-                    @if ($errors->has('indor'))
-                        <p class="help-block">{{ $errors->first('indor') }}</p>
+                    @if ($errors->has('state'))
+                        <p class="help-block">{{ $errors->first('state') }}</p>
                     @endif
                 </div>
             </div>
 
-            <div class="form-group{{ $errors->has('start_time') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="start_time">Heure d'ouverture</label>
+            <div class="form-group{{ $errors->has('nbDays') ? ' has-error' : '' }}">
+                <label class="col-md-4 control-label" for="nbDays">Fenêtre de réservation membre</label>
                 <div class="col-md-4">
-                    <input id="start_time" type="time" class="form-control" name="start_time" data-verif="required|time" data-verif-group="courtCheck"
-                           value="{{ (old('start_time') != '' ? old('start_time') : (!empty($singleCourt) ? date_format(date_create($singleCourt->start_time), "H:i") : '')) }}">
+                    <input id="nbDays" type="number" class="form-control" name="nbDays" data-verif="required|int_neg|min:1" data-verif-group="courtCheck"
+                           value="{{ (old('nbDays') != '' ? old('nbDays') : (!empty($singleCourt) ? $singleCourt->nbDays : '')) }}">
 
-                    @if ($errors->has('start_time'))
-                        <p class="help-block">{{ $errors->first('start_time') }}</p>
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group{{ $errors->has('end_time') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="end_time">Heure de fermeture</label>
-                <div class="col-md-4">
-                    <input id="end_time" type="time" class="form-control" name="end_time" data-verif="required|time|time_greater:start_time" data-verif-group="courtCheck"
-                           value="{{ (old('end_time') != '' ? old('end_time') : (!empty($singleCourt) ? date_format(date_create($singleCourt->end_time), "H:i") : '')) }}">
-
-                    @if ($errors->has('end_time'))
-                        <p class="help-block">{{ $errors->first('end_time') }}</p>
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group{{ $errors->has('booking_window_member') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="booking_window_member">Fenêtre de réservation membre</label>
-                <div class="col-md-4">
-                    <input id="booking_window_member" type="number" class="form-control" name="booking_window_member" data-verif="required|int_neg|min:1" data-verif-group="courtCheck"
-                           value="{{ (old('booking_window_member') != '' ? old('booking_window_member') : (!empty($singleCourt) ? $singleCourt->booking_window_member : '')) }}">
-
-                    @if ($errors->has('booking_window_member'))
-                        <p class="help-block">{{ $errors->first('booking_window_member') }}</p>
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group{{ $errors->has('booking_window_not_member') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="booking_window_not_member">Fenêtre de réservation non membre</label>
-                <div class="col-md-4">
-                    <input id="booking_window_not_member" type="number" class="form-control" name="booking_window_not_member" data-verif="required|int_neg|min:1" data-verif-group="courtCheck"
-                           value="{{ (old('booking_window_not_member') != '' ? old('booking_window_not_member') : (!empty($singleCourt) ? $singleCourt->booking_window_not_member : '')) }}">
-
-                    @if ($errors->has('booking_window_not_member'))
-                        <p class="help-block">{{ $errors->first('booking_window_not_member') }}</p>
+                    @if ($errors->has('nbDays'))
+                        <p class="help-block">{{ $errors->first('nbDays') }}</p>
                     @endif
                 </div>
             </div>
@@ -192,10 +150,7 @@ Description : Displays a table with the inforamtion of the courts form the datab
 
             {{-- SFH: Added to check form before send --}}
             <script type="text/javascript">
-                document.querySelector('#btnCourtCheck').addEventListener('click', function(e) {
-                    if(VERIF.verifGroup('courtCheck'))
-                        document.forms["courtForm"].submit();
-                });
+                    VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnCourtCheck'),'courtForm');
             </script>
             {{-- SFH: End --}}
 

@@ -34,13 +34,14 @@
         {!! Html::script('/ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
         {!! Html::script('/js/verif.js') !!}
+        {!! Html::script('/js/customVerif.js') !!}
 
 
 
         <script>
             is_logged = "{{ Auth::check() }}";
             @if (Auth::check())
-                    member_last_name = "{{ Auth::user()->last_name }}";
+                    member_last_name = "{{ Auth::user()->username }}";
             @endif
 
             $.ajaxSetup({
@@ -97,10 +98,10 @@
                         </li>
                         @else
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} <span class="caret"></span> </a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ Auth::user()->username }} {{ Auth::user()->username }} <span class="caret"></span> </a>
 
                             <ul class="dropdown-menu" role="menu">
-                                @if(Auth::user()->administrator == 1)
+                                @if(Auth::user()->isAdmin == 1)
                                 <li>
                                     <a href="{{ url('/admin') }}"><i class="fa fa-btn fa-sign-out"></i>Administration</a>
                                 </li>

@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Reservation;
 use App\Models\Season;
-use App\Models\Member;
 use App\Models\Subscription_per_member;
+
+use App\User;
+use App\PersonalInformation;
+use App\Locality;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -60,8 +64,9 @@ class MemberController extends Controller
             }
             return response()->json($members);
         }
-        $members = Member::all();
-        return view('admin/member',compact('members'));
+        //infoUser are information of member and no-members
+        $infoUsers = PersonalInformation::all();
+        return view('admin/member',compact('infoUsers'));
     }
 
     /**
@@ -110,9 +115,9 @@ class MemberController extends Controller
             $members = Member::all();
             return response()->json($members);
         }
-        $member = Member::find($id);
-        $localities = ['Provence', 'Ste-Croix','Vuitevoeuf','Baumes','Charvonnay','Yverdon'];
-        return view('admin/configuration/memberEdit',compact('member','localities'));
+        $user = User::find($id);
+        $localities = Locality::all();
+        return view('admin/configuration/memberEdit',compact('user','localities'));
 
     }
 
@@ -174,14 +179,13 @@ class MemberController extends Controller
         //IGI - added needed rules
         $validator = Validator::make($request->all(),
             [
-                'first_name' => 'required|max:50',
-                'last_name' => 'required|max:50',
-                'address' => 'required|max:100',
-                'zip_code' => 'required|integer|digits:4',
-                'home_phone' => 'required|max:12|min:9',
-                'mobile_phone' => 'required|max:12|min:9',
+                'firstname' => 'required|max:50',
+                'lastname' => 'required|max:50',
+                'street' => 'max:100',
+                'streetNbr' => 'max:45',
+                'telephone' => 'required',
                 'email' => 'required|email|max:255',
-                'city' => 'required|max:100',
+                'locality' => 'required|max:100',
             ]);
 
         /////////////////////////////////////////////
@@ -192,13 +196,21 @@ class MemberController extends Controller
         $validator->after(function($validator) use ($request, $id)
         {
             //IGI - check if the email is already used by another members
-            $duplicate = Member::where([['email','=',$request->input('email')],
-                                        ['id','<>', $id]])->count();
+            // $request->input('email')
+            $duplicate = User::whereHas('personal_information', function($query) use ($request) { $query->where('email', $request["email"]);})->where('id','<>',$id)->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
             }
+            $regexTel = "/^(((\+|00)\d{2,3})|0)([.\/ -]?\d){9}$/";
+            if(!preg_match($regexTel, $request->input('telephone')))
+            {
+                $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 0244521212)');
+            }
+        
+
         });
+
         /////////////////////////////////////////////
 
         // Display errors messages, return to update page
@@ -209,17 +221,28 @@ class MemberController extends Controller
         }
 
         /////////////////////////////////////////////
-        $member = Member::find($id);
+        $userAccount = User::find($id);
+        $userInfo = PersonalInformation::find($userAccount->fkPersonalInformation);
+
 
         //IGI- Update member info and member account parameters and save it
         //-----------------------------------------------------
-        $member->UpdateUser($request->all());
-        $member->UpdateAccount($request->all());
-        $member->save();
+        $userAccount->UpdateAccountParam($request->all());
+
+        //sorry...
+        ($request->exists("toVerify")) ? $request["toVerify"]= "1": $request["toVerify"]= "0" ;
+        $request["birthDate"] = $userInfo->birthDate;
+
+        $userInfo->update($request->all());
+        //$member->UpdateAccount($request->all());
+
+        $userAccount->save();
+        $userInfo->save();
+
 
         //IGI - flash message and come back to the edit member page
         Session::flash('message', "Les modifications ont bien été enregistrées");
-        return redirect('admin/members/'.$member->id.'/edit');
+        return redirect('admin/members/'.$userAccount->id.'/edit');
     }
     //IGI- actually not used - will be used to check (in AJAX) in the edit member form if the email is already used in the db.
     public function checkMailUse(Request $request)
@@ -263,7 +286,7 @@ class MemberController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request, $id)
         {
-            $duplicate = Member::where('login', $request->input('login'.$id))->count();
+            $duplicate = User::where('username', $request->input('login'.$id))->count();
             if(!empty($duplicate))
             {
                 $validator->errors()->add('login'.$id, 'Ce login est déjà utilisé.');
@@ -284,7 +307,7 @@ class MemberController extends Controller
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
 
-        $member = Member::find($id);
+        $member = User::find($id);
 
         $member->UpdateLogin($request->input('login'.$id));
 
@@ -294,13 +317,13 @@ class MemberController extends Controller
 
 
         /////////////////////////////////////////////
-        $emailMember = $member->email;
+        $emailMember = $member->personal_information->email;
         // Send email to the user to choose password
         //-------------------------------------------------
-        Mail::send('emails.user.password', ['last_name'  => $member->last_name,
-            'first_name' => $member->first_name,
-            'login'      => $member->login,
-            'token'      => $member->token],
+        Mail::send('emails.user.password', ['last_name'  => $member->personal_information->lastname,
+            'first_name' => $member->personal_information->firstname,
+            'login'      => $member->username,
+            'token'      => $member->personal_information->_token],
             function ($message) use($emailMember)
             {
                 $message->to($emailMember)->subject('Votre compte du Tennis Club Chavornay a été activé');

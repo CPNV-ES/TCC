@@ -10,7 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Season;
+use App\Season;
 use Validator;
 
 class SeasonController extends Controller {
@@ -21,12 +21,12 @@ class SeasonController extends Controller {
      */
     public function index() {
         // SFH: Ordered them by latest first
-        $seasons = Season::orderBy('begin_date', 'desc')->get();
+        $seasons = Season::orderBy('dateStart', 'desc')->get();
 
         // SFH: Check if there is an entry in the database
         //      define new season stat and end dates
         if (sizeof($seasons) > 0) {
-            $newSeasonStart = date('Y-m-d', strtotime($seasons->first()->end_date . " +1 day"));
+            $newSeasonStart = date('Y-m-d', strtotime($seasons->first()->dateEnd . " +1 day"));
             $newSeasonEnd = date('Y-m-d', strtotime($newSeasonStart . " +1 year -1 day"));
         }
 
@@ -56,15 +56,15 @@ class SeasonController extends Controller {
         //      also added a better french version of the error messages (date, after)
         $validator = Validator::make($request->all(),
             [
-                'begin_date'  => 'required|date',
-                'end_date'    => 'required|date|after:' . date('Y-m-d', strtotime($request->begin_date . " +6 months -1 day"))
+                'dateStart'  => 'required|date',
+                'dateEnd'    => 'required|date|after:' . date('Y-m-d', strtotime($request->dateStart . " +6 months -1 day"))
             ],
             [
-                'begin_date.required'   => 'Le champ \'Date de début\' est obligatoire.',
-                'begin_date.date'   => 'Le champ \'Date de début\' n\'est pas une date valide.',
-                'end_date.required'     => 'Le champ \'Date de fin\' est obligatoire.',
-                'end_date.date'     => 'Le champ \'Date de fin\' n\'est pas une date valide.',
-                'end_date.after'       => 'Le champ \'Date de fin\' doit être postérieure au ' . date('d.m.Y', strtotime($request->begin_date . " +6 months")) . "."
+                'dateStart.required'   => 'Le champ \'Date de début\' est obligatoire.',
+                'dateStart.date'   => 'Le champ \'Date de début\' n\'est pas une date valide.',
+                'dateEnd.required'     => 'Le champ \'Date de fin\' est obligatoire.',
+                'dateEnd.date'     => 'Le champ \'Date de fin\' n\'est pas une date valide.',
+                'dateEnd.after'       => 'Le champ \'Date de fin\' doit être postérieure au ' . date('d.m.Y', strtotime($request->dateStart . " +6 months")) . "."
             ]);
         /////////////////////////////////////////////
 

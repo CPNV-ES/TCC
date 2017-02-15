@@ -21,7 +21,7 @@ $(document).ready(function () {
                break;
 
             case "delete-season":
-                if (confirm("Etes-vous sûr de vouloir supprimer la saison : " + $(this).data("season") + " ?")) {
+                if (confirm("Etes-vous sûr de vouloir supprimer la saison du " + $(this).data("seasonstart") + " au " + $(this).data("seasonend") + " ?")) {
                     $(".delete").submit();
                 }
                 else {
@@ -45,19 +45,24 @@ $(document).ready(function () {
 
 //IGI lock/ unlock form
 var lockedForm= true;
-function lockForm(idForm, idBtnEdit, idBtnSave)
+function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
 {
-
-    $(idBtnSave).hide();
-    $(idForm+" :input").each(function(){
-        if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
-    });
-    $(idBtnEdit).prop('disabled',false);
+    if(locked)
+    {
+        $(idBtnSave).hide();
+        $(idForm+" :input").each(function(){
+            if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
+        });
+        $(idBtnEdit).prop('disabled',false);
+    }
+    else {
+        $(idBtnEdit).html('Annuler');
+    }
     $(idBtnEdit).on('click',function(){
         if(lockedForm)
         {
             $(idBtnSave).show();
-            $(idBtnEdit).html('Verrouiller');
+            $(idBtnEdit).html('Annuler');
             $(idForm+" :input").each(function(){
                 if($(this).prev().prop('type') != 'button')$(this).prop('disabled', false);
             });
@@ -67,7 +72,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave)
         else
         {
             $(idBtnSave).hide();
-            $(idBtnEdit).html('Déverrouiller');
+            $(idBtnEdit).html('Modifier');
             $(idForm+" :input").each(function(){
                 if($(this).prev().prop('type') != 'button') $(this).prop('disabled', true);
             });
@@ -77,5 +82,3 @@ function lockForm(idForm, idBtnEdit, idBtnSave)
         }
     });
 }
-
-

@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    Bonjour {{ $first_name }} {{ $last_name }}
+    Bonjour {{ $firstname }} {{ $lastname }}
 @endsection
 
 

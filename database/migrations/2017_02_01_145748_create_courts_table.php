@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubscriptionsTable extends Migration
+class CreateCourtsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,11 @@ class CreateSubscriptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subscriptions', function (Blueprint $table)
-        
-        {
+        Schema::create('courts',function(Blueprint $table){
             $table->increments('id');
-            
-            $table->string('status');
-            
-            $table->decimal('amount');
-            
+            $table->string('name',50);
+            $table->integer('state');
+            $table->integer('nbDays');
             $table->timestamps();
         });
     }
@@ -32,6 +28,7 @@ class CreateSubscriptionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('subscriptions');
+        //
+        Schema::drop('courts');
     }
 }
