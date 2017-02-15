@@ -14,7 +14,7 @@ body {
 .background {
     background: url(./images/terre-battue.jpg) no-repeat left center;
     height: 400px;
-    width: 100%;
+    background-size:cover;
 }
 
 .head-panel {
