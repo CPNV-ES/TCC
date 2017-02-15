@@ -134,6 +134,7 @@ class DatabaseSeeder extends Seeder
             'amount' => 10.20
         ]);
 
+
         // *** SEASONS ***
         DB::table('seasons')->insert([
             'id' =>1,
@@ -176,7 +177,9 @@ class DatabaseSeeder extends Seeder
             'fkWho' => 2,
             'fkWithWho' => 3,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         DB::table('reservations')->insert([
             'id' => 2,
@@ -187,7 +190,9 @@ class DatabaseSeeder extends Seeder
             'fkWho' => 1,
             'fkWithWho' => 2,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         DB::table('reservations')->insert([
             'id' => 3,
@@ -197,7 +202,9 @@ class DatabaseSeeder extends Seeder
             'hourEnd' => '08:00:00',
             'fkWho' => 1,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         //*** INVITATIONS ***
         DB::table('invitations')->insert([
