@@ -156,24 +156,24 @@ Description: Displays a form with the informations of a member. The inputs of th
       </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Options du compte</label>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="active" value="1" name="active" {{ old('active')==1 ? 'checked' : $user->active==1 ? 'checked':'' }}>
-                        Rendre le compte actif
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $user->personal_information->toVerify==1 ? 'checked':'' }}>
-                        Demander une vérification
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : $user->validated==1 ? 'checked':'' }}>
-                        Valider le compte
-                    </label>
-                </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="active" value="1" name="active" {{ old('active')==1 ? 'checked' : $user->active==1 ? 'checked':'' }}>
+                    Compte activé
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $user->personal_information->toVerify==1 ? 'checked':'' }}>
+                    Compte à vérifier
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : $user->validated==1 ? 'checked':'' }}>
+                    Compte validé
+                </label>
+            </div>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" id="invitRight" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : $user->invitRight==1 ? 'checked':'' }}>

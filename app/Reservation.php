@@ -6,6 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    protected $fillable = [
+        "dateStart",
+        "dateEnd",
+        "hourStart",
+        "hourEnd",
+        "fkWho",
+        "fkWithWho",
+        "fkTypeReservation",
+        "fkCourt",
+        "paid",
+        "chargeAmount"
+    ];
 
     public function court() {
         return $this->belongsTo('App\Court', 'fkCourt');

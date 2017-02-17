@@ -2,17 +2,30 @@
 
 namespace App\Http\Controllers\Booking;
 
-use App\Models\Reservation;
-use App\Models\Season;
+//use App\Models\Reservation;
+//use App\Models\Season;
+
+use App\Reservation;
+use App\Season;
+
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Validator;
-use App\Models\Member;
+
+/*use App\Models\Member;
 use App\Models\Booking;
-use App\Models\Court;
+use App\Models\Court;*/
+use App\PersonalInformation;
+use App\Court;
+use App\Config;
+
+//FOR DEBUGGING
+use DB;
+
 use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
@@ -126,12 +139,15 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        //TODO: -- add a column nb of reservation for a user -- add a invalitated date in user for
+        //
         // Check if one of the members have already a reservation
         //----------------------------------------------
-        $dateTime   = date('Y-m-j H-i-s');
-        $exist      = Reservation::where('date_hours', '>', $dateTime)->where(function ($query){
-            $query->where('fk_member_1', Auth::user()->id)->orWhere('fk_member_2', Auth::user()->id);
-        })->first();
+        $date   = date('Y-m-j');
+        $exist = Reservation::where('dateStart', '>', $date)->where(function ($query){
+                 $query->where('fkWho', PersonalInformation::find(Auth::user()->id)->id)->orWhere('fkWithWho', PersonalInformation::find(Auth::user()->id)->id);
+        })->count();
+
 
 
         if (!empty($exist))
@@ -139,27 +155,67 @@ class BookingController extends Controller
             return ["Vous ou votre partenaire avez déjà une réservation", false];
         }
         // Can't reserve with your self
-        if (Auth::user()->id == $request->input('fk_member_2'))
+        if (PersonalInformation::find(Auth::user()->id)->id == $request->input('fkWithWho'))
         {
             return ["Vous ne pouvez pas réservez avec vous même", false];
         }
 
-        // Get the season corresponding to the date
+        //For member-member reservation
+        $dateStart = $request->input('dateStart');
+        $dateEnd = $dateStart;
+
+        $hourStart = date("H:i:s", strtotime($request->input('hourStart')));
+        //hourEnd is the hourStart + 1 hour
+        $hourEnd = date("H:i:s", strtotime($request->input('hourStart'))+60*60);
+
+        DB::enableQueryLog();
+
+        //check if the hour is the hour is free for the selected court
+        $freeHour = Reservation::where(function($query) use($dateStart,$dateEnd) {
+                                    $query->whereBetween('dateStart', [$dateStart, $dateEnd])->orWhereBetween('dateEnd',[$dateStart, $dateEnd]);
+                                })->where(function ($query) use($hourStart, $hourEnd){
+                                    $query->whereBetween('hourEnd',[$hourStart, $hourEnd])->orWhereBetween('hourStart', [$hourStart, $hourEnd]);
+                                })->where('fkCourt', $request->input('fkCourt'))->count();
+
+        if($freeHour!=0)
+        {
+            return ["Cette heure n'est pas libre, veuillez choisir un autre heure",false];
+        }
+        //Check if the court is available (in case of the court is in maintenance)
+        $court = Court::find($request->input('fkCourt'));
+        if($court->state != 1)
+        {
+            return ['Ce court n\'est pas disponible pour le moment, veuillez choisir un autre court'];
+        }
+
+
+
+
+/*        //NO NEEDED IN NEW VERSION -- Get the season corresponding to the date
         //-----------------------------------------
         $season = Season::where('begin_date', '<',  $request->input('date_hours'))->where('end_date', '>',  $request->input('date_hours'))->first();
+*/
 
+
+
+
+        //Get the actual price
+        $chargeAmount = Config::first()->currentAmount;
 
         // Insert in DB
         //-------------
-        $data = ['fk_court' => $request->input('fk_court'), 'fk_member_1' => Auth::user()->id, 'fk_member_2' => $request->input('fk_member_2'), 'fk_season' => $season->id, $request->input('date_hours')];
+        $data = ['dateStart' => $dateStart,'dateEnd' => $dateEnd,'fkCourt' => $request->input('fkCourt'), 'fkWho' => PersonalInformation::find(Auth::user()->id)->id,
+                'fkTypeReservation' => 1, 'fkWithWho' => $request->input('fkWithWho'), 'hourStart' => $hourStart,'hourEnd' => $hourEnd,
+                'chargeAmount' => $chargeAmount, 'paid' => 0];
+
+
         $reservation = Reservation::create($data);
-        $reservation->date_hours = $request->input('date_hours');
         $reservation->save();
         /////////////////////////////////////////////
 
 
         // Select the information of the two players froms the members
-
+/*
         $members = Member::whereIn('id', [Auth::user()->id, $request->input('fk_member_2')])->get(['last_name', 'first_name', 'email']);
         $court = Court::where('id', $request->input('fk_court'))->get(['name']);
         $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('date_hours'))->format('d.m.Y H:i');
@@ -169,12 +225,14 @@ class BookingController extends Controller
 
             // Inform the players of the reservations
             //---------------------------------------------------------------------------------
-            Mail::send('emails.user.reservation', ['last_name' => $member->last_name, 'first_name' => $member->first_name, 'court' => $court[0]->name, 'joueur1' => $members[0]->last_name." ".$members[0]->first_name, 'joueur2' => $members[1]->last_name." ".$members[1]->first_name, 'date_hours' => $dateHour], function ($message) use($email)
+            Mail::send('emails.user.reservation', ['last_name' => $member->last_name, 'first_name' => $member->first_name, 'court' => $court[0]->name,
+                'joueur1' => $members[0]->last_name." ".$members[0]->first_name, 'joueur2' => $members[1]->last_name." ".$members[1]->first_name,
+                'date_hours' => $dateHour], function ($message) use($email)
             {
                 $message->to($email)->subject('Votre reservation au Tennis Club Chavornay');
             });
             /////////////////////////////////////////////
-        }
+        }*/
 
         return ["Votre réservation a bien été enregistrée, un e-mail de confirmation vous a été envoyé", true];
     }
