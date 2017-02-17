@@ -9,8 +9,19 @@
     </div>
 
     <div id="calendar" class="row"></div>
+    <form method="post" role="form" method="POST" action="{{ url('/booking')}}">
+        {{ csrf_field() }}
+        {{ method_field('POST') }}
 
-    <!-- Modal -->
+
+        <input type="text" name="dateStart">
+        <input type="text" name="hourStart">
+        <input type="text" name="fkWithWho">
+        <input type="text" name="fkCourt">
+        <input type="submit">
+    </form>
+
+{{--    <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -33,6 +44,6 @@
         </div>
     </div>
     {!! Html::script('/ajax/calendar.js') !!}
-    {!! Html::script('/ajax/booking.js') !!}
+    {!! Html::script('/ajax/booking.js') !!}--}}
 @endsection
 
