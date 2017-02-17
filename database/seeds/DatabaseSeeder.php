@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Locality;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,65 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+      $filename = public_path().'/data/MembresSEP.csv';
+      if(!file_exists($filename) || !is_readable($filename)) {
+        return FALSE;
+      }
+      $header = NULL;
+      $data = array();
+      if (($handle = fopen($filename, 'r')) !== FALSE)
+      {
+          while (($row = fgetcsv($handle, 1000, ';')) !== FALSE)
+          {
+              $row = array_map("utf8_encode", $row); //added
+              if(!$header)
+                  $header = $row;
+              else
+                  $data[] = array_combine($header, $row);
+          }
+          fclose($handle);
+      }
+
+      foreach ($data as $value) {
+        if ($value['NOM'] == '') {
+          break;
+        }
+        else {
+          $locality = Locality::whereNpa($value['NPA'])->first();
+          if (!$locality) {
+            DB::table('localities')->insert([
+                'name' => $value['VILLE'],
+                'NPA' => $value['NPA']
+            ]);
+          }
+          $locality = Locality::whereNpa($value['NPA'])->first();
+
+          $birthday = '';
+
+          if ($value['BIRTHDAY'] != '') {
+            $birthday = explode('.', $value['BIRTHDAY']);
+            $day = $birthday[0];
+            $month = $birthday[1];
+            $year = $birthday[2];
+            $birthday = $year . '-' . $month . '-' . $day;
+          }
+
+
+          DB::table('personal_informations')->insert([
+              'firstname' => $value['PRENOM'],
+              'lastname' => $value['NOM'],
+              'street' => $value['Rue'],
+              'streetNbr' => $value['NumRue'],
+              'telephone' => $value['NATEL'],
+              'birthDate' => $birthday,
+              'email' => $value['E-mail'],
+              'toVerify' => 1,
+              'fkLocality' => $locality->id
+          ]);
+        }
+      }
+
 //      // ESO: Adding default admin
 //      DB::table('members')->insert([
 //         'last_name' => 'admin',
@@ -119,23 +179,6 @@ class DatabaseSeeder extends Seeder
             'type' => 'mensuel'
         ]);
 
-        // *** LOCALITY ***
-        DB::table('localities')->insert([
-            'id' => 1,
-            'name' => 'Yverdon-Les-Bains',
-            'NPA' => 1400
-        ]);
-        DB::table('localities')->insert([
-            'id' =>2,
-            'name' => 'Lausanne',
-            'NPA' => 1001
-        ]);
-        DB::table('localities')->insert([
-            'id' =>3,
-            'name' => 'Ste-Croix',
-            'NPA' => 1450
-        ]);
-
         // *** INVITATION AMOUNT ***
         DB::table('invitation_amounts')->insert([
             'id' =>1,
@@ -178,41 +221,6 @@ class DatabaseSeeder extends Seeder
             'courtCloseTime' => '17:00:00'
         ]);
 
-
-        //*** PERSONAL INFORMATION ***
-        DB::table('personal_informations')->insert([
-            'id' => 1,
-            'firstname' => 'Frank',
-            'lastname' => 'Dero',
-            'street' => 'Rue de la france',
-            'streetNbr' => '2b',
-            'telephone' => '0244564545',
-            'email' => 'frank.dero@test.test',
-            'toVerify' => 1,
-            'fkLocality' => 1
-        ]);
-        DB::table('personal_informations')->insert([
-            'id' => 2,
-            'firstname' => 'Mike',
-            'lastname' => 'Orok',
-            'street' => 'Rue de la Suisse',
-            'streetNbr' => '1',
-            'telephone' => '0244123545',
-            'email' => 'm.orok@test.test',
-            'toVerify' => 1,
-            'fkLocality' => 2
-        ]);
-        DB::table('personal_informations')->insert([
-            'id' => 3,
-            'firstname' => 'Michelle',
-            'lastname' => 'Derouge',
-            'street' => 'Rue de la gare',
-            'streetNbr' => '4',
-            'telephone' => '0244123512',
-            'email' => 'm.derouge@test.test',
-            'toVerify' => 1,
-            'fkLocality' => 3
-        ]);
         // *** RESERVATIONS ***
         DB::table('reservations')->insert([
             'id' => 1,
