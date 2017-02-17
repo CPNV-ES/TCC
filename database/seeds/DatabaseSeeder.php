@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
           $locality = Locality::whereNpa($value['NPA'])->first();
           if (!$locality) {
             DB::table('localities')->insert([
-                'name' => $value['VILLE'],
+                'name' => ucfirst(strtolower($value['VILLE'])),
                 'NPA' => $value['NPA']
             ]);
           }
@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
 
           DB::table('personal_informations')->insert([
               'firstname' => $value['PRENOM'],
-              'lastname' => $value['NOM'],
+              'lastname' => ucfirst(strtolower($value['NOM'])),
               'street' => $value['Rue'],
               'streetNbr' => $value['NumRue'],
               'telephone' => $value['NATEL'],
