@@ -12,65 +12,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
-      $filename = public_path().'/data/MembresSEP.csv';
-      if(!file_exists($filename) || !is_readable($filename)) {
-        return FALSE;
-      }
-      $header = NULL;
-      $data = array();
-      if (($handle = fopen($filename, 'r')) !== FALSE)
-      {
-          while (($row = fgetcsv($handle, 1000, ';')) !== FALSE)
-          {
-              $row = array_map("utf8_encode", $row); //added
-              if(!$header)
-                  $header = $row;
-              else
-                  $data[] = array_combine($header, $row);
-          }
-          fclose($handle);
-      }
-
-      foreach ($data as $value) {
-        if ($value['NOM'] == '') {
-          break;
-        }
-        else {
-          $locality = Locality::whereNpa($value['NPA'])->first();
-          if (!$locality) {
-            DB::table('localities')->insert([
-                'name' => ucfirst(strtolower($value['VILLE'])),
-                'NPA' => $value['NPA']
-            ]);
-          }
-          $locality = Locality::whereNpa($value['NPA'])->first();
-
-          $birthday = '';
-
-          if ($value['BIRTHDAY'] != '') {
-            $birthday = explode('.', $value['BIRTHDAY']);
-            $day = $birthday[0];
-            $month = $birthday[1];
-            $year = $birthday[2];
-            $birthday = $year . '-' . $month . '-' . $day;
-          }
-
-
-          DB::table('personal_informations')->insert([
-              'firstname' => $value['PRENOM'],
-              'lastname' => ucfirst(strtolower($value['NOM'])),
-              'street' => $value['Rue'],
-              'streetNbr' => $value['NumRue'],
-              'telephone' => $value['NATEL'],
-              'birthDate' => $birthday,
-              'email' => $value['E-mail'],
-              'toVerify' => 1,
-              'fkLocality' => $locality->id
-          ]);
-        }
-      }
-
 //      // ESO: Adding default admin
 //      DB::table('members')->insert([
 //         'last_name' => 'admin',
@@ -144,6 +85,10 @@ class DatabaseSeeder extends Seeder
 //
 //            ]);
 //        }
+
+        // SFH : Need to call this before the rest so that there are no problems with foreign keys.
+        $this->call(PersonalInformationAndLocalitiesSeeder::class);
+
         //*** COURT *** we define id to use it as foreign keys
         DB::table('courts')->insert([
             'id' => 1,
