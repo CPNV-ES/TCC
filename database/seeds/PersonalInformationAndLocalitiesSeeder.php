@@ -45,10 +45,10 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
         else {
           $locality = Locality::whereNpa($value['NPA'])->first();
 
-          if (!$locality && $value['VILLE'] != '') {
+          if (!$locality && trim($value['VILLE']) != '') {
             DB::table('localities')->insert([
-                'name' => ucfirst(strtolower($value['VILLE'])),
-                'NPA' => $value['NPA']
+                'name' => trim(ucfirst(strtolower($value['VILLE']))),
+                'NPA' => trim($value['NPA'])
             ]);
           }
 
@@ -65,21 +65,26 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
 
           if ($value['BIRTHDAY'] != '') {
             $birthday = explode('.', $value['BIRTHDAY']);
-            $day = $birthday[0];
-            $month = $birthday[1];
-            $year = $birthday[2];
+            $day = trim($birthday[0]);
+            $month = trim($birthday[1]);
+            $year = trim($birthday[2]);
             $birthday = $year . '-' . $month . '-' . $day;
+          }
+
+          $phone = trim($value['TEL. PRIVE']);
+          if (trim($value['NATEL']) != '') {
+            $phone = trim($value['NATEL']);
           }
 
 
           DB::table('personal_informations')->insert([
-              'firstname' => $value['PRENOM'],
-              'lastname' => ucfirst(strtolower($value['NOM'])),
-              'street' => $value['Rue'],
-              'streetNbr' => $value['NumRue'],
-              'telephone' => $value['NATEL'],
+              'firstname' => trim(ucfirst(strtolower($value['PRENOM']))),
+              'lastname' => trim(ucfirst(strtolower($value['NOM']))),
+              'street' => trim($value['Rue']),
+              'streetNbr' => trim($value['NumRue']),
+              'telephone' => $phone,
               'birthDate' => $birthday,
-              'email' => $value['E-mail'],
+              'email' => trim($value['E-mail']),
               'toVerify' => 1,
               'fkLocality' => $locality_id
           ]);
