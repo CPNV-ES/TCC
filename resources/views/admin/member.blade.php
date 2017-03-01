@@ -1,10 +1,11 @@
 <!--
 Author: ...
 Date:
-Modified by : I.Goujgali
-Last Modif.: 20.01.17
+Modified by : I.Goujgali, S. Forsyth
+Last Modif.: 17.02.2017
 Description : Displays a table of the members implements with Datatable https://datatables.net/.
               to view/edit a member click on 'Voir info' or simply on the row
+Modified : Added checks when displaying user information in case a user doesn't have an account.
 -->
 @extends('layouts.admin')
 
@@ -50,13 +51,13 @@ Description : Displays a table of the members implements with Datatable https://
           @foreach($infoUsers as $infoUser)
           <tr>
               <td>{{$infoUser->id}}</td>
-              <td>{{$infoUser->user->username}}</td>
+              <td>{{(($infoUser->user) ? $infoUser->user->username : '-')}}</td>
               <td>{{$infoUser->lastname}}</td>
               <td>{{$infoUser->firstname}}</td>
-              <td>{{$infoUser->localities->name}}</td>
-              <td>@if($infoUser->user->active == 1) Oui @else Non @endif</td>
-              <td>@if($infoUser->toVerify == 1) Oui @else Non @endif</td>
-              <!-- <td>{!! $infoUser->user->username != null ? '<a class="btn btn-primary" href="/admin/members/'.$infoUser->user->id.'/edit" >Voir info</a>' : "" !!}  </td> -->
+              <td>{{(($infoUser->localities) ? $infoUser->localities->name : '-')}}</td>
+              <td>{{(($infoUser->user) ? (($infoUser->user->active == 1) ? 'Oui' : 'Non') : '-')}}</td>
+              <td>{{(($infoUser->toVerify == 1) ? 'Oui' : 'Non')}}</td>
+              {{-- <!-- <td>{!! $infoUser->user->username != null ? '<a class="btn btn-primary" href="/admin/members/'.$infoUser->user->id.'/edit" >Voir info</a>' : "" !!}  </td> --> --}}
 
           </tr>
           @endforeach
