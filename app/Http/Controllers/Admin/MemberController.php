@@ -110,14 +110,15 @@ class MemberController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        if($request->ajax())
-        {
-            $members = Member::all();
-            return response()->json($members);
-        }
-        $user = User::find($id);
+        // if($request->ajax())
+        // {
+        //     $members = Member::all();
+        //     return response()->json($members);
+        // }
+        $personal_information = PersonalInformation::find($id);
         $localities = Locality::all();
-        return view('admin/configuration/memberEdit',compact('user','localities'));
+        return view('admin/configuration/memberEdit',compact('personal_information','localities'));
+
 
     }
 
@@ -207,7 +208,7 @@ class MemberController extends Controller
             {
                 $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 0244521212)');
             }
-        
+
 
         });
 
