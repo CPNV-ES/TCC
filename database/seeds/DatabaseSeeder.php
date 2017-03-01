@@ -205,13 +205,21 @@ class DatabaseSeeder extends Seeder
             'toVerify' => 1,
             'fkLocality' => 3
         ]);
+        DB::table('personal_informations')->insert([
+            'id' => 4,
+            'firstname' => 'Ilias',
+            'lastname' => 'Goujgali',
+            'street' => 'Rue de la gare',
+            'streetNbr' => '4',
+            'telephone' => '0244123512',
+            'email' => 'ilias.goujgali@cpnv.ch',
+            'toVerify' => 1,
+            'fkLocality' => 3
+        ]);
         // *** RESERVATIONS ***
         DB::table('reservations')->insert([
             'id' => 1,
-            'dateStart' => '2016-12-15',
-            'dateEnd' => '2016-12-15',
-            'hourStart' => '10:00:00',
-            'hourEnd' => '11:00:00',
+            'dateTimeStart' => '2016-12-15 10:00:00',
             'fkWho' => 2,
             'fkWithWho' => 3,
             'fkTypeReservation' => 1,
@@ -221,10 +229,7 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('reservations')->insert([
             'id' => 2,
-            'dateStart' => '2016-12-15',
-            'dateEnd' => '2016-12-15',
-            'hourStart' => '09:00:00',
-            'hourEnd' => '08:00:00',
+            'dateTimeStart' => '2016-12-15 09:00:00',
             'fkWho' => 1,
             'fkWithWho' => 2,
             'fkTypeReservation' => 1,
@@ -234,10 +239,7 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('reservations')->insert([
             'id' => 3,
-            'dateStart' => '2016-12-15',
-            'dateEnd' => '2016-12-15',
-            'hourStart' => '09:00:00',
-            'hourEnd' => '08:00:00',
+            'dateTimeStart' => '2016-12-15 09:00:00',
             'fkWho' => 1,
             'fkTypeReservation' => 1,
             'fkCourt' => 1,
@@ -280,6 +282,19 @@ class DatabaseSeeder extends Seeder
             'isTrainer' => 1,
             'isMember' => 1,
             'fkPersonalInformation' => 3
+        ]);
+        //RESERVATION ACCOUNT TEST
+        DB::table('users')->insert([
+            'id' => 4,
+            'username' => "igoujgali",
+            'password' => bcrypt('Pa$$w0rd'),
+            'active' => 1,
+            'invitRight' => 1,
+            'validated' => 1,
+            'isAdmin' => 0,
+            'isTrainer' => 0,
+            'isMember' => 1,
+            'fkPersonalInformation' => 4
         ]);
        //*** subscriptions
         DB::table('subscriptions')->insert([
