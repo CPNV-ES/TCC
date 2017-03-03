@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     protected $fillable = [
-        "dateStart",
-        "dateEnd",
-        "hourStart",
-        "hourEnd",
+        "dateTimeStart",
         "fkWho",
         "fkWithWho",
         "fkTypeReservation",
