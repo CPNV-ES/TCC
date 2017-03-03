@@ -110,14 +110,15 @@ class MemberController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        if($request->ajax())
-        {
-            $members = Member::all();
-            return response()->json($members);
-        }
-        $user = User::find($id);
+        // if($request->ajax())
+        // {
+        //     $members = Member::all();
+        //     return response()->json($members);
+        // }
+        $personal_information = PersonalInformation::find($id);
         $localities = Locality::all();
-        return view('admin/configuration/memberEdit',compact('user','localities'));
+        return view('admin/configuration/memberEdit',compact('personal_information','localities'));
+
 
     }
 
@@ -139,41 +140,41 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-      if($request->ajax){
-          $member = Member::find($id);
-          $field = $request->input('name');
-          //Special process for the status
-          if($request->has('status_id'))
-          {
-              $member = Member::where('email', $id)->first();
-              $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
-              $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
-              $currentStatus->fk_subscription = (int)$request->input('status_id');
-              $currentStatus->save();
-              return 'true';
-          }
-
-          //Special process for the boolean value
-          if($request->input('value') == 'true')
-          {
-              $member->$field = '1';
-              $member->save();
-              return 'true';
-          }
-          else if($request->input('value') == 'false')
-          {
-              //Disable the possibility to self-remove from the admin
-              if($member->id == Auth::user()->id && $field == 'administrator')
-              {
-                  return 'false';
-              }
-              $member->$field = '0';
-              $member->save();
-              return 'true';
-          }
-          return 'error';
-
-      }
+      // if($request->ajax){
+      //     $member = Member::find($id);
+      //     $field = $request->input('name');
+      //     //Special process for the status
+      //     if($request->has('status_id'))
+      //     {
+      //         $member = Member::where('email', $id)->first();
+      //         $currentSeason = Season::where('begin_date', '<', Carbon::today())->where('end_date', '>', Carbon::today())->first();
+      //         $currentStatus = Subscription_per_member::where('fk_member', $member->id)->where('fk_season', $currentSeason->id)->first();
+      //         $currentStatus->fk_subscription = (int)$request->input('status_id');
+      //         $currentStatus->save();
+      //         return 'true';
+      //     }
+      //
+      //     //Special process for the boolean value
+      //     if($request->input('value') == 'true')
+      //     {
+      //         $member->$field = '1';
+      //         $member->save();
+      //         return 'true';
+      //     }
+      //     else if($request->input('value') == 'false')
+      //     {
+      //         //Disable the possibility to self-remove from the admin
+      //         if($member->id == Auth::user()->id && $field == 'administrator')
+      //         {
+      //             return 'false';
+      //         }
+      //         $member->$field = '0';
+      //         $member->save();
+      //         return 'true';
+      //     }
+      //     return 'error';
+      //
+      // }
         // Check form
         //-----------
         //IGI - added needed rules
@@ -184,7 +185,7 @@ class MemberController extends Controller
                 'street' => 'max:100',
                 'streetNbr' => 'max:45',
                 'telephone' => 'required',
-                'email' => 'required|email|max:255',
+                'email' => 'required|email|max:255|unique:personal_informations,email,' . $id,
                 'locality' => 'required|max:100',
             ]);
 
@@ -197,17 +198,17 @@ class MemberController extends Controller
         {
             //IGI - check if the email is already used by another members
             // $request->input('email')
-            $duplicate = User::whereHas('personal_information', function($query) use ($request) { $query->where('email', $request["email"]);})->where('id','<>',$id)->count();
-            if(!empty($duplicate))
-            {
-                $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
-            }
+            // $duplicate = User::whereHas('personal_information', function($query) use ($request) { $query->where('email', $request["email"]);})->where('id','<>',$id)->count();
+            // if(!empty($duplicate))
+            // {
+            //     $validator->errors()->add('email', 'Cette adresse email est déjà utilisées.');
+            // }
             $regexTel = "/^(((\+|00)\d{2,3})|0)([.\/ -]?\d){9}$/";
             if(!preg_match($regexTel, $request->input('telephone')))
             {
                 $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 0244521212)');
             }
-        
+
 
         });
 
@@ -221,13 +222,15 @@ class MemberController extends Controller
         }
 
         /////////////////////////////////////////////
-        $userAccount = User::find($id);
-        $userInfo = PersonalInformation::find($userAccount->fkPersonalInformation);
+        $userInfo = PersonalInformation::findOrFail($id);
+        $userAccount = User::where('fkPersonalInformation', $id)->first();
 
-
-        //IGI- Update member info and member account parameters and save it
-        //-----------------------------------------------------
-        $userAccount->UpdateAccountParam($request->all());
+        if ($userAccount) {
+          //IGI- Update member info and member account parameters and save it
+          //-----------------------------------------------------
+          $userAccount->UpdateAccountParam($request->all());
+          $userAccount->save();
+        }
 
         //sorry...
         ($request->exists("toVerify")) ? $request["toVerify"]= "1": $request["toVerify"]= "0" ;
@@ -236,14 +239,16 @@ class MemberController extends Controller
         $userInfo->update($request->all());
         //$member->UpdateAccount($request->all());
 
-        $userAccount->save();
+
         $userInfo->save();
 
 
         //IGI - flash message and come back to the edit member page
         Session::flash('message', "Les modifications ont bien été enregistrées");
-        return redirect('admin/members/'.$userAccount->id.'/edit');
+        return redirect('admin/members/'.$userInfo->id.'/edit');
     }
+
+
     //IGI- actually not used - will be used to check (in AJAX) in the edit member form if the email is already used in the db.
     public function checkMailUse(Request $request)
     {
