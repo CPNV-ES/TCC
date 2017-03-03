@@ -168,7 +168,8 @@ class DatabaseSeeder extends Seeder
             'nbDaysLimitNonMember' => 5,
             'courtOpenTime' => '08:00:00',
             'courtCloseTime' => '17:00:00',
-            'currentAmount' => 20.00
+            'currentAmount' => 20.00,
+            'nbReservations' => 3
         ]);
 
 
