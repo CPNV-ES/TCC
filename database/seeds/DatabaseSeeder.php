@@ -164,7 +164,8 @@ class DatabaseSeeder extends Seeder
             'nbDaysGracePeriod' => 10,
             'nbDaysLimitNonMember' => 5,
             'courtOpenTime' => '08:00:00',
-            'courtCloseTime' => '17:00:00'
+            'courtCloseTime' => '17:00:00',
+            'currentAmount' => 20.00
         ]);
 
         // *** RESERVATIONS ***
