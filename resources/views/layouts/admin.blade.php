@@ -10,6 +10,7 @@
 
     {!! Html::style('/css/bootstrap-theme.min.css')!!}
     {!! Html::style('/css/bootstrap.min.css')!!}
+    {!! Html::style('/css/bootstrap-datepicker3.min.css')!!}
 
     {!! Html::style('/css/admin.css')!!}
 
@@ -27,6 +28,9 @@
     {!! Html::script('/js/layouts.js') !!}
     {!! Html::script('/js/sb-admin-2.js') !!}
 
+    {!! Html::script('/js/bootstrap-datepicker.min.js') !!}
+    {!! Html::script('/js/bootstrap-datepicker.fr-CH.min.js') !!}
+
     {!! Html::script('/js/metisMenu/dist/metisMenu.min.js') !!}
 <!--
     {!! Html::script('/js/raphael/raphael-min.js') !!}
@@ -38,7 +42,6 @@
     {!! Html::script('/js/verif.js') !!}
     {!! Html::script('/js/customVerif.js') !!}
     {!! Html::script('/js/functions.js') !!}
-
 
 </head>
 <body>

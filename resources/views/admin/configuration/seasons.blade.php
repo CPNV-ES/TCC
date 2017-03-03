@@ -82,11 +82,11 @@ Description : Displays a table with the inforamtion of the seasons form the data
             {!! csrf_field() !!}
 
             <div class="form-group{{ $errors->has('dateStart') ? ' has-error' : '' }}">
-                <label class="col-md-6 control-label">Date de début (format jj.mm.aaaa)*</label>
+                <label class="col-md-6 control-label">Date de début (aaaa-mm-jj)*</label>
 
                 <div class="col-md-4">
 
-                    <input id="dateStart" type="date" class="form-control" name="dateStart" data-verif="required|date_us" data-verif-group="seasonCheck"
+                    <input id="dateStart" type="text" class="form-control" name="dateStart" data-verif="required|date_us" data-verif-group="seasonCheck"
                            value="{{ (old('dateStart') != '' ? old('dateStart') : (!empty($newSeasonStart) ? $newSeasonStart : '')) }}">
 
                     @if ($errors->has('dateStart'))
@@ -98,10 +98,10 @@ Description : Displays a table with the inforamtion of the seasons form the data
             </div>
 
             <div class="form-group{{ $errors->has('dateEnd') ? ' has-error' : '' }}">
-                <label class="col-md-6 control-label">Date de fin (format jj.mm.aaaa)*</label>
+                <label class="col-md-6 control-label">Date de fin (aaaa-mm-jj)*</label>
 
                 <div class="col-md-4">
-                    <input type="date" class="form-control" name="dateEnd" data-verif="required|date_us|date_us_greater:dateStart" data-verif-group="seasonCheck"
+                    <input id="dateEnd" type="text" class="form-control" name="dateEnd" data-verif="required|date_us|date_us_greater:dateStart" data-verif-group="seasonCheck"
                            value="{{ (old('dateEnd') != '' ? old('dateEnd') : (!empty($newSeasonEnd) ? $newSeasonEnd : '')) }}">
 
                     @if ($errors->has('dateEnd'))
@@ -122,6 +122,23 @@ Description : Displays a table with the inforamtion of the seasons form the data
             <script type="text/javascript">
               VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnSeasonCheck'),'seasonForm');
             </script>
+            <script type="text/javascript">
+            $(function () {
+              $('#dateStart').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                language: "fr"
+              });
+              $('#dateEnd').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                language: "fr"
+              });
+            });
+            </script>
+
             {{-- SFH: End --}}
 
         </form>
