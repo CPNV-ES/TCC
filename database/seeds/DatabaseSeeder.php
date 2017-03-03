@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Locality;
 
 class DatabaseSeeder extends Seeder
 {
@@ -84,6 +85,10 @@ class DatabaseSeeder extends Seeder
 //
 //            ]);
 //        }
+
+        // SFH : Need to call this before the rest so that there are no problems with foreign keys.
+        $this->call(PersonalInformationAndLocalitiesSeeder::class);
+
         //*** COURT *** we define id to use it as foreign keys
         DB::table('courts')->insert([
             'id' => 1,
@@ -117,23 +122,6 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('type_reservations')->insert([
             'type' => 'mensuel'
-        ]);
-
-        // *** LOCALITY ***
-        DB::table('localities')->insert([
-            'id' => 1,
-            'name' => 'Yverdon-Les-Bains',
-            'NPA' => 1400
-        ]);
-        DB::table('localities')->insert([
-            'id' =>2,
-            'name' => 'Lausanne',
-            'NPA' => 1001
-        ]);
-        DB::table('localities')->insert([
-            'id' =>3,
-            'name' => 'Ste-Croix',
-            'NPA' => 1450
         ]);
 
         // *** INVITATION AMOUNT ***
@@ -178,41 +166,6 @@ class DatabaseSeeder extends Seeder
             'courtCloseTime' => '17:00:00'
         ]);
 
-
-        //*** PERSONAL INFORMATION ***
-        DB::table('personal_informations')->insert([
-            'id' => 1,
-            'firstname' => 'Frank',
-            'lastname' => 'Dero',
-            'street' => 'Rue de la france',
-            'streetNbr' => '2b',
-            'telephone' => '0244564545',
-            'email' => 'frank.dero@test.test',
-            'toVerify' => 1,
-            'fkLocality' => 1
-        ]);
-        DB::table('personal_informations')->insert([
-            'id' => 2,
-            'firstname' => 'Mike',
-            'lastname' => 'Orok',
-            'street' => 'Rue de la Suisse',
-            'streetNbr' => '1',
-            'telephone' => '0244123545',
-            'email' => 'm.orok@test.test',
-            'toVerify' => 1,
-            'fkLocality' => 2
-        ]);
-        DB::table('personal_informations')->insert([
-            'id' => 3,
-            'firstname' => 'Michelle',
-            'lastname' => 'Derouge',
-            'street' => 'Rue de la gare',
-            'streetNbr' => '4',
-            'telephone' => '0244123512',
-            'email' => 'm.derouge@test.test',
-            'toVerify' => 1,
-            'fkLocality' => 3
-        ]);
         // *** RESERVATIONS ***
         DB::table('reservations')->insert([
             'id' => 1,
