@@ -50,6 +50,7 @@ class SeasonController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+
         // Check form
         //-----------
         // SFH: Added 'date', 'after' validators for the check of a season
@@ -77,6 +78,21 @@ class SeasonController extends Controller {
             return back()->withInput()->withErrors($validator);
         }
         /////////////////////////////////////////////
+
+        $startDate = $request->dateStart;
+        $endDate = $request->dateEnd;
+
+        $seasonsCheck = Season::where('dateStart', '<=', $startDate)
+                                ->where('dateEnd', '>=', $startDate)
+                                ->orWhere(function ($query) use ($endDate) {
+                                  $query->where('dateStart', '>=', $endDate)
+                                        ->where('dateEnd', '<=', $endDate);
+                                })
+                                ->get();
+
+        if (sizeof($seasonsCheck) != 0) {
+          return back()->withInput()->withErrors(array('dateStart' => 'Les dates sélectionner chevauche avec une autre saison.', 'dateEnd' => 'Les dates sélectionner chevauche avec une autre saison.'));
+        }
 
         // Insert the season
         //-----------------------------------------------------
