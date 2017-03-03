@@ -9,7 +9,12 @@ Description: Displays a form with the informations of a member. The inputs of th
 @extends('layouts.admin')
 
 @section('title')
-    Membre : {{$personal_information->firstname}} {{$personal_information->lastname}}
+  @if ($personal_information->user)
+    Member :
+  @else
+    Non-Member :
+  @endif
+    {{$personal_information->firstname}} {{$personal_information->lastname}}
 @endsection
 @section('content')
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -23,11 +28,13 @@ Description: Displays a form with the informations of a member. The inputs of th
         {{ method_field('PUT') }}
         <input class="form-control"  name="member-id" type="hidden" value="{{$personal_information->id}}">
 
-        <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12  ">
-            <div >
-                <h4>Pseudo: {{(($personal_information->user) ? $personal_information->user->username : '')}}</h4>
-            </div>
-        </div>
+        @if ($personal_information->user)
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12  ">
+              <div >
+                  <h4>Pseudo: {{$personal_information->user->username}}</h4>
+              </div>
+          </div>
+        @endif
         <div class="row">
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 @if($errors->has('firstname')) {{'has-error'}} @endif  ">
               <label for="example-text-input" class="col-2 col-form-label">Prénom*</label>
@@ -130,56 +137,63 @@ Description: Displays a form with the informations of a member. The inputs of th
                           <option value="2" {{old('localitie') == 2 ? 'selected': $user->personal_information->isAdmin ==1 ? 'selected':''}} >Administrateur</option>
                   </select>
               </div>--}}
-        <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-            <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Type de compte</label>
-            <div class="checkbox">
-                <div class="col-lg-4">
-                    <label>
-                        <input type="checkbox"  value="1" id="isAdmin" name="isAdmin" {{ old('isAdmin')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isAdmin==1 ? 'checked':'') : '')}}>
-                        Administrateur
-                    </label>
-                </div>
-                <div class="col-lg-4">
-                    <label>
-                        <input type="checkbox"  value="1"  id="isTrainer" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isTrainer==1 ? 'checked':'') : '')}}>
-                        Responsable
-                    </label>
-                </div>
-                <div class="col-lg-4">
-                    <label>
-                        <input type="checkbox" id="isMember" value="1" name="isMember" {{ old('isMember')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isMember==1 ? 'checked':'') : '')}}>
-                        Membre
-                    </label>
-                </div>
-            </div>
-        </div>
+        @if ($personal_information->user)
+          <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
+              <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Type de compte</label>
+              <div class="checkbox">
+                  <div class="col-lg-4">
+                      <label>
+                          <input type="checkbox"  value="1" id="isAdmin" name="isAdmin" {{ old('isAdmin')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isAdmin==1 ? 'checked':'') : '')}}>
+                          Administrateur
+                      </label>
+                  </div>
+                  <div class="col-lg-4">
+                      <label>
+                          <input type="checkbox"  value="1"  id="isTrainer" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isTrainer==1 ? 'checked':'') : '')}}>
+                          Responsable
+                      </label>
+                  </div>
+                  <div class="col-lg-4">
+                      <label>
+                          <input type="checkbox" id="isMember" value="1" name="isMember" {{ old('isMember')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isMember==1 ? 'checked':'') : '')}}>
+                          Membre
+                      </label>
+                  </div>
+              </div>
+          </div>
+        @endif
       </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Options du compte</label>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="active" value="1" name="active" {{ old('active')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->active==1 ? 'checked':'') : '')}}>
-                        Rendre le compte actif
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $personal_information->toVerify==1 ? 'checked':'' }}>
-                        Demander une vérification
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->validated==1 ? 'checked':'') : '')}}>
-                        Valider le compte
-                    </label>
-                </div>
+            @if ($personal_information->user)
+              <div class="checkbox">
+                  <label>
+                      <input type="checkbox" id="active" value="1" name="active" {{ old('active')==1 ? 'checked' : ($personal_information->user->active == 1 ? 'checked' : '')}}>
+                      Rendre le compte actif
+                  </label>
+              </div>
+            @endif
+
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" id="invitRight" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' :(($personal_information->user) ? ($personal_information->user->invitRight==1 ? 'checked':'') : '')}}>
-                    Donner le droit d'invitation
+                    <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $personal_information->toVerify==1 ? 'checked':'' }}>
+                    Demander une vérification
                 </label>
             </div>
+            @if ($personal_information->user)
+              <div class="checkbox">
+                  <label>
+                      <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : ($personal_information->user->validated == 1 ? 'checked' : '')}}>
+                      Valider le compte
+                  </label>
+              </div>
+              <div class="checkbox">
+                  <label>
+                      <input type="checkbox" id="invitRight" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : ($personal_information->user->invitRight == 1 ? 'checked' : '')}}>
+                      Donner le droit d'invitation
+                  </label>
+              </div>
+            @endif
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
