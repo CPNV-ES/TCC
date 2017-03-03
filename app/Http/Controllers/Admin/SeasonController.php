@@ -91,6 +91,8 @@ class SeasonController extends Controller {
                                 ->get();
 
         if (sizeof($seasonsCheck) != 0) {
+          $request->session()->flash('alert-danger', 'Veuillez vérifier les informations saisies!');
+          
           return back()->withInput()->withErrors(array('dateStart' => 'Les dates sélectionner chevauche avec une autre saison.', 'dateEnd' => 'Les dates sélectionner chevauche avec une autre saison.'));
         }
 
