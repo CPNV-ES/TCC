@@ -156,8 +156,7 @@
                             </div>
                             <script type="text/javascript">
                                 document.querySelector('#btn_register').addEventListener('click', function(e) {
-                                    if(VERIF.verifGroup('register_form'))
-                                        document.forms["register_form"].submit();
+                                    VERIF.verifGroup('register_form',function(isok){if(isok)document.forms["register_form"].submit();});
                                 });
                             </script>
 
