@@ -135,7 +135,7 @@
                                 <label class="col-md-4 control-label">Date de naissance*</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|date|date_past|date_more_diff:72" class="form-control" id="birth_date" name="birthDate"
+                                    <input type="text" data-verif-group="register_form" data-verif="required|date_us|date_past|date_more_diff:72" class="form-control" id="birth_date" name="birthDate"
                                            value="{{ old('birthDate') }}">
                                            @if ($errors->has('birthDate'))
 

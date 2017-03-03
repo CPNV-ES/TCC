@@ -240,27 +240,24 @@
      },
      date_past: {
        control: function control(res, data) {
-         var ds = data.trim().split('.');
          var now = new Date();
-         var date = new Date(ds[2], ds[1], ds[0]);
+         var date = new Date(data.trim());
          res(now.getTime() - date.getTime() > 0);
        },
        errorText: 'La date doit faire partie du passé'
      },
      date_futur: {
        control: function control(res, data) {
-         var ds = data.trim().split('.');
          var now = new Date();
-         var date = new Date(ds[2], ds[1], ds[0]);
+         var date = new Date(data.trim());
          res(now.getTime() - date.getTime() < 0);
        },
        errorText: 'La date doit faire partie du futur'
      },
      date_more_diff: {
        control: function control(res, data, diff) {
-         var ds = data.trim().split('.');
          var now = new Date();
-         var date = new Date(ds[2], ds[1], ds[0]);
+         var date = new Date(data.trim());
          var ddiff = new Date(Math.abs(now.getTime() - date.getTime()));
          var mdiff = (ddiff.getFullYear() - 1970) * 12 + ddiff.getMonth();
          res(mdiff >= diff);
@@ -274,9 +271,8 @@
      },
      date_less_diff: {
        control: function control(res, data, diff) {
-         var ds = data.trim().split('.');
          var now = new Date();
-         var date = new Date(ds[2], ds[1], ds[0]);
+         var date = new Date(data.trim());
          var ddiff = new Date(Math.abs(now.getTime() - date.getTime()));
          var mdiff = (ddiff.getFullYear() - 1970) * 12 + ddiff.getMonth();
          res(mdiff < diff);
