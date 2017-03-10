@@ -2,7 +2,7 @@
 
 @section('content')
 
-
+    {!! Html::script('/js/visualcalendar.js') !!}
 <div class="container-fluid">
     <h1>Réservation</h1>
     @if(Session::has('successMessage'))
@@ -18,10 +18,34 @@
         <iframe height="85" frameborder="0" width="510" scrolling="no" src="http://www.prevision-meteo.ch/services/html/chavornay-vd/horizontal" allowtransparency="true"></iframe>
         <a style="text-decoration:none;font-size:0.75em;" title="Prévisions à 4 jours pour Chavornay (VD)" href="http://www.prevision-meteo.ch/meteo/localite/chavornay-vd">Prévisions à 4 jours pour Chavornay (VD)</a>
     </div>
+    <ul class="nav nav-tabs">
 
-    <div id="vc-anchor"></div>
+        @foreach($courts as $key=>$court)
+            <li class="@if($key == 0){{'active'}}@endif" ><a data-toggle="tab" href="#tab-{{$court->name}}">{{$court->name}}</a></li>
+        @endforeach
+    </ul>
+    <div class="tab-content">
+        @foreach($courts as $key=>$court)
+            <div id="tab-{{$court->name}}"  class="tab-pane fade @if($key == 0){{'in active'}}@endif">
 
-    <div id="calendar" class="row"></div>
+            </div>
+            <script>
+
+                var vc{{$court->name}} = new VisualCalendar();
+                vc{{$court->name}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->name) !!};
+                vc{{$court->name}}.build();
+                vc{{$court->name}}.generate();
+                vc{{$court->name}}.ev.onSelect=function(elem, datetime){
+                    var myDate = new Date(datetime);
+                    $("#fkCourt").val({{$court->id}});
+                    $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+                    $("#reservation-date").val(datetime+':00');
+
+                    $('#reservation-modal').modal('show');
+                }
+            </script>
+        @endforeach
+
 
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="reservation-modal">
@@ -63,27 +87,9 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-{!! Html::script('/js/visualcalendar.js') !!}
-
-<script>
-  $(".btn-make-reservation").click(function(){
-    var myDate = new Date($(this).val());
-    $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getDate()+ "-" + (myDate.getMonth() + 1) + "-" + myDate.getFullYear()+' à '+myDate.getHours() + ":" + myDate.getMinutes() + ":" + myDate.getSeconds());
-    $("#reservation-date").val($(this).val());
-  });
 
 
-  var vc = new VisualCalendar();
-  vc.config={!! \App\Reservation::getVcConfigJSON() !!};
-  vc.build();
-  vc.generate();
-  vc.ev.onSelect=function(elem, datetime){
-      var myDate = new Date(datetime);
-      $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
-      $("#reservation-date").val(datetime+':00');
-      $('#reservation-modal').modal('show');
-  }
-</script>
+
     <style media="screen">
         .vc-cnt {
             box-sizing: border-box;
@@ -141,7 +147,7 @@
         .vc-nomoreselect .vc-clickable{
             cursor: default;
         }
-        .simple{background-color: #aaf;}
+        .aucune{background-color: #aaf;}
         .simple2{background-color: #afa;}
     </style>
 

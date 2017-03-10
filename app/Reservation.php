@@ -37,13 +37,14 @@ class Reservation extends Model
         return $this->hasOne('App\Invitation', 'fkReservation');
     }
     //return the config for the visual calendar
-    public static function getVcConfigJSON($readOnly = false, $multiple = false, $startDate = null)
+    public static function getVcConfigJSON($court = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
     {
 
         if ($startDate == null)  $startDate = new \DateTime();
         $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+        if($court == null) $court = Court::first()->id;
 
-        $planifiedReservations = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
+        $planifiedReservations = Reservation::where('fkCourt', $court)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
         $res=[];
         foreach($planifiedReservations as $planifiedReservation )
         {
@@ -55,7 +56,7 @@ class Reservation extends Model
         }
 
         $config = [
-            'anchor' => 'div#vc-anchor',
+            'anchor' => $anchor,
             'params' => [
                 'readonly' => $readOnly,
                 'multiple' => $multiple

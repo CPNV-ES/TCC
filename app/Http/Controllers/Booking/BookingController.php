@@ -128,7 +128,8 @@ class BookingController extends Controller
         $allMember = PersonalInformation::where('id', '!=',4)->has('user')->get();
         $memberFav = PersonalInformation::leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')->where('reservations_who.fkWithWho','=', 4)->orWhere('reservations.fkWho','=', 4)->groupBy('personal_informations.id')->orderBy('reservations_count', 'DESC')->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
         $membersList = $memberFav->merge($allMember);
-        return view('booking/home',compact('membersList'));
+        $courts = Court::where('state', 1)->get();
+        return view('booking/home',compact('membersList', 'courts'));
 
 
     }
