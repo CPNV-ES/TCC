@@ -14,7 +14,7 @@
                             <i class="fa fa-users fa-5x"></i>
                         </div>
                         <div class="col-xs-9 text-right">
-                            <div class="huge">{{ $members }}</div>
+                            <div class="huge">{{ $nb_users }}</div>
                             <div>Nombre de membres</div>
                         </div>
                     </div>
@@ -46,26 +46,25 @@
     <div class="row">
         <h2 align="center">Comptes en attente de validation</h2>
 
-        @foreach ($notmembers as $member)
+        @foreach ($notUser as $user)
 
-            <div class="col-md-3">
+            <div class="col-md-6 col-lg-3">
                 <div class="box">
                     <div class="box-content">
-                        <h4 class="tag-title text-center">{{ $member->personal_information->firstname }} {{ $member->personal_information->lastname }}</h4>
+                        <h4 class="tag-title text-center">{{ $user->personal_information->firstname }} {{ $user->personal_information->lastname }}</h4>
                         <hr/>
                         <p>
-                            {{ $member->personal_information->street }} <br/>
-                            {{ $member->personal_information->streetNbr }}<br/>
-                            {{ $member->city }}<br/>
+                            {{ $user->personal_information->street }} <br/>
+                            {{ $user->personal_information->streetNbr }}<br/>
+                            {{ ($user->personal_information->localities) ? $user->personal_information->localities->npa : '' }} {{ ($user->personal_information->localities) ? $user->personal_information->localities->name : '' }}<br/>
                         </p>
                         <hr/>
-                        <p>
-                            {{ $member->personal_information->email }}<br/>
-                            {{ $member->personal_information->telephone }}
+                        <p style="height: 40px;">
+                            {{ $user->personal_information->email }}<br/>
+                            {{ $user->personal_information->telephone }}
                         </p>
                         <hr/>
-                        <p>
-                        <form action="{{url('/admin/login/update/'. $member->id)}}" method="post">
+                        <form action="{{url('/admin/login/update/'. $user->id)}}" method="post">
 
                             {!! csrf_field() !!}
                             {!! method_field('put') !!}
@@ -73,18 +72,18 @@
 
                             <div class="form-group">
                                 <input type="text" class="form-control" data-verif="required|alphanumerique|min_l:5|max_l:25" placeholder="Saisissez un login"
-                                       name="login{{$member->id}}" value="{{ old('login'.$member->id) }}">
+                                       name="login{{$user->id}}" value="{{ old('login'.$user->id) }}">
 
-                                @if ($errors->has('login'.$member->id))
+                                @if ($errors->has('login'.$user->id))
 
                                     <span class="help-block">
-                                            <strong>{{$errors->first('login'.$member->id)}}</strong>
+                                            <strong>{{$errors->first('login'.$user->id)}}</strong>
                                         </span>
 
                                 @endif
                             </div>
 
-                            <input type="hidden" name="id" value="{{ $member->id }}">
+                            <input type="hidden" name="id" value="{{ $user->id }}">
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-block btn-primary">
@@ -92,7 +91,6 @@
                                 </button>
                             </div>
                         </form>
-                        </p>
                     </div>
                 </div>
             </div>

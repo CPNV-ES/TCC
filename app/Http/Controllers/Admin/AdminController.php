@@ -19,8 +19,8 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        $notMembers = User::where('validated', 0)->orWhere('username', "")->OrderBy('username')->get();
-        $members = User::where('validated', 1)->count();
+        $notUser = User::where('validated', 0)->orWhere('username', "")->OrderBy('username')->get();
+        $nb_users = User::where('validated', 1)->count();
         $status = Subscription::all(['id', 'paid'])->pluck('paid', 'id');
 
         // To display message when user is activate
@@ -29,15 +29,15 @@ class AdminController extends Controller
             $message = $request->session()->get('message');
             $request->session()->forget('message');
             return view('admin/home', [
-                'notmembers' => $notMembers,
-                'members' => $members,
+                'notUser' => $notUser,
+                'nb_users' => $nb_users,
                 'status' => $status,
                 'message' => $message,
             ]);
         }
         return view('admin/home', [
-            'notmembers' => $notMembers,
-            'members' => $members,
+            'notUser' => $notUser,
+            'nb_users' => $nb_users,
             'status' => $status,
         ]);
     }
