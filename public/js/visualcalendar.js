@@ -2,6 +2,8 @@ if(Number.parseInt == undefined) Number.parseInt=function(mixed){return parseInt
 Number.prototype.toStringN=function(a){for(var b=this.toString(),c=a-Math.floor(this).toString().length,d=0;d<c;d++)b='0'+b;return b};
 Element.parseHTML=function(a,b){if(a instanceof Element)return a;var c=document.createElement('div');if('string'==typeof a){if('<'==a.trim()[0])return c.innerHTML=a,doc=c.children,b?doc:1==doc.length?doc[0]:doc;c.textContent=a;var d=c.firstChild;return b?[d]:d}return c.innerHTML='<![CDATA['+JSON.stringify(a)+']]>',b?[c.firstChild]:c.firstChild},Element.prototype.select=function(a){return this.querySelector(a)},Element.prototype.selects=function(a){return this.querySelectorAll(a)},Element.prototype.parent=function(){return this.parentNode},Element.prototype.prev=function(){return this.previousSibling},Element.prototype.next=function(){return this.nextSibling},Element.prototype.prependx=function(a,b){b||(a=this.constructor.parseHTML(a,!0));var c=a.length,d=this.firstChild;null===d&&this.appendChild(a[0]);for(var e=0;e<c;e++)this.insertBefore(a[0],this.firstChild);return this.firstChild},Element.prototype.appendx=function(a,b){b||(a=this.constructor.parseHTML(a,!0));for(var c=a.length,d=0;d<c;d++)this.appendChild(a[0]);return this.lastChild},Element.prototype.addBefore=function(a,b){b||(a=this.constructor.parseHTML(a,!0));for(var c=this.parentNode,d=a.length,e=0;e<d;e++)c.insertBefore(a[0],this);return this.previousSibling},Element.prototype.addAfter=function(a,b){b||(a=this.constructor.parseHTML(a,!0));var c=this.nextSibling,d=this.parentNode;null===c&&(d.appendChild(a[0]),c=this.nextSibling);for(var e=a.length,f=0;f<e;f++)d.insertBefore(a[0],c);return this.nextSibling},Element.prototype.remove=function(){return this.parentNode.removeChild(this),this},Element.prototype.on=function(a,b){return this.addEventListener(a,b)},Element.prototype.off=function(a,b){return this.removeEventListener(a,b),this};
 HTMLTableElement.parseHTML=Element.parseHTML;HTMLTableRowElement.parseHTML=Element.parseHTML;
+if(Array.prototype.forEach==undefined) Array.prototype.forEach=function(cb){for(var i=0;i<this.length;i++){cb(this[i],i);}}
+if(NodeList.prototype.forEach==undefined) NodeList.prototype.forEach=Array.prototype.forEach;
 // Requirements ^^^^^^^^^^
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -120,8 +122,8 @@ var VisualCalendar = function () {
         var planifDate = new Date(planif.datetime.replace(' ','T'));
         var hourMax = (Number.parseInt(planifDate.getHours().toString() + planifDate.getMinutes().toStringN(2)) + Number.parseInt(this.config.hours.period.replace(':', ''))).toStringN(4);
         hourMax = hourMax[0] + hourMax[1] + ':' + hourMax[2] + hourMax[3];
-        var planifMax = new Date(datetime.getFullYear() + '-' + (datetime.getMonth() + 1).toStringN(2) + '-' + datetime.getUTCDate().toStringN(2) + ' ' + hourMax);
-        //console.log(planifDate,datetime,planifMax,datetime.getTime()>=planifDate.getTime() && datetime.getTime()<planifMax.getTime());
+        var planifMax = new Date(datetime.getFullYear() + '-' + (datetime.getMonth() + 1).toStringN(2) + '-' + datetime.getUTCDate().toStringN(2) + 'T' + hourMax);
+        console.log(planifDate,datetime,planifMax,datetime.getTime()>=planifDate.getTime() && datetime.getTime()<planifMax.getTime());
         if (datetime.getFullYear() == planifDate.getFullYear() && datetime.getMonth() == planifDate.getMonth() && datetime.getUTCDate() == planifDate.getUTCDate() && datetime.getTime() >= planifDate.getTime() && datetime.getTime() < planifMax.getTime()) return planif;
       }
       return null;
