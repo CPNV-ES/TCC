@@ -96,6 +96,7 @@ Route::group(['middleware' => ['web']], function ()
         Route::resource('/admin/config/courts', 'CourtController');
         Route::resource('/admin/config/seasons', 'SeasonController');
         Route::resource('/admin/config/subscriptions', 'SubscriptionController');
+        Route::resource('/admin/config/other_options', 'OtherOptionController');
         Route::put('/admin/login/update/{id?}', 'MemberController@updateLogin');//to update only the login
         Route::post('/admin/members/checkmail', 'MemberController@checkMailUse');
         Route::resource('/admin', 'AdminController');

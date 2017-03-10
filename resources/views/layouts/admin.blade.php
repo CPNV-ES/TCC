@@ -107,6 +107,9 @@
                             <li>
                                 <a href="{{ url('/admin/config/subscriptions') }}">Cotisations</a>
                             </li>
+                            <li>
+                                <a href="{{ url('/admin/config/other_options') }}">Autre</a>
+                            </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
