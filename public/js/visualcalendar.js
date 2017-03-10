@@ -114,11 +114,12 @@ class VisualCalendar{
     let header=table.createTHead();
     header=header.insertRow(0);
     let heh = header.insertCell(0);
-    heh.textContent='hours';
+    heh.textContent='Heures';
     heh.className='vc-table-head';
     for(let i=0; i<this.builded.dates.length;i++){
       let he = header.insertCell(i+1);
-      he.textContent=this.builded.dates[i];
+      var date=new Date(this.builded.dates[i]);
+      he.textContent=date.getUTCDate().toStringN(2)+'.'+(date.getMonth()+1).toStringN(2)+'.'+date.getFullYear();
       he.className='vc-table-head';
     }
     table.appendx(header);
