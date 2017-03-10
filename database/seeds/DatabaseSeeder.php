@@ -208,42 +208,45 @@ class DatabaseSeeder extends Seeder
             'fkInvitationAmount' => 1,
             'fkReservation' => 2
         ]);
-        DB::table('users')->insert([
-            'id' => 1,
-            'username' => "franky",
-            'password' => bcrypt('test'),
-            'active' => 1,
-            'invitRight' => 1,
-            'validated' => 1,
-            'isAdmin' => 1,
-            'isTrainer' => 1,
-            'isMember' => 1,
-            'fkPersonalInformation' => 1
-        ]);
-        DB::table('users')->insert([
-            'id' => 2,
-            'username' => env('ADMIN_LOGIN','admin'),
-            'password' => bcrypt(env('ADMIN_PASS','admin')),
-            'active' => 1,
-            'invitRight' => 1,
-            'validated' => 1,
-            'isAdmin' => 1,
-            'isTrainer' => 1,
-            'isMember' => 1,
-            'fkPersonalInformation' => 2
-        ]);
-        DB::table('users')->insert([
-            'id' => 3,
-            'username' => "michelle",
-            'password' => bcrypt('test'),
-            'active' => 1,
-            'invitRight' => 1,
-            'validated' => 1,
-            'isAdmin' => 1,
-            'isTrainer' => 1,
-            'isMember' => 1,
-            'fkPersonalInformation' => 3
-        ]);
+
+        // // *** USERS ***
+        // DB::table('users')->insert([
+        //     'id' => 1,
+        //     'username' => "franky",
+        //     'password' => bcrypt('test'),
+        //     'active' => 1,
+        //     'invitRight' => 1,
+        //     'validated' => 1,
+        //     'isAdmin' => 1,
+        //     'isTrainer' => 1,
+        //     'isMember' => 1,
+        //     'fkPersonalInformation' => 1
+        // ]);
+        // DB::table('users')->insert([
+        //     'id' => 2,
+        //     'username' => env('ADMIN_LOGIN','admin'),
+        //     'password' => bcrypt(env('ADMIN_PASS','admin')),
+        //     'active' => 1,
+        //     'invitRight' => 1,
+        //     'validated' => 1,
+        //     'isAdmin' => 1,
+        //     'isTrainer' => 1,
+        //     'isMember' => 1,
+        //     'fkPersonalInformation' => 2
+        // ]);
+        // DB::table('users')->insert([
+        //     'id' => 3,
+        //     'username' => "michelle",
+        //     'password' => bcrypt('test'),
+        //     'active' => 1,
+        //     'invitRight' => 1,
+        //     'validated' => 1,
+        //     'isAdmin' => 1,
+        //     'isTrainer' => 1,
+        //     'isMember' => 1,
+        //     'fkPersonalInformation' => 3
+        // ]);
+
        //*** subscriptions
         DB::table('subscriptions')->insert([
             'paid' => 0,
@@ -263,8 +266,6 @@ class DatabaseSeeder extends Seeder
             'fkTypeSubscription' => 1,
             'fkUser' => 3
         ]);
-        // *** USERS ***
-
 
     }
 }
