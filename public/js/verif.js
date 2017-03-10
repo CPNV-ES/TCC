@@ -4,6 +4,8 @@
  * ES5 version
  */
  'use strict';
+ if(Array.prototype.forEach==undefined) Array.prototype.forEach=function(cb){for(var i=0;i<this.length;i++){cb(this[i],i);}}
+ 
 
  var VERIF = {
    version: '1.0.0',
