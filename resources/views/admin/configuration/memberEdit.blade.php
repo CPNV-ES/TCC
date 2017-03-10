@@ -133,7 +133,7 @@ Description: Displays a form with the informations of a member. The inputs of th
                   <select class="form-control" name="typeCompte">
                       <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
                           <option value="0" {{old('localitie') == 0 ? 'selected': $user->personal_information->isMember ==1 ? 'selected':''}} >Membre</option>
-                          <option value="1" {{old('localitie') == 1 ? 'selected': $user->personal_information->isTrainer ==1 ? 'selected':''}} >Responsable</option>
+                          <option value="1" {{old('localitie') == 1 ? 'selected': $user->personal_information->isTrainer ==1 ? 'selected':''}} >Staff</option>
                           <option value="2" {{old('localitie') == 2 ? 'selected': $user->personal_information->isAdmin ==1 ? 'selected':''}} >Administrateur</option>
                   </select>
               </div>--}}
@@ -150,7 +150,7 @@ Description: Displays a form with the informations of a member. The inputs of th
                   <div class="col-lg-4">
                       <label>
                           <input type="checkbox"  value="1"  id="isTrainer" name="isTrainer" {{ old('isTrainer')==1 ? 'checked' : (($personal_information->user) ? ($personal_information->user->isTrainer==1 ? 'checked':'') : '')}}>
-                          Responsable
+                          Staff
                       </label>
                   </div>
                   <div class="col-lg-4">
