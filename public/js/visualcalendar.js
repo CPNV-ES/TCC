@@ -114,10 +114,10 @@ var VisualCalendar = function () {
   }, {
     key: 'dateHasEvent',
     value: function dateHasEvent(datetime) {
-      if (!(datetime instanceof Date)) datetime = new Date(datetime);
+      if (!(datetime instanceof Date)) datetime = new Date(datetime.replace(' ','T'));
       for (var i = 0; i < this.config.planified.length; i++) {
         var planif = this.config.planified[i];
-        var planifDate = new Date(planif.datetime);
+        var planifDate = new Date(planif.datetime.replace(' ','T'));
         var hourMax = (Number.parseInt(planifDate.getHours().toString() + planifDate.getMinutes().toStringN(2)) + Number.parseInt(this.config.hours.period.replace(':', ''))).toStringN(4);
         hourMax = hourMax[0] + hourMax[1] + ':' + hourMax[2] + hourMax[3];
         var planifMax = new Date(datetime.getFullYear() + '-' + (datetime.getMonth() + 1).toStringN(2) + '-' + datetime.getUTCDate().toStringN(2) + ' ' + hourMax);
