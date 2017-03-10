@@ -1,47 +1,56 @@
-#footer
-{
-    position:fixed;
-    bottom:0px;
-    width:100%;
-    background-color:black;
+#footer {
+    position: fixed;
+    bottom: 0px;
+
+    width: 100%;
+
+    background-color: black;
 }
 
 .box {
-    background:#fff;
-    transition:all 0.2s ease;
-    border:2px dashed #dadada;
-    margin-top: 20px;
     box-sizing: border-box;
-    border-radius: 5px;
+    height: 385px;
+    min-height: 340px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 0 20px 20px 20px;
+
+    transition: all 0.2s ease;
+
+    border: 2px dashed #dadada;
+    border-radius: 5px;
+    background: #fff;
     background-clip: padding-box;
-    padding:0 20px 20px 20px;
-    min-height:340px;
-    margin-bottom:20px;
 }
 
 .box:hover {
-    border:2px solid #525C7A;
+    border: 2px solid #525C7A;
 }
 
 .box span.box-title {
+    text-transform: uppercase;
+
     color: #fff;
+
     font-size: 24px;
     font-weight: 300;
-    text-transform: uppercase;
 }
 
 .box .box-content {
+    box-sizing: border-box;
     padding: 16px;
+
     border-radius: 0 0 2px 2px;
     background-clip: padding-box;
-    box-sizing: border-box;
-}
-.box .box-content p {
-    color:#515c66;
-    text-transform:none;
 }
 
-.table > tbody > tr > td {
+.box .box-content p {
+    text-transform: none;
+
+    color: #515c66;
+}
+
+.table>tbody>tr>td {
     vertical-align: middle;
 }
 
@@ -52,10 +61,12 @@
 .verif_message_error {
     color: #da5d5d;
 }
+
 .verif_error {
     border: 1px solid #da5d5d;
 }
-.member-list tr, .member-list td{
-  height:10px;
-  padding: 3px !important;
+
+.member-list tr, .member-list td {
+    height: 10px;
+    padding: 3px !important;
 }
