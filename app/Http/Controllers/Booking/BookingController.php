@@ -152,16 +152,15 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO
-        //     - how to send data from modal !-- 0:45
-        //     - DISPLAY user dropdown !! -- 1:00
-
 
         if(Auth::check())
         {
+          $fkCourt =   $request->input('fkCourt');
+          Session::flash('currentCourt', $fkCourt);
           // check if the creator of the reservation has the invit right
           if(!Auth::user()->invitRight)
           {
+
             Session::flash('errorMessage', "Vous ne possédez pas le droit d'inviter des gens");
             return redirect('/booking');
           }
@@ -175,6 +174,7 @@ class BookingController extends Controller
           $userWithWho = User::find($request->input('fkWithWho'));
           $todayDate   = date('Y-m-d');
           $todayDateTime = date('Y-m-d H:i:s');
+
 
           //datetime of the reservation
           $dateTimeStart = $request->input('dateTimeStart');
@@ -236,17 +236,20 @@ class BookingController extends Controller
           }
           // 13:00 -- 14:00+1
           $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
+
+
           //check if the hour is the hour is free for the selected court
-          $freeHour = Reservation::whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd])
+          $freeHour = Reservation::where('fkCourt', $fkCourt)->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd])
                                  ->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart])
-                                 ->where('fkCourt', $request->input('fkCourt'))->count();
+                                 ->count();
           if($freeHour!=0)
           {
-            Session::flash('errorMessage', "Cette heure n'est pas libre veuillez choisir une autre heure.");
+
+            Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
             return redirect('/booking');
           }
           //Check if the court is available (in case of the court is in maintenance)
-          $court = Court::find($request->input('fkCourt'));
+          $court = Court::find($fkCourt);
           if($court->state != 1)
           {
             Session::flash('errorMessage', "Ce court n'est pas disponible pour le moment, veuillez choisir un autre court");
@@ -258,7 +261,7 @@ class BookingController extends Controller
 
           // Insert in DB
           //-------------
-          $data = ['dateTimeStart' => $dateTimeStart, 'fkCourt' => $request->input('fkCourt'), 'fkWho' => PersonalInformation::find(Auth::user()->id)->id,
+          $data = ['dateTimeStart' => $dateTimeStart, 'fkCourt' => $fkCourt, 'fkWho' => PersonalInformation::find(Auth::user()->id)->id,
                   'fkTypeReservation' => 1, 'fkWithWho' => $request->input('fkWithWho'),
                   'chargeAmount' => $chargeAmount, 'paid' => 0];
 
@@ -271,7 +274,7 @@ class BookingController extends Controller
           // Select the information of the two players froms the members
           //$members = User::whereIn('id', [Auth::user()->id, $request->input('fk_member_2')])->get(['last_name', 'first_name', 'email']);
           $members = [$userWho->load('personal_information'), $userWithWho->load('personal_information')];
-          $court = Court::find($request->input('fkCourt'));
+          $court = Court::find($fkCourt);
           $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('dateTimeStart'))->format('d.m.Y H:i');
           foreach ($members as $member)
           {

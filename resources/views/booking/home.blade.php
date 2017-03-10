@@ -19,28 +19,26 @@
         <a style="text-decoration:none;font-size:0.75em;" title="Prévisions à 4 jours pour Chavornay (VD)" href="http://www.prevision-meteo.ch/meteo/localite/chavornay-vd">Prévisions à 4 jours pour Chavornay (VD)</a>
     </div>
     <ul class="nav nav-tabs">
-
         @foreach($courts as $key=>$court)
-            <li class="@if($key == 0){{'active'}}@endif" ><a data-toggle="tab" href="#tab-{{$court->name}}">{{$court->name}}</a></li>
+            <li class="@if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'active'}}@endif @elseif($key == 0) active @endif" ><a data-toggle="tab" href="#tab-{{$court->name}}">{{$court->name}}</a></li>
         @endforeach
     </ul>
     <div class="tab-content">
         @foreach($courts as $key=>$court)
-            <div id="tab-{{$court->name}}"  class="tab-pane fade @if($key == 0){{'in active'}}@endif">
-
+            <div id="tab-{{$court->name}}"  class="tab-pane fade @if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'in active'}}@endif @elseif($key == 0) in active @endif">
             </div>
             <script>
-
                 var vc{{$court->name}} = new VisualCalendar();
                 vc{{$court->name}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->name) !!};
                 vc{{$court->name}}.build();
                 vc{{$court->name}}.generate();
                 vc{{$court->name}}.ev.onSelect=function(elem, datetime){
-                    var myDate = new Date(datetime);
+                    var myDate = new Date(datetime.replace(' ','T'));
+                    console.log(myDate);
                     $("#fkCourt").val({{$court->id}});
                     $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
                     $("#reservation-date").val(datetime+':00');
-
+                    console.log(datetime);
                     $('#reservation-modal').modal('show');
                 }
             </script>
