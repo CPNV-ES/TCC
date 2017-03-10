@@ -5,6 +5,7 @@
  */
  'use strict';
  if(Array.prototype.forEach==undefined) Array.prototype.forEach=function(cb){for(var i=0;i<this.length;i++){cb(this[i],i);}}
+ if(NodeList.prototype.forEach==undefined) NodeList.prototype.forEach=Array.prototype.forEach;
  
 
  var VERIF = {
