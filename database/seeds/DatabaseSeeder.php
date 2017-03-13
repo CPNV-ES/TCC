@@ -125,14 +125,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // *** INVITATION AMOUNT ***
-        DB::table('invitation_amounts')->insert([
-            'id' =>1,
-            'amount' => 20.10
-        ]);
-        DB::table('invitation_amounts')->insert([
-            'id' =>2,
-            'amount' => 10.20
-        ]);
+        // DB::table('invitation_amounts')->insert([
+        //     'id' =>1,
+        //     'amount' => 20.10
+        // ]);
+        // DB::table('invitation_amounts')->insert([
+        //     'id' =>2,
+        //     'amount' => 10.20
+        // ]);
 
 
         // *** SEASONS ***
@@ -200,14 +200,14 @@ class DatabaseSeeder extends Seeder
             'paid' => 0
         ]);
         //*** INVITATIONS ***
-        DB::table('invitations')->insert([
-            'id' => 1,
-            'firstname' => 'Léa',
-            'lastname' => 'Dada',
-            'paid' => 0,
-            'fkInvitationAmount' => 1,
-            'fkReservation' => 2
-        ]);
+        // DB::table('invitations')->insert([
+        //     'id' => 1,
+        //     'firstname' => 'Léa',
+        //     'lastname' => 'Dada',
+        //     'paid' => 0,
+        //     'fkInvitationAmount' => 1,
+        //     'fkReservation' => 2
+        // ]);
 
         // // *** USERS ***
         // DB::table('users')->insert([

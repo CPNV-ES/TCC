@@ -125,11 +125,27 @@ class BookingController extends Controller
         //   $members = PersonalInformation::reservations->where('fkWithWho', Auth::user()->id)->orWhere('fkWho', Auth::user()->id)
         //
         // }
-        $allMember = PersonalInformation::where('id', '!=',4)->has('user')->get();
-        $memberFav = PersonalInformation::leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')->where('reservations_who.fkWithWho','=', 4)->orWhere('reservations.fkWho','=', 4)->groupBy('personal_informations.id')->orderBy('reservations_count', 'DESC')->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
-        $membersList = $memberFav->merge($allMember);
-        $courts = Court::where('state', 1)->get();
-        return view('booking/home',compact('membersList', 'courts'));
+        if(Auth::check())
+        {
+          // print(PersonalInformation::find(Auth::user()->id)->id);
+          // die();
+          $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get();
+          $memberFav = PersonalInformation::leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
+                                          ->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')
+                                          ->has('user')->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
+                                          ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
+                                          ->groupBy('personal_informations.id')
+                                          ->orderBy('reservations_count', 'DESC')
+                                          ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
+          $membersList = $memberFav->merge($allMember);
+          $courts = Court::where('state', 1)->get();
+          return view('booking/home',compact('membersList', 'courts'));
+        }
+        else {
+          return view('booking/home');
+        }
+
+
 
 
     }
@@ -239,9 +255,15 @@ class BookingController extends Controller
 
 
           //check if the hour is the hour is free for the selected court
-          $freeHour = Reservation::where('fkCourt', $fkCourt)->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd])
-                                 ->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart])
-                                 ->count();
+          // $freeHour = Reservation::where('fkCourt', $fkCourt)->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd])
+          //                        ->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart])
+          //                        ->count();
+
+          $freeHour = Reservation::where('fkCourt', $fkCourt)->where(function($q) use ($dateTimeStartLessDuration,$dateTimeStart, $dateTimeEnd){
+                        $q->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd]);
+                        $q->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart]);
+          })->count();
+          
           if($freeHour!=0)
           {
 
