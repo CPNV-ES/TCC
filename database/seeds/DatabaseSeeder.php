@@ -134,6 +134,7 @@ class DatabaseSeeder extends Seeder
             'amount' => 10.20
         ]);
 
+
         // *** SEASONS ***
         DB::table('seasons')->insert([
             'id' =>1,
@@ -163,41 +164,40 @@ class DatabaseSeeder extends Seeder
             'nbDaysGracePeriod' => 10,
             'nbDaysLimitNonMember' => 5,
             'courtOpenTime' => '08:00:00',
-            'courtCloseTime' => '17:00:00'
+            'courtCloseTime' => '17:00:00',
+            'currentAmount' => 20.00,
+            'nbReservations' => 3
         ]);
 
         // *** RESERVATIONS ***
         DB::table('reservations')->insert([
             'id' => 1,
-            'dateStart' => '2016-12-15',
-            'dateEnd' => '2016-12-15',
-            'hourStart' => '10:00:00',
-            'hourEnd' => '11:00:00',
+            'dateTimeStart' => '2016-12-15 10:00:00',
             'fkWho' => 2,
             'fkWithWho' => 3,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         DB::table('reservations')->insert([
             'id' => 2,
-            'dateStart' => '2016-12-15',
-            'dateEnd' => '2016-12-15',
-            'hourStart' => '09:00:00',
-            'hourEnd' => '08:00:00',
+            'dateTimeStart' => '2016-12-15 09:00:00',
             'fkWho' => 1,
             'fkWithWho' => 2,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         DB::table('reservations')->insert([
             'id' => 3,
-            'dateStart' => '2016-12-15',
-            'dateEnd' => '2016-12-15',
-            'hourStart' => '09:00:00',
-            'hourEnd' => '08:00:00',
+            'dateTimeStart' => '2016-12-15 09:00:00',
             'fkWho' => 1,
             'fkTypeReservation' => 1,
-            'fkCourt' => 1
+            'fkCourt' => 1,
+            'chargeAmount' => 10.00,
+            'paid' => 0
         ]);
         //*** INVITATIONS ***
         DB::table('invitations')->insert([
