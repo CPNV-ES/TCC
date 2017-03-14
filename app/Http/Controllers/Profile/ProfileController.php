@@ -20,14 +20,14 @@ class ProfileController extends Controller
      */
     public function index(Request $request)
     {
-        $member = Member::find(Auth::user()->id);
-        $status = $member->status->last();
+        $member = User::find(Auth::user()->id);
+        //$status = $member->status->last();
 
         if ($request->session()->has('message')) {
             $message = $request->session()->get('message');
             $request->session()->forget('message');
             return view('profile/home',[
-                'status' => $status->status,
+                //'status' => $status->status,
                 'message' => $message,
             ]);
         }
@@ -94,10 +94,8 @@ class ProfileController extends Controller
                 'first_name'    => 'required',
                 'address'       => 'required',
                 'city'          => 'required',
-                'zip_code'      => 'required|integer|digits:4',
                 'email'         => 'required|email',
-                'mobile_phone'  => 'required',
-                'home_phone'    => 'required',
+                'telephone'    => 'required',
                 'birth_date'    => 'required|date'
             ]);
         /////////////////////////////////////////////

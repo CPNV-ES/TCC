@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyConfigTable extends Migration
+class AddInvalidatedDateColumnUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,9 @@ class ModifyConfigTable extends Migration
      */
     public function up()
     {
-        Schema::table('configs', function(Blueprint $table){
-          $table->increments('id');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->date('invalidatedDate')->nullable();
         });
     }
 
@@ -24,8 +25,9 @@ class ModifyConfigTable extends Migration
      */
     public function down()
     {
-      Schema::table('configs', function(Blueprint $table){
-        $table->dropColumn('id');
-      });
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->dropColumn('invalidatedDate');
+        });
     }
 }
