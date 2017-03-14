@@ -68,13 +68,13 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
           if ($firstRun) {
             $firstRun = false;
             DB::table('personal_informations')->insert([
-                'firstname' => 'Xavier',
-                'lastname' => 'Carrel',
+                'firstname' => 'Jesuis',
+                'lastname' => 'Ladmin',
                 'street' => 'Chemin des Codeurs',
                 'streetNbr' => '777',
-                'telephone' => '0245576080',
+                'telephone' => '0236549875',
                 'birthDate' => '1973-05-15',
-                'email' => 'xavier.carrel@cpnv.ch',
+                'email' => 'jesuis.ladmin@tcc.ch',
                 'toVerify' => 0,
                 'fkLocality' => $locality_id
             ]);
