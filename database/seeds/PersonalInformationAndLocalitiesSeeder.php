@@ -74,7 +74,7 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
                 'streetNbr' => '777',
                 'telephone' => '0236549875',
                 'birthDate' => '1973-05-15',
-                'email' => 'jesuis.ladmin@tcc.ch',
+                'email' => 'struan.forsyth@cpnv.ch',
                 'toVerify' => 0,
                 'fkLocality' => $locality_id
             ]);
