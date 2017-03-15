@@ -139,7 +139,7 @@ Description: Displays a form with the informations of a member. The inputs of th
               </div>--}}
         @if ($personal_information->user)
           <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
-              <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Type de compte</label>
+              <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Rôles de compte</label>
               <div class="checkbox">
                   <div class="col-lg-4">
                       <label>
@@ -169,7 +169,7 @@ Description: Displays a form with the informations of a member. The inputs of th
               <div class="checkbox">
                   <label>
                       <input type="checkbox" id="active" value="1" name="active" {{ old('active')==1 ? 'checked' : ($personal_information->user->active == 1 ? 'checked' : '')}}>
-                      Rendre le compte actif
+                      Compte activé
                   </label>
               </div>
             @endif
@@ -177,20 +177,20 @@ Description: Displays a form with the informations of a member. The inputs of th
             <div class="checkbox">
                 <label>
                     <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $personal_information->toVerify==1 ? 'checked':'' }}>
-                    Demander une vérification
+                    Compte à vérifier
                 </label>
             </div>
             @if ($personal_information->user)
               <div class="checkbox">
                   <label>
                       <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : ($personal_information->user->validated == 1 ? 'checked' : '')}}>
-                      Valider le compte
+                      Compte validé
                   </label>
               </div>
               <div class="checkbox">
                   <label>
                       <input type="checkbox" id="invitRight" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : ($personal_information->user->invitRight == 1 ? 'checked' : '')}}>
-                      Donner le droit d'invitation
+                      Droit d'invitation
                   </label>
               </div>
             @endif
