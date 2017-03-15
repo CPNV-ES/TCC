@@ -52,7 +52,7 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
 
           if (!$locality && trim($value['VILLE']) != '') {
             DB::table('localities')->insert([
-                'name' => trim(ucfirst(strtolower($value['VILLE']))),
+                'name' => trim(ucwords(strtolower($value['VILLE']))),
                 'NPA' => trim($value['NPA'])
             ]);
           }
@@ -107,8 +107,14 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
             $phone = trim($value['NATEL']);
           }
 
-          $firstname = trim(ucfirst(strtolower($value['PRENOM'])));
-          $lastname = trim(ucfirst(strtolower($value['NOM'])));
+          $firstname = trim(ucwords(strtolower($value['PRENOM'])));
+          $lastname = trim(ucwords(strtolower($value['NOM'])));
+
+          $email = self::normalize(str_replace(' ', '', trim($value['E-mail'])));
+          if ($email == '') {
+            $email = self::normalize($firstname) . '.' . str_replace(' ', '',self::normalize($lastname)) . '@swiss.ch';
+          }
+
 
           $newPI = PersonalInformation::create([
               'firstname' => $firstname,
@@ -117,27 +123,37 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
               'streetNbr' => trim($value['NumRue']),
               'telephone' => $phone,
               'birthDate' => $birthday,
-              'email' => str_replace(' ', '', trim($value['E-mail'])),
+              'email' => $email,
               'toVerify' => rand(0,1),
               'fkLocality' => $locality_id
           ]);
 
-          $firstname = self::normalize($firstname);
-          $lastname = strtoupper($lastname);
-          $middleLetter = substr($lastname, (strlen($lastname) / 2), 1);
-          $login = strtolower($firstname) . substr($lastname, 0, 1) . $middleLetter . substr($lastname, -1, 1);
-          $password = password_hash('1234', PASSWORD_BCRYPT);
+          $isValidated = (rand(0,100) <= 25) ? 0 : 1;
           $personID = $newPI->id;
+          $login = '';
+          $password = '';
 
-          $newUser = User::create([
-            'username' => $login,
-            'password' => $password,
+          if ($isValidated) {
+            $firstname = self::normalize($firstname);
+            $lastname = strtoupper($lastname);
+            $middleLetter = substr($lastname, (strlen($lastname) / 2), 1);
+            $login = strtolower($firstname) . substr($lastname, 0, 1) . $middleLetter . substr($lastname, -1, 1);
+            $password = password_hash('1234', PASSWORD_BCRYPT);
+          }
+
+          $isAdmin = (rand(0,100) <= 5) ? 1 : 0;
+          $isTrainer = (rand(0,100) <= 25) ? 1 : 0 ;
+          $isMember = ($isTrainer == 0) ? 1 : rand(0,1) ;
+
+          User::create([
+            'username' => ($login == '' ? NULL : $login),
+            'password' => ($password == '' ? NULL : $password),
             'active' => rand(0,1),
             'invitRight' => rand(0,1),
-            'validated' => rand(0,1),
-            'isAdmin' => rand(0,1),
-            'isMember' => rand(0,1),
-            'isTrainer' => rand(0,1),
+            'validated' => $isValidated,
+            'isAdmin' => $isAdmin,
+            'isMember' => $isMember,
+            'isTrainer' => $isTrainer,
             'fkPersonalInformation' => $personID,
           ]);
 
