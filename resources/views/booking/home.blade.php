@@ -3,7 +3,7 @@
 @section('content')
 
     {!! Html::script('/js/visualcalendar.js') !!}
-<div class="container-fluid">
+    <div class="container-fluid">
     <h1>Réservation</h1>
     @if(Session::has('successMessage'))
         <div class="alert alert-success">
@@ -49,45 +49,77 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="reservation-modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form method="post" role="form" method="POST" action="{{ url('/booking')}}">
+
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title" id="myModalLabel">Réservation</h4>
               </div>
               <div class="modal-body">
                   <div id="modal-resume" class="notice notice-info">
-                      <p>Réservation du court .. le 'date' </p>
+                          <p>Réservation du court .. le 'date' </p>
                   </div>
-                  Choisissez votre adversaire
-                  {{ csrf_field() }}
-                  {{ method_field('POST') }}
+                  <ul class="nav nav-tabs" role="tablist">
+                      <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Réservation avec un membre</a></li>
+                      <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Réservation avec un invité</a></li>
+                  </ul>
+                  <div class="tab-content">
+                      <div role="tabpanel" class="tab-pane active" id="home">
+                          <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
+                              {{ csrf_field() }}
+                              {{ method_field('POST') }}
+                              <div class="form-group">
+                                  <label for="recipient-name" class="control-label">Choissiez votre adversaire:</label>
+                                   <select name="fkWithWho" class="form-control">
+                                      @foreach($membersList as $member)
+                                          <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
+                                      @endforeach
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <button type="submit" id="booking" class="btn btn-success btn-block push-to-bottom" name="btn-reserver">
+                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                      Réserver
+                                  </button>
+                              </div>
+                          </form>
+                      </div>
+                      <div role="tabpanel" class="tab-pane" id="profile">
+                          <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
+                              {{ csrf_field() }}
+                              {{ method_field('POST') }}
+                              <div class="form-group">
+                                  <label for="recipient-name" class="control-label">Prénom de votre invité*:</label>
+                                  <input class="form-control" type="text" name="invitFirstname"/>
+                              </div>
+                              <div class="form-group">
+                                  <label for="recipient-name" class="control-label">Nom de votre invité*:</label>
+                                  <input class="form-control" type="text" name="invitLastname"/>
+                              </div>
+                              * obligatoire
+                              <div class="form-group push-to-bottom ">
+                                  <button type="submit" id="booking" class="btn btn-success btn-block" name="btn-reserver">
+                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                      Réserver
+                                  </button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
 
                   <input type="hidden" id="reservation-date" name="dateTimeStart">
                   <input type="hidden" id="fkCourt" name="fkCourt" value=1>
-                  <select name="fkWithWho">
-                    @foreach($membersList as $member)
-                      <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
-                    @endforeach
-                  </select>
 
                   <div id="modal-panel"></div>
                   <div id="modal-content"></div>
               </div>
               <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                  <button type="submit" id="booking" class="btn btn-success">
-                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                      Réserver
-                  </button>
               </div>
           </form>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-
-
-
     <style media="screen">
         .vc-cnt {
             box-sizing: border-box;
@@ -147,7 +179,15 @@
         }
         .aucune{background-color: #aaf;}
         .simple2{background-color: #afa;}
+
+        .push-to-bottom {
+           margin-top: 20px;
+        }
     </style>
+        <script>
+            let btn=document.getElementById('btn-reserver');
+            VERIF.onClickSubmitAfterVerifForm(btn,'reservation-form');
+        </script>
 
 
 {{--    {!! Html::script('/ajax/calendar.js') !!}
