@@ -169,36 +169,36 @@ class DatabaseSeeder extends Seeder
             'nbReservations' => 3
         ]);
 
-        // *** RESERVATIONS ***
-        DB::table('reservations')->insert([
-            'id' => 1,
-            'dateTimeStart' => '2016-12-15 10:00:00',
-            'fkWho' => 2,
-            'fkWithWho' => 3,
-            'fkTypeReservation' => 1,
-            'fkCourt' => 1,
-            'chargeAmount' => 10.00,
-            'paid' => 0
-        ]);
-        DB::table('reservations')->insert([
-            'id' => 2,
-            'dateTimeStart' => '2016-12-15 09:00:00',
-            'fkWho' => 1,
-            'fkWithWho' => 2,
-            'fkTypeReservation' => 1,
-            'fkCourt' => 1,
-            'chargeAmount' => 10.00,
-            'paid' => 0
-        ]);
-        DB::table('reservations')->insert([
-            'id' => 3,
-            'dateTimeStart' => '2016-12-15 09:00:00',
-            'fkWho' => 1,
-            'fkTypeReservation' => 1,
-            'fkCourt' => 1,
-            'chargeAmount' => 10.00,
-            'paid' => 0
-        ]);
+        // // *** RESERVATIONS ***
+        // DB::table('reservations')->insert([
+        //     'id' => 1,
+        //     'dateTimeStart' => '2016-12-15 10:00:00',
+        //     'fkWho' => 2,
+        //     'fkWithWho' => 3,
+        //     'fkTypeReservation' => 1,
+        //     'fkCourt' => 1,
+        //     'chargeAmount' => 10.00,
+        //     'paid' => 0
+        // ]);
+        // DB::table('reservations')->insert([
+        //     'id' => 2,
+        //     'dateTimeStart' => '2016-12-15 09:00:00',
+        //     'fkWho' => 1,
+        //     'fkWithWho' => 2,
+        //     'fkTypeReservation' => 1,
+        //     'fkCourt' => 1,
+        //     'chargeAmount' => 10.00,
+        //     'paid' => 0
+        // ]);
+        // DB::table('reservations')->insert([
+        //     'id' => 3,
+        //     'dateTimeStart' => '2016-12-15 09:00:00',
+        //     'fkWho' => 1,
+        //     'fkTypeReservation' => 1,
+        //     'fkCourt' => 1,
+        //     'chargeAmount' => 10.00,
+        //     'paid' => 0
+        // ]);
         //*** INVITATIONS ***
         // DB::table('invitations')->insert([
         //     'id' => 1,
@@ -266,6 +266,8 @@ class DatabaseSeeder extends Seeder
             'fkTypeSubscription' => 1,
             'fkUser' => 3
         ]);
+
+        $this->call(ReservationTable::class);
 
     }
 }
