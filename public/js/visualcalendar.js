@@ -126,8 +126,6 @@ var VisualCalendar = function () {
         var hourMax = (Number.parseInt(planifDate.getHours().toString() + planifDate.getMinutes().toStringN(2)) + Number.parseInt(this.config.hours.period.replace(':', ''))).toStringN(4);
         var planifMax = parseDate(planifDate.getFullYear() + '-' + (planifDate.getMonth() + 1).toStringN(2) + '-' + planifDate.getUTCDate().toStringN(2) + ' ' + hourMax[0] + hourMax[1] + ':' + hourMax[2] + hourMax[3]);
         if (datetime.getTime() >= planifDate.getTime() && datetime.getTime() < planifMax.getTime()){
-          console.log(planifDate);
-
           return planif;
         }
       }
