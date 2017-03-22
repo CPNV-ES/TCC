@@ -203,24 +203,28 @@ class BookingController extends Controller
           }
 
           //Number of reservations of the creator of the reservation
-          $nbReservationWho = Reservation::where('dateTimeStart', '>', $todayDate)->where(function ($query){
-              $query->where('fkWho', PersonalInformation::find(Auth::user()->id)->id)
-                    ->orWhere('fkWithWho', PersonalInformation::find(Auth::user()->id)->id);
-          })->count();
+          $startDate = new \DateTime();
+          $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+          $nbReservationWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+              ->where(function($q){
+                  $Userid=Auth::user()->id;
+                  $q->where('fkWho', $Userid);
+                  $q->orWhere('fkWithWho', $Userid);
+              })->count();
 
           //Number of reservations of the person invited;
-          $nbReservationWithWho = Reservation::where('dateTimeStart', '>', $todayDate)->where(function ($query) use ($request){
-              $query->where('fkWho', $request->input('fkWithWho'))
-                    ->orWhere('fkWithWho', $request->input('fkWithWho'));
-          })->count();
+          $nbReservationWithWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+              ->where(function($q)use ($request){
+                  $Userid=$request->input('fkWithWho');
+                  $q->where('fkWho', $Userid);
+                  $q->orWhere('fkWithWho', $Userid);
+              })->count();
 
           //check if the number of reservations of the creator of the reservations and the invited person has not been exceeded
           if ($nbReservationWho >= Config::orderBy('created_at', 'desc')->first()->nbReservations)
           {
               Session::flash('errorMessage', "Vous avez déjà atteint votre nombre maximum de reservations");
               return redirect('/booking');
-
-
           }
           else if ($nbReservationWithWho >= Config::orderBy('created_at', 'desc')->first()->nbReservations)
           {
