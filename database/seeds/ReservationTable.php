@@ -15,36 +15,60 @@ class ReservationTable extends Seeder
     {
       $courts = Court::all();
       $nbMembers = User::all()->count();
+      $playerCount = [];
       foreach ($courts as $court) {
         $toAddTable = [];
-        for ($i=0; $i < 300 ; $i++) {
-          $dateInsert = date("Y-m-d H:i:s");
-          if (rand(0,1)) {
-            $toAdd = '+'.rand(0,10).' days ';
-          } else {
-            $toAdd = '-'.rand(0,10).' days ';
-          }
-          if (rand(0,1)) {
-            $toAdd .= '+'.rand(0,12).' hours';
-          } else {
-            $toAdd .= '-'.rand(0,12).' hours';
-          }
+        for ($x=0; $x <= 10; $x++) {
+          for ($i=0; $i < 7 ; $i++) {
+            $dateInsert = date_time_set(date_create(date("Y-m-d H:i:s")), 8,0,0);
+            $dateInsert = $dateInsert->format('Y-m-d H:i:s');
 
-          $dateInsert = date('Y-m-d H:i:s', strtotime($dateInsert . $toAdd));
-          $dateInsert = date_format(date_create($dateInsert), 'Y-m-d H');
+            do {
+              $who = rand(1, $nbMembers);
+              $withWho = rand(1, $nbMembers);
+            } while ($who == $withWho);
 
-          if (!in_array($dateInsert, $toAddTable)) {
-            $toAddTable[] = $dateInsert;
+            if ($x <= 5) {
+              $toAdd = '+'.$x.' days ';
+              if (!array_key_exists($who, $playerCount)) {
+                $playerCount[$who] = 1;
+              }
+              if (!array_key_exists($withWho, $playerCount)) {
+                $playerCount[$withWho] = 1;
+              }
+            } else {
+              $toAdd = '-'.($x - 5).' days ';
+            }
+            $toAdd .= '+'.rand(0,11).' hours';
 
-            DB::table('reservations')->insert([
-                'dateTimeStart' => $dateInsert,
-                'fkWho' => rand(1, $nbMembers),
-                'fkWithWho' => rand(1, $nbMembers),
-                'fkTypeReservation' => 1,
-                'fkCourt' => $court->id,
-                'chargeAmount' => rand(0,50) . '.' . rand(0,95),
-                'paid' => rand(0,1)
-            ]);
+            $dateInsert = date('Y-m-d H:i:s', strtotime($dateInsert . $toAdd));
+            $dateInsert = date_format(date_create($dateInsert), 'Y-m-d H');
+
+            if (!in_array($dateInsert, $toAddTable)) {
+              $toAddTable[] = $dateInsert;
+              if ($x > 5) {
+
+              }
+              elseif ($playerCount[$who] < 4 && $playerCount[$withWho] < 4) {
+                if ($x <= 5) {
+                  $playerCount[$who] += 1;
+                  $playerCount[$withWho] += 1;
+                }
+              }
+
+              DB::table('reservations')->insert([
+                  'dateTimeStart' => $dateInsert,
+                  'fkWho' => $who,
+                  'fkWithWho' => $withWho,
+                  'fkTypeReservation' => 1,
+                  'fkCourt' => $court->id,
+                  'chargeAmount' => rand(0,50) . '.' . rand(0,95),
+                  'paid' => rand(0,1)
+              ]);
+            }
+            else {
+              $i--;
+            }
           }
         }
       }
