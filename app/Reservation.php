@@ -4,6 +4,8 @@ namespace App;
 
 use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\Config;
 
 class Reservation extends Model
 {
@@ -45,15 +47,47 @@ class Reservation extends Model
         if($court == null) $court = Court::first()->id;
 
         $planifiedReservations = Reservation::where('fkCourt', $court)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
+        $Userid=Auth::user()->id;
+        $myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+        ->where(function($q){
+            $Userid=Auth::user()->id;
+            $q->where('fkWho', $Userid);
+            $q->orWhere('fkWithWho', $Userid);
+        })->get();
+        //print_r(count($myReservs));die;
+        if(count($myReservs)>=Config::first()->nbReservations )$readOnly=true;
         $res=[];
-        foreach($planifiedReservations as $planifiedReservation )
+        $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
+        $hdiff=$startDate->diff($zeroDate)->format('%H');
+        foreach($myReservs as $planifiedReservation )
         {
-            $res[] =[
+            $res[]=[
                 'datetime' => $planifiedReservation->dateTimeStart,
-                'type' => $planifiedReservation->type_reservation->type, // that's going to the class of the box
-                'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname
+                'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
+                'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
             ];
         }
+        // for clickable ->
+        foreach($planifiedReservations as $planifiedReservation )
+        {
+            $res[]=[
+                'datetime' => $planifiedReservation->dateTimeStart,
+                'type' => $planifiedReservation->type_reservation->type, // that's going to the class of the box
+                'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                'clickable' => false
+            ];
+        }
+        for($i=0;$i<$hdiff;$i++)
+        {
+            $res[]=[
+                'datetime' => ((new \DateTime($zeroDate->format('Y-m-d H:i')))->add(new \DateInterval('PT'.$i.'H')))->format('Y-m-d H:i'),
+                'type' => 'vc-passed', // that's going to the class of the box
+                'title' => '',
+                'clickable' => false
+            ];
+        }
+
 
         $config = [
             'anchor' => $anchor,
@@ -63,7 +97,7 @@ class Reservation extends Model
             ],
             'dates' => [[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')]],
             'hours' => [
-                'ranges' =>[['08:00','12:00'],['14:00','20:00']],
+                'ranges' =>[['08:00','20:00']],
                 'period' => '01:00'
             ],
             'planified' => $res

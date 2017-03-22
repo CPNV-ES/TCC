@@ -29,7 +29,8 @@ var VisualCalendar = function () {
     this.selected = [];
     this.ev = {
       onSelect: function onSelect() {},
-      onUnselect: function onUnselect() {}
+      onUnselect: function onUnselect() {},
+      onPlanifClick: function onPlanifClick() {}
     };
     if (config !== undefined) {
       this.hydrate(config);
@@ -62,6 +63,7 @@ var VisualCalendar = function () {
       if (config.ev !== undefined) {
         this.ev.onSelect = config.ev.onSelect || function () {};
         this.ev.onUnselect = config.ev.onUnselect || function () {};
+        this.ev.onPlanifClick =  config.ev.onUnselect || function () {};
       }
     }
   }, {
@@ -109,7 +111,6 @@ var VisualCalendar = function () {
           r1 = Number.parseInt(r1) + period;
         }
         var htos = r1.toStringN(4).match(/\d{2}/);
-        //hours.push(htos[0]+':'+htos[1]);
       });
       this.builded.hours = hours;
     }
@@ -122,9 +123,10 @@ var VisualCalendar = function () {
         var planifDate = new Date(planif.datetime.replace(' ','T'));
         var hourMax = (Number.parseInt(planifDate.getHours().toString() + planifDate.getMinutes().toStringN(2)) + Number.parseInt(this.config.hours.period.replace(':', ''))).toStringN(4);
         hourMax = hourMax[0] + hourMax[1] + ':' + hourMax[2] + hourMax[3];
-        var planifMax = new Date(datetime.getFullYear() + '-' + (datetime.getMonth() + 1).toStringN(2) + '-' + datetime.getUTCDate().toStringN(2) + 'T' + hourMax);
-        console.log(planifDate,datetime,planifMax,datetime.getTime()>=planifDate.getTime() && datetime.getTime()<planifMax.getTime());
-        if (datetime.getFullYear() == planifDate.getFullYear() && datetime.getMonth() == planifDate.getMonth() && datetime.getUTCDate() == planifDate.getUTCDate() && datetime.getTime() >= planifDate.getTime() && datetime.getTime() < planifMax.getTime()) return planif;
+        var planifMax = new Date(planifDate.getFullYear() + '-' + (planifDate.getMonth() + 1).toStringN(2) + '-' + planifDate.getUTCDate().toStringN(2) + 'T' + hourMax+':00+01:00');
+        if (datetime.getTime() >= planifDate.getTime() && datetime.getTime() < planifMax.getTime()){
+          return planif;
+        }
       }
       return null;
     }
@@ -144,7 +146,7 @@ var VisualCalendar = function () {
       for (var i = 0; i < this.builded.dates.length; i++) {
         var he = header.insertCell(i + 1);
         var date=new Date(this.builded.dates[i]);
-        he.textContent=date.getUTCDate().toStringN(2)+'.'+(date.getMonth()+1).toStringN(2)+'.'+date.getFullYear(); 
+        he.textContent=date.getUTCDate().toStringN(2)+'.'+(date.getMonth()+1).toStringN(2)+'.'+date.getFullYear();
         he.className = 'vc-table-head';
       }
       table.appendx(header);
@@ -159,20 +161,22 @@ var VisualCalendar = function () {
           CTD = _this2.builded.dates[j] + ' ' + _this2.builded.hours[_i];
 
           var me = _this2.dateHasEvent(CTD);
-          var selectable = _this2.config.params.readonly ? '' : ' vc-selectable';
+          var ev_clickable= me?me.clickable:false;
+          var selectable = _this2.config.params.readonly ? '' : ev_clickable ?' vc-clickable' : '';
           var className = me ? selectable + " " + me.type : _this2.config.params.readonly ? '' : ' vc-clickable';
           elem = row.insertCell(j + 1);
 
           elem.className = className;
           elem.innerHTML = me ? me.title : '';
           row.appendx(elem);
-          if (!_this2.config.params.readonly) elem.on('click', function (ev) {
+          if (!_this2.config.params.readonly){ elem.on('click', function (ev) {
             if (!me) {
               var el = ev.target;
               var curdate = _this2.builded.dates[j] + ' ' + _this2.builded.hours[_i];
               var index = ev.target.className.indexOf(' vc-selected');
-
-              if (index == -1) {
+              if( _this2.config.params.multiple == false){
+                _this2.ev.onSelect(ev.target, curdate);
+              }else if (index == -1) {
                 if (_this2.selected.length == 0 || _this2.config.params.multiple == true || _this2.config.params.multiple > _this2.selected.length) {
 
                   _this2.selected.push(curdate);
@@ -195,8 +199,13 @@ var VisualCalendar = function () {
                   cnt.className = cnt.className.replace(' vc-nomoreselect', '');
                 }
               }
+            }else if(me.clickable){
+              _this2.ev.onPlanifClick(ev.target, me);
             }
-          });
+          });} else if(ev_clickable){
+            elem.className+=' vc-clickable';
+            elem.on('click', function (ev) {_this2.ev.onPlanifClick(ev.target, me);});
+          }// TODO Faire fonctionner ça
         };
 
         for (var j = 0; j < _this2.builded.dates.length; j++) {
