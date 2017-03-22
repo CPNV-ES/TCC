@@ -33,13 +33,14 @@
                 vc{{$court->name}}.build();
                 vc{{$court->name}}.generate();
                 vc{{$court->name}}.ev.onSelect=function(elem, datetime){
-                    var myDate = new Date(datetime.replace(' ','T'));
-                    console.log(myDate);
+                    var myDate = new Date(datetime.replace(' ','T')+':00+01:00');
                     $("#fkCourt").val({{$court->id}});
                     $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
                     $("#reservation-date").val(datetime+':00');
-                    console.log(datetime);
                     $('#reservation-modal').modal('show');
+                }
+                vc{{$court->name}}.ev.onPlanifClick=function(elem, planif){
+                    console.log(elem, planif);
                 }
             </script>
         @endforeach
@@ -122,6 +123,7 @@
         }
         tr>td {
             border-bottom-color: #ccc;
+            background-color: #fff;
             height: 23px;
         }
         tr:last-child>td {
@@ -133,20 +135,22 @@
             width: 70px;
         }
         .vc-selected{
-            background-color: #dae9f1;
+            background-color: #9cbcf7;
         }
         .vc-clickable{
             cursor: pointer;
             transition-duration: 250ms;
         }
         .vc-clickable:not(.vc-selected):hover{
-            background-color: #eee;
+            background-color: #c5d9ff;
         }
         .vc-nomoreselect .vc-clickable{
             cursor: default;
         }
-        .aucune{background-color: #aaf;}
-        .simple2{background-color: #afa;}
+        .aucune{background-color: #afa;}
+        .simple2{background-color: #ffa;}
+        .vc-passed{filter: brightness(0.9);}
+        .vc-own-planif{filter: saturate(1.5);}
     </style>
 
 
