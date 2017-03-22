@@ -35,9 +35,9 @@
                 vc{{$court->name}}.ev.onSelect=function(elem, datetime){
                     var myDate = new Date(datetime.replace(' ','T'));
                     console.log(myDate);
-                    $("#fkCourt").val({{$court->id}});
+                    $(".fkCourt").val({{$court->id}});
                     $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
-                    $("#reservation-date").val(datetime+':00');
+                    $(".reservation-date").val(datetime+':00');
                     console.log(datetime);
                     $('#reservation-modal').modal('show');
                 }
@@ -45,7 +45,7 @@
         @endforeach
 
 
-    <!-- Modal -->
+    <!-- Modal Reservation -->
     <div class="modal fade" tabindex="-1" role="dialog" id="reservation-modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -67,6 +67,8 @@
                           <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
                               {{ csrf_field() }}
                               {{ method_field('POST') }}
+                              <input type="hidden" class="reservation-date" name="dateTimeStart">
+                              <input type="hidden" class="fkCourt" name="fkCourt" value=1>
                               <div class="form-group">
                                   <label for="recipient-name" class="control-label">Choissiez votre adversaire:</label>
                                    <select name="fkWithWho" class="form-control">
@@ -87,6 +89,9 @@
                           <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
                               {{ csrf_field() }}
                               {{ method_field('POST') }}
+                              <input type="hidden" class="reservation-date" name="dateTimeStart">
+                              <input type="hidden" class="fkCourt" name="fkCourt" value=1>
+
                               <div class="form-group">
                                   <label for="recipient-name" class="control-label">Prénom de votre invité*:</label>
                                   <input class="form-control" type="text" name="invitFirstname"/>
@@ -105,10 +110,6 @@
                           </form>
                       </div>
                   </div>
-
-                  <input type="hidden" id="reservation-date" name="dateTimeStart">
-                  <input type="hidden" id="fkCourt" name="fkCourt" value=1>
-
                   <div id="modal-panel"></div>
                   <div id="modal-content"></div>
               </div>
@@ -184,10 +185,10 @@
            margin-top: 20px;
         }
     </style>
-        <script>
+{{--        <script>
             let btn=document.getElementById('btn-reserver');
             VERIF.onClickSubmitAfterVerifForm(btn,'reservation-form');
-        </script>
+        </script>--}}
 
 
 {{--    {!! Html::script('/ajax/calendar.js') !!}
