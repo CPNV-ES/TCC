@@ -33,7 +33,7 @@
                 vc{{$court->name}}.build();
                 vc{{$court->name}}.generate();
                 vc{{$court->name}}.ev.onSelect=function(elem, datetime){
-                    var myDate = new Date(datetime.replace(' ','T')+':00+01:00');
+                    var myDate = dateParse(datetime);
                     $("#fkCourt").val({{$court->id}});
                     $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
                     $("#reservation-date").val(datetime+':00');
@@ -150,7 +150,7 @@
         .aucune{background-color: #afa;}
         .simple2{background-color: #ffa;}
         .vc-passed{filter: brightness(0.9);}
-        .vc-own-planif{filter: saturate(1.5);}
+        .vc-own-planif{filter: hue-rotate(-60deg);}
     </style>
 
 

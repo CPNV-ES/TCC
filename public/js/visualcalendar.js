@@ -4,6 +4,7 @@ Element.parseHTML=function(a,b){if(a instanceof Element)return a;var c=document.
 HTMLTableElement.parseHTML=Element.parseHTML;HTMLTableRowElement.parseHTML=Element.parseHTML;
 if(Array.prototype.forEach==undefined) Array.prototype.forEach=function(cb){for(var i=0;i<this.length;i++){cb(this[i],i);}}
 if(NodeList.prototype.forEach==undefined) NodeList.prototype.forEach=Array.prototype.forEach;
+function parseDate(datetime){datetime=datetime.trim().replace(' ','T');if(datetime.match(/^\d{4}-\d{2}-\d{2}$/)) datetime+='T00:00:00';if(datetime.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/)) datetime+=':00';var b = datetime.split(/\D/);return new Date(b[0], b[1]-1, b[2], b[3], b[4],b[5]);}
 // Requirements ^^^^^^^^^^
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -47,6 +48,7 @@ var VisualCalendar = function () {
       if (typeof config == 'string') config = JSON.parse(config);
       if (config.params === undefined) config.params = {};
       if (config.hours === undefined) config.hours = {};
+      this.last='';
       this.config = {
         anchor: config.anchor || 'body',
         params: {
@@ -117,14 +119,15 @@ var VisualCalendar = function () {
   }, {
     key: 'dateHasEvent',
     value: function dateHasEvent(datetime) {
-      if (!(datetime instanceof Date)) datetime = new Date(datetime.replace(' ','T'));
+      if (!(datetime instanceof Date)) datetime = parseDate(datetime);
       for (var i = 0; i < this.config.planified.length; i++) {
         var planif = this.config.planified[i];
-        var planifDate = new Date(planif.datetime.replace(' ','T'));
+        var planifDate = parseDate(planif.datetime);
         var hourMax = (Number.parseInt(planifDate.getHours().toString() + planifDate.getMinutes().toStringN(2)) + Number.parseInt(this.config.hours.period.replace(':', ''))).toStringN(4);
-        hourMax = hourMax[0] + hourMax[1] + ':' + hourMax[2] + hourMax[3];
-        var planifMax = new Date(planifDate.getFullYear() + '-' + (planifDate.getMonth() + 1).toStringN(2) + '-' + planifDate.getUTCDate().toStringN(2) + 'T' + hourMax+':00+01:00');
+        var planifMax = parseDate(planifDate.getFullYear() + '-' + (planifDate.getMonth() + 1).toStringN(2) + '-' + planifDate.getUTCDate().toStringN(2) + ' ' + hourMax[0] + hourMax[1] + ':' + hourMax[2] + hourMax[3]);
         if (datetime.getTime() >= planifDate.getTime() && datetime.getTime() < planifMax.getTime()){
+          console.log(planifDate);
+
           return planif;
         }
       }
@@ -205,7 +208,7 @@ var VisualCalendar = function () {
           });} else if(ev_clickable){
             elem.className+=' vc-clickable';
             elem.on('click', function (ev) {_this2.ev.onPlanifClick(ev.target, me);});
-          }// TODO Faire fonctionner ça
+          }
         };
 
         for (var j = 0; j < _this2.builded.dates.length; j++) {

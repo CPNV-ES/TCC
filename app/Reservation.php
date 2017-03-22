@@ -54,12 +54,19 @@ class Reservation extends Model
             $q->where('fkWho', $Userid);
             $q->orWhere('fkWithWho', $Userid);
         })->get();
+        $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+        ->where('fkCourt',$court)
+        ->where(function($q){
+            $Userid=Auth::user()->id;
+            $q->where('fkWho', $Userid);
+            $q->orWhere('fkWithWho', $Userid);
+        })->get();
         //print_r(count($myReservs));die;
         if(count($myReservs)>=Config::first()->nbReservations )$readOnly=true;
         $res=[];
         $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
         $hdiff=$startDate->diff($zeroDate)->format('%H');
-        foreach($myReservs as $planifiedReservation )
+        foreach($myReservsByCourts as $planifiedReservation )
         {
             $res[]=[
                 'datetime' => $planifiedReservation->dateTimeStart,
