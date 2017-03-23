@@ -132,21 +132,24 @@ class BookingController extends Controller
           // die();
           $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get();
 
-          $memberFav = PersonalInformation::has('user')->leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
-                                          ->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')
+          $memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
+                                          ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
+                                          ->rightJoin('users', 'users.fkPersonalInformation', '=', 'personal_informations.id')
                                           ->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
                                           ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
                                           ->groupBy('personal_informations.id')
                                           ->orderBy('reservations_count', 'DESC')
                                           ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
 
-/*            print_r($memberFav);
-            die();*/
-            $membersList = $memberFav->merge($allMember);
+            // print_r($test);
+            // die();
 
+            //we merge the two collections of members then we sort by reservations_count (desc)
+            $membersList = $allMember->merge($memberFav);
+            $membersList = $membersList->sortByDesc('reservations_count');
 
-          $courts = Court::where('state', 1)->get();
-          return view('booking/home',compact('membersList', 'courts'));
+            $courts = Court::where('state', 1)->get();
+            return view('booking/home',compact('membersList', 'courts'));
         }
         else {
           return view('booking/home');
@@ -295,7 +298,6 @@ class BookingController extends Controller
 
           }
 
-
           // 13:00 -- 14:00+1
           $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
 
@@ -305,7 +307,7 @@ class BookingController extends Controller
                         $q->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd]);
                         $q->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart]);
           })->count();
-          
+
           if($freeHour!=0)
           {
             Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");

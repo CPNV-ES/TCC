@@ -73,7 +73,7 @@
                                   <label for="recipient-name" class="control-label">Choissiez votre adversaire:</label>
                                    <select name="fkWithWho" class="form-control">
                                       @foreach($membersList as $member)
-                                          <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
+                                          <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} {{$member->reservations_count}}</option>
                                       @endforeach
                                   </select>
                               </div>
