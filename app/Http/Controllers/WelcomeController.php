@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Court;
+use App\PersonalInformation;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class WelcomeController extends Controller
 {
@@ -13,10 +15,26 @@ class WelcomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
 
-        return view('welcome');
+      $courts = Court::All();
+
+      if (Auth::check()) {
+        $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get();
+        $memberFav = PersonalInformation::leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
+                                        ->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')
+                                        ->has('user')->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
+                                        ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
+                                        ->groupBy('personal_informations.id')
+                                        ->orderBy('reservations_count', 'DESC')
+                                        ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
+        $membersList = $memberFav->merge($allMember);
+        return view('welcome', compact('membersList','courts'));
+      }
+      else {
+        return view('welcome', compact('courts'));
+      }
+
     }
 
     /**
