@@ -38,6 +38,7 @@ class Reservation extends Model
     public function invitation() {
         return $this->hasOne('App\Invitation', 'fkReservation');
     }
+
     //return the config for the visual calendar
     public static function getVcConfigJSON($court = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
     {
@@ -47,34 +48,37 @@ class Reservation extends Model
         if($court == null) $court = Court::first()->id;
 
         $planifiedReservations = Reservation::where('fkCourt', $court)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
-        $Userid=Auth::user()->id;
-        $myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-        ->where(function($q){
-            $Userid=Auth::user()->id;
-            $q->where('fkWho', $Userid);
-            $q->orWhere('fkWithWho', $Userid);
-        })->get();
-        $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-        ->where('fkCourt',$court)
-        ->where(function($q){
-            $Userid=Auth::user()->id;
-            $q->where('fkWho', $Userid);
-            $q->orWhere('fkWithWho', $Userid);
-        })->get();
-        //print_r(count($myReservs));die;
-        if(count($myReservs)>=Config::first()->nbReservations )$readOnly=true;
-        $res=[];
         $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
         $hdiff=$startDate->diff($zeroDate)->format('%H');
-        foreach($myReservsByCourts as $planifiedReservation )
-        {
-            $res[]=[
-                'datetime' => $planifiedReservation->dateTimeStart,
-                'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
-                'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
-                'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
-            ];
-        }
+        if (Auth::check()) {
+          $Userid=Auth::user()->id;
+          $myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+          ->where(function($q){
+              $Userid=Auth::user()->id;
+              $q->where('fkWho', $Userid);
+              $q->orWhere('fkWithWho', $Userid);
+          })->get();
+          $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+          ->where('fkCourt',$court)
+          ->where(function($q){
+              $Userid=Auth::user()->id;
+              $q->where('fkWho', $Userid);
+              $q->orWhere('fkWithWho', $Userid);
+          })->get();
+          //print_r(count($myReservs));die;
+          if(count($myReservs)>=Config::first()->nbReservations )$readOnly=true;
+          $res=[];
+
+          foreach($myReservsByCourts as $planifiedReservation )
+          {
+              $res[]=[
+                  'datetime' => $planifiedReservation->dateTimeStart,
+                  'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
+                  'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                  'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
+              ];
+          }
+        }        
         // for clickable ->
         foreach($planifiedReservations as $planifiedReservation )
         {

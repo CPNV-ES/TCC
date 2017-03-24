@@ -20,26 +20,26 @@
     </div>
     <ul class="nav nav-tabs">
         @foreach($courts as $key=>$court)
-            <li class="@if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'active'}}@endif @elseif($key == 0) active @endif" ><a data-toggle="tab" href="#tab-{{$court->name}}">{{$court->name}}</a></li>
+            <li class="@if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'active'}}@endif @elseif($key == 0) active @endif" ><a data-toggle="tab" href="#tab-{{$court->id}}">{{$court->name}}</a></li>
         @endforeach
     </ul>
     <div class="tab-content">
         @foreach($courts as $key=>$court)
-            <div id="tab-{{$court->name}}"  class="tab-pane fade @if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'in active'}}@endif @elseif($key == 0) in active @endif">
+            <div id="tab-{{$court->id}}"  class="tab-pane fade @if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'in active'}}@endif @elseif($key == 0) in active @endif">
             </div>
             <script>
-                var vc{{$court->name}} = new VisualCalendar();
-                vc{{$court->name}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->name) !!};
-                vc{{$court->name}}.build();
-                vc{{$court->name}}.generate();
-                vc{{$court->name}}.ev.onSelect=function(elem, datetime){
+                var vc{{$court->id}} = new VisualCalendar();
+                vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->id) !!};
+                vc{{$court->id}}.build();
+                vc{{$court->id}}.generate();
+                vc{{$court->id}}.ev.onSelect=function(elem, datetime){
                     var myDate = parseDate(datetime);
                     $("#fkCourt").val({{$court->id}});
                     $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
                     $("#reservation-date").val(datetime+':00');
                     $('#reservation-modal').modal('show');
                 }
-                vc{{$court->name}}.ev.onPlanifClick=function(elem, planif){
+                vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
                     console.log(elem, planif);
                 }
             </script>
@@ -59,17 +59,20 @@
                   <div id="modal-resume" class="notice notice-info">
                       <p>Réservation du court .. le 'date' </p>
                   </div>
-                  Choisissez votre adversaire
                   {{ csrf_field() }}
                   {{ method_field('POST') }}
 
                   <input type="hidden" id="reservation-date" name="dateTimeStart">
                   <input type="hidden" id="fkCourt" name="fkCourt" value=1>
-                  <select name="fkWithWho">
-                    @foreach($membersList as $member)
-                      <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
-                    @endforeach
-                  </select>
+                  <input type="hidden" id="page" name="page" value='booking'>
+                  @if (Auth::check())
+                    Choisissez votre adversaire
+                    <select name="fkWithWho">
+                      @foreach($membersList as $member)
+                        <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
+                      @endforeach
+                    </select>
+                  @endif
 
                   <div id="modal-panel"></div>
                   <div id="modal-content"></div>
