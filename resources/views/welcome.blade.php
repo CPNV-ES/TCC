@@ -1,16 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
+
+  {!! Html::script('/js/visualcalendar.js') !!}
+
+
     <div class="background"></div>
     <div class="row calendar">
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
             <div class="box">
                 <div class="box-icon">
-                    <span class="fa fa-4x fa-html5">Court 1</span>
+                    <span class="fa fa-4x fa-html5">{{$courts[0]->name}}</span>
                 </div>
-                <div class="info">
-                    <div id="jqxcourt1"></div>
-                </div>
+                @foreach($courts as $key=>$court)
+                  @if ($court->id == 1)
+                    <div id="tab-{{$court->id}}"  class="tab-pane fade in active">
+                    </div>
+                    <script>
+                        var vc{{$court->id}} = new VisualCalendar();
+                        vc{{$court->id}}.config={!! \App\Court::getVcConfigHomeJSON($court->id, 'div#tab-'.$court->id) !!};
+                        vc{{$court->id}}.build();
+                        vc{{$court->id}}.generate();
+                        vc{{$court->id}}.ev.onSelect = function(elem, datetime){
+                            var myDate = parseDate(datetime);
+                            $("#fkCourt").val({{$court->id}});
+                            $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+                            $("#reservation-date").val(datetime+':00');
+                            $('#reservation-modal').modal('show');
+                        }
+                        vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
+                            console.log(elem, planif);
+                        }
+                    </script>
+                  @endif
+                @endforeach
             </div>
         </div>
 
@@ -49,14 +72,141 @@
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
             <div class="box">
                 <div class="box-icon">
-                    <span class="fa fa-4x fa-css3">Court 2</span>
+                    <span class="fa fa-4x fa-css3">{{$courts[1]->name}}</span>
                 </div>
-                <div class="info">
-                    <div id="jqxcourt2"></div>
-                </div>
+                @foreach($courts as $key=>$court)
+                  @if ($court->id == 2)
+                    <div id="tab-{{$court->id}}" class="tab-pane fade in active">
+                    </div>
+                    <script>
+                        var vc{{$court->id}} = new VisualCalendar();
+                        vc{{$court->id}}.config={!! \App\Court::getVcConfigHomeJSON($court->id, 'div#tab-'.$court->id) !!};
+                        vc{{$court->id}}.build();
+                        vc{{$court->id}}.generate();
+                        vc{{$court->id}}.ev.onSelect = function(elem, datetime){
+                            var myDate = parseDate(datetime);
+                            $("#fkCourt").val({{$court->id}});
+                            $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+                            $("#reservation-date").val(datetime+':00');
+                            $('#reservation-modal').modal('show');
+                        }
+                        vc{{$court->id}}.ev.onPlanifClick = function(elem, planif){
+                            console.log(elem, planif);
+                        }
+                    </script>
+                  @endif
+                @endforeach
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="reservation-modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form method="post" role="form" method="POST" action="{{ url('/booking')}}">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">Réservation</h4>
+              </div>
+              <div class="modal-body">
+                  <div id="modal-resume" class="notice notice-info">
+                      <p>Réservation du court .. le 'date' </p>
+                  </div>
+                  {{ csrf_field() }}
+                  {{ method_field('POST') }}
+
+                  <input type="hidden" id="reservation-date" name="dateTimeStart">
+                  <input type="hidden" id="fkCourt" name="fkCourt" value=1>
+                  <input type="hidden" id="page" name="page" value='home'>
+                  @if (Auth::check())
+                    Choisissez votre adversaire
+                    <select name="fkWithWho">
+                        @foreach($membersList as $member)
+                          <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
+                        @endforeach
+                    </select>
+                  @endif
+
+                  <div id="modal-panel"></div>
+                  <div id="modal-content"></div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                  <button type="submit" id="booking" class="btn btn-success">
+                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                      Réserver
+                  </button>
+              </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <style media="screen">
+        .vc-cnt {
+            box-sizing: border-box;
+            width: 100%;
+            overflow: auto;
+            font-family: Arial,sans-serif;
+            position: relative;
+        }
+        table {
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+            box-sizing: border-box;
+        }
+        td {
+            border: 1px solid black;
+            box-sizing: border-box;
+        }
+        td.vc-table-head {
+            background-color: #999;
+            color: #eee;
+        }
+        tr>td:nth-child(1) {
+            color: #5a5a5a;
+            font-size: 10px;
+            vertical-align: top;
+        }
+        tr>td.vc-table-head:nth-child(1) {
+            color: #eee;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+        tr>td {
+            border-bottom-color: #ccc;
+            background-color: #fff;
+            height: 23px;
+        }
+        tr:last-child>td {
+            border-bottom-color: black;
+        }
+        tr>td:first-child {
+            min-width: 70px;
+            max-width: 70px;
+            width: 70px;
+        }
+        .vc-selected{
+            background-color: #9cbcf7;
+        }
+        .vc-clickable{
+            cursor: pointer;
+            transition-duration: 250ms;
+        }
+        .vc-clickable:not(.vc-selected):hover{
+            background-color: #c5d9ff;
+        }
+        .vc-nomoreselect .vc-clickable{
+            cursor: default;
+        }
+        .aucune{background-color: #afa;}
+        .simple2{background-color: #ffa;}
+        .vc-passed{filter: brightness(0.9);}
+        .vc-own-planif{filter: hue-rotate(-60deg);}
+    </style>
+
     {{--<div class="container">--}}
         {{--<div class="row" >--}}
             {{--<div class="col-md-12" style="margin-top:20px;">--}}
@@ -131,5 +281,5 @@
         {{--</div>--}}
     {{--</div>--}}
 
-    {!! Html::script('/ajax/disponibility.js') !!}
+    {{-- {!! Html::script('/ajax/disponibility.js') !!} --}}
 @endsection
