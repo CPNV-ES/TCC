@@ -49,7 +49,6 @@
     <div class="modal fade" tabindex="-1" role="dialog" id="reservation-modal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title" id="myModalLabel">Réservation</h4>
@@ -59,11 +58,11 @@
                           <p>Réservation du court .. le 'date' </p>
                   </div>
                   <ul class="nav nav-tabs" role="tablist">
-                      <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Réservation avec un membre</a></li>
-                      <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Réservation avec un invité</a></li>
+                      <li role="presentation" class="active"><a href="#member-invite" aria-controls="member-invite" role="tab" data-toggle="tab">Réservation avec un membre</a></li>
+                      <li role="presentation"><a href="#nonmember-invite" aria-controls="nonmember-invite" role="tab" data-toggle="tab">Réservation avec un invité</a></li>
                   </ul>
                   <div class="tab-content">
-                      <div role="tabpanel" class="tab-pane active" id="home">
+                      <div role="tabpanel" class="tab-pane active" id="member-invite">
                           <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
                               {{ csrf_field() }}
                               {{ method_field('POST') }}
@@ -85,24 +84,34 @@
                               </div>
                           </form>
                       </div>
-                      <div role="tabpanel" class="tab-pane" id="profile">
-                          <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
+                      <div role="tabpanel" class="tab-pane" id="nonmember-invite">
+                          <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
                               {{ csrf_field() }}
                               {{ method_field('POST') }}
                               <input type="hidden" class="reservation-date" name="dateTimeStart">
                               <input type="hidden" class="fkCourt" name="fkCourt" value=1>
 
-                              <div class="form-group">
+                              <div class="form-group @if($errors->has('invitFirstname')) {{'has-error'}} @endif" >
                                   <label for="recipient-name" class="control-label">Prénom de votre invité*:</label>
-                                  <input class="form-control" type="text" name="invitFirstname"/>
+                                  <input class="form-control" type="text" value="{{old('invitFirstname')}}" name="invitFirstname" data-verif="required|text|min_l:2|max_l:45" />
+                                  @if ($errors->has('invitFirstname'))
+                                      <span class="help-block">
+                                            <strong>{{ $errors->first('invitFirstname') }}</strong>
+                                      </span>
+                                  @endif
                               </div>
-                              <div class="form-group">
+                              <div class="form-group @if($errors->has('invitLastname')) {{'has-error'}} @endif">
                                   <label for="recipient-name" class="control-label">Nom de votre invité*:</label>
-                                  <input class="form-control" type="text" name="invitLastname"/>
+                                  <input class="form-control" type="text" name="invitLastname" value="{{old('invitLastname')}}" data-verif="required|text|min_l:2|max_l:45"/>
+                                  @if ($errors->has('invitLastname'))
+                                      <span class="help-block">
+                                            <strong>{{ $errors->first('invitLastname') }}</strong>
+                                      </span>
+                                  @endif
                               </div>
                               * obligatoire
                               <div class="form-group push-to-bottom ">
-                                  <button type="submit" id="booking" class="btn btn-success btn-block" name="btn-reserver">
+                                  <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
                                       <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                       Réserver
                                   </button>
@@ -185,10 +194,29 @@
            margin-top: 20px;
         }
     </style>
-{{--        <script>
-            let btn=document.getElementById('btn-reserver');
-            VERIF.onClickSubmitAfterVerifForm(btn,'reservation-form');
-        </script>--}}
+        <script>
+            hasErros = false;
+
+            @if($errors->has('invitLastname')|| $errors->has('invitFirstname')) {{"hasErrors= true;"}} @else {{"hasErrors=false;"}} @endif
+            if(hasErrors)
+            {
+                chooseDate = new Date("{{old('dateTimeStart')}}");
+                $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +chooseDate.getUTCDate().toStringN(2)+ "-" + (chooseDate.getMonth() + 1).toStringN(2) + "-" + chooseDate.getFullYear()+' à '+chooseDate.getHours().toStringN(2) + ":" + chooseDate.getMinutes().toStringN(2) );
+
+                /*can use chooseDate because of the format*/
+                $(".reservation-date").val("{{old('dateTimeStart')}}");
+                $('[href="#nonmember-invite"]').tab('show');
+                $("#reservation-modal").modal('show');
+
+            }
+
+
+            document.querySelector('#btn-reserver-member-invite').addEventListener('click', function(){
+                VERIF.verifForm('reservation-member-invite-form',function(isOk){
+                if(isOk) document.forms["reservation-member-invite-form"].submit();
+            });
+            });
+        </script>
 
 
 {{--    {!! Html::script('/ajax/calendar.js') !!}

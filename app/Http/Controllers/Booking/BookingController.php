@@ -130,7 +130,7 @@ class BookingController extends Controller
         {
           // print(PersonalInformation::find(Auth::user()->id)->id);
           // die();
-          $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get();
+          $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
 
           $memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
                                           ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
@@ -141,8 +141,6 @@ class BookingController extends Controller
                                           ->orderBy('reservations_count', 'DESC')
                                           ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
 
-            // print_r($test);
-            // die();
 
             //we merge the two collections of members then we sort by reservations_count (desc)
             $membersList = $allMember->merge($memberFav);
@@ -154,9 +152,6 @@ class BookingController extends Controller
         else {
           return view('booking/home');
         }
-
-
-
 
     }
 
@@ -210,6 +205,7 @@ class BookingController extends Controller
                 ]);
                 if($validator->fails())
                 {
+
                     return back()->withInput()->withErrors($validator);
                 }
 
