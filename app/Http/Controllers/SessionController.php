@@ -142,6 +142,6 @@ class SessionController extends Controller
     public function destroy()
     {
         Auth::logout();
-        return view('welcome');
+        return redirect('/home');
     }
 }
