@@ -58,68 +58,71 @@
                   <div id="modal-resume" class="notice notice-info">
                           <p>Réservation du court .. le 'date' </p>
                   </div>
-                  <ul class="nav nav-tabs" role="tablist">
+                  @if (Auth::check())
+                    <ul class="nav nav-tabs" role="tablist">
                       <li role="presentation" class="active"><a href="#member-invite" aria-controls="member-invite" role="tab" data-toggle="tab">Réservation avec un membre</a></li>
                       <li role="presentation"><a href="#nonmember-invite" aria-controls="nonmember-invite" role="tab" data-toggle="tab">Réservation avec un invité</a></li>
-                  </ul>
-                  <div class="tab-content">
-                      <div role="tabpanel" class="tab-pane active" id="member-invite">
-                          <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
-                              {{ csrf_field() }}
-                              {{ method_field('POST') }}
-                              <input type="hidden" class="reservation-date" name="dateTimeStart">
-                              <input type="hidden" class="fkCourt" name="fkCourt" value=1>
-                              <div class="form-group">
-                                  <label for="recipient-name" class="control-label">Choissiez votre adversaire:</label>
-                                   <select name="fkWithWho" class="form-control">
-                                      @foreach($membersList as $member)
-                                          <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} {{$member->reservations_count}}</option>
-                                      @endforeach
-                                  </select>
-                              </div>
-                              <div class="form-group">
-                                  <button type="submit" id="booking" class="btn btn-success btn-block push-to-bottom" name="btn-reserver">
-                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                      Réserver
-                                  </button>
-                              </div>
-                          </form>
-                      </div>
-                      <div role="tabpanel" class="tab-pane" id="nonmember-invite">
-                          <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
-                              {{ csrf_field() }}
-                              {{ method_field('POST') }}
-                              <input type="hidden" class="reservation-date" name="dateTimeStart">
-                              <input type="hidden" class="fkCourt" name="fkCourt" value=1>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="member-invite">
+                            <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-form" >
+                                {{ csrf_field() }}
+                                {{ method_field('POST') }}
+                                <input type="hidden" class="reservation-date" name="dateTimeStart">
+                                <input type="hidden" class="fkCourt" name="fkCourt" value=1>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="control-label">Choissiez votre adversaire:</label>
+                                     <select name="fkWithWho" class="form-control">
+                                        @foreach($membersList as $member)
+                                            <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} {{$member->reservations_count}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" id="booking" class="btn btn-success btn-block push-to-bottom" name="btn-reserver">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                        Réserver
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="nonmember-invite">
+                            <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
+                                {{ csrf_field() }}
+                                {{ method_field('POST') }}
+                                <input type="hidden" class="reservation-date" name="dateTimeStart">
+                                <input type="hidden" class="fkCourt" name="fkCourt" value=1>
 
-                              <div class="form-group @if($errors->has('invitFirstname')) {{'has-error'}} @endif" >
-                                  <label for="recipient-name" class="control-label">Prénom de votre invité*:</label>
-                                  <input class="form-control" type="text" value="{{old('invitFirstname')}}" name="invitFirstname" data-verif="required|text|min_l:2|max_l:45" />
-                                  @if ($errors->has('invitFirstname'))
-                                      <span class="help-block">
-                                            <strong>{{ $errors->first('invitFirstname') }}</strong>
-                                      </span>
-                                  @endif
-                              </div>
-                              <div class="form-group @if($errors->has('invitLastname')) {{'has-error'}} @endif">
-                                  <label for="recipient-name" class="control-label">Nom de votre invité*:</label>
-                                  <input class="form-control" type="text" name="invitLastname" value="{{old('invitLastname')}}" data-verif="required|text|min_l:2|max_l:45"/>
-                                  @if ($errors->has('invitLastname'))
-                                      <span class="help-block">
-                                            <strong>{{ $errors->first('invitLastname') }}</strong>
-                                      </span>
-                                  @endif
-                              </div>
-                              * obligatoire
-                              <div class="form-group push-to-bottom ">
-                                  <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
-                                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                      Réserver
-                                  </button>
-                              </div>
-                          </form>
-                      </div>
-                  </div>
+                                <div class="form-group @if($errors->has('invitFirstname')) {{'has-error'}} @endif" >
+                                    <label for="recipient-name" class="control-label">Prénom de votre invité*:</label>
+                                    <input class="form-control" type="text" value="{{old('invitFirstname')}}" name="invitFirstname" data-verif="required|text|min_l:2|max_l:45" />
+                                    @if ($errors->has('invitFirstname'))
+                                        <span class="help-block">
+                                              <strong>{{ $errors->first('invitFirstname') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                <div class="form-group @if($errors->has('invitLastname')) {{'has-error'}} @endif">
+                                    <label for="recipient-name" class="control-label">Nom de votre invité*:</label>
+                                    <input class="form-control" type="text" name="invitLastname" value="{{old('invitLastname')}}" data-verif="required|text|min_l:2|max_l:45"/>
+                                    @if ($errors->has('invitLastname'))
+                                        <span class="help-block">
+                                              <strong>{{ $errors->first('invitLastname') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                                * obligatoire
+                                <div class="form-group push-to-bottom ">
+                                    <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
+                                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                        Réserver
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                  @endif
+
                   <div id="modal-panel"></div>
                   <div id="modal-content"></div>
               </div>

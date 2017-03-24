@@ -266,7 +266,7 @@ class BookingController extends Controller
           if($todayDateTime > $dateTimeStart)
           {
             Session::flash('errorMessage', "Cette date est déjà passée");
-            return redirect('/'.$request->input('page'));
+            return redirect('/booking');
           }
 
           // We check if there's a date into the field invalidatedDate for the member who has made the reservation and the invited member.
@@ -275,7 +275,7 @@ class BookingController extends Controller
               strtotime(Auth::user()->invalidatedDate. ' + '. $configs->nbDaysGracePeriod.' days') < strtotime($todayDate))
           {
             Session::flash('errorMessage', "Votre compte n'est plus valide");
-            return redirect('/'.$request->input('page'));
+            return redirect('/booking');
           }
 
 
@@ -302,7 +302,7 @@ class BookingController extends Controller
           if ($nbReservationWho >= Config::orderBy('created_at', 'desc')->first()->nbReservations)
           {
               Session::flash('errorMessage', "Vous avez déjà atteint votre nombre maximum de reservations");
-              return redirect('/'.$request->input('page'));
+              return redirect('/booking');
           }
 
           // 13:00 -- 14:00+1
@@ -318,7 +318,7 @@ class BookingController extends Controller
           if($freeHour!=0)
           {
             Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
-            return redirect('/'.$request->input('page'));
+            return redirect('/booking');
           }
 
           //Check if the court is available (in case of the court is in maintenance)
@@ -326,7 +326,7 @@ class BookingController extends Controller
           if($court->state != 1)
           {
             Session::flash('errorMessage', "Ce court n'est pas disponible pour le moment, veuillez choisir un autre court");
-            return redirect('/'.$request->input('page'));
+            return redirect('/booking');
           }
 
           //Get the actual price
@@ -370,11 +370,11 @@ class BookingController extends Controller
 
           }
           Session::flash('successMessage', "Votre réservation a bien été enregistrée");
-          return redirect('/'.$request->input('page'));
+          return redirect('/booking');
         }
         else {
           Session::flash('errorMessage', "Vous devez être membre pour faire une réservation");
-          return redirect('/'.$request->input('page'));
+          return redirect('/booking');
         }
     }
 
