@@ -64,6 +64,6 @@ Modified : Added checks when displaying user information in case a user doesn't 
       </tbody>
       </table>
       {!! Html::script('/js/datatables/dataTables.min.js') !!}
-      {!! Html::script('/js/datatables/MemberTable.js') !!}
+      {!! Html::script('/js/datatables/memberTable.js') !!}
 {{-- END IGI--}}
 @endsection
