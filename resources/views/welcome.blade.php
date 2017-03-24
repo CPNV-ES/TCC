@@ -123,7 +123,7 @@
                                 {{ csrf_field() }}
                                 {{ method_field('POST') }}
                                 <input type="hidden" class="reservation-date" name="dateTimeStart">
-                                <input type="hidden" class="fkCourt" name="fkCourt" value=1>
+                                <input type="hidden" class="fkCourt" id="fkCourt" name="fkCourt" value=1>
                                 <div class="form-group">
                                     <label for="recipient-name" class="control-label">Choissiez votre adversaire:</label>
                                      <select name="fkWithWho" class="form-control">
@@ -145,7 +145,7 @@
                                 {{ csrf_field() }}
                                 {{ method_field('POST') }}
                                 <input type="hidden" class="reservation-date" name="dateTimeStart">
-                                <input type="hidden" class="fkCourt" name="fkCourt" value=1>
+                                <input type="hidden" class="fkCourt" id="fkCourt" name="fkCourt" value=1>
 
                                 <div class="form-group @if($errors->has('invitFirstname')) {{'has-error'}} @endif" >
                                     <label for="recipient-name" class="control-label">Prénom de votre invité*:</label>
