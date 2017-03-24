@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Booking;
 //use App\Models\Reservation;
 //use App\Models\Season;
 
+use App\Locality;
 use App\Reservation;
 use App\Season;
 
@@ -126,6 +127,8 @@ class BookingController extends Controller
         //   $members = PersonalInformation::reservations->where('fkWithWho', Auth::user()->id)->orWhere('fkWho', Auth::user()->id)
         //
         // }
+
+        $localities = Locality::all();
         if(Auth::check())
         {
           // print(PersonalInformation::find(Auth::user()->id)->id);
@@ -147,11 +150,11 @@ class BookingController extends Controller
             $membersList = $membersList->sortByDesc('reservations_count');
 
             $courts = Court::where('state', 1)->get();
-            return view('booking/home',compact('membersList', 'courts'));
+            return view('booking/home',compact('membersList', 'courts', 'localities'));
         }
         else {
           $courts = Court::where('state', 1)->get();
-          return view('booking/home', compact('courts'));
+          return view('booking/home', compact('courts', 'localities'));
         }
 
     }
