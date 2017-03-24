@@ -10,7 +10,7 @@
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
             <div class="box">
                 <div class="box-icon">
-                    <span class="fa fa-4x fa-html5">{{$courts[0]->name}}</span>
+                    <span>{{$courts[0]->name}}</span>
                 </div>
                 @foreach($courts as $key=>$court)
                   @if ($court->id == 1)
@@ -23,9 +23,9 @@
                         vc{{$court->id}}.generate();
                         vc{{$court->id}}.ev.onSelect = function(elem, datetime){
                             var myDate = parseDate(datetime);
-                            $("#fkCourt").val({{$court->id}});
+                            $(".fkCourt").val({{$court->id}});
                             $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
-                            $("#reservation-date").val(datetime+':00');
+                            $(".reservation-date").val(datetime+':00');
                             $('#reservation-modal').modal('show');
                         }
                         vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
@@ -72,7 +72,7 @@
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
             <div class="box">
                 <div class="box-icon">
-                    <span class="fa fa-4x fa-css3">{{$courts[1]->name}}</span>
+                    <span>{{$courts[1]->name}}</span>
                 </div>
                 @foreach($courts as $key=>$court)
                   @if ($court->id == 2)
@@ -85,9 +85,9 @@
                         vc{{$court->id}}.generate();
                         vc{{$court->id}}.ev.onSelect = function(elem, datetime){
                             var myDate = parseDate(datetime);
-                            $("#fkCourt").val({{$court->id}});
+                            $(".fkCourt").val({{$court->id}});
                             $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
-                            $("#reservation-date").val(datetime+':00');
+                            $(".reservation-date").val(datetime+':00');
                             $('#reservation-modal').modal('show');
                         }
                         vc{{$court->id}}.ev.onPlanifClick = function(elem, planif){

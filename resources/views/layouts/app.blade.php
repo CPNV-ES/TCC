@@ -14,7 +14,7 @@
         {!! Html::style('/css/layouts.css')!!}
         {!! Html::style('/css/bootstrap-datepicker3.min.css')!!}
 
-
+        {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
 
         {!! Html::style('/css/jqx.base.css')!!}
         {!! Html::style('/css/jqx.bootstrap.css')!!}
@@ -104,18 +104,18 @@
                             <ul class="dropdown-menu" role="menu">
                                 @if(Auth::user()->isAdmin == 1)
                                 <li>
-                                    <a href="{{ url('/admin') }}"><i class="fa fa-btn fa-sign-out"></i>Administration</a>
+                                    <a href="{{ url('/admin') }}"><i class="fa fa-gear fa-fw"></i> Administration</a>
                                 </li>
                                 @endif
                                 <li>
-                                    <a href="{{ url('/profile') }}"><i class="fa fa-btn fa-sign-out"></i>Profile</a>
+                                    <a href="{{ url('/profile') }}"><i class="fa fa-user fa-fw"></i> Profile</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/mybooking') }}"><i class="fa fa-btn fa-sign-out"></i>Mes réservations</a>
+                                    <a href="{{ url('/mybooking') }}"><i class="fa fa-btn fa-calendar"></i> Mes réservations</a>
                                 </li>
                                 <hr />
                                 <li>
-                                    <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a>
+                                    <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Logout</a>
                                 </li>
                             </ul>
                         </li>
