@@ -33,7 +33,7 @@
                 vc{{$court->name}}.build();
                 vc{{$court->name}}.generate();
                 vc{{$court->name}}.ev.onSelect=function(elem, datetime){
-                    var myDate = dateParse(datetime);
+                    var myDate = parseDate(datetime);
                     $("#fkCourt").val({{$court->id}});
                     $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
                     $("#reservation-date").val(datetime+':00');
