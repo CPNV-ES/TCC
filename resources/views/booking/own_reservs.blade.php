@@ -17,7 +17,17 @@
     <td>{{ $reserv->personal_information_who->firstname }} {{ $reserv->personal_information_who->lastname }}</td>
     <td>{{ $reserv->personal_information_with_who->firstname }} {{ $reserv->personal_information_with_who->lastname }}</td>
     <td>
-     Delete_id : {{ $reserv->id }}
+      <button type="button" id="btn-del-res-{{ $reserv->id }}" class="btn btn-danger btn-block">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+      </button>
+      <script type="text/javascript">
+        $("#btn-del-res-{{ $reserv->id }}").click(function(){
+          var myDate = parseDate("{{ $reserv->dateTimeStart }}");
+          $("#id-del-reserv").val("{{ $reserv->dateTimeStart }}");
+          $("#modal-del-resume").html('Supprimer la réservation du ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+          $('#del-resevation-modal').modal('show');
+        });
+      </script>
     </td>
   </tr>
   @endforeach
