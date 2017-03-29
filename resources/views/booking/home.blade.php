@@ -4,51 +4,52 @@
 
     {!! Html::script('/js/visualcalendar.js') !!}
     <div class="container-fluid">
-    <h1>Réservation</h1>
-    @if(Session::has('successMessage'))
-        <div class="alert alert-success">
-            {{Session::get('successMessage')}}
-        </div>
-    @elseif(Session::has('errorMessage'))
-        <div class="alert alert-danger">
-            {{Session::get('errorMessage')}}
-        </div>
-    @endif
-    <div style="width:510px;color:#000;margin:auto;">
-        <iframe height="85" frameborder="0" width="510" scrolling="no" src="http://www.prevision-meteo.ch/services/html/chavornay-vd/horizontal" allowtransparency="true"></iframe>
-        <a style="text-decoration:none;font-size:0.75em;" title="Prévisions à 4 jours pour Chavornay (VD)" href="http://www.prevision-meteo.ch/meteo/localite/chavornay-vd">Prévisions à 4 jours pour Chavornay (VD)</a>
+      <h1>Réservation</h1>
+      @if(Session::has('successMessage'))
+          <div class="alert alert-success">
+              {{Session::get('successMessage')}}
+          </div>
+      @elseif(Session::has('errorMessage'))
+          <div class="alert alert-danger">
+              {{Session::get('errorMessage')}}
+          </div>
+      @endif
+      <div style="width:510px;color:#000;margin:auto;">
+          <iframe height="85" frameborder="0" width="510" scrolling="no" src="http://www.prevision-meteo.ch/services/html/chavornay-vd/horizontal" allowtransparency="true"></iframe>
+          <a style="text-decoration:none;font-size:0.75em;" title="Prévisions à 4 jours pour Chavornay (VD)" href="http://www.prevision-meteo.ch/meteo/localite/chavornay-vd">Prévisions à 4 jours pour Chavornay (VD)</a>
+      </div>
+      <ul class="nav nav-tabs">
+          @foreach($courts as $key=>$court)
+              <li class="@if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'active'}}@endif @elseif($key == 0) active @endif" ><a data-toggle="tab" href="#tab-{{$court->id}}">{{$court->name}}</a></li>
+          @endforeach
+      </ul>
+      <div class="tab-content">
+          @foreach($courts as $key=>$court)
+              <div id="tab-{{$court->id}}"  class="tab-pane fade @if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'in active'}}@endif @elseif($key == 0) in active @endif">
+              </div>
+              <script>
+                  var vc{{$court->id}} = new VisualCalendar();
+                  vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->id) !!};
+                  vc{{$court->id}}.build();
+                  vc{{$court->id}}.generate();
+                  vc{{$court->id}}.ev.onSelect=function(elem, datetime){
+                    console.log(datetime);
+                      var myDate = parseDate(datetime);
+                      $(".fkCourt").val({{$court->id}});
+                      $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+                      $(".reservation-date").val(datetime+':00');
+                      $('#reservation-modal').modal('show');
+                  }
+                  vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
+                      console.log(elem, planif);
+                  }
+              </script>
+          @endforeach
+
+          @include('booking.reserve_modal')
+
+      </div>
     </div>
-    <ul class="nav nav-tabs">
-        @foreach($courts as $key=>$court)
-            <li class="@if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'active'}}@endif @elseif($key == 0) active @endif" ><a data-toggle="tab" href="#tab-{{$court->id}}">{{$court->name}}</a></li>
-        @endforeach
-    </ul>
-    <div class="tab-content">
-        @foreach($courts as $key=>$court)
-            <div id="tab-{{$court->id}}"  class="tab-pane fade @if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'in active'}}@endif @elseif($key == 0) in active @endif">
-            </div>
-            <script>
-                var vc{{$court->id}} = new VisualCalendar();
-                vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->id) !!};
-                vc{{$court->id}}.build();
-                vc{{$court->id}}.generate();
-                vc{{$court->id}}.ev.onSelect=function(elem, datetime){
-                  console.log(datetime);
-                    var myDate = parseDate(datetime);
-                    $(".fkCourt").val({{$court->id}});
-                    $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
-                    $(".reservation-date").val(datetime+':00');
-                    $('#reservation-modal').modal('show');
-                }
-                vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
-                    console.log(elem, planif);
-                }
-            </script>
-        @endforeach
-
-        @include('booking.reserve_modal');
-
-</div>
     <style media="screen">
         .vc-cnt {
             box-sizing: border-box;

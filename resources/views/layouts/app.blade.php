@@ -131,8 +131,15 @@
 
 
     </body>
-    <br style="clear:both"/>
-    {{--<footer>--}}
-        {{--<p>© CPNV 2016</p>--}}
-    {{--</footer>--}}
+    {{-- <br style="clear:both"/> --}}
+    <footer>
+      <p>© Centre Professionnel du Nord Vaudois / 2016 - {{Date('Y')}}</p>
+    </footer>
+
+    <script>
+    if ($(document.body).height() < $(window).height()) {
+      $('footer').attr('style', 'position: fixed!important; bottom: 0px;');
+    }
+    </script>
+
 </html>
