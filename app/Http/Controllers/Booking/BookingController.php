@@ -141,13 +141,20 @@ class BookingController extends Controller
                                           ->orderBy('reservations_count', 'DESC')
                                           ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
 
-
+            $startDate = new \DateTime();
+            $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+            $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+                 ->where(function($q){
+                     $Userid=Auth::user()->id;
+                     $q->where('fkWho', $Userid);
+                     $q->orWhere('fkWithWho', $Userid);
+                 })->get();
             //we merge the two collections of members then we sort by reservations_count (desc)
             $membersList = $allMember->merge($memberFav);
             $membersList = $membersList->sortByDesc('reservations_count');
 
             $courts = Court::where('state', 1)->get();
-            return view('booking/home',compact('membersList', 'courts'));
+            return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
         }
         else {
           $courts = Court::where('state', 1)->get();

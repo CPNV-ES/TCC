@@ -17,12 +17,16 @@
     <div style="width:510px;color:#000;margin:auto;">
         <iframe height="85" frameborder="0" width="510" scrolling="no" src="http://www.prevision-meteo.ch/services/html/chavornay-vd/horizontal" allowtransparency="true"></iframe>
         <a style="text-decoration:none;font-size:0.75em;" title="Prévisions à 4 jours pour Chavornay (VD)" href="http://www.prevision-meteo.ch/meteo/localite/chavornay-vd">Prévisions à 4 jours pour Chavornay (VD)</a>
-    </div>
+    </div><br><br>
+
+    @include('booking/own_reservs')
+
     <ul class="nav nav-tabs">
         @foreach($courts as $key=>$court)
             <li class="@if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'active'}}@endif @elseif($key == 0) active @endif" ><a data-toggle="tab" href="#tab-{{$court->id}}">{{$court->name}}</a></li>
         @endforeach
     </ul>
+
     <div class="tab-content">
         @foreach($courts as $key=>$court)
             <div id="tab-{{$court->id}}"  class="tab-pane fade @if( Session::has('currentCourt')) @if(Session::get('currentCourt')== $court->id){{'in active'}}@endif @elseif($key == 0) in active @endif">
@@ -50,67 +54,67 @@
 
 </div>
     <style media="screen">
-        .vc-cnt {
+        .tab-content .vc-cnt {
             box-sizing: border-box;
             width: 100%;
             overflow: auto;
             font-family: Arial,sans-serif;
             position: relative;
         }
-        table {
+        .tab-content table {
             width: 100%;
             text-align: center;
             border-collapse: collapse;
             box-sizing: border-box;
         }
-        td {
+        .tab-content td {
             border: 1px solid black;
             box-sizing: border-box;
         }
-        td.vc-table-head {
+        .tab-content td.vc-table-head {
             background-color: #999;
             color: #eee;
         }
-        tr>td:nth-child(1) {
+        .tab-content tr>td:nth-child(1) {
             color: #5a5a5a;
             font-size: 10px;
             vertical-align: top;
         }
-        tr>td.vc-table-head:nth-child(1) {
+        .tab-content tr>td.vc-table-head:nth-child(1) {
             color: #eee;
             font-size: 14px;
             vertical-align: middle;
         }
-        tr>td {
+        .tab-content tr>td {
             border-bottom-color: #ccc;
             background-color: #fff;
             height: 23px;
         }
-        tr:last-child>td {
+        .tab-content tr:last-child>td {
             border-bottom-color: black;
         }
-        tr>td:first-child {
+        .tab-content tr>td:first-child {
             min-width: 70px;
             max-width: 70px;
             width: 70px;
         }
-        .vc-selected{
+        .tab-content .vc-selected{
             background-color: #9cbcf7;
         }
-        .vc-clickable{
+        .tab-content .vc-clickable{
             cursor: pointer;
             transition-duration: 250ms;
         }
-        .vc-clickable:not(.vc-selected):hover{
+        .tab-content .vc-clickable:not(.vc-selected):hover{
             background-color: #c5d9ff;
         }
-        .vc-nomoreselect .vc-clickable{
+        .tab-content .vc-nomoreselect .vc-clickable{
             cursor: default;
         }
-        .aucune{background-color: #afa;}
-        .simple2{background-color: #ffa;}
-        .vc-passed{filter: brightness(0.9);}
-        .vc-own-planif{filter: hue-rotate(-60deg);}
+        .tab-content .aucune{background-color: #afa;}
+        .tab-content .simple2{background-color: #ffa;}
+        .tab-content .vc-passed{filter: brightness(0.9);}
+        .tab-content .vc-own-planif{filter: hue-rotate(-60deg);}
     </style>
 
 {{--    {!! Html::script('/ajax/calendar.js') !!}

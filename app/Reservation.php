@@ -78,7 +78,7 @@ class Reservation extends Model
                   'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
               ];
           }
-        }        
+        }
         // for clickable ->
         foreach($planifiedReservations as $planifiedReservation )
         {
