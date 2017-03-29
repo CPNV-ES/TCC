@@ -137,9 +137,21 @@
     </footer>
 
     <script>
-    if ($(document.body).height() < $(window).height()) {
-      $('footer').attr('style', 'position: fixed!important; bottom: 0px;');
+    function footerAlign() {
+      if ($(document.body).height() < $(window).height()) {
+        $('footer').attr('style', 'position: fixed!important; bottom: 0px;');
+      }
+      else {
+        $('footer').attr('style', '');
+      }
     }
+    $(document).ready(function(){
+      footerAlign();
+    });
+
+    $( window ).resize(function() {
+      footerAlign();
+    });
     </script>
 
 </html>
