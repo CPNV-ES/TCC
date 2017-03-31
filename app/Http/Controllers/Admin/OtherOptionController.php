@@ -35,7 +35,8 @@ class OtherOptionController extends Controller
               'nbDaysGracePeriod' => 'required|integer|min:0',
               'nbDaysLimitNonMember' => 'required|integer|min:1',
               'courtOpenTime' => 'required',
-              'courtCloseTime' => 'required|after:courtOpenTime'
+              'courtCloseTime' => 'required|after:courtOpenTime',
+              'nbReservations' => 'required|integer|min:1'
           ],
           [
               'nbDaysGracePeriod.required' => 'Le champ \'Période de grâce\' est obligatoire.',
@@ -46,8 +47,10 @@ class OtherOptionController extends Controller
               'nbDaysLimitNonMember.min' => 'La valeur de \'Fenêtre de réservation non-membre\' doit être supérieur à 0.',
               'courtOpenTime.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
               'courtCloseTime.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
-              'courtCloseTime.after' => 'Le champ \'Heure de fermeture\' doit être une date postérieure au \'Heure d\'ouverture\'.'
-
+              'courtCloseTime.after' => 'Le champ \'Heure de fermeture\' doit être une date postérieure au \'Heure d\'ouverture\'.',
+              'nbDaysGracePeriod.required' => 'Le champ \'Nombre de réservation simultanées\' est obligatoire.',
+              'nbDaysGracePeriod.integer' => 'Le champ \'Nombre de réservation simultanées\' doit contenir des chiffres.',
+              'nbDaysGracePeriod.min' => 'La valeur de \'Nombre de réservation simultanées\' doit  être supérieur à 0.'
           ]);
 
       // Display errors messages, return to the court page

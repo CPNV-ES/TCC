@@ -22,27 +22,34 @@
         {!! method_field('PUT') !!}
 
         <div class="row">
-          <div class="form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
-            <label class="control-label" for="nbDaysGracePeriod">Période de grâce :</label>
-
-            <input id="nbDaysGracePeriod" class="form-control" name="nbDaysGracePeriod" type="number"
-            value="{{ (old('nbDaysGracePeriod') != '' ? old('nbDaysGracePeriod') : (!empty($config) ? $config->nbDaysGracePeriod : '')) }}" data-verif="required|int|min:0">
-
-            @if ($errors->has('nbDaysGracePeriod'))
-              <p class="help-block">{{ $errors->first('nbDaysGracePeriod') }}</p>
+          <div class="form-group col-lg-3 col-md-3 col-sm-12 col-xs-12 {{ $errors->has('nbReservations') ? ' has-error' : '' }}">
+            <label class="control-label" for="nbReservations">Nombre de réservation simultanées :</label>
+            <input id="nbReservations" class="form-control" name="nbReservations" type="number"
+            value="{{ (old('nbReservations') != '' ? old('nbReservations') : (!empty($config) ? $config->nbReservations : '')) }}" data-verif="required|int|min:1">
+            @if ($errors->has('nbReservations'))
+              <p class="help-block">{{ $errors->first('nbReservations') }}</p>
             @endif
           </div>
         </div>
 
         <div class="row">
-          <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('nbDaysLimitNonMember') ? ' has-error' : '' }}">
+          <div class="form-group col-lg-3 col-md-3 col-sm-12 col-xs-12 {{ $errors->has('nbDaysLimitNonMember') ? ' has-error' : '' }}">
             <label class="control-label" for="nbDaysLimitNonMember">Fenêtre de réservation non-membre :</label>
-
             <input id="nbDaysLimitNonMember" class="form-control" name="nbDaysLimitNonMember" type="number"
             value="{{ (old('nbDaysLimitNonMember') != '' ? old('nbDaysLimitNonMember') : (!empty($config) ? $config->nbDaysLimitNonMember : '')) }}" data-verif="required|int|min:1">
-
             @if ($errors->has('nbDaysLimitNonMember'))
               <p class="help-block">{{ $errors->first('nbDaysLimitNonMember') }}</p>
+            @endif
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
+            <label class="control-label" for="nbDaysGracePeriod">Période de grâce :</label>
+            <input id="nbDaysGracePeriod" class="form-control" name="nbDaysGracePeriod" type="number"
+            value="{{ (old('nbDaysGracePeriod') != '' ? old('nbDaysGracePeriod') : (!empty($config) ? $config->nbDaysGracePeriod : '')) }}" data-verif="required|int|min:0">
+            @if ($errors->has('nbDaysGracePeriod'))
+              <p class="help-block">{{ $errors->first('nbDaysGracePeriod') }}</p>
             @endif
           </div>
         </div>
