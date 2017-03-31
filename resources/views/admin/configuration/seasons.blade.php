@@ -113,7 +113,7 @@ Description : Displays a table with the inforamtion of the seasons form the data
             </div>
 
             <div class="form-group" align="center">
-                <button id="btnSeasonCheck" type="button" class="btn btn-primary">
+                <button id="btnSeasonCheck" type="button" class="btn btn-success">
                     Ajouter
                 </button>
             </div>

@@ -134,7 +134,7 @@ Description : Displays a table with the inforamtion of the subscriptions form th
             </div>
 
             <div class="form-group" align="center">
-                <button id="btnSubscriptionCheck" type="button" class="btn btn-primary">
+                <button id="btnSubscriptionCheck" type="button" class="btn btn-success">
                     {{-- SFH: Change button text if editing or adding --}}
                     {{ (!empty($singleTypeSubscription) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>

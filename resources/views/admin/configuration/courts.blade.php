@@ -142,7 +142,7 @@ Description : Displays a table with the inforamtion of the courts form the datab
             </div>
 
             <div class="form-group" align="center">
-                <button id="btnCourtCheck" type="button" class="btn btn-primary" name="save">
+                <button id="btnCourtCheck" type="button" class="btn btn-success" name="save">
                     {{-- SFH: Change button text if editing or adding --}}
                     {{ (!empty($singleCourt) ? 'Sauvegarder' : 'Ajouter') }}
                 </button>
