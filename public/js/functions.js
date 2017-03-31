@@ -51,7 +51,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
     {
         $(idBtnSave).hide();
         $(idForm+" :input").each(function(){
-            if($(this).prev().prop('type') != "button")$(this).prop('disabled', true);
+            if($(this).prev().prop('type') != "button") $(this).prop('disabled', true);
         });
         $(idBtnEdit).prop('disabled',false);
     }
@@ -64,7 +64,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
             $(idBtnSave).show();
             $(idBtnEdit).html('Annuler');
             $(idForm+" :input").each(function(){
-                if($(this).prev().prop('type') != 'button')$(this).prop('disabled', false);
+                if($(this).prev().prop('type') != 'button') $(this).prop('disabled', false);
             });
             $(idBtnEdit).prop('disabled',false);
             lockedForm = false;
