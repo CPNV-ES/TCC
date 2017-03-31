@@ -10,6 +10,7 @@ class Config extends Model
       'nbDaysGracePeriod',
       'nbDaysLimitNonMember',
       'courtOpenTime',
-      'courtCloseTime'
+      'courtCloseTime',
+      'nbReservations'
   ];
 }
