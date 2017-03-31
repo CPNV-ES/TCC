@@ -20,15 +20,27 @@ class WelcomeController extends Controller
       $courts = Court::All();
 
       if (Auth::check()) {
-        $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get();
-        $memberFav = PersonalInformation::leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
-                                        ->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')
-                                        ->has('user')->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
+        $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
+        $memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
+                                        ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
+                                        ->rightJoin('users', 'users.fkPersonalInformation', '=', 'personal_informations.id')
+                                        ->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
                                         ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
                                         ->groupBy('personal_informations.id')
                                         ->orderBy('reservations_count', 'DESC')
                                         ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
-        $membersList = $memberFav->merge($allMember);
+
+          $startDate = new \DateTime();
+          $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+          $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+               ->where(function($q){
+                   $Userid=Auth::user()->id;
+                   $q->where('fkWho', $Userid);
+                   $q->orWhere('fkWithWho', $Userid);
+               })->get();
+          //we merge the two collections of members then we sort by reservations_count (desc)
+          $membersList = $allMember->merge($memberFav);
+          $membersList = $membersList->sortByDesc('reservations_count');
         return view('welcome', compact('membersList','courts'));
       }
       else {
