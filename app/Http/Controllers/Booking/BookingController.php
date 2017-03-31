@@ -187,15 +187,21 @@ class BookingController extends Controller
 
         $todayDate   = date('Y-m-d');
         $todayDateTime = date('Y-m-d H:i:s');
+
         $fkCourt =   $request->input('fkCourt');
+        $court = Court::find($request->input('fkCourt'));
+
         $personalInfoWithWho = null;
         //Number of reservations of the creator of the reservation
-        $startDate = new \DateTime();
-        $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+        $startDate = new \DateTime($request->input('dateTimeStart'));
+        $config = Config::first();
+
 
         Session::flash('currentCourt', $fkCourt);
         if(Auth::check())
         {
+
+            $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
             $userWho = User::find(Auth::user()->id);
             $personalInfoWho = User::find(Auth::user()->id)->personal_information;
 
@@ -323,6 +329,7 @@ class BookingController extends Controller
                 return back()->withInput()->withErrors($validator);
             }
 
+            $endDate = (new \DateTime())->add(new \DateInterval('P'.($config->nbDaysLimitNonMember-1).'D'));
 
             //We don't store the personal informations now
             $personalInfoWho = new PersonalInformation($request->all());
@@ -347,8 +354,14 @@ class BookingController extends Controller
                 $q->where('fkWho', $Userid);
                 $q->orWhere('fkWithWho', $Userid);
             })->count();
+        //dd($startDate->format('Y-m-d H:i'));
 
+        if (!$personalInfoWho->hasRightToReserve($startDate, $court->id))
+        {
+            Session::flash('errorMessage', "Vous ne pouvez pas réservez aussi loin dans le temps");
+            return redirect('/booking');
 
+        }
 
 
         // 13:00 -- 14:00+1

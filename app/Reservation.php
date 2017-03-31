@@ -6,6 +6,7 @@ use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use App\Config;
+use App\Court;
 
 class Reservation extends Model
 {
@@ -40,16 +41,28 @@ class Reservation extends Model
     }
 
     //return the config for the visual calendar
-    public static function getVcConfigJSON($court = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
+    public static function getVcConfigJSON($nbDays = null, $courtId = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
     {
-
+        $config = Config::first();
+        if($courtId == null) $court = Court::first();
+        else $court = Court::find($courtId);
         if ($startDate == null)  $startDate = new \DateTime();
-        $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-        if($court == null) $court = Court::first()->id;
 
-        $planifiedReservations = Reservation::where('fkCourt', $court)->whereNull('confirmation_token')->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
+
+        if (is_int($nbDays) && $nbDays > 0) $endDate =(new \DateTime());
+        elseif (Auth::check()) $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
+        else $endDate = (new \DateTime())->add(new \DateInterval('P'.($config->nbDaysLimitNonMember-1).'D'));
+
+
+
+
+        $planifiedReservations = Reservation::where('fkCourt', $court->id)
+                                            ->whereNull('confirmation_token')
+                                            ->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])
+                                            ->get();
         $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
         $hdiff=$startDate->diff($zeroDate)->format('%H');
+
         if (Auth::check()) {
           $Userid=Auth::user()->id;
           $myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
@@ -60,7 +73,7 @@ class Reservation extends Model
               $q->orWhere('fkWithWho', $Userid);
           })->get();
           $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-          ->where('fkCourt',$court)
+          ->where('fkCourt',$court->id)
           ->whereNull('confirmation_token')
           ->where(function($q){
               $Userid=Auth::user()->id;
@@ -68,7 +81,7 @@ class Reservation extends Model
               $q->orWhere('fkWithWho', $Userid);
           })->get();
           //print_r(count($myReservs));die;
-          if(count($myReservs)>=Config::first()->nbReservations )$readOnly=true;
+          if(count($myReservs)>=$config->nbReservations )$readOnly=true;
           $res=[];
 
           foreach($myReservsByCourts as $planifiedReservation )

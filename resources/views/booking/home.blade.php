@@ -29,7 +29,7 @@
             </div>
             <script>
                 var vc{{$court->id}} = new VisualCalendar();
-                vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON($court->id, 'div#tab-'.$court->id) !!};
+                vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON(null,$court->id, 'div#tab-'.$court->id) !!};
                 vc{{$court->id}}.build();
                 vc{{$court->id}}.generate();
                 vc{{$court->id}}.ev.onSelect=function(elem, datetime){

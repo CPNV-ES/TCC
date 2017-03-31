@@ -18,14 +18,14 @@
                     </div>
                     <script>
                         var vc{{$court->id}} = new VisualCalendar();
-                        vc{{$court->id}}.config={!! \App\Court::getVcConfigHomeJSON($court->id, 'div#tab-'.$court->id) !!};
+                        vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON(1 ,$court->id, 'div#tab-'.$court->id) !!};
                         vc{{$court->id}}.build();
                         vc{{$court->id}}.generate();
                         vc{{$court->id}}.ev.onSelect = function(elem, datetime){
                             var myDate = parseDate(datetime);
-                            $("#fkCourt").val({{$court->id}});
+                            $(".fkCourt").val({{$court->id}});
                             $("#modal-resume").html('Réservation du court N° '+$("#fkCourt").val()+' le ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
-                            $("#reservation-date").val(datetime+':00');
+                            $(".reservation-date").val(datetime+':00');
                             $('#reservation-modal').modal('show');
                         }
                         vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){

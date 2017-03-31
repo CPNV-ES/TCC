@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Court;
+use App\Locality;
 use App\PersonalInformation;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -18,8 +19,9 @@ class WelcomeController extends Controller
     public function index(Request $request) {
 
       $courts = Court::All();
-
+      $localities = Locality::all();
       if (Auth::check()) {
+
         $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get();
         $memberFav = PersonalInformation::leftJoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
                                         ->leftJoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')
@@ -29,10 +31,10 @@ class WelcomeController extends Controller
                                         ->orderBy('reservations_count', 'DESC')
                                         ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
         $membersList = $memberFav->merge($allMember);
-        return view('welcome', compact('membersList','courts'));
+        return view('welcome', compact('membersList','courts', 'localities'));
       }
       else {
-        return view('welcome', compact('courts'));
+        return view('welcome', compact('courts', 'localities'));
       }
 
     }
