@@ -47,7 +47,6 @@ VERIF.RULES.date_us_greater = {
 
 VERIF.RULES.time_long = {
   control: function control(res, data) {
-    console.log(data);
     res(/^\d{2}:\d{2}(:\d{2}|)$/.test(data.trim()));
   },
   errorText: 'Ce champs doit être un temp [HH:mm:ss]'
