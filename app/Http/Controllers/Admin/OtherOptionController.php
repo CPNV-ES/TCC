@@ -33,11 +33,16 @@ class OtherOptionController extends Controller
       $validator = Validator::make($request->all(),
           [
               'nbDaysGracePeriod' => 'required|integer|min:0',
+              'nbDaysLimitNonMember' => 'required|integer|min:1'
           ],
           [
               'nbDaysGracePeriod.required' => 'Le champ \'Période de grâce\' est obligatoire.',
               'nbDaysGracePeriod.integer' => 'Le champ \'Période de grâce\' doit contenir des chiffres.',
-              'nbDaysGracePeriod.min' => 'La valeur de \'Période de grâce\' doit être positif.'
+              'nbDaysGracePeriod.min' => 'La valeur de \'Période de grâce\' doit être positif.',
+              'nbDaysLimitNonMember.required' => 'Ce champ est obligatoire.',
+              'nbDaysLimitNonMember.integer' => 'Ce champ doit contenir des chiffres.',
+              'nbDaysLimitNonMember.min' => 'La valeur de ce champ doit être supérieur à 0.'
+
           ]);
 
       // Display errors messages, return to the court page

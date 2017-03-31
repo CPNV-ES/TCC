@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    @include('booking.reserve_modal');
+    @include('booking.reserve_modal')
 
 
     <style media="screen">

@@ -44,8 +44,6 @@
                     $('#reservation-modal').modal('show');
                 }
                 vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
-                    console.log(elem, planif);
-
                     var myDate = parseDate(planif.datetime);
                     $("#date-del-reserv").val(planif.datetime);
                     $("#id-del-reserv").val(elem.getAttribute('data-description'));

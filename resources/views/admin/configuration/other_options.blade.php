@@ -17,44 +17,49 @@
             @endforeach
         </div>
     </div>
-    <form class="form-inline" name="other_options_form" role="form" method="POST" action="{{url('/admin/config/other_options/1')}}">
+    <form id="form-edit-other-options" class="form" name="other-options-form" role="form" method="POST" action="{{url('/admin/config/other_options/1')}}">
         {!! csrf_field() !!}
         {!! method_field('PUT') !!}
-        <div class="form-group {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
+        <div class="row">
+          <div class="form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
             <label class="control-label" for="nbDaysGracePeriod">Période de grâce :</label>
 
-            <input id="nbDaysGracePeriod" name="nbDaysGracePeriod" type="number" class="form-control" value="{{$config->nbDaysGracePeriod}}" disabled="">
+            <input id="nbDaysGracePeriod" class="form-control" name="nbDaysGracePeriod" type="number" value="{{$config->nbDaysGracePeriod}}" data-verif="required|int|min:0">
 
             @if ($errors->has('nbDaysGracePeriod'))
-                <p class="help-block">{{ $errors->first('nbDaysGracePeriod') }}</p>
+              <p class="help-block">{{ $errors->first('nbDaysGracePeriod') }}</p>
             @endif
+          </div>
         </div>
-        <div class="form-group">
-            <button id="btn_grace_period_edit" class="btn btn-primary" type="button">Modifier</button>
-            <button id="btn_grace_period_save" class="btn btn-primary" type="submit" style="display: none;">Sauvegarder</button>
+        <div class="row">
+          <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('nbDaysLimitNonMember') ? ' has-error' : '' }}">
+            <label class="control-label" for="nbDaysLimitNonMember">Nombre de jours à l'avance qu'un non-membre peut réserver :</label>
+
+            <input id="nbDaysLimitNonMember" class="form-control" name="nbDaysLimitNonMember" type="number" value="{{$config->nbDaysLimitNonMember}}" data-verif="required|int|min:1">
+
+            @if ($errors->has('nbDaysLimitNonMember'))
+              <p class="help-block">{{ $errors->first('nbDaysLimitNonMember') }}</p>
+            @endif
+          </div>
+        </div>
+        <div class="row">
+          <div id="" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button id="btn-edit" class="btn btn-warning" type="button">Modifier</button>
+            <button id="btn-save" class="btn btn-success" type="button">Sauvegarder</button>
+          </div>
         </div>
     </form>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            lockedForm = true;
-            $("#btn_grace_period_edit").click(function () {
-                if(lockedForm)
-                {
-                    $("#btn_grace_period_save").show();
-                    $("#btn_grace_period_edit").html('Annuler');
-                    $("#nbDaysGracePeriod").prop('disabled',false);
-                    lockedForm = false;
-                }
-                else
-                {
-                    $("#btn_grace_period_save").hide();
-                    $("#btn_grace_period_edit").html('Modifier');
-                    $("#nbDaysGracePeriod").prop('disabled',true);
-                    lockedForm = true;
-                }
-            });
-        });
+    $("#btn-edit").click(function () {
+      if (lockedForm != true) {
+        $("#nbDaysGracePeriod").val("{{$config->nbDaysGracePeriod}}");
+        $("#nbDaysLimitNonMember").val("{{$config->nbDaysLimitNonMember}}");
+      }
+    });
+    lockForm('#form-edit-other-options', '#btn-edit','#btn-save',{{($errors->any()) ? 'false' : 'true' }});
+    let btn = document.getElementById('btn-save');
+    VERIF.onClickSubmitAfterVerifForm(btn,'other-options-form');
     </script>
 
 @endsection
