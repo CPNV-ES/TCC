@@ -100,7 +100,8 @@
         @endif
 
 
-</div>
+    </div>
+  </div>
     <style media="screen">
         .tab-content .vc-cnt {
             box-sizing: border-box;
