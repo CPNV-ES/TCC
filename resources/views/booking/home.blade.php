@@ -45,8 +45,11 @@
                 }
                 vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
                     console.log(elem, planif);
+
                     var myDate = parseDate(planif.datetime);
-                    $("#id-del-reserv").val(planif.datetime);
+                    $("#date-del-reserv").val(planif.datetime);
+                    $("#id-del-reserv").val(elem.getAttribute('data-description'));
+                    $("#court-del-reserv").val("{{ $court->id }}");
                     $("#modal-del-resume").html('Supprimer la réservation du ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
                     $('#del-resevation-modal').modal('show');
                 }
@@ -72,6 +75,8 @@
                           {{ csrf_field() }}
                           {{ method_field('DELETE') }}
                           <input type="hidden" name="id-del-reserv" id="id-del-reserv" value=''>
+                          <input type="hidden" name="date-del-reserv" id="date-del-reserv" value=''>
+                          <input type="hidden" name="court-del-reserv" id="court-del-reserv" value=''>
                           <input type="hidden" name="baseurl-del-reserv" id="baseurl-del-reserv" value="{{ url('/booking/')}}">
                           <div class="form-group push-to-bottom ">
                               <button type="button" id="btn-del-res-modal" class="btn btn-danger btn-block" name="btn-delete">
@@ -81,7 +86,7 @@
                               <script type="text/javascript">
                                   $("#btn-del-res-modal").click(function(){
                                       var form = document.forms['form-modal-delete'];
-                                      form.action=$("#baseurl-del-reserv").val()+$("#id-del-reserv").val();
+                                      form.action=$("#baseurl-del-reserv").val()+'/'+$("#id-del-reserv").val();
                                       form.submit();
                                   });
                               </script>

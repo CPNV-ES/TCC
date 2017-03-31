@@ -75,6 +75,7 @@ class Reservation extends Model
                   'datetime' => $planifiedReservation->dateTimeStart,
                   'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
                   'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                  'description' => $planifiedReservation->id,
                   'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
               ];
           }
@@ -86,6 +87,7 @@ class Reservation extends Model
                 'datetime' => $planifiedReservation->dateTimeStart,
                 'type' => $planifiedReservation->type_reservation->type, // that's going to the class of the box
                 'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                'description' => $planifiedReservation->id,
                 'clickable' => false
             ];
         }
@@ -95,6 +97,7 @@ class Reservation extends Model
                 'datetime' => ((new \DateTime($zeroDate->format('Y-m-d H:i')))->add(new \DateInterval('PT'.$i.'H')))->format('Y-m-d H:i'),
                 'type' => 'vc-passed', // that's going to the class of the box
                 'title' => '',
+                'description' => 'void',
                 'clickable' => false
             ];
         }

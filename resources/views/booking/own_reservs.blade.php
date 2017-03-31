@@ -23,7 +23,9 @@
       <script type="text/javascript">
         $("#btn-del-res-{{ $reserv->id }}").click(function(){
           var myDate = parseDate("{{ $reserv->dateTimeStart }}");
-          $("#id-del-reserv").val("{{ $reserv->dateTimeStart }}");
+          $("#date-del-reserv").val("{{ $reserv->dateTimeStart }}");
+          $("#id-del-reserv").val("{{ $reserv->id}}");
+          $("#court-del-reserv").val("{{ $reserv->court}}");
           $("#modal-del-resume").html('Supprimer la réservation du ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
           $('#del-resevation-modal').modal('show');
         });
