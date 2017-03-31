@@ -33,15 +33,20 @@ class OtherOptionController extends Controller
       $validator = Validator::make($request->all(),
           [
               'nbDaysGracePeriod' => 'required|integer|min:0',
-              'nbDaysLimitNonMember' => 'required|integer|min:1'
+              'nbDaysLimitNonMember' => 'required|integer|min:1',
+              'courtOpenTime' => 'required',
+              'courtCloseTime' => 'required|after:courtOpenTime'
           ],
           [
               'nbDaysGracePeriod.required' => 'Le champ \'Période de grâce\' est obligatoire.',
               'nbDaysGracePeriod.integer' => 'Le champ \'Période de grâce\' doit contenir des chiffres.',
               'nbDaysGracePeriod.min' => 'La valeur de \'Période de grâce\' doit être positif.',
-              'nbDaysLimitNonMember.required' => 'Ce champ est obligatoire.',
-              'nbDaysLimitNonMember.integer' => 'Ce champ doit contenir des chiffres.',
-              'nbDaysLimitNonMember.min' => 'La valeur de ce champ doit être supérieur à 0.'
+              'nbDaysLimitNonMember.required' => 'Le champ \'Fenêtre de réservation non-membre\' est obligatoire.',
+              'nbDaysLimitNonMember.integer' => 'Le champ \'Fenêtre de réservation non-membre\' doit contenir des chiffres.',
+              'nbDaysLimitNonMember.min' => 'La valeur de \'Fenêtre de réservation non-membre\' doit être supérieur à 0.',
+              'courtOpenTime.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
+              'courtCloseTime.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
+              'courtCloseTime.after' => 'Le champ \'Heure de fermeture\' doit être une date postérieure au \'Heure d\'ouverture\'.'
 
           ]);
 

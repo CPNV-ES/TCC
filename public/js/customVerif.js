@@ -6,21 +6,21 @@ VERIF.RULES.int_neg = {
         control: function control(res, data) {
                 res(/^[+-]\d+|\d+$/.test(data.trim()));
         },
-        errorText: 'Ce champs dois être nombre entier.'
+        errorText: 'Ce champ doit être nombre entier.'
 };
 
 VERIF.RULES.double_neg = {
         control: function control(res, data) {
                 res(/^[+-]?\d*\.?\d*$/.test(data.trim()));
         },
-        errorText: 'Ce champs dois être nombre entier.'
+        errorText: 'Ce champ doit être nombre entier.'
 };
 
 VERIF.RULES.date_us = {
         control: function control(res, data) {
                 res(/^\d{4}-\d{2}\-\d{2}|\d{2}\.\d{2}\.\d{4}$/.test(data.trim()));
         },
-        errorText: 'Ce champs dois être une date [aaaa-mm-jj].'
+        errorText: 'Ce champ doit être une date [aaaa-mm-jj].'
 };
 
 VERIF.RULES.date_us_greater = {
@@ -45,6 +45,14 @@ VERIF.RULES.date_us_greater = {
         }
 };
 
+VERIF.RULES.time_long = {
+  control: function control(res, data) {
+    console.log(data);
+    res(/^\d{2}:\d{2}(:\d{2}|)$/.test(data.trim()));
+  },
+  errorText: 'Ce champs doit être un temp [HH:mm:ss]'
+}
+
 VERIF.RULES.time_greater = {
         control: function control(res, data, firstTime) {
                 var timeEnd = new Date();
@@ -63,5 +71,5 @@ VERIF.RULES.time_greater = {
 
                 return timeEnd > timeStart;
         },
-        errorText: 'Le temps doit doit être suppérieur au temps d\'ouverture.'
+        errorText: 'Le temps doit être suppérieur au temps d\'ouverture.'
 };
