@@ -168,6 +168,7 @@ var VisualCalendar = function () {
           elem = row.insertCell(j + 1);
 
           elem.className = className;
+          if(me) elem.setAttribute('data-description',me.description);
           elem.innerHTML = me ? me.title : '';
           row.appendx(elem);
           if (!_this2.config.params.readonly){ elem.on('click', function (ev) {

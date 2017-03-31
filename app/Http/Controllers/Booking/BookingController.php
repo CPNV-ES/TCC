@@ -141,13 +141,20 @@ class BookingController extends Controller
                                           ->orderBy('reservations_count', 'DESC')
                                           ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
 
-
+            $startDate = new \DateTime();
+            $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+            $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+                 ->where(function($q){
+                     $Userid=Auth::user()->id;
+                     $q->where('fkWho', $Userid);
+                     $q->orWhere('fkWithWho', $Userid);
+                 })->get();
             //we merge the two collections of members then we sort by reservations_count (desc)
             $membersList = $allMember->merge($memberFav);
             $membersList = $membersList->sortByDesc('reservations_count');
 
             $courts = Court::where('state', 1)->get();
-            return view('booking/home',compact('membersList', 'courts'));
+            return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
         }
         else {
           $courts = Court::where('state', 1)->get();
@@ -421,30 +428,36 @@ class BookingController extends Controller
     public function destroy($id)
     {
         $reservation = Reservation::find($id);
-        if (Auth::user()->id != $reservation->fk_member_1 && Auth::user()->id != $reservation->fk_member_2)
+        if($reservation==null){
+            Session::flash('errorMessage', "La reservation que vous essayer de supprimer n'existe pas ou plus");
+            return redirect('/booking');
+        }
+        if (Auth::user()->id != $reservation->fkWho && Auth::user()->id != $reservation->fkWithWho)
         {
-            return "false";
+            Session::flash('errorMessage', "Vous essayer de supprimer une réservation qui ne vous appartient pas");
+            return redirect('/booking');
         }
         $reservation->delete();
 
         // Select the information of the two players from the members
 
-        $members = Member::whereIn('id', [$reservation->fk_member_1, $reservation->fk_member_2])->get(['last_name', 'first_name', 'email']);
+        $members = User::whereIn('id', [$reservation->fkWho, $reservation->fkWithWho])->with('personal_information');
         $court = Court::where('id', $reservation->fk_court)->get(['name']);
-        $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $reservation->date_hours)->format('d.m.Y H:i');
+        $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $reservation->dateTimeStart)->format('d.m.Y H:i');
         foreach ($members as $member)
         {
-            $email = $member->email;
+            $email = $member->personal_information->email;
 
             // Inform the players of the reservations
             //---------------------------------------------------------------------------------
-            Mail::send('emails.user.deletereservation', ['last_name' => $member->last_name, 'first_name' => $member->first_name, 'court' => $court[0]->name, 'joueur1' => $members[0]->last_name." ".$members[0]->first_name, 'joueur2' => $members[1]->last_name." ".$members[1]->first_name, 'date_hours' => $dateHour], function ($message) use($email)
+            Mail::send('emails.user.deletereservation', ['last_name' => $member->personal_information->lastname, 'first_name' => $member->personal_information->firstname, 'court' => $court[0]->name, 'joueur1' => $members[0]->personal_information->lastname." ".$members[0]->personal_information->firstname, 'joueur2' => $members[1]->personal_information->lastname." ".$members[1]->personal_information->firstname, 'date_hours' => $dateHour], function ($message) use($email)
             {
                 $message->to($email)->subject('Suppression de votre réservation au Tennis Club Chavornay');
             });
             /////////////////////////////////////////////
         }
-        return "true";
+        Session::flash('successMessage', "Votre réservation a bien été supprimée");
+        return redirect('/booking');
     }
 
     public function MyBookingIndex(Request $request)
