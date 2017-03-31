@@ -84,6 +84,8 @@
         $("#courtCloseTime").val("{{$config->courtCloseTime}}");
         $('.verif_message_error').remove();
         $('.verif_error').removeClass('verif_error');
+        $('.help-block').remove();
+        $('.has-error').removeClass('has-error');
       }
     });
     lockForm('#form-edit-other-options', '#btn-edit','#btn-save',{{($errors->any()) ? 'false' : 'true' }});
