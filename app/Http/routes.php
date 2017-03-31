@@ -42,10 +42,13 @@ Route::group(['middleware' => ['web']], function ()
     /*
      * Booking
      */
+
     Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
     {
         Route::resource('booking', 'BookingController');
+        Route::get('booking/confirmation/{token}', 'BookingController@confirmation')->name('booking.confirmation');;
     });
+
 
 
     /*
@@ -56,6 +59,7 @@ Route::group(['middleware' => ['web']], function ()
         Route::delete('mybooking/{id}', 'BookingController@destroy');
         Route::get('mybooking', 'BookingController@MyBookingIndex');
     });
+
 
 
     Route::group(['namespace' => 'Registration'], function()

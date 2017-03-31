@@ -47,12 +47,13 @@ class Reservation extends Model
         $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
         if($court == null) $court = Court::first()->id;
 
-        $planifiedReservations = Reservation::where('fkCourt', $court)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
+        $planifiedReservations = Reservation::where('fkCourt', $court)->whereNull('confirmation_token')->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])->get();
         $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
         $hdiff=$startDate->diff($zeroDate)->format('%H');
         if (Auth::check()) {
           $Userid=Auth::user()->id;
           $myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+          ->whereNull('confirmation_token')
           ->where(function($q){
               $Userid=Auth::user()->id;
               $q->where('fkWho', $Userid);
@@ -60,6 +61,7 @@ class Reservation extends Model
           })->get();
           $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
           ->where('fkCourt',$court)
+          ->whereNull('confirmation_token')
           ->where(function($q){
               $Userid=Auth::user()->id;
               $q->where('fkWho', $Userid);
@@ -115,5 +117,21 @@ class Reservation extends Model
 
         ];
         return json_encode($config);
+    }
+    public static function isHourFree($fkCourt, $dateTimeStart)
+    {
+        $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
+        $dateTimeEnd   = date("Y-m-d H:i:s", strtotime($dateTimeStart)+60*60-1);
+
+        $nbReservations = Reservation::where('fkCourt', $fkCourt)->whereNull('confirmation_token')->where(function($query) use ($dateTimeStartLessDuration,$dateTimeStart, $dateTimeEnd){
+            $query->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd]);
+            $query->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart]);
+        })->count();
+
+        if(!$nbReservations)
+            return true;
+        else{
+            return false;
+        }
     }
 }
