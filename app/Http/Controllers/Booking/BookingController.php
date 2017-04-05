@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Booking;
 //use App\Models\Reservation;
 //use App\Models\Season;
 
+use App\Locality;
 use App\Reservation;
 use App\Season;
 
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Faker\Provider\ar_JO\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -126,8 +128,12 @@ class BookingController extends Controller
         //   $members = PersonalInformation::reservations->where('fkWithWho', Auth::user()->id)->orWhere('fkWho', Auth::user()->id)
         //
         // }
+
+
+
         if(Auth::check())
         {
+
           // print(PersonalInformation::find(Auth::user()->id)->id);
           // die();
           $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
@@ -157,8 +163,11 @@ class BookingController extends Controller
             return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
         }
         else {
+
+          $localities = Locality::all();
           $courts = Court::where('state', 1)->get();
-          return view('booking/home', compact('courts'));
+          //return view('booking/home', compact('courts'))->with('localities', $localities);
+            return view('booking/home', compact('courts' , 'localities'));
         }
 
     }
@@ -181,19 +190,34 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        $configs = Config::orderBy('created_at', 'desc')->first();
+
+        $todayDate   = date('Y-m-d');
+        $todayDateTime = date('Y-m-d H:i:s');
+
+        $fkCourt =   $request->input('fkCourt');
+        $court = Court::find($request->input('fkCourt'));
+
+        $personalInfoWithWho = null;
+        //Number of reservations of the creator of the reservation
+        $startDate = new \DateTime($request->input('dateTimeStart'));
+        $config = Config::first();
 
 
+        Session::flash('currentCourt', $fkCourt);
         if(Auth::check())
         {
 
-            $configs = Config::orderBy('created_at', 'desc')->first();
+            $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
             $userWho = User::find(Auth::user()->id);
             $personalInfoWho = User::find(Auth::user()->id)->personal_information;
-            $todayDate   = date('Y-m-d');
-            $todayDateTime = date('Y-m-d H:i:s');
-            $fkCourt =   $request->input('fkCourt');
-            $personalInfoWithWho = null;
-            Session::flash('currentCourt', $fkCourt);
+
+            $nbReservationWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+                ->where(function($q){
+                    $Userid=Auth::user()->id;
+                    $q->where('fkWho', $Userid);
+                    $q->orWhere('fkWithWho', $Userid);
+                })->count();
 
 
             //check if the creator of the reservation and the invited person
@@ -237,6 +261,13 @@ class BookingController extends Controller
                     return redirect('/booking');
                 }
 
+                //check if the number of reservations of the creator of the reservations and the invited person has not been exceeded
+                if ($nbReservationWho >= Config::orderBy('created_at', 'desc')->first()->nbReservations)
+                {
+                    Session::flash('errorMessage', "Vous avez déjà atteint votre nombre maximum de reservations");
+                    return redirect('/booking');
+                }
+
                 $invalidatedDateWithWho = Auth::user()->invalidatedDate;
 
 
@@ -264,125 +295,197 @@ class BookingController extends Controller
                     return redirect('/booking');
                 }
                 $personalInfoWithWho = PersonalInformation::find($userWithWho->id);
+                // We check if there's a date into the field invalidatedDate for the member who has made the reservation and the invited member.
+                // If there is, we add the nb of days of the grace period. If the period has been exceeded we return an error
+                if( Auth::user()->invalidatedDate != null &&
+                    strtotime(Auth::user()->invalidatedDate. ' + '. $configs->nbDaysGracePeriod.' days') < strtotime($todayDate))
+                {
+                    Session::flash('errorMessage', "Votre compte n'est plus valide");
+                    return redirect('/booking');
+                }
             }
-          //datetime of the reservation
-          $dateTimeStart = $request->input('dateTimeStart');
-          $dateTimeEnd   = date("Y-m-d H:i:s", strtotime($dateTimeStart)+60*60-1);
 
-          //check if the date isn't in th past
-          if($todayDateTime > $dateTimeStart)
-          {
-            Session::flash('errorMessage', "Cette date est déjà passée");
-            return redirect('/booking');
-          }
-
-          // We check if there's a date into the field invalidatedDate for the member who has made the reservation and the invited member.
-          // If there is, we add the nb of days of the grace period. If the period has been exceeded we return an error
-          if( Auth::user()->invalidatedDate != null &&
-              strtotime(Auth::user()->invalidatedDate. ' + '. $configs->nbDaysGracePeriod.' days') < strtotime($todayDate))
-          {
-            Session::flash('errorMessage', "Votre compte n'est plus valide");
-            return redirect('/booking');
-          }
-
-
-          //Number of reservations of the creator of the reservation
-          $startDate = new \DateTime();
-          $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-          $nbReservationWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-              ->where(function($q){
-                  $Userid=Auth::user()->id;
-                  $q->where('fkWho', $Userid);
-                  $q->orWhere('fkWithWho', $Userid);
-              })->count();
-
-          //Number of reservations of the person invited;
-          $nbReservationWithWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-              ->where(function($q)use ($request){
-                  $Userid=$request->input('fkWithWho');
-                  $q->where('fkWho', $Userid);
-                  $q->orWhere('fkWithWho', $Userid);
-              })->count();
-
-
-          //check if the number of reservations of the creator of the reservations and the invited person has not been exceeded
-          if ($nbReservationWho >= Config::orderBy('created_at', 'desc')->first()->nbReservations)
-          {
-              Session::flash('errorMessage', "Vous avez déjà atteint votre nombre maximum de reservations");
-              return redirect('/booking');
-          }
-
-          // 13:00 -- 14:00+1
-          $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
-
-         /* if($request->input('first_name'))*/
-
-          $freeHour = Reservation::where('fkCourt', $fkCourt)->where(function($q) use ($dateTimeStartLessDuration,$dateTimeStart, $dateTimeEnd){
-                        $q->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd]);
-                        $q->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart]);
-          })->count();
-
-          if($freeHour!=0)
-          {
-            Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
-            return redirect('/booking');
-          }
-
-          //Check if the court is available (in case of the court is in maintenance)
-          $court = Court::find($fkCourt);
-          if($court->state != 1)
-          {
-            Session::flash('errorMessage', "Ce court n'est pas disponible pour le moment, veuillez choisir un autre court");
-            return redirect('/booking');
-          }
-
-          //Get the actual price
-          $chargeAmount = Config::first()->currentAmount;
-          $personalInfoWithWho->save();
-
-
-          // Insert in DB
-          //-------------
-          $data = ['dateTimeStart' => $dateTimeStart, 'fkCourt' => $fkCourt, 'fkWho' => PersonalInformation::find(Auth::user()->id)->id,
-                  'fkTypeReservation' => 1, 'fkWithWho' => $personalInfoWithWho->id,
-                  'chargeAmount' => $chargeAmount, 'paid' => 0];
-
-
-          $reservation = Reservation::create($data);
-
-          /////////////////////////////////////////////
-
-
-          // Select the information of the two players froms the members
-          $members = [$personalInfoWho , $personalInfoWithWho];
-          $court = Court::find($fkCourt);
-          $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('dateTimeStart'))->format('d.m.Y H:i');
-          foreach ($members as $member)
-          {
-
-              if(isset($member->email))
-              {
-                  $email = $member->email;
-
-                  // Inform the players of the reservations
-                  //---------------------------------------------------------------------------------
-                  Mail::send('emails.user.reservation', ['last_name' => $member->lastname, 'first_name' => $member->firstname, 'court' => $court->name,
-                      'joueur1' => $members[0]->lastname." ".$members[0]->firstname, 'joueur2' => $members[1]->lastname." ".$members[1]->firstname,
-                      'date_hours' => $dateHour], function ($message) use($email)
-                  {
-                      $message->to($email)->subject('Votre réservation au Tennis Club Chavornay');
-                  });
-              }
-
-
-          }
-          Session::flash('successMessage', "Votre réservation a bien été enregistrée");
-          return redirect('/booking');
         }
         else {
-          Session::flash('errorMessage', "Vous devez être membre pour faire une réservation");
-          return redirect('/booking');
+            $validator = Validator::make($request->all(),
+                [
+                    'firstname' => 'required|max:50',
+                    'lastname' => 'required|max:50',
+                    'street' => 'max:100',
+                    'streetNbr' => 'max:45',
+                    'phone' => 'required',
+                    'email' => 'required|email|max:255',
+                    'locality' => 'required|exists:localities,id',
+                ],
+                [
+                    'locality.exists' => 'Cette localité n\'existe pas, si vous ne trouvez pas votre localité veuillez choisir "autre"',
+                    'streetNbr.name' => 'numéro de rue'
+                ]
+                );
+            $validator->setAttributeNames([
+                'firstname' => 'prénom',
+                'lastname' => 'nom',
+                'street' => 'rue',
+                'streetNbr' => 'numéro de rue',
+                'phone' => 'téléphone',
+                'locality' => 'localité'
+            ]);
+            if($validator->fails())
+            {
+
+                return back()->withInput()->withErrors($validator);
+            }
+
+            $endDate = (new \DateTime())->add(new \DateInterval('P'.($config->nbDaysLimitNonMember-1).'D'));
+
+            //We don't store the personal informations now
+            $personalInfoWho = new PersonalInformation($request->all());
         }
+        //datetime of the reservation
+        $dateTimeStart = $request->input('dateTimeStart');
+        $dateTimeEnd   = date("Y-m-d H:i:s", strtotime($dateTimeStart)+60*60-1);
+
+
+
+        //check if the date isn't in th past
+        if($todayDateTime > $dateTimeStart)
+        {
+            Session::flash('errorMessage', "Cette date est déjà passée");
+            return redirect('/booking');
+        }
+
+        //Number of reservations of the person invited;
+        $nbReservationWithWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+            ->where(function($q)use ($request){
+                $Userid=$request->input('fkWithWho');
+                $q->where('fkWho', $Userid);
+                $q->orWhere('fkWithWho', $Userid);
+            })->count();
+        //dd($startDate->format('Y-m-d H:i'));
+
+        if (!$personalInfoWho->hasRightToReserve($startDate, $court->id))
+        {
+            Session::flash('errorMessage', "Vous ne pouvez pas réservez aussi loin dans le temps");
+            return redirect('/booking');
+
+        }
+
+
+        // 13:00 -- 14:00+1
+        $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
+
+        /* if($request->input('first_name'))*/
+
+/*        $freeHour = Reservation::where('fkCourt', $fkCourt)->where(function($q) use ($dateTimeStartLessDuration,$dateTimeStart, $dateTimeEnd){
+            $q->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd]);
+            $q->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart]);
+        })->count();
+
+        if($freeHour!=0)
+        {
+            Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
+            return redirect('/booking');
+        }*/
+
+        if(!Reservation::isHourFree($fkCourt, $dateTimeStart))
+        {
+            Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
+            return redirect('/booking');
+        }
+
+        //Check if the court is available (in case of the court is in maintenance)
+        $court = Court::find($fkCourt);
+        if($court->state != 1)
+        {
+            Session::flash('errorMessage', "Ce court n'est pas disponible pour le moment, veuillez choisir un autre court");
+            return redirect('/booking');
+        }
+
+        //Get the actual price
+        $chargeAmount = Config::first()->currentAmount;
+
+        if(isset($personalInfoWithWho))$personalInfoWithWho->save();
+
+
+        if(isset($personalInfoWho))$personalInfoWho->save();
+        // Insert in DB
+        //-------------
+        $reservationInfo = [
+                 'dateTimeStart' => $dateTimeStart,
+                 'fkCourt' => $fkCourt,
+                 'fkWho' => $personalInfoWho->id,
+                 'fkTypeReservation' => 1,
+                 'fkWithWho' => (isset($personalInfoWithWho->id) ? $personalInfoWithWho->id : null), //check if there is a invited person (in case it's a reservation is created by a member)
+                 'chargeAmount' => $chargeAmount,
+                 'paid' => 0
+        ];
+
+
+        $reservation = Reservation::create($reservationInfo);
+
+        /////////////////////////////////////////////
+
+
+        // Select the information of the two players froms the members
+
+        $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('dateTimeStart'))->format('d.m.Y H:i');
+
+        //this var is used to add message into falsh message
+        $additionalMessage = '';
+
+        //check if the user who has made a reservation is member by checking if the personal informations are binded to a account
+        if(is_null($personalInfoWho->user))
+        {
+            $reservation->confirmation_token = str_random(20);
+            $reservation->save();
+
+            Mail::send('emails.user.reservation_non-member',
+                [
+                    'last_name' => $personalInfoWho->lastname,
+                    'first_name' => $personalInfoWho->firstname,
+                    'court' => $court->name,
+                    'player' => $personalInfoWho->lastname." ".$personalInfoWho->firstname,
+                    'date_hours' => $dateHour,
+                    'token' => $reservation->confirmation_token
+                ],
+                function ($message) use($personalInfoWho)
+                {
+                    $message->to($personalInfoWho->email)->subject('Votre réservation au Tennis Club Chavornay');
+                });
+            $additionalMessage = ' Vous devez confirmez votre réservation via l\'email qui vous a été envoyé';
+        }
+        else{
+            $members = [$personalInfoWho , $personalInfoWithWho];
+            $court = Court::find($fkCourt);
+
+            foreach ($members as $member)
+            {
+
+                if(isset($member->email))
+                {
+                    $email = $member->email;
+
+                    // Inform the players of the reservations
+                    //---------------------------------------------------------------------------------
+                    Mail::send('emails.user.reservation',
+                        [
+                            'last_name' => $member->lastname,
+                            'first_name' => $member->firstname,
+                            'court' => $court->name,
+                            'joueur1' => $members[0]->lastname." ".$members[0]->firstname,
+                            'joueur2' => $members[1]->lastname." ".$members[1]->firstname,
+                            'date_hours' => $dateHour
+                        ],
+                        function ($message) use($email)
+                        {
+                            $message->to($email)->subject('Votre réservation au Tennis Club Chavornay');
+                        });
+                }
+            }
+        }
+
+        Session::flash('successMessage', "Votre réservation a bien été enregistrée.".$additionalMessage);
+        return redirect('/booking');
     }
 
     /**
@@ -489,5 +592,31 @@ class BookingController extends Controller
             $i++;
         }
         return view('myBooking/home')->with('bookings', $data);
+    }
+    public function confirmation(Request $request)
+    {
+        $reservations = Reservation::where('confirmation_token' , $request->token);
+        if($reservations->count())
+        {
+            $reservation = $reservations->first();
+
+            if(Reservation::isHourFree($reservation->fkCourt, $reservation->dateTimeStart))
+            {
+                $reservation->confirmation_token = null;
+                $reservation->save();
+                Session::flash('successMessage', "Votre réservation a bien été confirmée");
+                return redirect('/booking');
+            }
+            else
+            {
+                Session::flash('errorMessage', "L'heure a été prise par quelqu'un d'autre. Votre réservation va être supprimé. Veuillez en faire une nouvelle");
+                return redirect('/booking');
+            }
+        }
+        else{
+            Session::flash('errorMessage', "Cette réservation n'existe pas ou a déjà été supprimé");
+            return redirect('/booking');
+
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Locality;
+use App\Config;
 
 class PersonalInformation extends Model
 {
@@ -39,5 +40,18 @@ class PersonalInformation extends Model
 
     public static function setLocality($npa,$name){
         return Locality::firstOrCreate(['NPA'=>$npa,'name'=>ucwords($name)])->id;
+    }
+    public function hasRightToReserve($dateStart, $courtId)
+    {
+        $config = Config::first();
+
+
+        if($this->user) $nbDays = Court::find($courtId)->nbDays;
+        else $nbDays = $config->nbDaysLimitNonMember;
+
+        $dateMax = (new \DateTime())->add(new \DateInterval('P'.($nbDays-1).'D'));
+
+        if(strtotime($dateStart->format('Y-m-d')) <= strtotime($dateMax->format('Y-m-d'))) return true;
+        else return false;
     }
 }
