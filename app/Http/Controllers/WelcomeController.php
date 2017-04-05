@@ -23,8 +23,8 @@ class WelcomeController extends Controller
       if (Auth::check()) {
 
           $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
-              ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
           $memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
+              ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
               ->rightJoin('users', 'users.fkPersonalInformation', '=', 'personal_informations.id')
               ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
               ->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
@@ -40,9 +40,9 @@ class WelcomeController extends Controller
                    $q->where('fkWho', $Userid);
                    $q->orWhere('fkWithWho', $Userid);
                })->get();
-        return view('welcome', compact('membersList','courts'));
           $membersList = $allMember->merge($memberFav);
           $membersList = $membersList->sortByDesc('reservations_count');
+          return view('welcome', compact('membersList','courts'));
       }
       else {
         return view('welcome', compact('courts', 'localities'));
