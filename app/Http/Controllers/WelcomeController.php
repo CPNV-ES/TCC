@@ -23,15 +23,15 @@ class WelcomeController extends Controller
       if (Auth::check()) {
 
           $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
-          $memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
-              ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
-              ->rightJoin('users', 'users.fkPersonalInformation', '=', 'personal_informations.id')
-              ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
-              ->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
-              ->groupBy('personal_informations.id')
-              ->orderBy('reservations_count', 'DESC')
-              ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]);
-          //we merge the two collections of members then we sort by reservations_count (desc)
+$memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
+                                ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
+                                ->rightJoin('users', 'users.fkPersonalInformation', '=', 'personal_informations.id')
+                                ->where('reservations_who.fkWithWho','=', PersonalInformation::find(Auth::user()->id)->id)
+                                ->orWhere('reservations.fkWho','=', PersonalInformation::find(Auth::user()->id)->id)
+                                ->groupBy('personal_informations.id')
+                                ->orderBy('reservations_count', 'DESC')
+                                ->get(['personal_informations.*', \DB::raw('COUNT(`' . \DB::getTablePrefix() . 'reservations_who`.`id`) + COUNT(`' . \DB::getTablePrefix() . 'reservations`.`id`) AS `reservations_count`')]); 
+        //we merge the two collections of members then we sort by reservations_count (desc)
           $startDate = new \DateTime();
           $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
           $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
