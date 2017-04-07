@@ -31,7 +31,7 @@ class User extends Model
         $this->isAdmin = (array_key_exists('isAdmin',$data)) ? $data['isAdmin'] : '0';
         $this->isTrainer = (array_key_exists('isTrainer',$data)) ? $data['isTrainer'] : '0';
         $this->isMember = (array_key_exists('isMember',$data)) ? $data['isMember'] : '0';
-        $this->validated = (array_key_exists('validated',$data)) ? $data['validated'] : '0';
+        $this->validated = (array_key_exists('validated',$data)) ? $data['validated'] : $this->validated;
         $this->active = (array_key_exists('active',$data)) ? $data['active'] : '0';
         $this->invitRight = (array_key_exists('invitRight',$data)) ? $data['invitRight'] : '0';
     }
