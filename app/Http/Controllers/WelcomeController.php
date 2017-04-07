@@ -42,7 +42,15 @@ class WelcomeController extends Controller
                                           ->from(\DB::raw('('.$queryBoth->toSql().') AS ps'))
                                           ->mergeBindings($queryBoth)
                                           ->groupBy('ps.id')
-                                          ->get();
+                                          ->get()
+                                          ->sortByDesc('reservations_count');
+
+        $id_member_fav = [(int)PersonalInformation::find(Auth::user()->id)->id];
+        foreach ($memberFav as $value) {
+          $id_member_fav[] = $value['id'];
+        }
+
+        $allMember = PersonalInformation::whereNotIn('id', $id_member_fav)->get()->sortBy('firstname');
 
         //we merge the two collections of members then we sort by reservations_count (desc)
         $startDate = new \DateTime();
@@ -54,8 +62,7 @@ class WelcomeController extends Controller
                  $q->orWhere('fkWithWho', $Userid);
              })->get();
 
-        $membersList = $allMember->merge($memberFav);
-        $membersList = $membersList->sortByDesc('reservations_count');
+        $membersList = $memberFav->merge($allMember);
         return view('welcome', compact('membersList','courts', 'ownreservs'));
       }
       else {

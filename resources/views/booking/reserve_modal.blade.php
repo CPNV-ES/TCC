@@ -13,7 +13,8 @@
               @if (Auth::check())
                 <ul class="nav nav-tabs" role="tablist">
                   <li role="presentation" class="active"><a href="#member-invite" aria-controls="member-invite" role="tab" data-toggle="tab">Réservation avec un membre</a></li>
-                  <li role="presentation" @if(!Auth::user()->invitRight) class="disabled" @endif><a href="@if(Auth::user()->invitRight) #nonmember-invite" @endif  @if(!Auth::user()->invitRight) class="btn disabled" @endif   aria-controls="nonmember-invite" role="tab" data-toggle="tab">Réservation avec un invité</a></li>
+                  <li role="presentation" {{((!Auth::user()->invitRight) ? 'class=disabled' : '')}}><a {{((Auth::user()->invitRight) ? 'href=#nonmember-invite' : '')}}
+                     @if (!Auth::user()->invitRight) class="btn disabled" @endif aria-controls="nonmember-invite" role="tab" data-toggle="tab">Réservation avec un invité</a></li>
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="member-invite">
@@ -27,7 +28,11 @@
                                     adversaire:</label>
                                  <select name="fkWithWho" class="form-control">
                                     @foreach($membersList as $member)
-                                        <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} {{$member->reservations_count}}</option>
+                                    @if($member->reservations_count != null)
+                                      <option class="strong" value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
+                                    @else
+                                      <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>

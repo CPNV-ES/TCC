@@ -421,3 +421,7 @@ footer p {
 .verif_error {
     border: 1px solid #da5d5d;
 }
+
+.strong {
+  font-weight: bold;
+}
