@@ -374,18 +374,6 @@ class BookingController extends Controller
         // 13:00 -- 14:00+1
         $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
 
-        /* if($request->input('first_name'))*/
-
-/*        $freeHour = Reservation::where('fkCourt', $fkCourt)->where(function($q) use ($dateTimeStartLessDuration,$dateTimeStart, $dateTimeEnd){
-            $q->whereBetween('dateTimeStart', [$dateTimeStart, $dateTimeEnd]);
-            $q->orWhereBetween('dateTimeStart', [$dateTimeStartLessDuration, $dateTimeStart]);
-        })->count();
-
-        if($freeHour!=0)
-        {
-            Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
-            return redirect('/booking');
-        }*/
 
         if(!Reservation::isHourFree($fkCourt, $dateTimeStart))
         {
@@ -422,11 +410,6 @@ class BookingController extends Controller
 
 
         $reservation = Reservation::create($reservationInfo);
-
-        /////////////////////////////////////////////
-
-
-        // Select the information of the two players froms the members
 
         $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $request->input('dateTimeStart'))->format('d.m.Y H:i');
 
@@ -530,8 +513,10 @@ class BookingController extends Controller
      */
     public function destroy($id)
     {
+
         $reservation = Reservation::find($id);
         if($reservation==null){
+            dd($id);
             Session::flash('errorMessage', "La reservation que vous essayer de supprimer n'existe pas ou plus");
             return redirect('/booking');
         }
@@ -592,6 +577,63 @@ class BookingController extends Controller
             $i++;
         }
         return view('myBooking/home')->with('bookings', $data);
+    }
+    public function askCancellation(Request $request,$id)
+    {
+        $reservations = Reservation::where('id',$id);
+        if($reservations->count())
+        {
+            $reservation = $reservations->first();
+            if($reservation->personal_information_who->email == $request->email)
+            {
+                $reservation->remove_token = str_random(20);
+                $reservation->save();
+
+                $email= $reservation->personal_information_who->email;
+
+                Mail::send('emails.user.deletereservationnonmember',
+                    [
+                        'last_name' => $reservation->personal_information_who->firstname,
+                        'first_name' => $reservation->personal_information_who->lastname,
+                        'court' => $reservation->court->name,
+                        'date_hours' => $reservation->dateTimeStart,
+                        'token' => $reservation->remove_token
+                    ],function ($message) use ($email)
+                    {
+                        $message->to($email)->subject('Suppression de votre réservation au Tennis Club Chavornay');
+                    });
+
+                Session::flash('successMessage', "Un email de confirmation vous a été envoyé. Veuillez le consulter pour supprimer définitivement la réservation");
+                return redirect('/booking');
+            }
+            else{
+                Session::flash('errorMessage', "L'email ne correspond pas à celui fourni lors de la réservation");
+                return redirect('/booking');
+            }
+
+        }
+        else{
+            Session::flash('errorMessage', "Cette réservation n'existe pas ou a déjà été supprimé");
+            return redirect('/booking');
+
+        }
+
+    }
+    public function cancellation(Request $request)
+    {
+
+        $reservations = Reservation::where('remove_token', $request->token)->get();
+        if($reservations->count())
+        {
+            $reservations->first()->delete();
+            Session::flash('successMessage', "Votre réservation a bien été supprimé");
+            return redirect('/booking');
+
+        }
+        else{
+            Session::flash('errorMessage', "Aucune demande de suppression pour cette réservation");
+            return redirect('/booking');
+        }
     }
     public function confirmation(Request $request)
     {
