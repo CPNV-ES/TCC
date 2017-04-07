@@ -19,7 +19,7 @@ class WelcomeController extends Controller
      */
     public function index(Request $request) {
 
-      $courts = Court::All();
+      $courts = Court::where('state', 1)->get()->sortBy('name');
       $localities = Locality::all();
       if (Auth::check()) {
 

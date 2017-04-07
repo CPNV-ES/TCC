@@ -128,7 +128,7 @@ class BookingController extends Controller
         // }
 
 
-
+        $courts = Court::where('state', 1)->get()->sortBy('name');
         if(Auth::check())
         {
 
@@ -165,28 +165,25 @@ class BookingController extends Controller
                                             ->groupBy('ps.id')
                                             ->get();
 
-            $startDate = new \DateTime();
-            $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-            $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-                 ->where(function($q){
-                     $Userid=Auth::user()->id;
-                     $q->where('fkWho', $Userid);
-                     $q->orWhere('fkWithWho', $Userid);
-                 })->get();
-                 
-            //we merge the two collections of members then we sort by reservations_count (desc)
-            $membersList = $allMember->merge($memberFav);
-            $membersList = $membersList->sortByDesc('reservations_count');
+          $startDate = new \DateTime();
+          $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+          $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+               ->where(function($q){
+                   $Userid=Auth::user()->id;
+                   $q->where('fkWho', $Userid);
+                   $q->orWhere('fkWithWho', $Userid);
+               })->get();
 
-            $courts = Court::where('state', 1)->get();
-            return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
+          //we merge the two collections of members then we sort by reservations_count (desc)
+          $membersList = $allMember->merge($memberFav);
+          $membersList = $membersList->sortByDesc('reservations_count');
+
+          return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
         }
         else {
 
           $localities = Locality::all();
-          $courts = Court::where('state', 1)->get();
-          //return view('booking/home', compact('courts'))->with('localities', $localities);
-            return view('booking/home', compact('courts' , 'localities'));
+          return view('booking/home', compact('courts' , 'localities'));
         }
 
     }
