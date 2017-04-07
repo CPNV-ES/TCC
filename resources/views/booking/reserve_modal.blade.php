@@ -202,7 +202,7 @@
 
     document.querySelector('#btn-reserver-member-invite').addEventListener('click', function(){
         VERIF.verifForm('reservation-member-invite-form',function(isOk){
-        if(isOk) document.forms["reservation-member-invite-form"].submit();
-    });
+            if(isOk) document.forms["reservation-member-invite-form"].submit();
+        });
     });
 </script>

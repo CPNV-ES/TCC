@@ -29,7 +29,12 @@
                             $('#reservation-modal').modal('show');
                         }
                         vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
-                            console.log(elem, planif);
+                            var myDate = parseDate(planif.datetime);
+                            $("#date-del-reserv").val(planif.datetime);
+                            $("#id-del-reserv").val(elem.getAttribute('data-description'));
+                            $("#court-del-reserv").val("{{ $court->id }}");
+                            $("#modal-del-resume").html('Supprimer la réservation du ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+                            $('#del-resevation-modal').modal('show');
                         }
                     </script>
                   @endif
@@ -80,7 +85,7 @@
                     </div>
                     <script>
                         var vc{{$court->id}} = new VisualCalendar();
-                        vc{{$court->id}}.config={!! \App\Court::getVcConfigHomeJSON($court->id, 'div#tab-'.$court->id) !!};
+                        vc{{$court->id}}.config={!! \App\Reservation::getVcConfigJSON(1 ,$court->id, 'div#tab-'.$court->id) !!};
                         vc{{$court->id}}.build();
                         vc{{$court->id}}.generate();
                         vc{{$court->id}}.ev.onSelect = function(elem, datetime){
@@ -90,8 +95,13 @@
                             $(".reservation-date").val(datetime+':00');
                             $('#reservation-modal').modal('show');
                         }
-                        vc{{$court->id}}.ev.onPlanifClick = function(elem, planif){
-                            console.log(elem, planif);
+                        vc{{$court->id}}.ev.onPlanifClick=function(elem, planif){
+                            var myDate = parseDate(planif.datetime);
+                            $("#date-del-reserv").val(planif.datetime);
+                            $("#id-del-reserv").val(elem.getAttribute('data-description'));
+                            $("#court-del-reserv").val("{{ $court->id }}");
+                            $("#modal-del-resume").html('Supprimer la réservation du ' +myDate.getUTCDate().toStringN(2)+ "-" + (myDate.getMonth() + 1).toStringN(2) + "-" + myDate.getFullYear()+' à '+myDate.getHours().toStringN(2) + ":" + myDate.getMinutes().toStringN(2) );
+                            $('#del-resevation-modal').modal('show');
                         }
                     </script>
                   @endif
@@ -101,6 +111,7 @@
     </div>
 
     @include('booking.reserve_modal')
+    @include('booking.delete_modal')
 
 
     <style media="screen">

@@ -95,6 +95,24 @@ class Reservation extends Model
               ];
           }
         }
+        else{
+            $nonMemberReservation = Reservation::whereHas('personal_information_who' ,function($q){
+                $q->has('user', '<', 1);
+            })->where('confirmation_token', null)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:1'), $endDate->format('Y-m-d').' 23:59'])->get();
+
+
+           foreach($nonMemberReservation as $planifiedReservation )
+            {
+
+                $res[]=[
+                    'datetime' => $planifiedReservation->dateTimeStart,
+                    'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
+                    'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                    'description' => $planifiedReservation->id,
+                    'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
+                ];
+            }
+        }
         // for clickable ->
         foreach($planifiedReservations as $planifiedReservation )
         {

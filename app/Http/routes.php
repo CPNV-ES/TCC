@@ -46,7 +46,9 @@ Route::group(['middleware' => ['web']], function ()
     Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
     {
         Route::resource('booking', 'BookingController');
-        Route::get('booking/confirmation/{token}', 'BookingController@confirmation')->name('booking.confirmation');;
+        Route::get('booking/confirmation/{token}', 'BookingController@confirmation')->name('booking.confirmation');
+        Route::post('booking/askcancellation/{id}', 'BookingController@askcancellation')->name('booking.askcancellation');
+        Route::get('booking/cancellation/{token}', 'BookingController@cancellation')->name('booking.cancellation');
     });
 
 
