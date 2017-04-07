@@ -134,7 +134,7 @@ class BookingController extends Controller
 
           // print(PersonalInformation::find(Auth::user()->id)->id);
           // die();
-          $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
+          // $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
 
           // $memberFav =PersonalInformation::leftjoin('reservations', 'reservations.fkWithWho', '=', 'personal_informations.id')
           //                                 ->leftjoin('reservations as reservations_who', 'reservations_who.fkWho', '=', 'personal_informations.id')->has('user')
@@ -163,7 +163,15 @@ class BookingController extends Controller
                                             ->from(\DB::raw('('.$queryBoth->toSql().') AS ps'))
                                             ->mergeBindings($queryBoth)
                                             ->groupBy('ps.id')
-                                            ->get();
+                                            ->get()
+                                            ->sortByDesc('reservations_count');
+
+          $id_member_fav = [(int)PersonalInformation::find(Auth::user()->id)->id];
+          foreach ($memberFav as $value) {
+            $id_member_fav[] = $value['id'];
+          }
+
+          $allMember = PersonalInformation::whereNotIn('id', $id_member_fav)->get()->sortBy('firstname');
 
           $startDate = new \DateTime();
           $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
@@ -175,8 +183,9 @@ class BookingController extends Controller
                })->get();
 
           //we merge the two collections of members then we sort by reservations_count (desc)
-          $membersList = $allMember->merge($memberFav);
-          $membersList = $membersList->sortByDesc('reservations_count');
+          // $membersList = $allMember->merge($memberFav);
+          // $membersList = $membersList->sortByDesc('reservations_count');
+          $membersList = $memberFav->merge($allMember);
 
           return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
         }
