@@ -62,6 +62,7 @@ class Reservation extends Model
                                             ->get();
         $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
         $hdiff=$startDate->diff($zeroDate)->format('%H');
+        $res=[];
 
         if (Auth::check()) {
           $Userid=Auth::user()->id;
@@ -82,7 +83,6 @@ class Reservation extends Model
           })->get();
           //print_r(count($myReservs));die;
           if(count($myReservs)>=$config->nbReservations )$readOnly=true;
-          $res=[];
 
           foreach($myReservsByCourts as $planifiedReservation )
           {
@@ -134,7 +134,6 @@ class Reservation extends Model
                 'clickable' => false
             ];
         }
-
 
         $config = [
             'anchor' => $anchor,
