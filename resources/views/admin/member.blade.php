@@ -25,13 +25,12 @@ Modified : Added checks when displaying user information in case a user doesn't 
         <thead>
             <tr>
               <th>id</th>
-                <th>Pseudonyme</th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Ville</th>
-                <th>Actif</th>
-                <th>Validé</th>
-
+              <th>Pseudonyme</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Ville</th>
+              <th>Actif</th>
+              <th>Infos à validé</th>
             </tr>
         </thead>
         <tfoot>
@@ -42,8 +41,7 @@ Modified : Added checks when displaying user information in case a user doesn't 
               <th>Prénom</th>
               <th>Ville</th>
               <th>Actif</th>
-              <th>Validé</th>
-
+              <th>Infos à validé</th>
             </tr>
         </tfoot>
       <tbody>

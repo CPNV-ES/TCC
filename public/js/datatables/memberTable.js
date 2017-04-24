@@ -7,7 +7,7 @@ Description: This code is used to initalised an make reseach in the member table
 
 $(document).ready(function(){
   //IGI - This table contains the columns to filter with a dropdown list
-  var arrayDropDown = ['Actif','Validé'];
+  var arrayDropDown = ['Actif','Infos à validé'];
   //IGI - This table contains the columns which don't need filter input
   var exclude = [''];
 
@@ -19,7 +19,7 @@ $(document).ready(function(){
      //otherwise we display a simple input text
      if(arrayDropDown.indexOf(title) != -1)
      {
-       $(this).html('<select class="form-control"><option value="" selected>All</option><option value="Oui">Yes</option><option value="Non">No</option></select>');
+       $(this).html('<select class="form-control"><option value="" selected>Tous</option><option value="Oui">Oui</option><option value="Non">Non</option></select>');
      }
      else if(exclude.indexOf(title) != -1)
      {
