@@ -343,8 +343,7 @@ class BookingController extends Controller
                     'locality' => 'required|exists:localities,id',
                 ],
                 [
-                    'locality.exists' => 'Cette localité n\'existe pas, si vous ne trouvez pas votre localité veuillez choisir "autre"',
-                    'streetNbr.name' => 'numéro de rue'
+                    'locality.exists' => 'Cette localité n\'existe pas, si vous ne trouvez pas votre localité veuillez choisir "autre"'
                 ]
                 );
             $validator->setAttributeNames([
@@ -424,13 +423,13 @@ class BookingController extends Controller
         // Insert in DB
         //-------------
         $reservationInfo = [
-                 'dateTimeStart' => $dateTimeStart,
-                 'fkCourt' => $fkCourt,
-                 'fkWho' => $personalInfoWho->id,
-                 'fkTypeReservation' => 1,
-                 'fkWithWho' => (isset($personalInfoWithWho->id) ? $personalInfoWithWho->id : null), //check if there is a invited person (in case it's a reservation is created by a member)
-                 'chargeAmount' => $chargeAmount,
-                 'paid' => 0
+                 'dateTimeStart'        => $dateTimeStart,
+                 'fkCourt'              => $fkCourt,
+                 'fkWho'                => $personalInfoWho->id,
+                 'fkTypeReservation'    => 1,
+                 'fkWithWho'            => (isset($personalInfoWithWho->id) ? $personalInfoWithWho->id : null), //check if there is a invited person (in case it's a reservation is created by a member)
+                 'chargeAmount'         => $chargeAmount,
+                 'paid'                 => 0
         ];
 
 
@@ -449,12 +448,12 @@ class BookingController extends Controller
 
             Mail::send('emails.user.reservation_non-member',
                 [
-                    'last_name' => $personalInfoWho->lastname,
-                    'first_name' => $personalInfoWho->firstname,
-                    'court' => $court->name,
-                    'player' => $personalInfoWho->lastname." ".$personalInfoWho->firstname,
-                    'date_hours' => $dateHour,
-                    'token' => $reservation->confirmation_token
+                    'last_name'     => $personalInfoWho->lastname,
+                    'first_name'    => $personalInfoWho->firstname,
+                    'court'         => $court->name,
+                    'player'        => $personalInfoWho->lastname." ".$personalInfoWho->firstname,
+                    'date_hours'    => $dateHour,
+                    'token'         => $reservation->confirmation_token
                 ],
                 function ($message) use($personalInfoWho)
                 {
@@ -477,12 +476,12 @@ class BookingController extends Controller
                     //---------------------------------------------------------------------------------
                     Mail::send('emails.user.reservation',
                         [
-                            'last_name' => $member->lastname,
-                            'first_name' => $member->firstname,
-                            'court' => $court->name,
-                            'joueur1' => $members[0]->lastname." ".$members[0]->firstname,
-                            'joueur2' => $members[1]->lastname." ".$members[1]->firstname,
-                            'date_hours' => $dateHour
+                            'last_name'     => $member->lastname,
+                            'first_name'    => $member->firstname,
+                            'court'         => $court->name,
+                            'joueur1'       => $members[0]->lastname." ".$members[0]->firstname,
+                            'joueur2'       => $members[1]->lastname." ".$members[1]->firstname,
+                            'date_hours'    => $dateHour
                         ],
                         function ($message) use($email)
                         {
@@ -582,15 +581,16 @@ class BookingController extends Controller
         $i = 0;
         foreach ($reservations as $reservation)
         {
-            $member1 = Member::find($reservation->fk_member_1);
-            $member2 = Member::find($reservation->fk_member_2);
-            $data[$i]['id']    = $reservation->id;
+            $member1                    = Member::find($reservation->fk_member_1);
+            $member2                    = Member::find($reservation->fk_member_2);
+            $data[$i]['id']             = $reservation->id;
             $data[$i]['first_name_1']   = $member1->first_name;
             $data[$i]['last_name_1']    = $member1->last_name;
             $data[$i]['first_name_2']   = $member2->first_name;
             $data[$i]['last_name_2']    = $member2->last_name;
             $data[$i]['date']           = Carbon::createFromFormat('Y-m-d H:i:s', $reservation['date_hours'])->format('d.m.Y H:i');
             $data[$i]['court']          = $reservation['fk_court'];
+
             if ($reservation['date_hours'] > Carbon::now())
             {
                 $data[$i]['deletable']  = true;
