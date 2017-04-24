@@ -19,7 +19,10 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
-        $notUser = User::where('validated', 0)->orWhere('username', "")->OrderBy('username')->get();
+        $notUser = User::where('validated', 0)
+                        ->Where('username', null)
+                        ->leftjoin('personal_informations As r', 'r.id', '=', 'users.fkPersonalInformation')
+                        ->OrderBy('r.firstname')->get();
         $nb_users = User::where('validated', 1)->count();
         $status = Subscription::all(['id', 'paid'])->pluck('paid', 'id');
 
