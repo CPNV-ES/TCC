@@ -10,13 +10,11 @@
 
                 <div class="body-panel">
                     <div class="row">
-                        @if (Auth::user()->to_verify == 1)
-
+                        @if ($infosUser->toVerify == 1)
                             <div class="alert alert-danger alert-dismissible" role="alert">
                                 Veuillez vérifier vos informations puis cliquez sur le bouton <b><i>Mettre à jour</i></b> en bas de la page.
                                 Merci
                             </div>
-
                         @endif
                     </div>
 
@@ -33,71 +31,84 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/profile/update') }}">
                         {!! method_field('put') !!}
                         {!! csrf_field() !!}
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Prénom</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="first_name" value="{{ Auth::user()->first_name }}">
+                                <input type="text" class="form-control" name="firstname" value="{{ (old('firstname') != '' ? old('firstname') : (!empty($infosUser) ? $infosUser->firstname : '')) }}">
 
-                                @if ($errors->has('first_name'))
+                                @if ($errors->has('firstname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                        <strong>{{ $errors->first('firstname') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Nom</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="last_name" value="{{ Auth::user()->last_name }}">
+                                <input type="text" class="form-control" name="lastname" value="{{ (old('lastname') != '' ? old('lastname') : (!empty($infosUser) ? $infosUser->lastname : '')) }}">
 
-                                @if ($errors->has('last_name'))
+                                @if ($errors->has('lastname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('last_name') }}</strong>
+                                        <strong>{{ $errors->first('lastname') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Adresse</label>
+                        <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Rue</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}">
+                                <input type="text" class="form-control" name="street" value="{{ (old('street') != '' ? old('street') : (!empty($infosUser) ? $infosUser->street : '')) }}">
 
-                                @if ($errors->has('address'))
+                                @if ($errors->has('street'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('address') }}</strong>
+                                        <strong>{{ $errors->first('street') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('zip_code') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('streetNbr') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Numéro</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="streetNbr" value="{{ (old('streetNbr') != '' ? old('streetNbr') : (!empty($infosUser) ? $infosUser->streetNbr : '')) }}">
+
+                                @if ($errors->has('streetNbr'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('streetNbr') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('npa') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">NPA</label>
-
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="zip_code" value="{{ Auth::user()->zip_code }}">
+                                <input type="text" class="form-control" name="npa" value="{{ (old('npa') != '' ? old('npa') : (($infosUser->localities != null) ? $infosUser->localities->npa : '')) }}">
 
-                                @if ($errors->has('zip_code'))
+                                @if ($errors->has('npa'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('zip_code') }}</strong>
+                                        <strong>{{ $errors->first('npa') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('locality') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Ville</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="city" value="{{ Auth::user()->city }}">
+                                <input type="text" class="form-control" name="locality" value="{{ (old('locality') != '' ? old('locality') : (($infosUser->localities != null) ? $infosUser->localities->name : '')) }}">
 
-                                @if ($errors->has('city'))
+                                @if ($errors->has('locality'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('city') }}</strong>
+                                        <strong>{{ $errors->first('locality') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -107,7 +118,7 @@
                             <label class="col-md-4 control-label">E-mail</label>
 
                             <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ Auth::user()->email }}">
+                                <input type="email" class="form-control" name="email" value="{{ (old('email') != '' ? old('email') : (!empty($infosUser) ? $infosUser->email : '')) }}">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -117,43 +128,29 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('home_phone') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Téléphone privé</label>
+                        <div class="form-group{{ $errors->has('telephone') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Téléphone</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="home_phone" value="{{ Auth::user()->home_phone }}">
+                                <input type="text" class="form-control" name="telephone" value="{{ (old('telephone') != '' ? old('telephone') : (!empty($infosUser) ? $infosUser->telephone : '')) }}">
 
-                                @if ($errors->has('home_phone'))
+                                @if ($errors->has('telephone'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('home_phone') }}</strong>
+                                        <strong>{{ $errors->first('telephone') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('mobile_phone') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Téléphone mobile</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="mobile_phone" value="{{ Auth::user()->mobile_phone }}">
-
-                                @if ($errors->has('mobile_phone'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('mobile_phone') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('birthDate') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Date de naissance</label>
 
                             <div class="col-md-6">
-                                <input id="birth_date" type="text" class="form-control" name="birth_date" value="{{ date("d.m.Y", strtotime(Auth::user()->birth_date)) }}">
+                                <input id="birthDate" type="text" class="form-control" name="birthDate" value="{{ (old('birthDate') != '' ? old('birthDate') : (!empty($infosUser) ? date("Y-m-d", strtotime($infosUser->birthDate)) : '')) }}">
 
-                                @if ($errors->has('birth_date'))
+                                @if ($errors->has('birthDate'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('birth_date') }}</strong>
+                                        <strong>{{ $errors->first('birthDate') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -170,5 +167,17 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+    $(function () {
+      $('#birthDate').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+        language: "fr"
+      });
+    });
+    </script>
+
 </div>
 @endsection

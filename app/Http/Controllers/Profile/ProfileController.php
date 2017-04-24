@@ -7,8 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Member;
 use App\User;
+use App\PersonalInformation;
 use Validator;
 
 class ProfileController extends Controller
@@ -20,18 +20,17 @@ class ProfileController extends Controller
      */
     public function index(Request $request)
     {
-        $member = User::find(Auth::user()->id);
-        //$status = $member->status->last();
+        $infosUser = User::find(Auth::user()->id)->personal_information;
 
         if ($request->session()->has('message')) {
             $message = $request->session()->get('message');
             $request->session()->forget('message');
             return view('profile/home',[
-                //'status' => $status->status,
                 'message' => $message,
+                'infosUser' => $infosUser
             ]);
         }
-        return view('profile/home', ['status' => $status->status]);
+        return view('profile/home', compact('infosUser'));
     }
 
     /**
@@ -90,14 +89,30 @@ class ProfileController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'last_name'     => 'required',
-                'first_name'    => 'required',
-                'address'       => 'required',
-                'city'          => 'required',
-                'email'         => 'required|email',
-                'telephone'    => 'required',
-                'birth_date'    => 'required|date'
-            ]);
+                'firstname'   => 'required',
+                'lastname'    => 'required',
+                'street'      => 'required',
+                'streetNbr'   => 'required',
+                'npa'         => 'required',
+                'locality'    => 'required',
+                'email'       => 'required|email',
+                'telephone'   => 'required',
+                'birthDate'   => 'required|date'
+            ],
+            [
+                'firstname.required' => 'Le champ \'Prénom\' est obligatoire.',
+                'lastname.required' => 'Le champ \'Nom\' est obligatoire.',
+                'street.required' => 'Le champ \'Rue\' est obligatoire.',
+                'streetNbr.required' => 'Le champ \'Numéro\' est obligatoire.',
+                'npa.required' => 'Le champ \'NPA\' est obligatoire.',
+                'locality.required' => 'Le champ \'Ville\' est obligatoire.',
+                'email.required' => 'Le champ \'E-mail\' est obligatoire.',
+                'email.email' => 'Le champ \'E-mail\' doit être une adresse email valide.',
+                'telephone.required' => 'Le champ \'Téléphone\' est obligatoire.',
+                'birthDate.required' => 'Le champ \'Date de naissance\' est obligatoire.',
+                'birthDate.date' => 'Le champ \'Date de naissance\' n\'est pas une date valide.'
+            ]
+          );
         /////////////////////////////////////////////
 
 
@@ -105,9 +120,9 @@ class ProfileController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use($request)
         {
-            $duplicate = Member::where('email', $request->input('email'))->get();
+            $duplicate = PersonalInformation::where('email', $request->input('email'))->get();
 
-            if (count($duplicate) != 0 && $duplicate[0]->id != Auth::user()->id)
+            if (count($duplicate) != 0 && $duplicate[0]->id != Auth::user()->fkPersonalInformation)
             {
                 $validator->errors()->add('email', 'Cet e-mail est déjà utilisé.');
             }
@@ -126,14 +141,16 @@ class ProfileController extends Controller
 
         // Update in DB
         //-------------
-        $member = Member::find(Auth::user()->id);
+        $infosUser = PersonalInformation::find(Auth::user()->fkPersonalInformation);
+        $locid = PersonalInformation::setLocality($request->input('npa'),$request->input('locality'));
+        $request['fkLocality'] = $locid;
+        $request['toVerify'] = 0;
 
-        $member->UpdateUser($request->all());
-
-        $member->save();
+        $infosUser->update($request->all());
+        $infosUser->save();
         /////////////////////////////////////////////
 
-        return redirect("/profile")->with('message', 'Vos informations ont été mises à jour');
+        return redirect("profile")->with('message', 'Vos informations ont été mises à jour');
     }
 
     /**

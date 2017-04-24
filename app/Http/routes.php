@@ -28,8 +28,11 @@ Route::group(['middleware' => ['web']], function ()
     /*
      * Index page
      */
-    Route::resource('/', 'WelcomeController');
-    Route::resource('home', 'WelcomeController');
+     Route::group(['middleware' => 'profileIsValide'], function() {
+       Route::resource('/', 'WelcomeController');
+       Route::resource('home', 'WelcomeController');
+     });
+
 
 
     /*
@@ -95,7 +98,7 @@ Route::group(['middleware' => ['web']], function ()
     /*
      * Only auth user that are admin can access to /admin
      */
-    Route::group(['namespace' => 'Admin', 'middleware' => ['auth', 'admin', 'profileIsValide']], function ()
+    Route::group(['namespace' => 'Admin', 'middleware' => ['profileIsValide', 'auth', 'admin']], function ()
     {
 
         Route::resource('/admin/members', 'MemberController');
