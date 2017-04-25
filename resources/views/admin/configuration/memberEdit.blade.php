@@ -18,8 +18,8 @@ Description: Displays a form with the informations of a member. The inputs of th
 @endsection
 @section('content')
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-      @if (Session::has('message'))
-        <div class="alert alert-info">{{ Session::get('message') }}</div>
+      @if (Session::has('successMessage'))
+        <div class="alert alert-info">{{ Session::get('successMessage') }}</div>
       @endif
     </div>
 <div class="row" style="padding-left: 10px; padding-right:10px;">

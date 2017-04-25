@@ -3,6 +3,14 @@
 @section('content')
     <div class="container-fluid">
         <h1>Réservation Staff</h1>
+        @if (Session::has('message'))
+            <div class="alert alert-success">
+                {{ Session::get('message') }}
+            </div>
+        @endif
+
+
+
         <a class="btn btn-primary" data-toggle="modal" data-target="#reservation-modal">Créer une réservation</a>
 
 
@@ -74,8 +82,10 @@
         </div><!-- /.modal -->
     </div>
     <script>
+        date = new Date();
         $('#datetime-start').datetimepicker({
             format: 'dd.mm.yyyy HH:00',
+            startDate: date.toLocaleTimeString(),
             minView: 'day', //to choose hour
             autoclose: true
         });

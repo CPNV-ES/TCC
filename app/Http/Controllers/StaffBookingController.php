@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Court;
+use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use App\Http\Requests;
+use App\Reservation;
+use Illuminate\Support\Facades\Session;
 
 class StaffBookingController extends Controller
 {
@@ -43,7 +47,8 @@ class StaffBookingController extends Controller
         //if there is a datetime-end it's a multiple reservation otherwise it's a simple reservation
         if(Input::has('datetime-end'))
         {
-
+            #for the validator
+            #after:start_date'
         }
         else
         {
@@ -53,24 +58,47 @@ class StaffBookingController extends Controller
                     'court' => 'required|exists:courts,id'
                 ],
                 [
-                    'court.exists' => 'Cette localité n\'existe pas, si vous ne trouvez pas votre localité veuillez choisir "autre"',
+                    'court.exists' => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
                     'datetime-start.name' => 'date choisie'
                 ]
             );
+
             if($validator->fails())
             {
                 return back()->withInput()->withErrors($validator);
             }
+
             $court = Court::find($request->input('court'));
-            if(!$court)
+
+            //we check the court exist or if its state isn't 1
+            if(!$court || $court->state != 1)
             {
-                $validator->errors()->add('court', 'Le court choisit n\'existe pas ou est en réparation');
+                $validator->errors()->add('court', 'Le court choisi n\'existe pas ou est en réparation');
                 return back()->withInput()->withErrors($validator);
             }
-            $datetime_start = data_create_from_format('dd.mm.yyyy HH:00', $request->input('datetime-start'));
-            if($datetime_start)
 
+            $datetime_today = new \DateTime();
+            $datetime_start = date_create_from_format('d.m.Y H:i', $request->input('datetime-start'));
 
+            if($datetime_start < $datetime_today)
+            {
+                $validator->errors()->add('datetime-start', 'La date/heure choisie n\'est pas valide');
+                return back()->withInput()->withErrors($validator);
+            }
+
+            $reservationInfo = [
+                     'dateTimeStart'        => $datetime_start,
+                     'fkCourt'              => $court->id,
+                     'fkWho'                => Auth::user()->fkPersonalInformation,
+                     'fkTypeReservation'    => 1,
+                     'fkWithWho'            => null, //check if there is a invited person (in case it's a reservation is created by a member)
+                     'chargeAmount'         => 0,
+                     'paid'                 => 1
+            ];
+            Reservation::create($reservationInfo);
+
+            Session::flash('successMessage', "Votre réservation a bien été enregistrée.");
+            return redirect('/staff_booking');
         }
 
     }
