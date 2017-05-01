@@ -22,7 +22,7 @@
         {!! method_field('PUT') !!}
 
         <div class="row">
-          <div class="form-group col-lg-3 col-md-3 col-sm-12 col-xs-12 {{ $errors->has('nbReservations') ? ' has-error' : '' }}">
+          <div class="form-group col-lg-3 col-md-6 col-sm-12 col-xs-12 {{ $errors->has('nbReservations') ? ' has-error' : '' }}">
             <label class="control-label" for="nbReservations">Nombre de réservation simultanées :</label>
             <input id="nbReservations" class="form-control" name="nbReservations" type="number"
             value="{{ (old('nbReservations') != '' ? old('nbReservations') : (!empty($config) ? $config->nbReservations : '')) }}" data-verif="required|int|min:1">
@@ -33,7 +33,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-lg-3 col-md-3 col-sm-12 col-xs-12 {{ $errors->has('nbDaysLimitNonMember') ? ' has-error' : '' }}">
+          <div class="form-group col-lg-3 col-md-6 col-sm-12 col-xs-12 {{ $errors->has('nbDaysLimitNonMember') ? ' has-error' : '' }}">
             <label class="control-label" for="nbDaysLimitNonMember">Fenêtre de réservation non-membre :</label>
             <input id="nbDaysLimitNonMember" class="form-control" name="nbDaysLimitNonMember" type="number"
             value="{{ (old('nbDaysLimitNonMember') != '' ? old('nbDaysLimitNonMember') : (!empty($config) ? $config->nbDaysLimitNonMember : '')) }}" data-verif="required|int|min:1">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
+          <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
             <label class="control-label" for="nbDaysGracePeriod">Période de grâce :</label>
             <input id="nbDaysGracePeriod" class="form-control" name="nbDaysGracePeriod" type="number"
             value="{{ (old('nbDaysGracePeriod') != '' ? old('nbDaysGracePeriod') : (!empty($config) ? $config->nbDaysGracePeriod : '')) }}" data-verif="required|int|min:0">
@@ -55,7 +55,7 @@
         </div>
 
         <div class="row">
-          <div class="form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 {{ $errors->has('courtOpenTime') ? ' has-error' : '' }}">
+          <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('courtOpenTime') ? ' has-error' : '' }}">
             <label class="control-label" for="courtOpenTime">Heure d'ouverture :</label>
             <input id="courtOpenTime" class="form-control" name="courtOpenTime" type="time"
             value="{{ (old('courtOpenTime') != '' ? old('courtOpenTime') : (!empty($config) ? $config->courtOpenTime : '')) }}" data-verif="required|time_long"/>
@@ -63,7 +63,7 @@
               <p class="help-block">{{ $errors->first('courtOpenTime') }}</p>
             @endif
           </div>
-          <div class="form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 {{ $errors->has('courtCloseTime') ? ' has-error' : '' }}">
+          <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('courtCloseTime') ? ' has-error' : '' }}">
             <label class="control-label" for="courtCloseTime">Heure de fermeture :</label>
             <input id="courtCloseTime" class="form-control" name="courtCloseTime" type="time"
             value="{{ (old('courtCloseTime') != '' ? old('courtCloseTime') : (!empty($config) ? $config->courtCloseTime : '')) }}" data-verif="required|time_long"/>
