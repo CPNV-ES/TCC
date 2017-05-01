@@ -44,6 +44,8 @@ class Reservation extends Model
     public static function getVcConfigJSON($nbDays = null, $courtId = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
     {
         $config = Config::first();
+        $openTime = date('H:i', strtotime($config->courtOpenTime));
+        $closeTime = date('H:i', strtotime($config->courtCloseTime));
         if($courtId == null) $court = Court::first();
         else $court = Court::find($courtId);
         if ($startDate == null)  $startDate = new \DateTime();
@@ -60,7 +62,7 @@ class Reservation extends Model
                                             ->whereNull('confirmation_token')
                                             ->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])
                                             ->get();
-        $zeroDate=new \DateTime($startDate->format('Y-m-d').' 08:00');
+        $zeroDate=new \DateTime($startDate->format('Y-m-d').' '.$openTime);
         $hdiff=$startDate->diff($zeroDate)->format('%H');
         $res=[];
 
@@ -143,7 +145,7 @@ class Reservation extends Model
             ],
             'dates' => [[$startDate->format('Y-m-d'), $endDate->format('Y-m-d')]],
             'hours' => [
-                'ranges' =>[['08:00','20:00']],
+                'ranges' =>[[$openTime, $closeTime]],
                 'period' => '01:00'
             ],
             'planified' => $res
