@@ -39,7 +39,7 @@
 
 
 
-        <script>
+        {{-- <script>
             is_logged = "{{ Auth::check() }}";
             @if (Auth::check())
                     member_last_name = "{{ Auth::user()->username }}";
@@ -54,7 +54,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }
             });
-        </script>
+        </script> --}}
 
 
     </head>
@@ -98,30 +98,43 @@
                             <a href="{{ url('/login') }}">Connexion</a>
                         </li>
                         @else
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ App\User::find(Auth::user()->id)->personal_information->firstname }} {{ App\User::find(Auth::user()->id)->personal_information->lastname }} <span class="caret"></span> </a>
+                          @if (Auth::user()->invitRight == 0)
+                            <li>
+                              <i id="status-info-warning" class="fa fa-exclamation-triangle fa-2x"></i>
+                              <div id="status-info">
+                                <div>
+                                  <b><i class="text-danger">Statuts</i></b>
+                                  <p>
+                                    Vous n'avez pas de droit d'inviter!
+                                  </p>
+                                </div>
+                              </div>
+                            </li>
+                          @endif
+                          <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ App\User::find(Auth::user()->id)->personal_information->firstname }} {{ App\User::find(Auth::user()->id)->personal_information->lastname }} <span class="caret"></span> </a>
 
-                            <ul class="dropdown-menu" role="menu">
-                                @if(Auth::user()->isAdmin == 1)
-                                <li>
-                                    <a href="{{ url('/admin') }}"><i class="fa fa-gear fa-fw"></i> Administration</a>
-                                </li>
-                                @endif
-                                <li>
-                                    <a href="{{ url('/profile') }}"><i class="fa fa-user fa-fw"></i> Profile</a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('/mybooking') }}"><i class="fa fa-btn fa-calendar"></i> Mes réservations</a>
-                                </li>
-                                <hr />
-                                <li>
-                                    <a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i> Logout</a>
-                                </li>
-                            </ul>
-                        </li>
+                              <ul class="dropdown-menu" role="menu">
+                                  @if(Auth::user()->isAdmin == 1)
+                                  <li>
+                                      <a href="{{ url('/admin') }}"><i class="fa fa-gear"></i> Administration</a>
+                                  </li>
+                                  @endif
+                                  <li>
+                                      <a href="{{ url('/profile') }}"><i class="fa fa-user"></i> Profile</a>
+                                  </li>
+                                  <li>
+                                      <a href="{{ url('/mybooking') }}"><i class="fa fa-calendar"></i> Mes réservations</a>
+                                  </li>
+                                  <hr />
+                                  <li>
+                                      <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                                  </li>
+                              </ul>
+                          </li>
                         @endif
                     </ul>
-                </div>
+                  <div>
             </div>
         </nav>
 
@@ -152,6 +165,14 @@
     $( window ).resize(function() {
       footerAlign();
     });
+    // $(document).ready(function() {
+    //   $('#status-info-warning').hover(function() {
+    //     $('#status-info').css("display", "block");
+    //   },
+    //   function() {
+    //     $('#status-info').css("display", "none");
+    //   });
+    // });
     </script>
 
 </html>
