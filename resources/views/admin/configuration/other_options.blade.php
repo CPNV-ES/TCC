@@ -85,8 +85,9 @@
     <script type="text/javascript">
     $("#btn-edit").click(function () {
       if (lockedForm != true) {
-        $("#nbDaysGracePeriod").val("{{$config->nbDaysGracePeriod}}");
+        $("#nbReservations").val("{{$config->nbReservations}}");
         $("#nbDaysLimitNonMember").val("{{$config->nbDaysLimitNonMember}}");
+        $("#nbDaysGracePeriod").val("{{$config->nbDaysGracePeriod}}");
         $("#courtOpenTime").val("{{$config->courtOpenTime}}");
         $("#courtCloseTime").val("{{$config->courtCloseTime}}");
         $('.verif_message_error').remove();
