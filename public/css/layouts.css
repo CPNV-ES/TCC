@@ -1,20 +1,22 @@
 #login-nav input {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 body {
-    background: none !important;
+  background: none !important;
 }
 
 .navbar {
-    margin-bottom: 0px;
-!important;
+  margin-bottom: 0px;
+  !important;
 }
 
 .background {
-    background: url(./images/terre-battue.jpg) no-repeat left center;
-    height: 400px;
-    background-size:cover;
+  background: url(./images/terre-battue.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 400px;
 }
 
 .head-panel {
@@ -80,6 +82,7 @@ body {
     margin: 0 auto;
     width: 100px;
     margin-top: -61px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
 #weather_picture {
@@ -403,7 +406,7 @@ footer p {
 }
 
 .table > tbody > tr > td.danger, .table-hover > tbody > tr > td:hover.danger {
-    background-color: #d9534f;
+    background-color: #D9534F;
 }
 
 .table-hover > tbody > tr > td:hover, .table-hover > tbody > tr > td:hover {
@@ -416,12 +419,75 @@ footer p {
     color: #FFFFFF;
 }
 .verif_message_error {
-    color: #da5d5d;
+    color: #D9534F;
 }
 .verif_error {
-    border: 1px solid #da5d5d;
+    border: 1px solid #D9534F;
 }
 
 .strong {
   font-weight: bold;
+}
+
+#status-info-warning {
+  position: relative;
+  color: #D9534F;
+  transform: translateY(40%);
+  margin-right: 15px;
+  transition-delay: 0.2s;
+  transition: transform 0.5s;
+}
+
+#status-info-warning:hover {
+  cursor: pointer;
+  transform: translateY(35%) scale(1.1);
+}
+
+#status-info-warning:hover + #status-info {
+  visibility: visible;
+  opacity: 1;
+}
+
+#status-info::before {
+  content: "";
+  width: 0;
+	height: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  border: 12px solid black;
+  border-color: transparent transparent #EEEEEE #EEEEEE;
+  box-shadow: -3px 3px 4px 0 rgba(0, 0, 0, 0.4);
+
+  position: absolute;
+  transform: translateX(50%) translateY(-50%) rotate(135deg);
+  right: 50%;
+}
+
+#status-info {
+  background-color: #EEEEEE;
+  height: auto;
+  width: 200px;
+  position: absolute;
+  transform: translateX(-43%) translateY(30px);
+  border-radius: 5px;
+  text-align: center;
+  visibility: hidden;
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+#status-info div {
+  padding: 10px;
+}
+
+#status-info p {
+  margin: 0;
+}
+
+@media only screen and (max-width: 767px) {
+  #status-info-warning, #status-info {
+    display: none;
+  }
 }
