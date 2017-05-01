@@ -28,11 +28,11 @@
                                     adversaire:</label>
                                  <select name="fkWithWho" class="form-control">
                                     @foreach($membersList as $member)
-                                    @if($member->reservations_count != null)
-                                      <option class="strong" value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
-                                    @else
-                                      <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
-                                    @endif
+                                      @if($member->reservations_count != null)
+                                        <option class="strong" value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} ({{$member->reservations_count}})</option>
+                                      @else
+                                        <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} ({{$member->reservations_count}})</option>
+                                      @endif
                                     @endforeach
                                 </select>
                             </div>
