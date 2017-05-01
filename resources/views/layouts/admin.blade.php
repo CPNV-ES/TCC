@@ -95,7 +95,6 @@
                         <a href="{{ url('/admin') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
                     <li>
-                    <li>
                         <a href="#"><i class="fa fa-cog fa-fw"></i> Configuration<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -117,7 +116,7 @@
                         <a href="{{ url('/admin/members') }}"><i class="fa fa-users fa-fw"></i> Membres</a>
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-bar-chart-o fa-fw"></i> Statistiques</a>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Statistiques</a>
                     </li>
                 </ul>
             </div>

@@ -11,6 +11,7 @@ class Config extends Model
       'nbDaysLimitNonMember',
       'courtOpenTime',
       'courtCloseTime',
-      'nbReservations'
+      'nbReservations',
+      'currentAmount'
   ];
 }

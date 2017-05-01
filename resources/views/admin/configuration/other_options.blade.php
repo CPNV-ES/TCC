@@ -74,6 +74,17 @@
         </div>
 
         <div class="row">
+          <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('currentAmount') ? ' has-error' : '' }}">
+            <label class="control-label" for="currentAmount">Montant pour les non-membres :</label>
+            <input id="currentAmount" class="form-control" name="currentAmount" type="number"
+            value="{{ (old('currentAmount') != '' ? old('currentAmount') : (!empty($config) ? $config->currentAmount : '')) }}" data-verif="required|double|min:0">
+            @if ($errors->has('currentAmount'))
+              <p class="help-block">{{ $errors->first('currentAmount') }}</p>
+            @endif
+          </div>
+        </div>
+
+        <div class="row">
           <div id="" class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <button id="btn-edit" class="btn btn-warning" type="button">Modifier</button>
             <button id="btn-save" class="btn btn-success" type="button">Sauvegarder</button>
@@ -84,16 +95,18 @@
 
     <script type="text/javascript">
     $("#btn-edit").click(function () {
-      if (lockedForm != true) {
+      if (lockedForm == false) {
         $("#nbReservations").val("{{$config->nbReservations}}");
         $("#nbDaysLimitNonMember").val("{{$config->nbDaysLimitNonMember}}");
         $("#nbDaysGracePeriod").val("{{$config->nbDaysGracePeriod}}");
         $("#courtOpenTime").val("{{$config->courtOpenTime}}");
         $("#courtCloseTime").val("{{$config->courtCloseTime}}");
+        $("#currentAmount").val("{{$config->currentAmount}}");
         $('.verif_message_error').remove();
         $('.verif_error').removeClass('verif_error');
         $('.help-block').remove();
         $('.has-error').removeClass('has-error');
+        $('.flash-message').remove();
       }
     });
     lockForm('#form-edit-other-options', '#btn-edit','#btn-save',{{($errors->any()) ? 'false' : 'true' }});

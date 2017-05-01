@@ -32,25 +32,29 @@ class OtherOptionController extends Controller
       // Check form
       $validator = Validator::make($request->all(),
           [
-              'nbDaysGracePeriod' => 'required|integer|min:0',
-              'nbDaysLimitNonMember' => 'required|integer|min:1',
-              'courtOpenTime' => 'required',
-              'courtCloseTime' => 'required|after:courtOpenTime',
-              'nbReservations' => 'required|integer|min:1'
+            'nbReservations' => 'required|integer|min:1',
+            'nbDaysLimitNonMember' => 'required|integer|min:1',
+            'nbDaysGracePeriod' => 'required|integer|min:0',
+            'courtOpenTime' => 'required',
+            'courtCloseTime' => 'required|after:courtOpenTime',
+            'currentAmount' => 'required|numeric|min:0'
           ],
           [
-              'nbDaysGracePeriod.required' => 'Le champ \'Période de grâce\' est obligatoire.',
-              'nbDaysGracePeriod.integer' => 'Le champ \'Période de grâce\' doit contenir des chiffres.',
-              'nbDaysGracePeriod.min' => 'La valeur de \'Période de grâce\' doit être positif.',
-              'nbDaysLimitNonMember.required' => 'Le champ \'Fenêtre de réservation non-membre\' est obligatoire.',
-              'nbDaysLimitNonMember.integer' => 'Le champ \'Fenêtre de réservation non-membre\' doit contenir des chiffres.',
-              'nbDaysLimitNonMember.min' => 'La valeur de \'Fenêtre de réservation non-membre\' doit être supérieur à 0.',
-              'courtOpenTime.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
-              'courtCloseTime.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
-              'courtCloseTime.after' => 'Le champ \'Heure de fermeture\' doit être une date postérieure au \'Heure d\'ouverture\'.',
-              'nbDaysGracePeriod.required' => 'Le champ \'Nombre de réservation simultanées\' est obligatoire.',
-              'nbDaysGracePeriod.integer' => 'Le champ \'Nombre de réservation simultanées\' doit contenir des chiffres.',
-              'nbDaysGracePeriod.min' => 'La valeur de \'Nombre de réservation simultanées\' doit  être supérieur à 0.'
+            'nbReservations.required' => 'Le champ \'Nombre de réservation simultanées\' est obligatoire.',
+            'nbReservations.integer' => 'Le champ \'Nombre de réservation simultanées\' doit contenir des chiffres.',
+            'nbReservations.min' => 'La valeur de \'Nombre de réservation simultanées\' doit  être supérieur à 0.',
+            'nbDaysLimitNonMember.required' => 'Le champ \'Fenêtre de réservation non-membre\' est obligatoire.',
+            'nbDaysLimitNonMember.integer' => 'Le champ \'Fenêtre de réservation non-membre\' doit contenir des chiffres.',
+            'nbDaysLimitNonMember.min' => 'La valeur de \'Fenêtre de réservation non-membre\' doit être supérieur à 0.',
+            'nbDaysGracePeriod.required' => 'Le champ \'Période de grâce\' est obligatoire.',
+            'nbDaysGracePeriod.integer' => 'Le champ \'Période de grâce\' doit contenir des chiffres.',
+            'nbDaysGracePeriod.min' => 'La valeur de \'Période de grâce\' doit être positif.',
+            'courtOpenTime.required' => 'Le champ \'Heure d\'ouverture\' est obligatoire.',
+            'courtCloseTime.required' => 'Le champ \'Heure de fermeture\' est obligatoire.',
+            'courtCloseTime.after' => 'Le champ \'Heure de fermeture\' doit être une date postérieure au \'Heure d\'ouverture\'.',
+            'currentAmount.required' => 'Le champ \'Montant pour les non-membres\' est obligatoire.',
+            'currentAmount.numeric' => 'Le champ \'Montant pour les non-membres\' doit contenir un nombre.',
+            'currentAmount.min' => 'La valeur de \'Montant pour les non-membres\' doit être positif.'
           ]);
 
       // Display errors messages, return to the court page
