@@ -14,6 +14,7 @@
 
         <a class="btn btn-primary" data-toggle="modal" data-target="#reservation-modal">Créer une réservation</a>
 
+  
 
         <!-- Modal Reservation -->
         <div class="modal fade" tabindex="-1" role="dialog" id="reservation-modal">
@@ -69,13 +70,13 @@
                                 </form>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="multiple">
-                                <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="simple-reservation-form">
+                                <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="multiple-reservation-form">
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
                                     <div class="form-group @if($errors->has('datetime-start')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date début*:</label>
-                                        <input class="form-control datetime-picker" type="text" name="datetime-start" id="datetime-start" value="{{old('date-start')}}" data-verif="required|date_time"/>
+                                        <input class="form-control datetime-picker" type="text" name="datetime-start" id="datetime-start"  readonly  value="{{old('date-start')}}" data-verif="required|date_time"/>
                                         @if ($errors->has('datetime-start'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('datetime-start') }}</strong>
@@ -85,26 +86,25 @@
                                     <div class="form-group @if($errors->has('datetime-end')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date fin*:</label>
-                                        <input class="form-control datetime-picker" type="text" name="datetime-end" id="datetime-end" value="{{old('date-end')}}" data-verif="required|date_time"/>
+                                        <input class="form-control datetime-picker" type="text" name="datetime-end" id="datetime-end" readonly  value="{{old('date-end')}}" data-verif="required|date_time"/>
                                         @if ($errors->has('datetime-end'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('datetime-end') }}</strong>
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('court')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('type-reservation')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Type de réservation (fréquence)*:</label>
-                                        <select class="form-control" name="court">
-                                            <option value="0">Quotidienne</option>
-                                            <option value="0">Menusel</option>
-                                            <option value="0">Hebodmadaire</option>
-                                            <option value="0">Quotidienne</option>
+                                        <select class="form-control" name="type-reservation">
+                                            <option value="2">Quotidienne</option>
+                                            <option value="3">Hebodmadaire</option>
+                                            <option value="4">Menusel</option>
 
                                         </select>
-                                        @if ($errors->has('court'))
+                                        @if ($errors->has('type-reservation'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('court') }}</strong>
+                                                <strong>{{ $errors->first('type-reservation') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -123,7 +123,7 @@
                                         @endif
                                     </div>
                                     <div class="form-group push-to-bottom ">
-                                        <button type="button" id="btn-simple-reservation" class="btn btn-success btn-block" name="btn-reserver">
+                                        <button type="button" id="btn-multiple-reservation" class="btn btn-success btn-block" name="btn-reserver">
                                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                             Réserver
 
@@ -152,17 +152,20 @@
 
         date = new Date();
         $('.datetime-picker').datetimepicker({
-            hourMin: 8,
-            hourMax: 16,
             format: 'dd.mm.yyyy hh:00',
             startDate: date.toISOString().substr(0, 19),
-            minView: 'day', //to choose hour
+            minView: 'day', //to choose hour and not the minutes too
             autoclose: true
         });
 
         document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
             VERIF.verifForm('simple-reservation-form',function(isOk){
                 if(isOk) document.forms["simple-reservation-form"].submit();
+            });
+        });
+        document.querySelector('#btn-multiple-reservation').addEventListener('click', function(){
+            VERIF.verifForm('multiple-reservation-form',function(isOk){
+                if(isOk) document.forms["multiple-reservation-form"].submit();
             });
         });
     </script>

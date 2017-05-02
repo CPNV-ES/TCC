@@ -175,7 +175,7 @@ class BookingController extends Controller
 
           $startDate = new \DateTime();
           $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-          $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+          $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])->has('personal_information_with_who')
                ->where(function($q){
                    $Userid=Auth::user()->id;
                    $q->where('fkWho', $Userid);
@@ -356,7 +356,6 @@ class BookingController extends Controller
             ]);
             if($validator->fails())
             {
-
                 return back()->withInput()->withErrors($validator);
             }
 
