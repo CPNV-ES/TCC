@@ -105,7 +105,7 @@
                                 <div>
                                   <b><i class="text-danger">Statuts</i></b>
                                   <p>
-                                    Vous n'avez pas de droit d'inviter!
+                                    Vous n'avez pas le droit d'inviter!
                                   </p>
                                 </div>
                               </div>
