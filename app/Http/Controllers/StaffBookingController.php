@@ -21,9 +21,10 @@ class StaffBookingController extends Controller
      */
     public function index()
     {
+        $startDate = new \DateTime();
         $courts = Court::where('state', true)->get();
-
-        return view('staffBooking.home', compact('courts'));
+        $ownReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '>=', $startDate->format('Y-m-d H:i'))->get();
+        return view('staffBooking.home', compact('courts', 'ownReservations'));
     }
 
     /**
@@ -45,48 +46,72 @@ class StaffBookingController extends Controller
     public function store(Request $request)
     {
         //if there is a datetime-end it's a multiple reservation otherwise it's a simple reservation
-        if(Input::has('datetime-start') && Input::has('datetime-end'))
+        if(Input::has('date-start') && Input::has('date-end'))
         {
             $validator = Validator::make($request->all(),
                 [
-                    'datetime-start'    => 'required|max:19',
-                    'datetime-end'      => 'required|max:19',
+                    'hour-start'        => 'required|integer|between:8,19',
+                    'hour-end'          => 'required|integer|between:9,20',
+                    'date-start'        => 'required|max:10',
+                    'date-end'          => 'required|max:10',
                     'court'             => 'required|exists:courts,id',
-                    'type-reservation'  => 'required'//|exists:type_subscriptions,id'
+                    'type-reservation'  => 'required'
                 ],
                 [
-                    'court.exists'          => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
-                    'datetime-start.name'   => 'date de début choisie',
-                    'datetime-end.name'     => 'date de fin choisie',
-                    'type-reservation'      => 'le type de réservation'
+                    'hour-start'        => 'Heure de début',
+                    'hour-end'          => 'Heure de fin',
+                    'court.exists'      => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
+                    'date-start.name'   => 'date de début choisie',
+                    'date-end.name'     => 'date de fin choisie',
+                    'type-reservation'  => 'le type de réservation'
                 ]
             );
 
             $datetime_today = new \DateTime();
-            $datetime_start = date_create_from_format('d.m.Y H:i', $request->input('datetime-start'));
+
+            $strDatetime_start = $request->input('date-start').' '.$request->input('hour-start');
+            $strDatetime_end   = $request->input('date-end').' '.$request->input('hour-end');
+
+            $date_start = date_create_from_format('d-m-Y', $request->input('date-start') );
+            $date_end   = date_create_from_format('d-m-Y', $request->input('date-end') );
+
+
+            $datetime_start = date_create_from_format('d-m-Y H', $strDatetime_start );
             $datetime_intermediate =  clone $datetime_start;
-            $datetime_end = date_create_from_format('d.m.Y H:i', $request->input('datetime-end'));
+
+            $datetime_end = date_create_from_format('d-m-Y H', $strDatetime_end);
             $court = Court::find($request->input('court'));
             $typeReservation = $request->input('type-reservation');
 
-            if($court->state == 1)
+            if($court->state != 1)
             {
                 $validator->errors()->add('court', 'Le court sélectionné n\' est pas disponible');
             }
             if($datetime_start < $datetime_today)
             {
-                $validator->errors()->add('datetime-start', 'La date de début n\'est pas valide, la date de début ne doit pas être passée');
+                $validator->errors()->add('date-start', 'La date de début n\'est pas valide, la date de début ne doit pas être passée');
             }
-            if($datetime_start >= $datetime_end)
+            if($date_start > $date_end)
             {
-                $validator->errors()->add('datetime-end', 'La date de fin doit être après dans le temps');
+                $validator->errors()->add('date-end', 'La date de fin doit être après ou en même temps que la date de début');
+            }
+
+            if($request->input('hour-start') > $request->input('hour-end'))
+            {
+                $validator->errors()->add('hour-end', 'L\'heure de fin doit être après dans l\'heure de début');
+            }
+
+            if(count($validator->errors()->all()))
+            {
+              $val = true;
+                return  back()->with('showMultResForm', 'true')->withInput()->withErrors($validator);
             }
             if($validator->fails())
             {
-                return back()->withInput()->withErrors($validator);
+                return back()->with('showMultResForm', 'true')->withInput()->withErrors($validator);
             }
 
-            $reservations = [];
+            $conflictReservations = [];
             do
             {
                 //hour_intermediate is a datetime but is used to add a reservation for each hour between start and end
@@ -109,7 +134,8 @@ class StaffBookingController extends Controller
                         Reservation::create($reservationInfo);
                     }
                     else{
-                        array_push($reservations, $reservation->first());
+                        array_push($conflictReservations, $reservation->first());
+
                     }
                     $hour_intermediate->modify('+1 hour');
 
@@ -133,7 +159,8 @@ class StaffBookingController extends Controller
             }while(($datetime_end > $datetime_intermediate));
 
             Session::flash('succeedMessage', "Vos réservation a bien été effectuée");
-            return redirect('/staff_booking')->with('reservations');
+
+            return redirect()->back()->with('conflictReservations', $conflictReservations);
         }
         else
         {
@@ -148,10 +175,6 @@ class StaffBookingController extends Controller
                 ]
             );
 
-            if($validator->fails())
-            {
-                return back()->withInput()->withErrors($validator);
-            }
 
             $court = Court::find($request->input('court'));
 
@@ -168,9 +191,20 @@ class StaffBookingController extends Controller
             if($datetime_start < $datetime_today)
             {
                 $validator->errors()->add('datetime-start', 'La date/heure choisie n\'est pas valide');
+
+            }
+            if(!Reservation::isHourFree($court->id, $datetime_start->format('Y-m-d H:i:s')))
+            {
+              $validator->errors()->add('datetime-start', 'Cette heure n\'est pas libre');
+            }
+            if(count($validator->errors()->all()))
+            {
+              return back()->with('showSimpleResForm', 'true')->withInput()->withErrors($validator);
+            }
+            if($validator->fails())
+            {
                 return back()->withInput()->withErrors($validator);
             }
-
             $reservationInfo = [
                      'dateTimeStart'        => $datetime_start,
                      'fkCourt'              => $court->id,
