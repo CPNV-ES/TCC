@@ -15,7 +15,7 @@
     <td>{{ $reserv->dateTimeStart }}</td>
     <td>{{ $reserv->court->name }}</td>
     <td>{{ $reserv->personal_information_who->firstname }} {{ $reserv->personal_information_who->lastname }}</td>
-    <td>{{ $reserv->personal_information_with_who->firstname }} {{ $reserv->personal_information_with_who->lastname }}</td>
+    <td>@if($reserv->personal_information_with_who){{ $reserv->personal_information_with_who->firstname }} {{ $reserv->personal_information_with_who->lastname }}@else - @endif</td>
     <td>
       <button type="button" id="btn-del-res-{{ $reserv->id }}" class="btn btn-danger btn-block">
         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>

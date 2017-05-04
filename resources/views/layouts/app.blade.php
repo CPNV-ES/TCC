@@ -14,6 +14,8 @@
         {!! Html::style('/css/layouts.css')!!}
         {!! Html::style('/css/bootstrap-datepicker3.min.css')!!}
 
+        {!! Html::style('/css/bootstrap-datetimepicker.min.css') !!}
+
         {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
 
         {!! Html::style('/css/jqx.base.css')!!}
@@ -26,6 +28,10 @@
 
         {!! Html::script('/js/bootstrap-datepicker.min.js') !!}
         {!! Html::script('/js/bootstrap-datepicker.fr-CH.min.js') !!}
+
+        {{--is like datepicker but with hour --}}
+        {!! Html::script('/js/bootstrap-datetimepicker.min.js') !!}
+        {!! Html::script('/js/bootstrap-datetimepicker.fr.js') !!}
 
         {!! Html::script('/js/jqwidget/jqx-all.js') !!}
         {!! Html::script('/js/jqwidget/globalize.js') !!}
@@ -83,6 +89,11 @@
                         <li>
                             <a href="{{ url('/booking') }}">Réservations</a>
                         </li>
+                        @if(Auth::check() && Auth::user()->isStaff)
+                            <li>
+                                <a href="{{url('/staff_booking')}}">Réservation staff</a>
+                            </li>
+                        @endif
                     </ul>
 
 

@@ -54,7 +54,12 @@ Route::group(['middleware' => ['web']], function ()
         Route::get('booking/cancellation/{token}', 'BookingController@cancellation')->name('booking.cancellation');
     });
 
-
+    /*
+     * Staff booking
+     */
+    Route::group([ 'middleware' => ['profileIsValide', 'userIsStaff']], function(){
+       Route::resource('staff_booking', 'StaffBookingController');
+    });
 
     /*
      * MyBooking
@@ -63,6 +68,7 @@ Route::group(['middleware' => ['web']], function ()
     {
         Route::delete('mybooking/{id}', 'BookingController@destroy');
         Route::get('mybooking', 'BookingController@MyBookingIndex');
+
     });
 
 

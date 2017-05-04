@@ -86,7 +86,7 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
                 'invitRight' => 1,
                 'validated' => 1,
                 'isAdmin' => 1,
-                'isTrainer' => 0,
+                'isStaff' => 0,
                 'isMember' => 1,
                 'fkPersonalInformation' => 1
             ]);
@@ -142,8 +142,8 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
           }
 
           $isAdmin = (rand(0,100) <= 5) ? 1 : 0;
-          $isTrainer = (rand(0,100) <= 25) ? 1 : 0 ;
-          $isMember = ($isTrainer == 0) ? 1 : rand(0,1) ;
+          $isStaff = (rand(0,100) <= 25) ? 1 : 0 ;
+          $isMember = ($isStaff == 0) ? 1 : rand(0,1) ;
 
           User::create([
             'username' => ($login == '' ? NULL : $login),
@@ -153,7 +153,7 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
             'validated' => $isValidated,
             'isAdmin' => $isAdmin,
             'isMember' => $isMember,
-            'isTrainer' => $isTrainer,
+            'isStaff' => $isStaff,
             'fkPersonalInformation' => $personID,
           ]);
 
