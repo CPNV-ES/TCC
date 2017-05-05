@@ -8,10 +8,12 @@
     @if(Session::has('successMessage'))
         <div class="alert alert-success">
             {{Session::get('successMessage')}}
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
     @elseif(Session::has('errorMessage'))
         <div class="alert alert-danger">
             {{Session::get('errorMessage')}}
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         </div>
     @endif
     <div style="width:510px;color:#000;margin:auto;">
