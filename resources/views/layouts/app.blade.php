@@ -89,7 +89,7 @@
                         <li>
                             <a href="{{ url('/booking') }}">Réservations</a>
                         </li>
-                        @if(Auth::check() && Auth::user()->isStaff)
+                        @if(Auth::check() && Auth::user()->isTrainer)
                             <li>
                                 <a href="{{url('/staff_booking')}}">Réservation staff</a>
                             </li>

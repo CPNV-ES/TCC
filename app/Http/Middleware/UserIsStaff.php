@@ -17,7 +17,7 @@ class UserIsStaff
      */
     public function handle($request, Closure $next)
     {
-        if(! Auth::user()->isStaff) return redirect('/home');
+        if(! Auth::user()->isTrainer) return redirect('/home');
         return $next($request);
 
     }
