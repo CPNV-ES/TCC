@@ -29,9 +29,9 @@
                                  <select name="fkWithWho" class="form-control">
                                     @foreach($membersList as $member)
                                       @if($member->reservations_count != null)
-                                        <option class="strong" value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} ({{$member->reservations_count}})</option>
+                                        <option class="strong" value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
                                       @else
-                                        <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}} ({{$member->reservations_count}})</option>
+                                        <option value="{{$member->id}}">{{$member->firstname}} {{$member->lastname}}</option>
                                       @endif
                                     @endforeach
                                 </select>
