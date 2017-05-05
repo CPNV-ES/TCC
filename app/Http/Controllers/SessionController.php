@@ -56,7 +56,7 @@ class SessionController extends Controller
 
             if (count($userDbPassword) AND Hash::check($request->input('password'), $userDbPassword[0]->password))
             {
-                $unActive = User::where('username', $request->input('login'))->where('validated', 0)->count();
+                $unActive = User::where('username', $request->input('login'))->where('active', 0)->count();
 
                 if ($unActive)
                 {
