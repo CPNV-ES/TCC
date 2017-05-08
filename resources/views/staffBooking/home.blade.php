@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
+        <div class="row">
         <h1>Réservation Staff</h1>
         @if (Session::has('successMessage'))
             <div class="alert alert-success">
@@ -9,6 +10,7 @@
 
             </div>
         @endif
+        </div>
 
         <a class="btn btn-primary" data-toggle="modal" data-target="#reservation-modal">Créer une réservation</a>
         <!-- Modal Reservation -->
@@ -31,6 +33,16 @@
                                 <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="simple-reservation-form">
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
+                                    <div class="form-group @if($errors->has('title-simple-res')) {{'has-error'}} @endif">
+                                        <label for="recipient-name" class="control-label">
+                                            Libellé*:</label>
+                                        <input class="form-control"  type="text" name="title-simple-res" id="title-simple-res" value="{{old('title-simple-res')}}" data-verif="required|text"/>
+                                        @if ($errors->has('title-simple-res'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('title-simple-res') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
                                     <div class="form-group @if($errors->has('datetime-start')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date*:</label>
@@ -68,23 +80,29 @@
                                 <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="multiple-reservation-form">
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
+                                    <div class="form-group @if($errors->has('title-multiple-res')) {{'has-error'}} @endif">
+                                        <label for="recipient-name" class="control-label">
+                                            Libellé*:</label>
+                                        <input class="form-control"  type="text" name="title-multiple-res" id="title-multiple-res" value="{{old('title-multiple-res')}}" data-verif="required|text"/>
+                                        @if ($errors->has('title-multiple-res'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('title-multiple-res') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
                                     <div class="form-group @if($errors->has('hour-start')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Heure début*:
                                         </label>
+                                        @php($start_hour = new DateTime($config->courtOpenTime))
+                                        @php($end_hour = new \DateTime($config->courtCloseTime))
+
                                         <select class="form-control" name="hour-start">
-                                            <option value="8" @if(old('hour-start') == 8) selected @endif >08:00</option>
-                                            <option value="9" @if(old('hour-start') == 9) selected @endif >09:00</option>
-                                            <option value="10" @if(old('hour-start') == 10) selected @endif>10:00</option>
-                                            <option value="11" @if(old('hour-start') == 11) selected @endif>11:00</option>
-                                            <option value="12" @if(old('hour-start') == 12) selected @endif>12:00</option>
-                                            <option value="13" @if(old('hour-start') == 13) selected @endif>13:00</option>
-                                            <option value="14" @if(old('hour-start') == 14) selected @endif>14:00</option>
-                                            <option value="15" @if(old('hour-start') == 15) selected @endif>15:00</option>
-                                            <option value="16" @if(old('hour-start') == 16) selected @endif>16:00</option>
-                                            <option value="17" @if(old('hour-start') == 17) selected @endif>17:00</option>
-                                            <option value="18" @if(old('hour-start') == 18) selected @endif>18:00</option>
-                                            <option value="19" @if(old('hour-start') == 19) selected @endif>19:00</option>
+                                            {{--Loop between start and end hour configure in configs table--}}
+                                            @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
+                                                <option value="{{$i}}" @if(old('hour-start') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+                                                @php($start_hour->modify('+1 hour'))
+                                            @endfor
                                         </select>
                                         @if ($errors->has('hour-start'))
                                             <span class="help-block">
@@ -97,18 +115,12 @@
                                             Heure fin*:
                                           </label>
                                           <select class="form-control" name="hour-end">
-                                              <option value="9" @if(old('hour-end') == 9) selected @endif >09:00</option>
-                                              <option value="10" @if(old('hour-end') == 10) selected @endif>10:00</option>
-                                              <option value="11" @if(old('hour-end') == 11) selected @endif>11:00</option>
-                                              <option value="12" @if(old('hour-end') == 12) selected @endif>12:00</option>
-                                              <option value="13" @if(old('hour-end') == 13) selected @endif>13:00</option>
-                                              <option value="14" @if(old('hour-end') == 14) selected @endif>14:00</option>
-                                              <option value="15" @if(old('hour-end') == 15) selected @endif>15:00</option>
-                                              <option value="16" @if(old('hour-end') == 16) selected @endif>16:00</option>
-                                              <option value="17" @if(old('hour-end') == 17) selected @endif>17:00</option>
-                                              <option value="18" @if(old('hour-end') == 18) selected @endif>18:00</option>
-                                              <option value="19" @if(old('hour-end') == 19) selected @endif>19:00</option>
-                                              <option value="20" @if(old('hour-end') == 20) selected @endif>20:00</option>
+                                              @php($start_hour = new DateTime($config->courtOpenTime))
+                                              @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
+                                                  @php($start_hour->modify('+1 hour'))
+                                                  <option value="{{$i+1}}" @if(old('hour-end') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+
+                                              @endfor
                                           </select>
                                         @if ($errors->has('hour-end'))
                                             <span class="help-block">
@@ -116,6 +128,7 @@
                                             </span>
                                         @endif
                                     </div>
+
                                     <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date début*:</label>
@@ -202,15 +215,17 @@
           <tr>
             <td>{{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
             <td>{{ $reservation->court->name }}</td>
-            <td>{{$reservation->type_reservation->type}}</td>
+            <td>{{ $reservation->type_reservation->type }}</td>
           </tr>
           @endforeach
         </table>
 
         @endif
+        <div class="row spacer">
         <h4>Réservations effectuées</h4>
         <table class="table" style="text-align:center;">
           <tr>
+            <th>Libellé</th>
             <th>Date et heure</th>
             <th>Court</th>
             <th>Type de réservation</th>
@@ -220,17 +235,19 @@
           @if(count($ownReservations)> 0)
             @foreach($ownReservations as $reservation)
             <tr>
-              <td>{{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
-              <td>{{ $reservation->court->name }}</td>
-              <td>{{$reservation->type_reservation->type}}</td>
+              <td> {{ $reservation->title }}</td>
+              <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
+              <td> {{ $reservation->court->name }}</td>
+              <td> {{$reservation->type_reservation->type}}</td>
+              <td> <button class="btn btn-primary">Modifier</button></td>
             </tr>
             @endforeach
           @else
-              <tr><td colspan="4">Aucune réservation</td><tr>
+              <tr><td colspan="5">Aucune réservation</td><tr>
           @endif
         </table>
 
-
+    </div>
     </div>
     <script>
         var hasError = false;

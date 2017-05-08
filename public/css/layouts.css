@@ -493,6 +493,10 @@ footer p {
 #status-info p {
   margin: 0;
 }
+.spacer
+{
+    margin-top: 50px;
+}
 
 .mandatory {
   color: #D9534F;
@@ -503,3 +507,4 @@ footer p {
     display: none;
   }
 }
+

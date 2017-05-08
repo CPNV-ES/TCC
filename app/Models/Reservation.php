@@ -11,7 +11,8 @@ class Reservation extends Model
         'fk_member_1',
         'fk_member_2',
         'fk_season',
-        'date_hours'
+        'date_hours',
+
     ];
 
     public function __construct(array $attributes = array())
