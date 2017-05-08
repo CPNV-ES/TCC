@@ -138,7 +138,7 @@
         }
         tr>td:nth-child(1) {
             color: #5a5a5a;
-            font-size: 10px;
+            font-size: 12px;
             vertical-align: top;
         }
         tr>td.vc-table-head:nth-child(1) {
@@ -175,6 +175,7 @@
         .aucune{background-color: #afa;}
         .simple2{background-color: #ffa;}
         .vc-passed{filter: brightness(0.9);}
+        .vc-passed:hover{cursor: not-allowed;}
         .vc-own-planif{filter: hue-rotate(-60deg);}
     </style>
 

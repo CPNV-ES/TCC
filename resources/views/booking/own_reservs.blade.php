@@ -6,7 +6,7 @@
   <tr>
     <th>Date et heure</th>
     <th>Court</th>
-    <th>qui ?</th>
+    <th>Par qui ?</th>
     <th>Avec qui ?</th>
     <th>Action</th>
   </tr>

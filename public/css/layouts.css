@@ -486,6 +486,10 @@ footer p {
   margin: 0;
 }
 
+.mandatory {
+  color: #E64130;
+}
+
 @media only screen and (max-width: 767px) {
   #status-info-warning, #status-info {
     display: none;
