@@ -50,6 +50,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'profileIsValide' => \App\Http\Middleware\ProfileIsValideMiddleware::class,
-        'userIsStaff' => \App\http\Middleware\UserIsStaff::class
+        'userIsStaff' => \App\Http\Middleware\UserIsStaff::class
     ];
 }
