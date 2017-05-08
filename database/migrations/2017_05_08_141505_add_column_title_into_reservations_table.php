@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeColumnIsTrainerToIsStaffIntoUser extends Migration
+class AddColumnTitleIntoReservationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,9 @@ class ChangeColumnIsTrainerToIsStaffIntoUser extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //$table->renameColumn('isTrainer', 'isStaff');
+        Schema::table('reservations', function (Blueprint $table) {
+            //
+            $table->string('title', 50)->nullable();
         });
     }
 
@@ -24,8 +25,9 @@ class ChangeColumnIsTrainerToIsStaffIntoUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //$table->renameColumn('isStaff', 'isTrainer');
+        Schema::table('reservations', function (Blueprint $table) {
+            //
+            $table->removeColumn("title");
         });
     }
 }
