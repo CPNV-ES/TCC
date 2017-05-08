@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Input;
 use Validator;
 use App\Http\Requests;
 use App\Reservation;
+use App\Config;
 use Illuminate\Support\Facades\Session;
 
 class StaffBookingController extends Controller
@@ -23,8 +24,10 @@ class StaffBookingController extends Controller
     {
         $startDate = new \DateTime();
         $courts = Court::where('state', true)->get();
-        $ownReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '>=', $startDate->format('Y-m-d H:i'))->get();
-        return view('staffBooking.home', compact('courts', 'ownReservations'));
+        $ownReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '>=', $startDate->format('Y-m-d H:i'))->orderBy('dateTimeStart', 'asc')->get();
+        $config = Config::orderBy('created_at', 'desc')->first();
+
+        return view('staffBooking.home', compact('courts', 'ownReservations', 'config'));
     }
 
     /**
@@ -43,27 +46,29 @@ class StaffBookingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function     store(Request $request)
     {
         //if there is a datetime-end it's a multiple reservation otherwise it's a simple reservation
         if(Input::has('date-start') && Input::has('date-end'))
         {
             $validator = Validator::make($request->all(),
                 [
-                    'hour-start'        => 'required|integer|between:8,19',
-                    'hour-end'          => 'required|integer|between:9,20',
-                    'date-start'        => 'required|max:10',
-                    'date-end'          => 'required|max:10',
-                    'court'             => 'required|exists:courts,id',
-                    'type-reservation'  => 'required'
+                    'title-multiple-res'    => 'required|max:50',
+                    'hour-start'            => 'required|integer|between:8,19',
+                    'hour-end'              => 'required|integer|between:9,20',
+                    'date-start'            => 'required|max:10',
+                    'date-end'              => 'required|max:10',
+                    'court'                 => 'required|exists:courts,id',
+                    'type-reservation'      => 'required'
                 ],
                 [
-                    'hour-start'        => 'Heure de début',
-                    'hour-end'          => 'Heure de fin',
-                    'court.exists'      => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
-                    'date-start.name'   => 'date de début choisie',
-                    'date-end.name'     => 'date de fin choisie',
-                    'type-reservation'  => 'le type de réservation'
+                    'title-multiple-res'    => 'Libellé',
+                    'hour-start'            => 'Heure de début',
+                    'hour-end'              => 'Heure de fin',
+                    'court.exists'          => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
+                    'date-start.name'       => 'date de début choisie',
+                    'date-end.name'         => 'date de fin choisie',
+                    'type-reservation'      => 'le type de réservation'
                 ]
             );
 
@@ -119,9 +124,10 @@ class StaffBookingController extends Controller
 
                 do
                 {
-                    $reservation = Reservation::where('dateTimeStart', $hour_intermediate)->where('fkcourt', $request->input('court'));
-                    if(!$reservation->count())
+                    $reservations = Reservation::where('dateTimeStart', $hour_intermediate)->where('fkcourt', $request->input('court'));
+                    if(!$reservations->count())
                     {
+
                         $reservationInfo = [
                             'dateTimeStart'        => $hour_intermediate,
                             'fkCourt'              => $court->id,
@@ -129,16 +135,17 @@ class StaffBookingController extends Controller
                             'fkTypeReservation'    => $typeReservation,
                             'fkWithWho'            => null,
                             'chargeAmount'         => 0,
-                            'paid'                 => 1
+                            'paid'                 => 1,
+                            'title'                => $request->input('title-multiple-res')
                         ];
                         Reservation::create($reservationInfo);
                     }
                     else{
-                        array_push($conflictReservations, $reservation->first());
 
+                        $reservation = $reservations->first();
+                        array_push($conflictReservations, $reservation);
                     }
                     $hour_intermediate->modify('+1 hour');
-
 
                 }while($hour_intermediate->format('H') <  $datetime_end->format('H'));
 
@@ -166,12 +173,14 @@ class StaffBookingController extends Controller
         {
             $validator = Validator::make($request->all(),
                 [
-                    'datetime-start' => 'required|max:50',
-                    'court' => 'required|exists:courts,id'
+                    'title-simple-res'      => 'required|max:50',
+                    'datetime-start'        => 'required|max:16',
+                    'court'                 => 'required|exists:courts,id'
                 ],
                 [
-                    'court.exists' => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
-                    'datetime-start.name' => 'date choisie'
+                    'title-simple-res'      => 'Libellé',
+                    'court.exists'          => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
+                    'datetime-start.name'   => 'date choisie'
                 ]
             );
 
@@ -206,6 +215,7 @@ class StaffBookingController extends Controller
                 return back()->withInput()->withErrors($validator);
             }
             $reservationInfo = [
+                     'title'                => $request->input('title-simple-res'),
                      'dateTimeStart'        => $datetime_start,
                      'fkCourt'              => $court->id,
                      'fkWho'                => Auth::user()->fkPersonalInformation,

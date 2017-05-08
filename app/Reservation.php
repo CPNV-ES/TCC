@@ -17,7 +17,8 @@ class Reservation extends Model
         "fkTypeReservation",
         "fkCourt",
         "paid",
-        "chargeAmount"
+        "chargeAmount",
+        "title"
     ];
 
     public function court() {

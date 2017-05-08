@@ -485,9 +485,14 @@ footer p {
 #status-info p {
   margin: 0;
 }
+.spacer
+{
+    margin-top: 50px;
+}
 
 @media only screen and (max-width: 767px) {
   #status-info-warning, #status-info {
     display: none;
   }
 }
+
