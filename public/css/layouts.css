@@ -246,7 +246,7 @@ body {
 }
 
 .timeline-badge.danger {
-    background-color: #d9534f !important;
+    background-color: #D9534F !important;
 }
 
 .timeline-badge.info {
@@ -344,11 +344,11 @@ footer p {
 }
 
 .notice-danger {
-    border-color: #d73814;
+    border-color: #D9534F;
 }
 
 .notice-danger > strong {
-    color: #d73814;
+    color: #D9534F;
 }
 
 .nav-tabs {
@@ -431,19 +431,27 @@ footer p {
 
 #status-info-warning {
   position: relative;
-  color: #D9534F;
-  transform: translateY(40%);
-  margin-right: 15px;
+  display: inline-block;
+  top: 12px;
+  right: 150px;
+}
+
+#warning-triangle {
+  color: #F0AD4E;
   transition-delay: 0.2s;
   transition: transform 0.5s;
 }
 
-#status-info-warning:hover {
-  cursor: pointer;
-  transform: translateY(35%) scale(1.1);
+.text-warning {
+  color: #F0AD4E !important;
 }
 
-#status-info-warning:hover + #status-info {
+#warning-triangle:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+#warning-triangle:hover + #status-info {
   visibility: visible;
   opacity: 1;
 }
@@ -469,7 +477,7 @@ footer p {
   height: auto;
   width: 200px;
   position: absolute;
-  transform: translateX(-43%) translateY(30px);
+  transform: translateX(-43%) translateY(20px);
   border-radius: 5px;
   text-align: center;
   visibility: hidden;
@@ -487,7 +495,7 @@ footer p {
 }
 
 .mandatory {
-  color: #E64130;
+  color: #D9534F;
 }
 
 @media only screen and (max-width: 767px) {

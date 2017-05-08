@@ -110,17 +110,17 @@
                         </li>
                         @else
                           @if (Auth::user()->invitRight == 0)
-                            <li>
-                              <i id="status-info-warning" class="fa fa-exclamation-triangle fa-2x"></i>
+                            <div id="status-info-warning">
+                              <i id="warning-triangle" class="fa fa-exclamation-triangle fa-2x"></i>
                               <div id="status-info">
                                 <div>
-                                  <b><i class="text-danger">Statuts</i></b>
+                                  <b><i class="text-warning">Statuts</i></b>
                                   <p>
                                     Vous n'avez pas le droit d'inviter!
                                   </p>
                                 </div>
                               </div>
-                            </li>
+                            </div>
                           @endif
                           <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> {{ App\User::find(Auth::user()->id)->personal_information->firstname }} {{ App\User::find(Auth::user()->id)->personal_information->lastname }} <span class="caret"></span> </a>
