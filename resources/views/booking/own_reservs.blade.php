@@ -12,7 +12,7 @@
   </tr>
   @foreach($ownreservs as $reserv)
   <tr>
-    <td>{{ $reserv->dateTimeStart }}</td>
+    <td>{{ date('d.m.Y H:i', strtotime($reserv->dateTimeStart)) }}</td>
     <td>{{ $reserv->court->name }}</td>
     <td>{{ $reserv->personal_information_who->firstname }} {{ $reserv->personal_information_who->lastname }}</td>
     <td>@if($reserv->personal_information_with_who){{ $reserv->personal_information_with_who->firstname }} {{ $reserv->personal_information_with_who->lastname }}@else - @endif</td>
