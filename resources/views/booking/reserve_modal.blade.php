@@ -45,6 +45,7 @@
                         </form>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="nonmember-invite">
+                        <div class="row pull-right"><span class="mandatory">*</span> obligatoire</div><br>
                         <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
                             {{ csrf_field() }}
                             {{ method_field('POST') }}
@@ -69,17 +70,19 @@
                                     </span>
                                 @endif
                             </div>
-                            <span class="mandatory">*</span> obligatoire
+
                             <div class="form-group push-to-bottom ">
                                 <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
                                     <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                     Réserver
                                 </button>
                             </div>
+
                         </form>
                     </div>
                 </div>
               @else
+                  <div class="row pull-right"><span class="mandatory">*</span> obligatoire</div><br>
                   <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
                       {{ csrf_field() }}
                       {{ method_field('POST') }}
@@ -156,17 +159,16 @@
                           @endif
 
                       </div>
-                      <span class="mandatory">*</span> obligatoire
+
                       <div class="form-group push-to-bottom ">
                           <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
                               <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                               Réserver
                           </button>
                       </div>
+
                   </form>
-
               @endif
-
               <div id="modal-panel"></div>
               <div id="modal-content"></div>
           </div>
