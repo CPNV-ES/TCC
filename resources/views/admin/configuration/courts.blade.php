@@ -10,10 +10,6 @@ Description : Displays a table with the inforamtion of the courts form the datab
 
 @section('title')
     Gestion des courts
-    {{-- SFH: Display a return button if in edit mode --}}
-    @if(!empty($singleCourt))
-        <a type="button" class="btn btn-primary" href="/admin/config/courts">Retour</a>
-    @endif
 @endsection
 
 @section('content')
@@ -142,10 +138,14 @@ Description : Displays a table with the inforamtion of the courts form the datab
             </div>
 
             <div class="form-group" align="center">
-                <button id="btnCourtCheck" type="button" class="btn btn-success" name="save">
-                    {{-- SFH: Change button text if editing or adding --}}
-                    {{ (!empty($singleCourt) ? 'Sauvegarder' : 'Ajouter') }}
-                </button>
+              {{-- SFH: Display a return button if in edit mode --}}
+              @if(!empty($singleCourt))
+                <a type="button" class="btn btn-warning" href="/admin/config/courts">Annuler</a>
+              @endif
+              <button id="btnCourtCheck" type="button" class="btn btn-success" name="save">
+                  {{-- SFH: Change button text if editing or adding --}}
+                  {{ (!empty($singleCourt) ? 'Sauvegarder' : 'Ajouter') }}
+              </button>
             </div>
 
             {{-- SFH: Added to check form before send --}}

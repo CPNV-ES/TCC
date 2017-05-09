@@ -10,10 +10,6 @@ Description : Displays a table with the inforamtion of the subscriptions form th
 
 @section('title')
     Gestion des cotisations
-    {{-- SFH: Display a return button if in edit mode --}}
-    @if(!empty($singleTypeSubscription))
-        <a type="button" class="btn btn-primary" href="/admin/config/subscriptions">Retour</a>
-    @endif
 @endsection
 
 @section('content')
@@ -134,10 +130,14 @@ Description : Displays a table with the inforamtion of the subscriptions form th
             </div>
 
             <div class="form-group" align="center">
-                <button id="btnSubscriptionCheck" type="button" class="btn btn-success">
-                    {{-- SFH: Change button text if editing or adding --}}
-                    {{ (!empty($singleTypeSubscription) ? 'Sauvegarder' : 'Ajouter') }}
-                </button>
+              {{-- SFH: Display a return button if in edit mode --}}
+              @if(!empty($singleTypeSubscription))
+                <a type="button" class="btn btn-warning" href="/admin/config/subscriptions">Annuler</a>
+              @endif
+              <button id="btnSubscriptionCheck" type="button" class="btn btn-success">
+                  {{-- SFH: Change button text if editing or adding --}}
+                  {{ (!empty($singleTypeSubscription) ? 'Sauvegarder' : 'Ajouter') }}
+              </button>
             </div>
 
             {{-- SFH: Added to check form before send --}}
