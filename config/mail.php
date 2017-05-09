@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'cpnv.es.web@gmail.com', 'name' => 'Tennis Club Chavornay'],
+    'from' => ['address' => 'cpnv.tcc@gmail.com', 'name' => 'Tennis Club Chavornay'],
 
     /*
     |--------------------------------------------------------------------------
