@@ -134,9 +134,6 @@
                                   <li>
                                       <a href="{{ url('/profile') }}"><i class="fa fa-user"></i> Profile</a>
                                   </li>
-                                  <li>
-                                      <a href="{{ url('/mybooking') }}"><i class="fa fa-calendar"></i> Mes réservations</a>
-                                  </li>
                                   <hr />
                                   <li>
                                       <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
