@@ -274,6 +274,28 @@ class StaffBookingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $reservation = Reservation::find($id);
+
+        if(!$reservation)
+        {
+            Session::flash('errorMessage', "La réservation sélectionnée n'existe pas");
+            return redirect('/staff_booking');
+        }
+        if($reservation->fkWho != Auth::user()->fkPersonalInformation)
+        {
+            Session::flash('errorMessage', "La réservation sélectionnée ne vous appartient pas");
+            return redirect('/staff_booking');
+        }
+
+        $dateTimeToday = new \DateTime();
+        $dateTimeStart = date_create_from_format('Y-m-d H:i:s', $reservation->dateTimeStart);
+        if($dateTimeStart < $dateTimeToday)
+        {
+            Session::flash('errorMessage', "La réservation sélectionnée est déjà passée");
+            return redirect('/staff_booking');
+        }
+        $reservation->delete();
+        Session::flash('successMessage', "La réservation sélectionnée a bien été supprimée");
+        return redirect('/staff_booking');
     }
 }

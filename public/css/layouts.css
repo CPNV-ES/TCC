@@ -502,6 +502,10 @@ footer p {
   color: #D9534F;
 }
 
+.option-zone form {
+    display: inline-block;
+}
+
 @media only screen and (max-width: 767px) {
   #status-info-warning, #status-info {
     display: none;

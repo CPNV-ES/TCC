@@ -7,7 +7,13 @@
         @if (Session::has('successMessage'))
             <div class="alert alert-success">
                 {{ Session::get('successMessage') }}
-
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+        @endif
+        @if (Session::has('errorMessage'))
+            <div class="alert alert-danger">
+                {{ Session::get('errorMessage') }}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             </div>
         @endif
         </div>
@@ -223,28 +229,42 @@
         @endif
         <div class="row spacer">
         <h4>Réservations effectuées</h4>
-        <table class="table" style="text-align:center;">
-          <tr>
-            <th>Libellé</th>
-            <th>Date et heure</th>
-            <th>Court</th>
-            <th>Type de réservation</th>
-            <th>Action</th>
-          </tr>
-
-          @if(count($ownReservations)> 0)
-            @foreach($ownReservations as $reservation)
-            <tr>
-              <td> {{ $reservation->title }}</td>
-              <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
-              <td> {{ $reservation->court->name }}</td>
-              <td> {{$reservation->type_reservation->type}}</td>
-              <td> <button class="btn btn-primary">Modifier</button></td>
-            </tr>
-            @endforeach
-          @else
-              <tr><td colspan="5">Aucune réservation</td><tr>
-          @endif
+        <table class="table table-striped" style="text-align:center;">
+            <thead>
+                <tr>
+                    <th>Libellé</th>
+                    <th>Date et heure</th>
+                    <th>Court</th>
+                    <th>Type de réservation</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if(count($ownReservations)> 0)
+                @foreach($ownReservations as $reservation)
+                    <tr>
+                        <td> {{ $reservation->title }}</td>
+                        <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
+                        <td> {{ $reservation->court->name }}</td>
+                        <td> {{$reservation->type_reservation->type}}</td>
+                        <td class="option-zone">
+                            <button class="btn btn-warning option" data-action="edit" data-url="">
+                                <span class="fa fa-edit"></span>
+                            </button>
+                            <form class="delete" role="form" method="POST" action="/staff_booking/{{$reservation->id}}">
+                                {!! csrf_field() !!}
+                                {!! method_field('DELETE') !!}
+                                <button class="btn btn-danger option" data-action="delete-reservation" data-court="{{$court->title}}">
+                                    <span class="fa fa-trash"></span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr><td colspan="5">Aucune réservation</td><tr>
+            @endif
+            </tbody>
         </table>
 
     </div>
