@@ -45,7 +45,7 @@
                         </form>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="nonmember-invite">
-                        <div class="row pull-right"><span class="mandatory">*</span> obligatoire</div><br>
+                        <div class="pull-right"><span class="mandatory">*</span> obligatoire</div><br>
                         <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
                             {{ csrf_field() }}
                             {{ method_field('POST') }}
@@ -82,7 +82,7 @@
                     </div>
                 </div>
               @else
-                  <div class="row pull-right"><span class="mandatory">*</span> obligatoire</div><br>
+                  <div class="pull-right"><span class="mandatory">*</span> obligatoire</div><br>
                   <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
                       {{ csrf_field() }}
                       {{ method_field('POST') }}
