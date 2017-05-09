@@ -73,7 +73,7 @@ Route::group(['middleware' => ['web']], function ()
 
 
 
-    Route::group(['namespace' => 'Registration'], function()
+    Route::group(['namespace' => 'Registration', 'middleware' => 'profileIsValide'], function()
     {
         /*
         * register page
