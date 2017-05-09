@@ -124,10 +124,10 @@
             cursor: default;
         }
         .tab-content .aucune{background-color: #afa;}
-        .tab-content .simple2{background-color: #ffa;}
+        .tab-content .simple2{background-color: #FDE994;}
         .tab-content .vc-passed{background-color: #e7e7e7;}
         .tab-content .vc-passed:hover{cursor: not-allowed;}
-        .tab-content .vc-own-planif{filter: hue-rotate(-60deg);}
+        .tab-content .vc-own-planif{background-color: #FDE994;}
     </style>
 
 {{--    {!! Html::script('/ajax/calendar.js') !!}
