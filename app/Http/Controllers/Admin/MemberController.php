@@ -206,13 +206,28 @@ class MemberController extends Controller
             $regexTel = "/^(((\+|00)\d{2,3})|0)([.\/ -]?\d){9}$/";
             if(!preg_match($regexTel, $request->input('telephone')))
             {
-                $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 0244521212)');
+                $validator->errors()->add('telephone', 'Ce numéro n\'est pas valide (format: 012 123 12 12)');
             }
 
+            /** Check for a minimum of one admin in the database **/
+            $adminUsers = User::where([['isAdmin', 1], ['validated', 1], ['active', 1]])->get();
+            $userID = $adminUsers[0]->fkPersonalInformation;
+            $currentID = $request->input("member-id");
+
+            if ($adminUsers->count() == 1 && $userID == $currentID) {
+              if ($request->input('isAdmin') == null) {
+                $validator->errors()->add('adminRole', 'Il doit au moins y avoir un admin dans le système.');
+              }
+              elseif ($request->input("active") == null) {
+                $validator->errors()->add('accountActive', 'Il doit au moins y avoir un admin dans le système.');
+              }
+            }
 
         });
 
         /////////////////////////////////////////////
+
+
 
         // Display errors messages, return to update page
         //-------------------------------------------------
@@ -238,10 +253,7 @@ class MemberController extends Controller
 
         $userInfo->update($request->all());
         //$member->UpdateAccount($request->all());
-
-
         $userInfo->save();
-
 
         //IGI - flash message and come back to the edit member page
         Session::flash('message', "Les modifications ont bien été enregistrées");
