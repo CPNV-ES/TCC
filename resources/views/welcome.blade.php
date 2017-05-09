@@ -174,7 +174,7 @@
         }
         .aucune{background-color: #afa;}
         .simple2{background-color: #ffa;}
-        .vc-passed{filter: brightness(0.9);}
+        .vc-passed{background-color: #e7e7e7;}
         .vc-passed:hover{cursor: not-allowed;}
         .vc-own-planif{filter: hue-rotate(-60deg);}
     </style>
