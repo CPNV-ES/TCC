@@ -59,14 +59,18 @@
 }
 
 .verif_message_error {
-    color: #da5d5d;
+    color: #D9534F;
 }
 
 .verif_error {
-    border: 1px solid #da5d5d;
+    border: 1px solid #D9534F;
 }
 
 .member-list tr, .member-list td {
     height: 10px;
     padding: 3px !important;
+}
+
+.mandatory {
+  color: #D9534F;
 }
