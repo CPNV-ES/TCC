@@ -49,13 +49,36 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('datetime-start')) {{'has-error'}} @endif">
+
+                                    <div class="form-group @if($errors->has('hour-start')) {{'has-error'}} @endif">
+                                        <label for="recipient-name" class="control-label">
+                                            Heure début*:
+                                        </label>
+                                        @php($start_hour = new DateTime($config->courtOpenTime))
+                                        @php($end_hour = new \DateTime($config->courtCloseTime))
+
+                                        <select class="form-control" name="hour-start">
+                                            {{--Loop between start and end hour configure in configs table--}}
+                                            @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
+                                                <option value="{{$i}}" @if(old('hour-start') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+                                                @php($start_hour->modify('+1 hour'))
+                                            @endfor
+                                        </select>
+                                        @if ($errors->has('hour-start'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('hour-start') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+
+
+                                    <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date*:</label>
-                                        <input class="form-control datetime-picker"  type="date" name="datetime-start" id="datetime-start" value="{{old('datetime-start')}}" data-verif="required|date_time"/>
-                                        @if ($errors->has('datetime-start'))
+                                        <input class="form-control date-picker"  type="date" name="date-start" id="date-start" value="{{old('date-start')}}" data-verif="required"/>
+                                        @if ($errors->has('date-start'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('datetime-start') }}</strong>
+                                                <strong>{{ $errors->first('date-start') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -248,9 +271,9 @@
                         <td> {{ $reservation->court->name }}</td>
                         <td> {{$reservation->type_reservation->type}}</td>
                         <td class="option-zone">
-                            <button class="btn btn-warning option" data-action="edit" data-url="">
+                            <!-- <button class="btn btn-warning option" data-action="edit" >
                                 <span class="fa fa-edit"></span>
-                            </button>
+                            </button> -->
                             <form class="delete" role="form" method="POST" action="/staff_booking/{{$reservation->id}}">
                                 {!! csrf_field() !!}
                                 {!! method_field('DELETE') !!}

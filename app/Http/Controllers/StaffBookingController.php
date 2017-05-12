@@ -49,7 +49,7 @@ class StaffBookingController extends Controller
     public function     store(Request $request)
     {
         //if there is a datetime-end it's a multiple reservation otherwise it's a simple reservation
-        if(Input::has('date-start') && Input::has('date-end'))
+        if(Input::has('date-end'))
         {
             $validator = Validator::make($request->all(),
                 [
@@ -174,11 +174,13 @@ class StaffBookingController extends Controller
             $validator = Validator::make($request->all(),
                 [
                     'title-simple-res'      => 'required|max:50',
-                    'datetime-start'        => 'required|max:16',
+                    'date-start'            => 'required|max:16',
+                    'hour-start'            => 'required|max:2',
                     'court'                 => 'required|exists:courts,id'
                 ],
                 [
-                    'title-simple-res'      => 'Libellé',
+                    'title-simple-res.name' => 'Libellé',
+                    'hour-start.name'       => 'heure de début',
                     'court.exists'          => 'Ce court n\'existe pas, veuillez choisir un court dans la liste déroulante',
                     'datetime-start.name'   => 'date choisie'
                 ]
@@ -195,7 +197,9 @@ class StaffBookingController extends Controller
             }
 
             $datetime_today = new \DateTime();
-            $datetime_start = date_create_from_format('d.m.Y H:i', $request->input('datetime-start'));
+            $datetime_start = date_create_from_format('d-m-Y G', $request->input('date-start')." ".$request->input('hour-start'));
+
+
 
             if($datetime_start < $datetime_today)
             {
@@ -204,7 +208,7 @@ class StaffBookingController extends Controller
             }
             if(!Reservation::isHourFree($court->id, $datetime_start->format('Y-m-d H:i:s')))
             {
-              $validator->errors()->add('datetime-start', 'Cette heure n\'est pas libre');
+              $validator->errors()->add('date-start', 'Cette heure n\'est pas libre');
             }
             if(count($validator->errors()->all()))
             {
