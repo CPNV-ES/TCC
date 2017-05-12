@@ -173,8 +173,8 @@
             cursor: default;
         }
         .aucune{background-color: #afa;}
-        .simple2{background-color: #ffa;}
-        .vc-passed{background-color: #FDE994;}
+        .simple2{background-color: #FDE994;}
+        .vc-passed{background-color: #e7e7e7;}
         .vc-passed:hover{cursor: not-allowed;}
         .vc-own-planif{background-color: #FDE994;}
     </style>
