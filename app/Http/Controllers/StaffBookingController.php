@@ -27,7 +27,8 @@ class StaffBookingController extends Controller
         $ownReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '>=', $startDate->format('Y-m-d H:i'))->orderBy('dateTimeStart', 'asc')->get();
         $config = Config::orderBy('created_at', 'desc')->first();
 
-        return view('staffBooking.home', compact('courts', 'ownReservations', 'config'));
+        $oldReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '<', $startDate->format('Y-m-d H:i'))->orderBy('dateTimeStart', 'asc')->get();
+        return view('staffBooking.home', compact('courts', 'ownReservations', 'config', 'oldReservations'));
     }
 
     /**
@@ -185,7 +186,6 @@ class StaffBookingController extends Controller
                     'datetime-start.name'   => 'date choisie'
                 ]
             );
-
 
             $court = Court::find($request->input('court'));
 

@@ -284,6 +284,16 @@
                         </td>
                     </tr>
                 @endforeach
+                @foreach($oldReservations as $reservation)
+                  <tr class="old-reservations hide">
+                      <td> {{ $reservation->title }}</td>
+                      <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
+                      <td> {{ $reservation->court->name }}</td>
+                      <td> {{$reservation->type_reservation->type}}</td>
+                      <td class="option-zone">-</td>
+                  </tr>
+                @endforeach
+                <tr><td colspan="5"><button class="btn btn-primary" id="btnOldReservation">Afficher les anciennes réservations</button></td><tr>
             @else
                 <tr><td colspan="5">Aucune réservation</td><tr>
             @endif
@@ -311,7 +321,10 @@
              autoclose: true
 
          });
-
+         $("#btnOldReservation").click(function(){
+           $(".old-reservations").toggleClass();
+           $("#btnOldReservation").text("Cacher les anciennes réservations"); 
+         });
         document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
             VERIF.verifForm('simple-reservation-form',function(isOk){
                 if(isOk) document.forms["simple-reservation-form"].submit();
