@@ -505,7 +505,12 @@ footer p {
 .option-zone form {
     display: inline-block;
 }
-
+#old-reservations-div
+{
+    display: none;
+    max-height:500px;
+    overflow-y: scroll;
+}
 @media only screen and (max-width: 767px) {
   #status-info-warning, #status-info {
     display: none;

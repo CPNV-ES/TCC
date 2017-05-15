@@ -32,7 +32,47 @@
       </script>
     </td>
   </tr>
+
   @endforeach
+
 </table>
+<div id="old-reservations-div">
+  <h4>Mes réservations passées </h4>
+  <table class="table" style="text-align:center;">
+  <tr>
+    <th>Date et heure</th>
+    <th>Court</th>
+    <th>Par qui ?</th>
+    <th>Avec qui ?</th>
+    <th>Action</th>
+  </tr>
+
+  @foreach($oldReservations as $reservation)
+
+    <tr >
+      <td> {{ date('d.m.Y H:i', strtotime($reserv->dateTimeStart)) }}</td>
+      <td> {{ $reservation->court->name }}</td>
+      <td>{{ $reservation->personal_information_who->firstname }} {{ $reservation->personal_information_who->lastname }}</td>
+      <td>@if($reservation->personal_information_with_who){{ $reservation->personal_information_with_who->firstname }} {{ $reservation->personal_information_with_who->lastname }}@else - @endif</td>
+      <td>
+  -
+      </td>
+    </tr>
+
+
+  @endforeach
+  </table>
 </div>
+  <div class="text-center">
+    <button class="btn btn-primary" id="btnOldReservation" data-show="false" style="align:center;">Afficher les réservations passées</button>
+  </div>
+</div>
+<script>
+    $("#btnOldReservation").click(function(){
+        $("#old-reservations-div").toggle(300);
+        if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les réservations passées");
+        else $("#btnOldReservation").text("Afficher les réservations passées").data("show", false);
+    });
+
+</script>
 @endif
