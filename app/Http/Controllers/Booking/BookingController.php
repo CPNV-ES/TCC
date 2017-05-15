@@ -232,7 +232,7 @@ class BookingController extends Controller
         Session::flash('currentCourt', $fkCourt);
         if(Auth::check())
         {
-
+          $is_non_member = false;
             $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
             $userWho = User::find(Auth::user()->id);
             $personalInfoWho = User::find(Auth::user()->id)->personal_information;
@@ -332,6 +332,7 @@ class BookingController extends Controller
 
         }
         else {
+          $is_non_member = true;
             $validator = Validator::make($request->all(),
                 [
                     'firstname' => 'required|max:50',
@@ -418,10 +419,12 @@ class BookingController extends Controller
 
 
         if(isset($personalInfoWho)) {
-          $locid = PersonalInformation::setLocality($request->input('npa'),$request->input('locality'));
-          $rq = $request->except("_token");
-          $rq['fkLocality']=$locid;
-          $personalInfoWho = new PersonalInformation($rq);
+          if ($is_non_member) {
+            $locid = PersonalInformation::setLocality($request->input('npa'),$request->input('locality'));
+            $information['fkLocality'] = $locid;
+            $information = $request->except("_token");
+            $personalInfoWho = new PersonalInformation($information);
+          }
           $personalInfoWho->save();
         }
         // Insert in DB
