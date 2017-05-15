@@ -27,7 +27,10 @@ class StaffBookingController extends Controller
         $ownReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '>=', $startDate->format('Y-m-d H:i'))->orderBy('dateTimeStart', 'asc')->get();
         $config = Config::orderBy('created_at', 'desc')->first();
 
-        $oldReservations = Reservation::where('fkWho' , Auth::user()->fkPersonalInformation)->where('fkWithWho', null)->where('dateTimeStart' , '<', $startDate->format('Y-m-d H:i'))->orderBy('dateTimeStart', 'asc')->get();
+        $oldReservations = Reservation::where('fkWho' , Auth::user()
+                                       ->fkPersonalInformation)->where('fkWithWho', null)
+                                       ->where('dateTimeStart' , '<', $startDate->format('Y-m-d H:i'))
+                                       ->orderBy('dateTimeStart', 'asc')->get();
         return view('staffBooking.home', compact('courts', 'ownReservations', 'config', 'oldReservations'));
     }
 
