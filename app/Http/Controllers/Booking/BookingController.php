@@ -154,6 +154,7 @@ class BookingController extends Controller
 
           $queryBoth = DB::table('personal_informations')
                         ->join('reservations AS r', 'r.fkWithWho', '=', 'personal_informations.id')
+                        ->rightJoin('users AS u', 'u.fkPersonalInformation', '=', 'personal_informations.id')
                         ->where('r.fkWho', '=', PersonalInformation::find(Auth::user()->id)->id)
                         ->unionAll($queryWho)
                         ->groupBy('personal_informations.id')
@@ -171,7 +172,10 @@ class BookingController extends Controller
             $id_member_fav[] = $value['id'];
           }
 
-          $allMember = PersonalInformation::whereNotIn('id', $id_member_fav)->get()->sortBy('firstname');
+          $allMember = PersonalInformation::whereNotIn('personal_informations.id', $id_member_fav)
+                        ->rightJoin('users AS u', 'u.fkPersonalInformation', '=', 'personal_informations.id')
+                        ->get()
+                        ->sortBy('firstname');
 
           $startDate = new \DateTime();
           $endDate= (new \DateTime())->add(new \DateInterval('P5D'));

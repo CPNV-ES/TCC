@@ -20,8 +20,8 @@
                     <input type="hidden" name="baseurl-del-reserv" id="baseurl-del-reserv" value="{{ url('/booking/')}}">
                     @if (!Auth::check())
                         <div class="form-group @if($errors->has('firstname')) {{'has-error'}} @endif" >
-                            <label for="recipient-name" class="control-label">
-                                Email*:</label>
+                          <div class="pull-right"><span class="mandatory">*</span> obligatoire</div>
+                            <label for="recipient-name" class="control-label">Email <span class="mandatory">*</span></label>
 
                             <input class="form-control" type="email" placeholder="Entrez votre email" value="{{old('email')}}" name="email" data-verif="required|email" />
                             @if ($errors->has('firstname'))
