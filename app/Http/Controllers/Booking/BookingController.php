@@ -338,21 +338,20 @@ class BookingController extends Controller
                     'lastname' => 'required|max:50',
                     'street' => 'max:100',
                     'streetNbr' => 'max:45',
-                    'phone' => 'required',
+                    'telephone' => 'required',
                     'email' => 'required|email|max:255',
-                    'locality' => 'required|exists:localities,id',
-                ],
-                [
-                    'locality.exists' => 'Cette localité n\'existe pas, si vous ne trouvez pas votre localité veuillez choisir "autre"'
+                    'locality'     => 'required',
+                    'npa'          => 'required|integer|digits:4',
                 ]
                 );
             $validator->setAttributeNames([
-                'firstname' => 'prénom',
-                'lastname' => 'nom',
-                'street' => 'rue',
-                'streetNbr' => 'numéro de rue',
-                'phone' => 'téléphone',
-                'locality' => 'localité'
+                'firstname' => 'Prénom',
+                'lastname' => 'Nom',
+                'street' => 'Rue',
+                'streetNbr' => 'Numéro de rue',
+                'telephone' => 'Téléphone',
+                'locality' => 'Localité',
+                'npa' => 'NPA'
             ]);
             if($validator->fails())
             {
@@ -418,7 +417,13 @@ class BookingController extends Controller
         if(isset($personalInfoWithWho))$personalInfoWithWho->save();
 
 
-        if(isset($personalInfoWho))$personalInfoWho->save();
+        if(isset($personalInfoWho)) {
+          $locid = PersonalInformation::setLocality($request->input('npa'),$request->input('locality'));
+          $rq = $request->except("_token");
+          $rq['fkLocality']=$locid;
+          $personalInfoWho = new PersonalInformation($rq);
+          $personalInfoWho->save();
+        }
         // Insert in DB
         //-------------
         $reservationInfo = [
