@@ -285,7 +285,7 @@
                     </tr>
                 @endforeach
                 @foreach($oldReservations as $reservation)
-                  <tr class="old-reservations hide">
+                  <tr class="old-reservations" style="display:none;">
                       <td> {{ $reservation->title }}</td>
                       <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
                       <td> {{ $reservation->court->name }}</td>
@@ -293,7 +293,7 @@
                       <td class="option-zone">-</td>
                   </tr>
                 @endforeach
-                <tr><td colspan="5"><button class="btn btn-primary" id="btnOldReservation">Afficher les anciennes réservations</button></td><tr>
+                <tr><td colspan="5"><button class="btn btn-primary" id="btnOldReservation" data-show="false" >Afficher les anciennes réservations</button></td><tr>
             @else
                 <tr><td colspan="5">Aucune réservation</td><tr>
             @endif
@@ -322,8 +322,12 @@
 
          });
          $("#btnOldReservation").click(function(){
-           $(".old-reservations").toggleClass();
-           $("#btnOldReservation").text("Cacher les anciennes réservations"); 
+           $(".old-reservations").toggle();
+           if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les anciennes réservations");
+           else $("#btnOldReservation").text("Afficher les anciennes réservations").data("show", false);
+
+
+
          });
         document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
             VERIF.verifForm('simple-reservation-form',function(isOk){
