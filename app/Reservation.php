@@ -92,7 +92,6 @@ class Reservation extends Model
           })->get();
           //print_r(count($myReservs));die;
           if(count($myReservs)>=$config->nbReservations ) $readOnly=true;
-            
           foreach($myReservsByCourts as $planifiedReservation )
           {
               $res[]=[
@@ -100,7 +99,7 @@ class Reservation extends Model
                   'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
                   'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
                   'description' => $planifiedReservation->id,
-                  'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp())
+                  'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp() && $planifiedReservation->personal_information_with_who != null)
               ];
           }
         }
