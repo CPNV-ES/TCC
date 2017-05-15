@@ -42,7 +42,7 @@ Description: Displays a form with the informations of a member. The inputs of th
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 @if($errors->has('firstname')) {{'has-error'}} @endif  ">
               <label for="example-text-input" class="col-2 col-form-label">Prénom <span class="mandatory">*</span></label>
               <div >
-                  <input class="form-control" id="firstname" name="firstname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $personal_information->firstname }}" >
+                  <input class="form-control" id="firstname" name="firstname" data-verif-group="edit-group-form" data-verif="required|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $personal_information->firstname }}" >
                   @if ($errors->has('firstname'))
                       <span class="help-block">
                           <strong>{{ $errors->first('firstname') }}</strong>
@@ -53,7 +53,7 @@ Description: Displays a form with the informations of a member. The inputs of th
             <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('lastname')) {{'has-error'}} @endif">
               <label for="example-text-input" name="lbl_lastname" class="col-2 col-form-label">Nom <span class="mandatory">*</span></label>
               <div >
-                  <input class="form-control" id="lastname" name="lastname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $personal_information->lastname }}" >
+                  <input class="form-control" id="lastname" name="lastname" data-verif-group="edit-group-form" data-verif="required|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $personal_information->lastname }}" >
                   @if ($errors->has('lastname'))
                       <span class="help-block">
                           <strong>{{ $errors->first('lastname') }}</strong>
@@ -77,7 +77,7 @@ Description: Displays a form with the informations of a member. The inputs of th
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('street')) {{'has-error'}} @endif">
               <label for="example-text-input" name="lbl_street" class="col-2 col-form-label">Rue <span class="mandatory">*</span></label>
               <div>
-                  <input class="form-control" name="street" id="street" data-verif-group="edit-group-form" data-verif="text|min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $personal_information->street }}" >
+                  <input class="form-control" name="street" id="street" data-verif-group="edit-group-form" data-verif="min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $personal_information->street }}" >
                   @if ($errors->has('street'))
                       <span class="help-block">
                           <strong>{{ $errors->first('street') }}</strong>
@@ -90,7 +90,7 @@ Description: Displays a form with the informations of a member. The inputs of th
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('streetNbr')) {{'has-error'}} @endif">
               <label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue <span class="mandatory">*</span></label>
               <div >
-                  <input class="form-control" name="streetNbr" id="streetNbr" data-verif-group="edit-group-form" data-verif="text|min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $personal_information->streetNbr }}" >
+                  <input class="form-control" name="streetNbr" id="streetNbr" data-verif-group="edit-group-form" data-verif="min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $personal_information->streetNbr }}" >
               </div>
           </div>
 

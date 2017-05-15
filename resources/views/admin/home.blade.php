@@ -70,16 +70,14 @@
                             {!! method_field('put') !!}
 
 
-                            <div class="form-group">
+                            <div class="form-group {{ $errors->has('login'.$user->id) ? 'has-error' : '' }}">
                                 <input type="text" class="form-control" data-verif="required|alphanumerique|min_l:5|max_l:25" placeholder="Saisissez un login"
                                        name="login{{$user->id}}" value="{{ old('login'.$user->id) }}">
 
                                 @if ($errors->has('login'.$user->id))
-
-                                    <span class="help-block">
-                                            <strong>{{$errors->first('login'.$user->id)}}</strong>
-                                        </span>
-
+                                  <span class="help-block">
+                                    <strong>{{$errors->first('login'.$user->id)}}</strong>
+                                  </span>
                                 @endif
                             </div>
 

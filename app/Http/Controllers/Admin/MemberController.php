@@ -293,9 +293,7 @@ class MemberController extends Controller
         // Check form
         //-----------
         $validator = Validator::make($request->all(),
-            [
-                'login'.$id     => 'required',
-            ],
+            ['login'.$id     => 'required'],
             ['login'.$id.'.required' => 'Le champ login est obligatoire.']);
 
         /////////////////////////////////////////////
@@ -324,7 +322,7 @@ class MemberController extends Controller
         // Insert the login, status, token and validate account
         //-----------------------------------------------------
 
-        $member = User::find($id);
+        $member = User::where('fkPersonalInformation', $id)->first();
 
         $member->UpdateLogin($request->input('login'.$id));
 
