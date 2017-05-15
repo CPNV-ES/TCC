@@ -255,6 +255,7 @@ class BookingController extends Controller
                 ->where(function($q){
                     $Userid=Auth::user()->id;
                     $q->where('fkWho', $Userid);
+                    $q->where('fkWithWho', '<>', 'null');
                     $q->orWhere('fkWithWho', $Userid);
                 })->count();
 
