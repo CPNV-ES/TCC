@@ -69,7 +69,11 @@ class Reservation extends Model
 
         if (Auth::check()) {
           $Userid=Auth::user()->id;
-          $myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+
+          //DELETE ME
+          //$myReservs=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+
+          $myReservs=Reservation::where('dateTimeStart', '>',$startDate->format('Y-m-d H:i'))
           ->whereNull('confirmation_token')
           ->where(function($q){
               $Userid=Auth::user()->id;
@@ -85,7 +89,11 @@ class Reservation extends Model
               $q->orWhere('fkWithWho', $Userid);
           })->get();
           //print_r(count($myReservs));die;
-          if(count($myReservs)>=$config->nbReservations )$readOnly=true;
+          if(count($myReservs)>=$config->nbReservations ) $readOnly=true;
+
+
+
+
 
           foreach($myReservsByCourts as $planifiedReservation )
           {
@@ -99,6 +107,8 @@ class Reservation extends Model
           }
         }
         else{
+
+
             $nonMemberReservation = Reservation::whereHas('personal_information_who' ,function($q){
                 $q->has('user', '<', 1);
             })->where('confirmation_token', null)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:1'), $endDate->format('Y-m-d').' 23:59'])->get();
