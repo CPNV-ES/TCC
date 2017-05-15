@@ -69,7 +69,9 @@
 </div>
 <script>
     $("#btnOldReservation").click(function(){
-        $("#old-reservations-div").toggle(300);
+        $("#old-reservations-div").toggle(300, function() {
+          footerAlign();
+        });
         if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les réservations passées");
         else $("#btnOldReservation").text("Afficher les réservations passées").data("show", false);
     });
