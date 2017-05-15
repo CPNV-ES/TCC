@@ -78,8 +78,10 @@ class Reservation extends Model
           ->where(function($q){
               $Userid=Auth::user()->id;
               $q->where('fkWho', $Userid);
+              $q->where('fkWithWho', '<>', 'null');
               $q->orWhere('fkWithWho', $Userid);
           })->get();
+
           $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
           ->where('fkCourt',$court->id)
           ->whereNull('confirmation_token')
@@ -90,11 +92,7 @@ class Reservation extends Model
           })->get();
           //print_r(count($myReservs));die;
           if(count($myReservs)>=$config->nbReservations ) $readOnly=true;
-
-
-
-
-
+            
           foreach($myReservsByCourts as $planifiedReservation )
           {
               $res[]=[
