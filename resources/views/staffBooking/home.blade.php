@@ -325,9 +325,6 @@
            $(".old-reservations").toggle();
            if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les anciennes réservations");
            else $("#btnOldReservation").text("Afficher les anciennes réservations").data("show", false);
-
-
-
          });
         document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
             VERIF.verifForm('simple-reservation-form',function(isOk){

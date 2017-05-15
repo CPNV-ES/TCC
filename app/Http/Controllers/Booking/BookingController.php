@@ -180,18 +180,28 @@ class BookingController extends Controller
           $startDate = new \DateTime();
           $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
           $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])->has('personal_information_with_who')
-               ->where(function($q){
-                   $Userid=Auth::user()->id;
-                   $q->where('fkWho', $Userid);
-                   $q->orWhere('fkWithWho', $Userid);
-               })->get();
+            ->where(function($q){
+                $Userid=Auth::user()->id;
+                $q->where('fkWho', $Userid);
+                $q->orWhere('fkWithWho', $Userid);
+            })
+            ->orderBy('dateTimeStart', 'desc')
+            ->get();
+          $oldReservations = Reservation::where('dateTimeStart', '<', $startDate->format('Y-m-d H:i'))->has('personal_information_with_who')
+              ->where(function($q){
+                  $Userid=Auth::user()->id;
+                  $q->where('fkWho', $Userid);
+                  $q->orWhere('fkWithWho', $Userid);
+              })
+              ->orderBy('dateTimeStart', 'desc')
+              ->get();
 
           //we merge the two collections of members then we sort by reservations_count (desc)
           // $membersList = $allMember->merge($memberFav);
           // $membersList = $membersList->sortByDesc('reservations_count');
           $membersList = $memberFav->merge($allMember);
 
-          return view('booking/home',compact('membersList', 'courts', 'ownreservs'));
+          return view('booking/home',compact('membersList', 'courts', 'ownreservs', 'oldReservations'));
         }
         else {
 
