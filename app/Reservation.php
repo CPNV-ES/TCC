@@ -97,7 +97,7 @@ class Reservation extends Model
               $res[]=[
                   'datetime' => $planifiedReservation->dateTimeStart,
                   'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
-                  'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                  'title' => ($planifiedReservation->title != null) ? $planifiedReservation->title : $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
                   'description' => $planifiedReservation->id,
                   'clickable' => ((new \DateTime($planifiedReservation->dateTimeStart))->getTimestamp() > $startDate->getTimestamp() && $planifiedReservation->personal_information_with_who != null)
               ];
@@ -129,7 +129,7 @@ class Reservation extends Model
             $res[]=[
                 'datetime' => $planifiedReservation->dateTimeStart,
                 'type' => $planifiedReservation->type_reservation->type, // that's going to the class of the box
-                'title' => $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
+                'title' => ($planifiedReservation->title != null) ? $planifiedReservation->title : $planifiedReservation->personal_information_who->firstname.' '.$planifiedReservation->personal_information_who->lastname,
                 'description' => $planifiedReservation->id,
                 'clickable' => false
             ];
