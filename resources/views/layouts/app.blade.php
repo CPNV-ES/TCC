@@ -109,15 +109,22 @@
                             <a href="{{ url('/login') }}">Connexion</a>
                         </li>
                         @else
-                          @if (Auth::user()->invitRight == 0)
+                          @if (Auth::user()->invitRight == 0 || maxReservations())
                             <div id="status-info-warning">
                               <i id="warning-triangle" class="fa fa-exclamation-triangle fa-2x"></i>
                               <div id="status-info">
                                 <div>
                                   <b><i class="text-warning">Statuts</i></b>
-                                  <p>
-                                    Vous n'avez pas le droit d'inviter!
-                                  </p>
+                                  @if (Auth::user()->invitRight == 0)
+                                    <p>
+                                      Vous n'avez pas le droit d'inviter!
+                                    </p>
+                                  @endif
+                                  @if (maxReservations())
+                                    <p>
+                                      Vous avez atteint le nombre maximum de réservation simultanée!
+                                    </p>
+                                  @endif
                                 </div>
                               </div>
                             </div>

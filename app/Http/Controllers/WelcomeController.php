@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Court;
 use App\Locality;
 use App\PersonalInformation;
+use App\Reservation;
+use App\Config;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +24,20 @@ class WelcomeController extends Controller
       $courts = Court::where('state', 1)->get()->sortBy('name');
       $localities = Locality::all();
       if (Auth::check()) {
+        // $todayDateTime = date('Y-m-d H:i:s');
+        // $config = Config::first();
+        // $nbReservations = Reservation::where('dateTimeStart', '>=', $todayDateTime)
+        //                     ->where(function($q) {
+        //                         $Userid=Auth::user()->id;
+        //                         $q->where('fkWho', $Userid);
+        //                         $q->where('fkWithWho', '<>', 'null');
+        //                         $q->orWhere('fkWithWho', $Userid);
+        //                     })->count();
+        //
+        // $max_reservations = false;
+        // if ($nbReservations >= $config['nbReservations']) {
+        //   $max_reservations = true;
+        // }
 
         $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
 
@@ -52,18 +68,18 @@ class WelcomeController extends Controller
 
         $allMember = PersonalInformation::whereNotIn('id', $id_member_fav)->get()->sortBy('firstname');
 
-        //we merge the two collections of members then we sort by reservations_count (desc)
-        $startDate = new \DateTime();
-        $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-        $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-             ->where(function($q){
-                 $Userid=Auth::user()->id;
-                 $q->where('fkWho', $Userid);
-                 $q->orWhere('fkWithWho', $Userid);
-             })->get();
+        // //we merge the two collections of members then we sort by reservations_count (desc)
+        // $startDate = new \DateTime();
+        // $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
+        // $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
+        //      ->where(function($q){
+        //          $Userid=Auth::user()->id;
+        //          $q->where('fkWho', $Userid);
+        //          $q->orWhere('fkWithWho', $Userid);
+        //      })->get();
 
         $membersList = $memberFav->merge($allMember);
-        return view('welcome', compact('membersList','courts', 'ownreservs'));
+        return view('welcome', compact('membersList','courts'));
       }
       else {
         return view('welcome', compact('courts', 'localities'));
