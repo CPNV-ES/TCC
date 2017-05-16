@@ -173,10 +173,12 @@
             cursor: default;
         }
         .aucune{background-color: #afa;}
-        .simple2{background-color: #FDE994;}
-        .vc-passed{background-color: #e7e7e7;}
-        .vc-passed:hover{cursor: not-allowed;}
-        .vc-own-planif{background-color: #FDE994;}
+        .tab-content .simple2{background-color: #FDE994;}
+        .tab-content .vc-passed{background-color: #e7e7e7;}
+        .tab-content .vc-passed:hover{cursor: not-allowed;}
+        .tab-content .vc-own-planif{background-color: #FDE994;}
+        .tab-content .quotidienne{background-color: #ffb2c1;}
+        .tab-content .hebdomadaire{background-color: #88e6ff;}
     </style>
 
     {{--<div class="container">--}}

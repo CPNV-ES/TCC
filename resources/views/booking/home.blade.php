@@ -128,6 +128,8 @@
         .tab-content .vc-passed{background-color: #e7e7e7;}
         .tab-content .vc-passed:hover{cursor: not-allowed;}
         .tab-content .vc-own-planif{background-color: #FDE994;}
+        .tab-content .quotidienne{background-color: #ffb2c1;}
+        .tab-content .hebdomadaire{background-color: #88e6ff;}
     </style>
 
 {{--    {!! Html::script('/ajax/calendar.js') !!}
