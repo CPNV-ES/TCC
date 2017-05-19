@@ -216,7 +216,13 @@ Description: Displays a form with the informations of a member. The inputs of th
     </form>
   </div>
   <script>
+
+
         $("#btn-member-edit").click(function(){
+             @if($errors->any())
+                 lockedForm = false;
+             @endif
+
             if(lockedForm == false)
             {
                 $("#firstname").val("{{$personal_information->firstname}}");
@@ -243,7 +249,4 @@ Description: Displays a form with the informations of a member. The inputs of th
         let btn=document.getElementById('btn-member-save');
         VERIF.onClickSubmitAfterVerifGroup(btn,'form-edit-member','edit-group-form');
     </script>
-
-
-
 @endsection

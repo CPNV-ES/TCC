@@ -45,8 +45,9 @@ $(document).ready(function () {
 
 //IGI lock/ unlock form
 var lockedForm= true;
-function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
+function lockForm(idForm, idBtnEdit, idBtnSave, locked = true )
 {
+    console.log(locked);
     if(locked)
     {
         $(idBtnSave).hide();
@@ -56,10 +57,12 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
         $(idBtnEdit).prop('disabled',false);
     }
     else {
+
         $(idBtnEdit).html('Annuler');
     }
     $(idBtnEdit).on('click',function(){
-        if(lockedForm)
+
+        if(locked)
         {
             $(idBtnSave).show();
             $(idBtnEdit).html('Annuler');
@@ -67,7 +70,8 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
                 if($(this).prev().prop('type') != 'button') $(this).prop('disabled', false);
             });
             $(idBtnEdit).prop('disabled',false);
-            lockedForm = false;
+            locked = false;
+            lockedForm = false
         }
         else
         {
@@ -77,6 +81,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked=true )
                 if($(this).prev().prop('type') != 'button') $(this).prop('disabled', true);
             });
             $(idBtnEdit).prop('disabled',false);
+            locked = true;
             lockedForm = true;
 
         }
