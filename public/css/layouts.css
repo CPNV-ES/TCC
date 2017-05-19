@@ -433,7 +433,7 @@ footer p {
   position: relative;
   display: inline-block;
   top: 12px;
-  right: 150px;
+  float: left;
 }
 
 #warning-triangle {
@@ -493,6 +493,7 @@ footer p {
 #status-info p {
   margin: 0;
 }
+
 .spacer
 {
     margin-top: 50px;
@@ -505,15 +506,16 @@ footer p {
 .option-zone form {
     display: inline-block;
 }
+
 #old-reservations-div
 {
     display: none;
     max-height:500px;
     overflow-y: scroll;
 }
+
 @media only screen and (max-width: 767px) {
   #status-info-warning, #status-info {
     display: none;
   }
 }
-
