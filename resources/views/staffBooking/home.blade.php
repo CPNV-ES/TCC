@@ -161,7 +161,10 @@
                                     <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date début*:</label>
-                                        <input class="form-control date-picker" type="text" name="date-start" id="date-start" readonly  value="{{old('date-start')}}" data-verif="required"/>
+                                        <input class="form-control date-picker" type="text" name="date-start" id="date-start" readonly  value="{{old('date-start')}}"
+                                          data-verif="required"
+                                          data-verif-on-blur="false"
+                                        />
                                         @if ($errors->has('date-start'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('date-start') }}</strong>
@@ -171,7 +174,10 @@
                                     <div class="form-group @if($errors->has('date-end')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label">
                                             Date fin*:</label>
-                                        <input class="form-control date-picker" type="text" name="date-end" id="date-end" readonly  value="{{old('date-end')}}" data-verif="required"/>
+                                        <input class="form-control date-picker" type="text" name="date-end" id="date-end" readonly  value="{{old('date-end')}}"
+                                            data-verif="required"
+                                            data-verif-on-blur="false"
+                                          />
                                         @if ($errors->has('date-end'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('date-end') }}</strong>

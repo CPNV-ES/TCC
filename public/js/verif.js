@@ -6,16 +6,17 @@
  'use strict';
  if(Array.prototype.forEach==undefined) Array.prototype.forEach=function(cb){for(var i=0;i<this.length;i++){cb(this[i],i);}}
  if(NodeList.prototype.forEach==undefined) NodeList.prototype.forEach=Array.prototype.forEach;
- 
+
 
  var VERIF = {
-   version: '1.0.0',
+   version: '1.0.1',
    init: function init() {
      var elems = document.querySelectorAll('[data-verif]');
      elems.forEach(function (item) {
-       item.addEventListener('blur', function (ev) {
-         VERIF.verif(item);
-       });
+       if(item.dataset.verifOnBlur!='false')
+         item.addEventListener('blur', function (ev) {
+           VERIF.verif(item);
+         });
      });
    },
    verif: function verif(me, endCb) {
