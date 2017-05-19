@@ -13,7 +13,7 @@
    init: function init() {
      var elems = document.querySelectorAll('[data-verif]');
      elems.forEach(function (item) {
-       if(item.dataset.verifOnBlur!='false')
+       if(item.getAttribute('data-verif-on-blur')!='false')
          item.addEventListener('blur', function (ev) {
            VERIF.verif(item);
          });
@@ -21,7 +21,7 @@
    },
    verif: function verif(me, endCb) {
      endCb = endCb || function () {};
-     var rules = me.dataset.verif.split('|');
+     var rules = me.getAttribute('data-verif').split('|');
      var data = me.value;
      var before = me.previousElementSibling;
      var parent = me.parentElement;

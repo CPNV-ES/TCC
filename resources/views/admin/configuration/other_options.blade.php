@@ -110,7 +110,7 @@
       }
     });
     lockForm('#form-edit-other-options', '#btn-edit','#btn-save',{{($errors->any()) ? 'false' : 'true' }});
-    let btn = document.getElementById('btn-save');
+    var btn = document.getElementById('btn-save');
     VERIF.onClickSubmitAfterVerifForm(btn,'other-options-form');
     </script>
 

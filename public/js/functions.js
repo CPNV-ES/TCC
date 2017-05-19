@@ -45,8 +45,9 @@ $(document).ready(function () {
 
 //IGI lock/ unlock form
 var lockedForm= true;
-function lockForm(idForm, idBtnEdit, idBtnSave, locked = true )
+function lockForm(idForm, idBtnEdit, idBtnSave, locked )
 {
+    locked=locked||true;
     console.log(locked);
     if(locked)
     {

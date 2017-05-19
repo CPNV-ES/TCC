@@ -246,7 +246,7 @@ Description: Displays a form with the informations of a member. The inputs of th
             }
         });
         lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save',{{($errors->any()) ? 'false' : 'true' }});
-        let btn=document.getElementById('btn-member-save');
+        var btn=document.getElementById('btn-member-save');
         VERIF.onClickSubmitAfterVerifGroup(btn,'form-edit-member','edit-group-form');
     </script>
 @endsection
