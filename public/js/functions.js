@@ -43,11 +43,20 @@ $(document).ready(function () {
     });
 });
 
-//IGI function used to lock/unlock form
-// idForm is the
+/*
+IGI function used to lock/unlock form
+*   @param  String idForm, id of the form. As to looked like #idForm,
+*   @param  String idBtnEdit is the button used to edit the form
+*   @param  String IdBtnSave is the button used to save the form
+*   @param  String locked boolean defined if the form is locked or not at the beggining. Usefull if we have to unlock the form
+*                  because of backend error (laravel error)
+*   @param  Callback function
+*
+*/
 function lockForm(idForm, idBtnEdit, idBtnSave, locked, callBackFunction)
 {
     if (typeof(locked)==='undefined') locked = true;
+    callBackFunction = callBackFunction || function(){};
     lockedForm = false;
     if(locked)
     {
@@ -63,7 +72,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked, callBackFunction)
     }
     $(idBtnEdit).on('click',function(){
 
-        callBackFunction(locked);
+        if (callBackFunction !== undefined)  callBackFunction(locked);
         if(locked)
         {
             $(idBtnSave).show();
