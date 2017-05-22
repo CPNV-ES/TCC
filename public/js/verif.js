@@ -172,9 +172,9 @@
      },
      text: {
        control: function control(res, data) {
-         res(/^[\w\ ]+$/.test(data.trim()));
+         res(/^[A-zÀ-ÿ0-9\.\_ -]+$/.test(data.trim()));
        },
-       errorText: 'Ce champs dois être alphanumerique [A-Za-z0-9_ ]'
+       errorText: 'Ce champs dois être alphanumerique [A-z À-ÿ 0-9 ._ ]'
      },
      int: {
        control: function control(res, data) {
