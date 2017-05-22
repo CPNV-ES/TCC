@@ -43,6 +43,9 @@
     {!! Html::script('/js/customVerif.js') !!}
     {!! Html::script('/js/functions.js') !!}
 
+    {!! Html::script('/js/verif-duplicate-id.js') !!}
+    
+
 </head>
 <body>
 <div id="wrapper">

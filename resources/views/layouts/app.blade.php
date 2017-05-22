@@ -43,6 +43,7 @@
         {!! Html::script('/js/verif.js') !!}
         {!! Html::script('/js/customVerif.js') !!}
 
+        {!! Html::script('/js/verif-duplicate-id.js') !!}
 
 
         {{-- <script>
