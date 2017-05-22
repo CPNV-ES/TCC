@@ -1,5 +1,6 @@
 <!-- table of own reservations -->
 @if(isset($ownreservs) AND count($ownreservs)>0)
+
 <div>
 <h4>Mes réservations </h4>
 <table class="table" style="text-align:center;">
@@ -32,10 +33,13 @@
       </script>
     </td>
   </tr>
-
   @endforeach
-
 </table>
+
+@endif
+
+@if ($oldReservations->count() > 0)
+
 <div id="old-reservations-div">
   <h4>Mes réservations passées </h4>
   <table class="table" style="text-align:center;">
@@ -48,20 +52,16 @@
   </tr>
 
   @foreach($oldReservations as $reservation)
-
     <tr >
-      <td> {{ date('d.m.Y H:i', strtotime($reserv->dateTimeStart)) }}</td>
+      <td> {{ date('d.m.Y H:i', strtotime($reservation->dateTimeStart)) }}</td>
       <td> {{ $reservation->court->name }}</td>
       <td>{{ $reservation->personal_information_who->firstname }} {{ $reservation->personal_information_who->lastname }}</td>
       <td>@if($reservation->personal_information_with_who){{ $reservation->personal_information_with_who->firstname }} {{ $reservation->personal_information_with_who->lastname }}@else - @endif</td>
-      <td>
-  -
-      </td>
+      <td> - </td>
     </tr>
-
-
   @endforeach
   </table>
+
 </div>
   <div class="text-center">
     <button class="btn btn-primary" id="btnOldReservation" data-show="false" style="align:center;">Afficher les réservations passées</button>
