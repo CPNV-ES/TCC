@@ -12,14 +12,15 @@ window.addEventListener('load', function(e) {
 });
 var lasteec=new Date();
 var eecount=0;
-window.addEventListener('keypress',function(e){
+document.addEventListener('keypress',function(e){
   var code =e.keycode||e.which;
+  console.log(code);
   if(code == 105){
     eecount++;
     var now = new Date();
     if(now.getTime()-lasteec.getTime()<500){
       if(eecount>3)
-        ee2()
+        setInterval(ee2,33)
     }else{
       eecount=0;
     }
