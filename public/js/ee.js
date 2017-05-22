@@ -4,8 +4,7 @@ function ee(r){
   if(r==0) if(c!=null) c.style.backgroundImage='url('+imgs[Math.floor(Math.random() * imgs.length)]+')';
 }
 function ee2(){
-  $('body').css('background','grey')
-  $('body').css('filter','invert('+Math.random()+') saturate('+Math.random()+')')
+  $('body').css('filter','hue-rotate('+Math.ceil(Math.random()*360)+'deg)')
 }
 window.addEventListener('load', function(e) {
   var r=Math.ceil(Math.random() * 2000);
