@@ -35,7 +35,7 @@
   </tr>
   @endforeach
 </table>
-
+</div>
 @endif
 
 @if ($oldReservations->count() > 0)
@@ -66,7 +66,6 @@
   <div class="text-center">
     <button class="btn btn-primary" id="btnOldReservation" data-show="false" style="align:center;">Afficher les réservations passées</button>
   </div>
-</div>
 <script>
     $("#btnOldReservation").click(function(){
         $("#old-reservations-div").toggle(300, function() {
