@@ -112,7 +112,7 @@ Description: Displays a form with the informations of a member. The inputs of th
                 <select class="form-control" id="locality" name="locality">
                     @foreach($localities as $locality)
                      <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                     <option id="locality{{$personal_information->fkLocality}}" value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
+                     <option id="locality{{$locality->id}}" value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
                     @endforeach
                 </select>
             </div>
@@ -217,36 +217,36 @@ Description: Displays a form with the informations of a member. The inputs of th
   </div>
   <script>
 
-
-        $("#btn-member-edit").click(function(){
-             @if($errors->any())
-                 lockedForm = false;
-             @endif
-
-            if(lockedForm == false)
+        $(document).ready(function(){
+            function restoreOldValue(lockedForm)
             {
-                $("#firstname").val("{{$personal_information->firstname}}");
-                $("#lastname").val("{{$personal_information->lastname}}");
-                $("#email").val("{{$personal_information->email}}");
-                $("#street").val("{{$personal_information->street}}");
-                $("#telephone").val("{{$personal_information->telephone}}");
-                $("#streetNbr").val("{{$personal_information->streetNbr}}");
-                $("#isAdmin").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isAdmin == 1) ? "true": "false") : 'false')}});
-                $("#isTrainer").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isTrainer == 1) ? "true": "false") : 'false')}});
-                $("#isMember").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isMember == 1) ? "true": "false") : 'false')}});
-                $("#active").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isMember == 1) ? "true": "false") : 'false')}});
-                $("#toVerify").prop('checked', {{($personal_information->toVerify == 1) ? "true": "false"}});
-                $("#invitRight").prop('checked', {{(($personal_information->user) ? (($personal_information->user->invitRight == 1) ? "true": "false") : 'false')}});
-                $("#validated").prop('checked', {{(($personal_information->user) ? (($personal_information->user->validated == 1) ? "true": "false") : 'false')}})
-                $("#locality{{$personal_information->fkLocality}}").prop('selected', true);
-                $(".help-block").remove();
-                $(".has-error").removeClass("has-error");
-                $(".verif_message_error").remove();
-                $(".verif_error").removeClass("verif_error");
+                if(lockedForm == false)
+                {
+                    $("#firstname").val("{{$personal_information->firstname}}");
+                    $("#lastname").val("{{$personal_information->lastname}}");
+                    $("#email").val("{{$personal_information->email}}");
+                    $("#street").val("{{$personal_information->street}}");
+                    $("#telephone").val("{{$personal_information->telephone}}");
+                    $("#streetNbr").val("{{$personal_information->streetNbr}}");
+                    $("#isAdmin").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isAdmin == 1) ? "true": "false") : 'false')}});
+                    $("#isTrainer").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isTrainer == 1) ? "true": "false") : 'false')}});
+                    $("#isMember").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isMember == 1) ? "true": "false") : 'false')}});
+                    $("#active").prop('checked', {{(($personal_information->user) ? (($personal_information->user->isMember == 1) ? "true": "false") : 'false')}});
+                    $("#toVerify").prop('checked', {{($personal_information->toVerify == 1) ? "true": "false"}});
+                    $("#invitRight").prop('checked', {{(($personal_information->user) ? (($personal_information->user->invitRight == 1) ? "true": "false") : 'false')}});
+                    $("#validated").prop('checked', {{(($personal_information->user) ? (($personal_information->user->validated == 1) ? "true": "false") : 'false')}})
+                    $("#locality{{$personal_information->fkLocality}}").prop('selected', true);
+                    $(".help-block").remove();
+                    $(".has-error").removeClass("has-error");
+                    $(".verif_message_error").remove();
+                    $(".verif_error").removeClass("verif_error");
+                }
             }
+
+            lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save',{{($errors->any()) ? 'false' : 'true' }}, restoreOldValue);
+
+            var btn=document.getElementById('btn-member-save');
+            VERIF.onClickSubmitAfterVerifGroup(btn,'form-edit-member','edit-group-form');
         });
-        lockForm('#form-edit-member', '#btn-member-edit','#btn-member-save',{{($errors->any()) ? 'false' : 'true' }});
-        var btn=document.getElementById('btn-member-save');
-        VERIF.onClickSubmitAfterVerifGroup(btn,'form-edit-member','edit-group-form');
     </script>
 @endsection

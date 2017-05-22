@@ -43,12 +43,12 @@ $(document).ready(function () {
     });
 });
 
-//IGI lock/ unlock form
-var lockedForm= true;
-function lockForm(idForm, idBtnEdit, idBtnSave, locked )
+//IGI function used to lock/unlock form
+// idForm is the
+function lockForm(idForm, idBtnEdit, idBtnSave, locked, callBackFunction)
 {
-    locked=locked||true;
-    console.log(locked);
+    if (typeof(locked)==='undefined') locked = true;
+    lockedForm = false;
     if(locked)
     {
         $(idBtnSave).hide();
@@ -63,6 +63,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked )
     }
     $(idBtnEdit).on('click',function(){
 
+        callBackFunction(locked);
         if(locked)
         {
             $(idBtnSave).show();
@@ -72,7 +73,7 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked )
             });
             $(idBtnEdit).prop('disabled',false);
             locked = false;
-            lockedForm = false
+
         }
         else
         {
@@ -83,8 +84,6 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked )
             });
             $(idBtnEdit).prop('disabled',false);
             locked = true;
-            lockedForm = true;
-
         }
     });
 }
