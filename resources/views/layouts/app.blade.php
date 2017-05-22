@@ -43,27 +43,6 @@
         {!! Html::script('/js/verif.js') !!}
         {!! Html::script('/js/customVerif.js') !!}
 
-        {!! Html::script('/js/verif-duplicate-id.js') !!}
-
-
-        {{-- <script>
-            is_logged = "{{ Auth::check() }}";
-            @if (Auth::check())
-                    member_last_name = "{{ Auth::user()->username }}";
-            @endif
-
-            $.ajaxSetup({
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('Accept', 'application/json');
-                    xhr.setRequestHeader('X-Accept', 'application/json');
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                }
-            });
-        </script> --}}
-
-
     </head>
     <body id="app-layout">
         <nav class="navbar navbar-default">
@@ -175,21 +154,23 @@
         $('footer').attr('style', '');
       }
     }
+    function statusMobile() {
+      if ($(window).width() < 767) {
+        $('#status-info-warning').appendTo($('.navbar-header'));
+      }
+      else {
+        $('#status-info-warning').insertBefore($('.nav.navbar-nav.navbar-right .dropdown'));
+      }
+    }
     $(document).ready(function(){
       footerAlign();
+      statusMobile();
     });
 
     $( window ).resize(function() {
       footerAlign();
+      statusMobile();
     });
-    // $(document).ready(function() {
-    //   $('#status-info-warning').hover(function() {
-    //     $('#status-info').css("display", "block");
-    //   },
-    //   function() {
-    //     $('#status-info').css("display", "none");
-    //   });
-    // });
     </script>
 
 </html>

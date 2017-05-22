@@ -18,9 +18,6 @@
     {!! Html::style('/css/timeline.css')!!}
     {!! Html::style('/css/datatables.css')!!}
 
-    <!--{!! Html::style('/css/jqx.base.css')!!}
-    {!! Html::style('/css/jqx.bootstrap.css')!!}-->
-
     {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
 
     {!! Html::script('/js/jquery-2.2.0.js') !!}
@@ -32,12 +29,6 @@
     {!! Html::script('/js/bootstrap-datepicker.fr-CH.min.js') !!}
 
     {!! Html::script('/js/metisMenu/dist/metisMenu.min.js') !!}
-<!--
-    {!! Html::script('/js/raphael/raphael-min.js') !!}
-    {{--{!! Html::script('/js/morrisjs/morris.min.js') !!}--}}
-    {{--{!! Html::script('/js/morris-data.js') !!}--}}
-
-    {{--{!! Html::script('/js/jqwidget/jqx-all.js') !!}--}} -->
 
     {!! Html::script('/js/verif.js') !!}
     {!! Html::script('/js/customVerif.js') !!}
@@ -130,21 +121,13 @@
             <div class="col-lg-12">
                 <h1 class="page-header">@yield('title')</h1>
             </div>
-            <!-- /.col-lg-12 -->
         </div>
         @yield('content')
     </div>
-    <!-- /#page-wrapper -->
 
 </div>
-<!-- /#wrapper -->
-<!--
 {!! Html::script('/js/jqwidget/globalize.js') !!}
 {!! Html::script('/js/jqwidget/localization.js') !!}
-{{--{!! Html::script('/ajax/members.js') !!}--}}
-{{--{!! Html::script('/ajax/courts.js') !!}--}}
-{{--{!! Html::script('/ajax/subscriptions.js') !!}--}}
-{{--{!! Html::script('/ajax/seasons.js') !!}--}} -->
 
 
 <script>
