@@ -12,7 +12,7 @@
                             {!! csrf_field() !!}
 
                             <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Prénom <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Prénom</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" class="form-control" name="firstname"
@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Nom <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Nom</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:30" class="form-control" name="lastname"
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Rue <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Rue</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:60" class="form-control" name="street" value="{{ old('street') }}">
@@ -59,7 +59,7 @@
                                 </div>
                             </div>
                             <div class="form-group{{ $errors->has('streetNbr') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Numéro <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Numéro</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:10" class="form-control" name="streetNbr" value="{{ old('streetNbr') }}">
@@ -74,7 +74,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('npa') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">NPA <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">NPA</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|int|min_l:4|max_l:4" class="form-control" name="npa"
@@ -88,7 +88,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('locality') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Ville <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Ville</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:45" class="form-control" name="locality" value="{{ old('locality') }}">
@@ -101,7 +101,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">E-mail <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">E-mail</label>
 
                                 <div class="col-md-6">
                                     <input type="email" data-verif-group="register_form" data-verif="required|email" class="form-control" name="email" value="{{ old('email') }}">
@@ -116,7 +116,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('telephone') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Téléphone <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Téléphone</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|phone" class="form-control" name="telephone"
@@ -132,7 +132,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('birthDate') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Date de naissance <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Date de naissance</label>
 
                                 <div class="col-md-6">
                                     <input type="text" data-verif-group="register_form" data-verif="required|date_us|date_past|date_more_diff:72" class="form-control" id="birth_date" name="birthDate"

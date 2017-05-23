@@ -512,7 +512,8 @@ footer p {
     margin-top: 50px;
 }
 
-.mandatory {
+.mandatory::after {
+  content: " *";
   color: #D9534F;
 }
 

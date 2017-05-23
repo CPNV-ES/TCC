@@ -38,7 +38,7 @@
 </div>
 @endif
 
-@if ($oldReservations->count() > 0)
+@if (isset($oldReservations) && $oldReservations->count() > 0)
 
 <div id="old-reservations-div">
   <h4>Mes réservations passées </h4>

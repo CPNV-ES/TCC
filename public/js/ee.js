@@ -14,7 +14,6 @@ var lasteec=new Date();
 var eecount=0;
 document.addEventListener('keypress',function(e){
   var code =e.keycode||e.which;
-  console.log(code);
   if(code == 105){
     eecount++;
     var now = new Date();

@@ -40,8 +40,9 @@
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
                                     <div class="form-group @if($errors->has('title-simple-res')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Libellé*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Libellé
+                                          </label>
                                         <input class="form-control"  type="text" name="title-simple-res" id="title-simple-res" value="{{old('title-simple-res')}}" data-verif="required|text"/>
                                         @if ($errors->has('title-simple-res'))
                                             <span class="help-block">
@@ -51,8 +52,8 @@
                                     </div>
 
                                     <div class="form-group @if($errors->has('hour-start')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Heure début*:
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Heure début
                                         </label>
                                         @php($start_hour = new DateTime($config->courtOpenTime))
                                         @php($end_hour = new \DateTime($config->courtCloseTime))
@@ -73,8 +74,9 @@
 
 
                                     <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Date*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Date
+                                          </label>
                                         <input class="form-control date-picker"  type="date" name="date-start" id="date-start" value="{{old('date-start')}}" data-verif="required"/>
                                         @if ($errors->has('date-start'))
                                             <span class="help-block">
@@ -83,8 +85,9 @@
                                         @endif
                                     </div>
                                     <div class="form-group @if($errors->has('court')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Choix du court*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Choix du court
+                                          </label>
                                         <select class="form-control" name="court">
                                             @foreach($courts as $court)
                                                 <option value="{{$court->id}}"> {{$court->name}} </option>
@@ -110,8 +113,9 @@
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
                                     <div class="form-group @if($errors->has('title-multiple-res')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Libellé*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Libellé
+                                          </label>
                                         <input class="form-control"  type="text" name="title-multiple-res" id="title-multiple-res" value="{{old('title-multiple-res')}}" data-verif="required|text"/>
                                         @if ($errors->has('title-multiple-res'))
                                             <span class="help-block">
@@ -120,8 +124,8 @@
                                         @endif
                                     </div>
                                     <div class="form-group @if($errors->has('hour-start')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Heure début*:
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Heure début
                                         </label>
                                         @php($start_hour = new DateTime($config->courtOpenTime))
                                         @php($end_hour = new \DateTime($config->courtCloseTime))
@@ -140,8 +144,8 @@
                                         @endif
                                     </div>
                                     <div class="form-group @if($errors->has('hour-end')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Heure fin*:
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Heure fin
                                           </label>
                                           <select class="form-control" name="hour-end">
                                               @php($start_hour = new DateTime($config->courtOpenTime))
@@ -159,8 +163,9 @@
                                     </div>
 
                                     <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Date début*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Date début
+                                          </label>
                                         <input class="form-control date-picker" type="text" name="date-start" id="date-start" readonly  value="{{old('date-start')}}"
                                           data-verif="required"
                                           data-verif-on-blur="false"
@@ -172,8 +177,9 @@
                                         @endif
                                     </div>
                                     <div class="form-group @if($errors->has('date-end')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Date fin*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Date fin
+                                          </label>
                                         <input class="form-control date-picker" type="text" name="date-end" id="date-end" readonly  value="{{old('date-end')}}"
                                             data-verif="required"
                                             data-verif-on-blur="false"
@@ -185,8 +191,9 @@
                                         @endif
                                     </div>
                                     <div class="form-group @if($errors->has('type-reservation')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Type de réservation (fréquence)*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Type de réservation (fréquence)
+                                          </label>
                                         <select class="form-control" name="type-reservation">
                                             <option value="2">Quotidienne</option>
                                             <option value="3">Hebodmadaire</option>
@@ -199,8 +206,9 @@
                                         @endif
                                     </div>
                                     <div class="form-group @if($errors->has('court')) {{'has-error'}} @endif">
-                                        <label for="recipient-name" class="control-label">
-                                            Choix du court*:</label>
+                                        <label for="recipient-name" class="control-label mandatory">
+                                            Choix du court
+                                          </label>
                                         <select class="form-control" name="court">
                                             @foreach($courts as $court)
                                                 <option value="{{$court->id}}"> {{$court->name}} </option>
