@@ -26,12 +26,12 @@
                             </div>
                         @endif
                     </div>
-                    <div class="pull-right"><span class="mandatory">*</span> obligatoire</div>
+                    <div class="pull-right"><span class="mandatory"></span> obligatoire</div>
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/profile/update') }}">
                         {!! method_field('put') !!}
                         {!! csrf_field() !!}
                         <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Prénom <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Prénom</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="firstname" value="{{ (old('firstname') != '' ? old('firstname') : (!empty($infosUser) ? $infosUser->firstname : '')) }}">
@@ -45,7 +45,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Nom <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Nom</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="lastname" value="{{ (old('lastname') != '' ? old('lastname') : (!empty($infosUser) ? $infosUser->lastname : '')) }}">
@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Rue <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Rue</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="street" value="{{ (old('street') != '' ? old('street') : (!empty($infosUser) ? $infosUser->street : '')) }}">
@@ -73,7 +73,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('streetNbr') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Numéro de rue <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Numéro de rue</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="streetNbr" value="{{ (old('streetNbr') != '' ? old('streetNbr') : (!empty($infosUser) ? $infosUser->streetNbr : '')) }}">
@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('npa') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">NPA <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">NPA</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="npa" value="{{ (old('npa') != '' ? old('npa') : (($infosUser->localities != null) ? $infosUser->localities->npa : '')) }}">
 
@@ -100,7 +100,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('locality') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Ville <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Ville</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="locality" value="{{ (old('locality') != '' ? old('locality') : (($infosUser->localities != null) ? $infosUser->localities->name : '')) }}">
@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-mail <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">E-mail</label>
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" value="{{ (old('email') != '' ? old('email') : (!empty($infosUser) ? $infosUser->email : '')) }}">
@@ -128,7 +128,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('telephone') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Téléphone <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Téléphone</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="telephone" value="{{ (old('telephone') != '' ? old('telephone') : (!empty($infosUser) ? $infosUser->telephone : '')) }}">
@@ -142,7 +142,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('birthDate') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Date de naissance <span class="mandatory">*</span></label>
+                            <label class="col-md-4 control-label mandatory">Date de naissance</label>
 
                             <div class="col-md-6">
                                 <input id="birthDate" type="text" class="form-control" name="birthDate" value="{{ (old('birthDate') != '' ? old('birthDate') : (!empty($infosUser) ? date("Y-m-d", strtotime($infosUser->birthDate)) : '')) }}">
