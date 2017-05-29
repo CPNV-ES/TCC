@@ -24,8 +24,7 @@
                             <input type="hidden" class="reservation-date" name="dateTimeStart">
                             <input type="hidden" class="fkCourt" id="fkCourt" name="fkCourt" value=1>
                             <div class="form-group">
-                                <label for="recipient-name" class="control-label">Choissiez
-                                    adversaire:</label>
+                                <label for="recipient-name" class="control-label">Choissiez adversaire</label>
                                  <select name="fkWithWho" class="form-control">
                                     @foreach($membersList as $member)
                                       @if($member->reservations_count != null)
@@ -45,12 +44,22 @@
                         </form>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="nonmember-invite">
-                        <div class="pull-right"><span class="mandatory"></span> obligatoire</div><br>
+                      <div class="pull-right"><span class="mandatory"></span> obligatoire</div>
                         <form method="post" role="form" method="POST" action="{{ url('/booking')}}" name="reservation-member-invite-form" >
                             {{ csrf_field() }}
                             {{ method_field('POST') }}
                             <input type="hidden" class="reservation-date" name="dateTimeStart">
                             <input type="hidden" class="fkCourt" name="fkCourt" value=1>
+
+                            <div class="form-group @if($errors->has('invitLastname')) {{'has-error'}} @endif">
+                                <label for="recipient-name" class="control-label mandatory">Nom de l'invité</label>
+                                <input class="form-control" type="text" name="invitLastname" value="{{old('invitLastname')}}" data-verif="required|text|min_l:2|max_l:45"/>
+                                @if ($errors->has('invitLastname'))
+                                    <span class="help-block">
+                                          <strong>{{ $errors->first('invitLastname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
 
                             <div class="form-group @if($errors->has('invitFirstname')) {{'has-error'}} @endif" >
                                 <label for="recipient-name" class="control-label mandatory">Prénom de l'invité</label>
@@ -58,15 +67,6 @@
                                 @if ($errors->has('invitFirstname'))
                                     <span class="help-block">
                                           <strong>{{ $errors->first('invitFirstname') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                            <div class="form-group @if($errors->has('invitLastname')) {{'has-error'}} @endif">
-                                <label for="recipient-name" class="control-label mandatory">Nom de l'invité</label>
-                                <input class="form-control" type="text" name="invitLastname" value="{{old('invitLastname')}}" data-verif="required|text|min_l:2|max_l:45"/>
-                                @if ($errors->has('invitLastname'))
-                                    <span class="help-block">
-                                          <strong>{{ $errors->first('invitLastname') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -89,15 +89,6 @@
                       <input type="hidden" class="reservation-date" name="dateTimeStart">
                       <input type="hidden" class="fkCourt" id="fkCourt" name="fkCourt" value=1>
 
-                      <div class="form-group @if($errors->has('firstname')) {{'has-error'}} @endif" >
-                          <label for="recipient-name" class="control-label mandatory">Prénom</label>
-                          <input class="form-control" type="text" value="{{old('firstname')}}" name="firstname" data-verif="required|text|min_l:2|max_l:45" />
-                          @if ($errors->has('firstname'))
-                              <span class="help-block">
-                                  <strong>{{ $errors->first('firstname') }}</strong>
-                              </span>
-                          @endif
-                      </div>
                       <div class="form-group @if($errors->has('lastname')) {{'has-error'}} @endif">
                           <label for="recipient-name" class="control-label mandatory">Nom</label>
                           <input class="form-control" type="text" name="lastname" value="{{old('lastname')}}" data-verif="required|text|min_l:2|max_l:45"/>
@@ -107,24 +98,17 @@
                               </span>
                           @endif
                       </div>
-                      <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
-                          <label for="recipient-name" class="control-label mandatory">Email</label>
-                          <input class="form-control" type="text" name="email" value="{{old('email')}}" data-verif="required|email"/>
-                          @if ($errors->has('email'))
+
+                      <div class="form-group @if($errors->has('firstname')) {{'has-error'}} @endif" >
+                          <label for="recipient-name" class="control-label mandatory">Prénom</label>
+                          <input class="form-control" type="text" value="{{old('firstname')}}" name="firstname" data-verif="required|text|min_l:2|max_l:45" />
+                          @if ($errors->has('firstname'))
                               <span class="help-block">
-                                  <strong>{{ $errors->first('email') }}</strong>
+                                  <strong>{{ $errors->first('firstname') }}</strong>
                               </span>
                           @endif
                       </div>
-                      <div class="form-group @if($errors->has('telephone')) {{'has-error'}} @endif">
-                          <label for="recipient-name" class="control-label mandatory">Téléphone</label>
-                          <input class="form-control" type="text" name="telephone" value="{{old('telephone')}}" data-verif="required|phone"/>
-                          @if ($errors->has('telephone'))
-                              <span class="help-block">
-                                  <strong>{{ $errors->first('telephone') }}</strong>
-                              </span>
-                          @endif
-                      </div>
+
                       <div class="form-group @if($errors->has('street')) {{'has-error'}} @endif">
                           <label for="recipient-name" class="control-label mandatory">Rue</label>
                           <input class="form-control" type="text" name="street" value="{{old('street')}}" data-verif="required|min_l:2|max_l:45"/>
@@ -134,6 +118,7 @@
                               </span>
                           @endif
                       </div>
+
                       <div class="form-group @if($errors->has('streetNbr')) {{'has-error'}} @endif">
                           <label for="recipient-name" class="control-label mandatory">Numéro de rue</label>
                           <input class="form-control" type="text" name="streetNbr" value="{{old('streetNbr')}}" data-verif="required|min_l:1|max_l:45"/>
@@ -143,22 +128,6 @@
                               </span>
                           @endif
                       </div>
-
-                      {{-- <div class="form-group @if($errors->has('locality')) {{'has-error'}} @endif">
-                          <label for="recipient-name" class="control-label mandatory">Ville</label>
-                          <select class="form-control" id="locality" name="locality">
-                              <option id="locality" value="-1" selected>Choisissez une localité</option>
-                              @foreach($localities as $locality)
-                                  <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                                      <option id="locality" value="{{$locality->id}}" @if ($locality->id == old('locality')) selected @endif> {{$locality->npa.' - '.$locality->name}} </option>
-                              @endforeach
-                          </select>
-                          @if ($errors->has('locality'))
-                              <span class="help-block">
-                                  <strong>{{ $errors->first('locality') }}</strong>
-                              </span>
-                          @endif
-                      </div> --}}
 
                       <div class="form-group{{ $errors->has('npa') ? ' has-error' : '' }}">
                         <label class="control-label mandatory">NPA</label>
@@ -177,6 +146,26 @@
                               <span class="help-block">
                               <strong>{{ $errors->first('locality') }}</strong>
                           </span>
+                          @endif
+                      </div>
+
+                      <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
+                          <label for="recipient-name" class="control-label mandatory">E-mail</label>
+                          <input class="form-control" type="text" name="email" value="{{old('email')}}" data-verif="required|email"/>
+                          @if ($errors->has('email'))
+                              <span class="help-block">
+                                  <strong>{{ $errors->first('email') }}</strong>
+                              </span>
+                          @endif
+                      </div>
+
+                      <div class="form-group @if($errors->has('telephone')) {{'has-error'}} @endif">
+                          <label for="recipient-name" class="control-label mandatory">Téléphone</label>
+                          <input class="form-control" type="text" name="telephone" value="{{old('telephone')}}" data-verif="required|phone"/>
+                          @if ($errors->has('telephone'))
+                              <span class="help-block">
+                                  <strong>{{ $errors->first('telephone') }}</strong>
+                              </span>
                           @endif
                       </div>
 

@@ -30,19 +30,6 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/profile/update') }}">
                         {!! method_field('put') !!}
                         {!! csrf_field() !!}
-                        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label mandatory">Prénom</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="firstname" value="{{ (old('firstname') != '' ? old('firstname') : (!empty($infosUser) ? $infosUser->firstname : '')) }}">
-
-                                @if ($errors->has('firstname'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('firstname') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label mandatory">Nom</label>
@@ -53,6 +40,20 @@
                                 @if ($errors->has('lastname'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('lastname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label mandatory">Prénom</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="firstname" value="{{ (old('firstname') != '' ? old('firstname') : (!empty($infosUser) ? $infosUser->firstname : '')) }}">
+
+                                @if ($errors->has('firstname'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('firstname') }}</strong>
                                     </span>
                                 @endif
                             </div>

@@ -25,7 +25,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Réservation</h4>
+                        <h4 class="modal-title" id="myModalLabel">Réservation Staff</h4>
                     </div>
                     <div class="modal-body">
                         <!-- Nav tabs -->
@@ -33,8 +33,8 @@
                             <li role="presentation" @if(session()->has('showSimpleResForm')) class="active" @elseif(!session()->has('showMultResForm')) class="active" @endif><a href="#simple" aria-controls="home" role="tab" data-toggle="tab">Réservation simple</a></li>
                             <li role="presentation" @if(session()->has('showMultResForm')) class="active" @endif><a href="#multiple" aria-controls="profile" role="tab" data-toggle="tab">Réservation multiple</a></li>
                         </ul>
-
                         <div class="tab-content">
+                          <div class="pull-right"><span class="mandatory"></span> obligatoire</div>
                             <div role="tabpanel" class="tab-pane @if(session()->has('showSimpleResForm') || !session()->has('showMultResForm')) active @endif" id="simple">
                                 <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="simple-reservation-form">
                                     {{ csrf_field() }}
@@ -105,7 +105,6 @@
                                         <button type="button" id="btn-simple-reservation" class="btn btn-success btn-block" name="btn-reserver">
                                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                             Réserver
-
                                         </button>
                                     </div>
                                 </form>
@@ -225,7 +224,6 @@
                                         <button type="button" id="btn-multiple-reservation" class="btn btn-success btn-block" name="btn-reserver">
                                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                             Réserver
-
                                         </button>
                                     </div>
                                 </form>
@@ -251,8 +249,6 @@
             <th>Date et heure</th>
             <th>Court</th>
             <th>Type de réservation</th>
-
-
           </tr>
           @foreach(session('conflictReservations') as $reservation)
           <tr>
@@ -315,8 +311,7 @@
                 <td colspan="5">
                   <button class="btn btn-primary" id="btnOldReservation" data-show="false" >Afficher les anciennes réservations</button>
                 </td>
-                <tr>
-
+              <tr>
             @endif
             </tbody>
         </table>
