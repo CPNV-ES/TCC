@@ -10,14 +10,14 @@
                     <div class="body-panel">
                         <div class="password-info">
                           Votre mot de passe doit faire minimum 6 caractères et contenir des lettres et des chiffres.
-                          <div class="pull-right"><span class="mandatory">*</span> obligatoire</div>
+                          <div class="pull-right"><span class="mandatory"></span> obligatoire</div>
                         </div>
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/login') }}">
                             {!! csrf_field() !!}
                             {!! method_field('put') !!}
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Mot de passe <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Mot de passe</label>
                                 <div class="col-md-6">
                                     <input type="password" class="form-control" data-verif="required|min_l:6" name="password">
                                 @if ($errors->has('password'))
@@ -29,7 +29,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Confirmer le mot de passe <span class="mandatory">*</span></label>
+                                <label class="col-md-4 control-label mandatory">Confirmer le mot de passe</label>
                                 <div class="col-md-6">
                                     <input type="password" data-verif="required|min_l:6" class="form-control" name="password_confirmation">
                                 @if ($errors->has('password_confirmation'))
@@ -39,7 +39,6 @@
                                 @endif
                               </div>
                             </div>
-
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
