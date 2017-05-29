@@ -130,7 +130,7 @@
                                         @php($start_hour = new DateTime($config->courtOpenTime))
                                         @php($end_hour = new \DateTime($config->courtCloseTime))
 
-                                        <select class="form-control" name="hour-start">
+                                        <select id="hour-start-dropdown" class="form-control" name="hour-start">
                                             {{--Loop between start and end hour configure in configs table--}}
                                             @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
                                                 <option value="{{$i}}" @if(old('hour-start') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
@@ -147,7 +147,7 @@
                                         <label for="recipient-name" class="control-label mandatory">
                                             Heure fin
                                           </label>
-                                          <select class="form-control" name="hour-end">
+                                          <select id="hour-end-dropdown" class="form-control" name="hour-end">
                                               @php($start_hour = new DateTime($config->courtOpenTime))
                                               @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
                                                   @php($start_hour->modify('+1 hour'))
@@ -317,29 +317,60 @@
     </div>
     </div>
     <script>
+        //if a error occurs we display back the modal
         var hasError = false;
         @if(session()->has('showMultResForm') || session()->has('showSimpleResForm')) {{"hasError = true;"}} @else {{"hasError = false;"}} @endif
         if(hasError)  $("#reservation-modal").modal('show');
 
+        //datepicker configuration
         $('.date-picker').datepicker({
           format: 'dd-mm-yyyy',
           autoclose: true,
           todayHighlight: true,
           language: "fr"
         });
-        date = new Date();
-        $('.datetime-picker').datetimepicker({
-             format: 'dd.mm.yyyy hh:00',
-             startDate: date.toISOString().substr(0, 19),
-             minView: 'day', //to choose hour and not the minutes too
-             autoclose: true
 
-         });
+        $(document).ready(function()
+        {
+            $("#hour-start-dropdown option:selected").each(function(){
+                disabledPastHour(parseInt($(this).val()));
+            });
+
+        });
+
+        //This function is used to disable the endhour that are before the starthour
+        function disabledPastHour(startHour)
+        {
+            $("#hour-end-dropdown option").each(function(){
+                var endHour = parseInt($(this).val());
+                if(startHour < endHour) $(this).attr('disabled', false);
+                else $(this).attr('disabled', true);
+            });
+        }
+
+        //if the hour start is after the end hour we set the end hour one hour after start hour.
+        $("#hour-start-dropdown").change(function(){
+            $("#hour-start-dropdown option:selected" ).each(function() {
+                var startHour = parseInt($(this).val());
+                $("#hour-end-dropdown option:selected").each(function(){
+                    var endHour = parseInt($(this).val());
+                    if(startHour >= endHour) {
+                        var nextHour = startHour + 1;
+                        $("#hour-end-dropdown").val(nextHour);
+                    }
+                });
+                disabledPastHour(startHour);
+            });
+        });
+
+        //display old reservations
          $("#btnOldReservation").click(function(){
            $(".old-reservations").toggle();
            if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les anciennes réservations");
            else $("#btnOldReservation").text("Afficher les anciennes réservations").data("show", false);
          });
+
+         //make verifJS then send the form to the backend
         document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
             VERIF.verifForm('simple-reservation-form',function(isOk){
                 if(isOk) document.forms["simple-reservation-form"].submit();
