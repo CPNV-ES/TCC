@@ -11,6 +11,22 @@
                         <form class="form-horizontal" name="register_form" role="form" method="POST" action="{{ url('/register') }}">
                             {!! csrf_field() !!}
 
+                            <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
+                                <label class="col-md-4 control-label mandatory">Nom</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:30" class="form-control" name="lastname"
+                                           value="{{ old('lastname') }}">
+                                           @if ($errors->has('lastname'))
+
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('lastname') }}</strong>
+                                    </span>
+
+                                    @endif
+                                </div>
+                            </div>
+
                             <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                                 <label class="col-md-4 control-label mandatory">Prénom</label>
 
@@ -22,22 +38,6 @@
 
                                         <span class="help-block">
                                         <strong>{{ $errors->first('firstname') }}</strong>
-                                    </span>
-
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label mandatory">Nom</label>
-
-                                <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:30" class="form-control" name="lastname"
-                                           value="{{ old('lastname') }}">
-                                           @if ($errors->has('lastname'))
-
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('lastname') }}</strong>
                                     </span>
 
                                     @endif
