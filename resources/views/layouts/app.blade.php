@@ -207,7 +207,7 @@
         }
       })();
         function footerAlign() {
-          if ($(document.body).height() < $(window).height()-75) {
+          if (($('.navbar.navbar-default').height() + $('div.container-fluid').height()) < $(window).height()-75) {
             $('footer').css('position', 'fixed');
             $('footer').css('bottom', '0px');
           }
