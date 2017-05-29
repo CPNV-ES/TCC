@@ -132,8 +132,9 @@
                   <div>
             </div>
         </nav>
-
-        @yield('content')
+        <div class="wrapper">
+          @yield('content')
+        </div>
         {!! Html::script('/js/jqwidget/globalize.js') !!}
         {!! Html::script('/js/jqwidget/localization.js') !!}
 
@@ -207,7 +208,7 @@
         }
       })();
         function footerAlign() {
-          if (($('.navbar.navbar-default').height() + $('div.container-fluid').height()) < $(window).height()-75) {
+          if (($('.navbar.navbar-default').height() + $('.wrapper').height()) < $(window).height()-75) {
             $('footer').css('position', 'fixed');
             $('footer').css('bottom', '0px');
           }
