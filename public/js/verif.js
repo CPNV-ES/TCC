@@ -23,10 +23,14 @@
      endCb = endCb || function () {};
      var rules = me.getAttribute('data-verif').split('|');
      var data = me.value;
-     var before = me.previousElementSibling;
+     var before = me.nextElementSibling;
      var parent = me.parentElement;
      var result = true;
      var resnbr = 0;
+
+    //  Struan : Fait en JQuery voir pour changer
+     $(".help-block").remove();
+     $(".has-error").removeClass("has-error");
 
      if (data == '' && rules.indexOf('required') < 0) {
        endCb(true);
@@ -53,9 +57,9 @@
              var before_build = document.createElement('div');
              before_build.className = 'verif_message_error';
 
-             if (before == null) before = parent.insertBefore(before_build, me);
+             if (before == null) before = parent.insertBefore(before_build, me.nextSibling);
              if (before.className.indexOf('verif_message_error') < 0) {
-               before = parent.insertBefore(before_build, me);
+               before = parent.insertBefore(before_build, me.nextSibling);
              }
              var errArg = arg;
              if (typeof VERIF.RULES[rule].argToError != 'undefined') errArg = VERIF.RULES[rule].argToError(arg);
