@@ -58,44 +58,44 @@
                                         @php($start_hour = new DateTime($config->courtOpenTime))
                                         @php($end_hour = new \DateTime($config->courtCloseTime))
 
-                                        <select class="form-control" name="hour-start">
+                                        <select class="form-control" name="hour-start-simple-res">
                                             {{--Loop between start and end hour configure in configs table--}}
                                             @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
-                                                <option value="{{$i}}" @if(old('hour-start') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+                                                <option value="{{$i}}" @if(old('hour-start-simple-res') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
                                                 @php($start_hour->modify('+1 hour'))
                                             @endfor
                                         </select>
-                                        @if ($errors->has('hour-start'))
+                                        @if ($errors->has('hour-start-simple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('hour-start') }}</strong>
+                                                <strong>{{ $errors->first('hour-start-simple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
 
 
-                                    <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('date-start-simple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Date
                                           </label>
-                                        <input class="form-control date-picker"  type="date" name="date-start" id="date-start" value="{{old('date-start')}}" data-verif="required"/>
-                                        @if ($errors->has('date-start'))
+                                        <input class="form-control date-picker"  type="date" name="date-start-simple-res" id="date-start-simple-res" value="{{old('date-start-simple-res')}}" data-verif="required"/>
+                                        @if ($errors->has('date-start-simple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('date-start') }}</strong>
+                                                <strong>{{ $errors->first('date-start-simple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('court')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('court-simple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Choix du court
                                           </label>
-                                        <select class="form-control" name="court">
+                                        <select class="form-control" name="court-simple-res">
                                             @foreach($courts as $court)
                                                 <option value="{{$court->id}}"> {{$court->name}} </option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('court'))
+                                        @if ($errors->has('court-simple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('court') }}</strong>
+                                                <strong>{{ $errors->first('court-simple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -123,70 +123,70 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('hour-start')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('hour-start-multiple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Heure début
                                         </label>
                                         @php($start_hour = new DateTime($config->courtOpenTime))
                                         @php($end_hour = new \DateTime($config->courtCloseTime))
 
-                                        <select id="hour-start-dropdown" class="form-control" name="hour-start">
+                                        <select id="hour-start-dropdown" class="form-control" name="hour-start-multiple-res">
                                             {{--Loop between start and end hour configure in configs table--}}
                                             @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
-                                                <option value="{{$i}}" @if(old('hour-start') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+                                                <option value="{{$i}}" @if(old('hour-start-multiple-res') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
                                                 @php($start_hour->modify('+1 hour'))
                                             @endfor
                                         </select>
-                                        @if ($errors->has('hour-start'))
+                                        @if ($errors->has('hour-start-multiple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('hour-start') }}</strong>
+                                                <strong>{{ $errors->first('hour-start-multiple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('hour-end')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('hour-end-multiple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Heure fin
                                           </label>
-                                          <select id="hour-end-dropdown" class="form-control" name="hour-end">
+                                          <select id="hour-end-dropdown" class="form-control" name="hour-end-multiple-res">
                                               @php($start_hour = new DateTime($config->courtOpenTime))
                                               @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
                                                   @php($start_hour->modify('+1 hour'))
-                                                  <option value="{{$i+1}}" @if(old('hour-end') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+                                                  <option value="{{$i+1}}" @if(old('hour-end-multiple-res') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
 
                                               @endfor
                                           </select>
-                                        @if ($errors->has('hour-end'))
+                                        @if ($errors->has('hour-end-multiple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('hour-end') }}</strong>
+                                                <strong>{{ $errors->first('hour-end-multiple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
 
-                                    <div class="form-group @if($errors->has('date-start')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('date-start-multiple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Date début
                                           </label>
-                                        <input class="form-control date-picker" type="text" name="date-start" id="date-start" readonly  value="{{old('date-start')}}"
+                                        <input class="form-control date-picker" type="text" name="date-start-multiple-res" id="date-start-multiple-res" readonly  value="{{old('date-start-multiple-res')}}"
                                           data-verif="required"
                                           data-verif-on-blur="false"
                                         />
-                                        @if ($errors->has('date-start'))
+                                        @if ($errors->has('date-start-multiple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('date-start') }}</strong>
+                                                <strong>{{ $errors->first('date-start-multiple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('date-end')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('date-end-multiple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Date fin
                                           </label>
-                                        <input class="form-control date-picker" type="text" name="date-end" id="date-end" readonly  value="{{old('date-end')}}"
+                                        <input class="form-control date-picker" type="text" name="date-end-multiple-res" id="date-end-multiple-res" readonly  value="{{old('date-end-multiple-res')}}"
                                             data-verif="required"
                                             data-verif-on-blur="false"
                                           />
-                                        @if ($errors->has('date-end'))
+                                        @if ($errors->has('date-end-multiple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('date-end') }}</strong>
+                                                <strong>{{ $errors->first('date-end-multiple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -197,7 +197,6 @@
                                         <select class="form-control" name="type-reservation">
                                             <option value="2">Quotidienne</option>
                                             <option value="3">Hebodmadaire</option>
-                                            <option value="4">Menusel</option>
                                         </select>
                                         @if ($errors->has('type-reservation'))
                                             <span class="help-block">
@@ -205,18 +204,18 @@
                                             </span>
                                         @endif
                                     </div>
-                                    <div class="form-group @if($errors->has('court')) {{'has-error'}} @endif">
+                                    <div class="form-group @if($errors->has('court-multiple-res')) {{'has-error'}} @endif">
                                         <label for="recipient-name" class="control-label mandatory">
                                             Choix du court
                                           </label>
-                                        <select class="form-control" name="court">
+                                        <select class="form-control" name="court-multiple-res">
                                             @foreach($courts as $court)
                                                 <option value="{{$court->id}}"> {{$court->name}} </option>
                                             @endforeach
                                         </select>
-                                        @if ($errors->has('court'))
+                                        @if ($errors->has('court-multiple-res'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('court') }}</strong>
+                                                <strong>{{ $errors->first('court-multiple-res') }}</strong>
                                             </span>
                                         @endif
                                     </div>
@@ -238,7 +237,6 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                     </div>
-                    </form>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
