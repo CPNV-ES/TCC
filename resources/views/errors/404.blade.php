@@ -7,9 +7,9 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="head-panel">
                     <div class="title-panel">Erreur</div>
-
-                    <div class="body-panel">
-                        Vous n'êtes pas admin.
+                    <div class="body-panel error-message">
+                        <h1>404</h1>
+                        <p>La page que vous tentez d'accéder n'existe pas.</p>
                     </div>
                 </div>
             </div>
