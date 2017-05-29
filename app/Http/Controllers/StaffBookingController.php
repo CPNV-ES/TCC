@@ -52,14 +52,17 @@ class StaffBookingController extends Controller
      */
     public function     store(Request $request)
     {
+      $config = Config::get()->first();
+      $openTime =(int)(explode(":", $config->courtOpenTime))[0];
+      $closeTime =(int)(explode(":", $config->courtCloseTime))[0];
         //if there is a datetime-end it's a multiple reservation otherwise it's a simple reservation
         if(Input::has('date-end-multiple-res'))
         {
             $validator = Validator::make($request->all(),
                 [
                     'title-multiple-res'       => 'required|max:50',
-                    'hour-start-multiple-res'  => 'required|integer|between:8,19',
-                    'hour-end-multiple-res'    => 'required|integer|between:9,20',
+                    'hour-start-multiple-res'  => 'required|integer|between:'.$openTime.','.($closeTime - 1),
+                    'hour-end-multiple-res'    => 'required|integer|between:'.($openTime + 1).','.$closeTime,
                     'date-start-multiple-res'  => 'required|max:10',
                     'date-end-multiple-res'    => 'required|max:10',
                     'court-multiple-res'       => 'required|exists:courts,id',

@@ -77,7 +77,9 @@
                                         <label for="recipient-name" class="control-label mandatory">
                                             Date
                                           </label>
-                                        <input class="form-control date-picker"  type="date" name="date-start-simple-res" id="date-start-simple-res" value="{{old('date-start-simple-res')}}" data-verif="required"/>
+                                        <input class="form-control date-picker"  type="text" name="date-start-simple-res" id="date-start-simple-res" readonly value="{{old('date-start-simple-res')}}"
+                                         data-verif="required"
+                                         data-verif-on-blur="false"/>
                                         @if ($errors->has('date-start-simple-res'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('date-start-simple-res') }}</strong>
@@ -256,7 +258,7 @@
           <tr>
             <td>{{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
             <td>{{ $reservation->court->name }}</td>
-            <td>{{ $reservation->type_reservation->type }}</td>
+            <td>{{ ucfirst($reservation->type_reservation->type) }}</td>
           </tr>
           @endforeach
         </table>
@@ -275,13 +277,13 @@
                 </tr>
             </thead>
             <tbody>
-            @if(count($ownReservations)> 0)
+            @if(count($ownReservations) > 0)
                 @foreach($ownReservations as $reservation)
                     <tr>
                         <td> {{ $reservation->title }}</td>
                         <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
                         <td> {{ $reservation->court->name }}</td>
-                        <td> {{$reservation->type_reservation->type}}</td>
+                        <td> {{ ucfirst($reservation->type_reservation->type) }}</td>
                         <td class="option-zone">
                             <!-- <button class="btn btn-warning option" data-action="edit" >
                                 <span class="fa fa-edit"></span>
@@ -296,18 +298,25 @@
                         </td>
                     </tr>
                 @endforeach
-                @foreach($oldReservations as $reservation)
-                  <tr class="old-reservations" style="display:none;">
-                      <td> {{ $reservation->title }}</td>
-                      <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
-                      <td> {{ $reservation->court->name }}</td>
-                      <td> {{$reservation->type_reservation->type}}</td>
-                      <td class="option-zone">-</td>
-                  </tr>
-                @endforeach
-                <tr><td colspan="5"><button class="btn btn-primary" id="btnOldReservation" data-show="false" >Afficher les anciennes réservations</button></td><tr>
             @else
                 <tr><td colspan="5">Aucune réservation</td><tr>
+            @endif
+            @if (count($oldReservations) > 0)
+              @foreach($oldReservations as $reservation)
+                <tr class="old-reservations" style="display:none;">
+                  <td> {{ $reservation->title }}</td>
+                  <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
+                  <td> {{ $reservation->court->name }}</td>
+                  <td> {{ ucfirst($reservation->type_reservation->type) }}</td>
+                  <td class="option-zone">-</td>
+                </tr>
+              @endforeach
+              <tr>
+                <td colspan="5">
+                  <button class="btn btn-primary" id="btnOldReservation" data-show="false" >Afficher les anciennes réservations</button>
+                </td>
+                <tr>
+
             @endif
             </tbody>
         </table>
