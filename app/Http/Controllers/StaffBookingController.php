@@ -284,9 +284,10 @@ class StaffBookingController extends Controller
      */
     public function destroy($id)
     {
-        $reservation = Reservation::find($id);
 
-        if(!$reservation)
+
+        $reservation = Reservation::find($id);
+       if(!$reservation)
         {
             Session::flash('errorMessage', "La réservation sélectionnée n'existe pas");
             return redirect('/staff_booking');

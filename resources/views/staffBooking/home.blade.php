@@ -262,9 +262,11 @@
         @endif
         <div class="row spacer">
         <h4>Réservations effectuées</h4>
-        <table class="table table-striped" style="text-align:center;">
+        <button class="btn btn-danger" id="delete-selection-reservation" data-csrf="{{csrf_token()}}">Supprimer la sélection</button>
+        <table class="table table-striped" style="text-align:center;" id="future-reservation">
             <thead>
                 <tr>
+                    <th>Sélection</th>
                     <th>Libellé</th>
                     <th>Date et heure</th>
                     <th>Court</th>
@@ -276,6 +278,11 @@
             @if(count($ownReservations) > 0)
                 @foreach($ownReservations as $reservation)
                     <tr>
+                        <td>
+                            <div class="form-group @if($errors->has('date-start-multiple-res')) {{'has-error'}} @endif">
+                                <input type="checkbox" class="form-control selectedReservations" name="selectedReservations[]" value="{{$reservation->id}}" />
+                            </div>
+                        </td>
                         <td> {{ $reservation->title }}</td>
                         <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
                         <td> {{ $reservation->court->name }}</td>
@@ -320,68 +327,99 @@
     </div>
     <script>
         //if a error occurs we display back the modal
-        var hasError = false;
-        @if(session()->has('showMultResForm') || session()->has('showSimpleResForm')) {{"hasError = true;"}} @else {{"hasError = false;"}} @endif
-        if(hasError)  $("#reservation-modal").modal('show');
 
-        //datepicker configuration
-        $('.date-picker').datepicker({
-          format: 'dd-mm-yyyy',
-          autoclose: true,
-          todayHighlight: true,
-          language: "fr"
-        });
 
         $(document).ready(function()
         {
+            var hasError = false;
+            @if(session()->has('showMultResForm') || session()->has('showSimpleResForm')) {{"hasError = true;"}} @else {{"hasError = false;"}} @endif
+            if(hasError)  $("#reservation-modal").modal('show');
+
+            //datepicker configuration
+            $('.date-picker').datepicker({
+                format: 'dd-mm-yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: "fr"
+            });
+
             $("#hour-start-dropdown option:selected").each(function(){
                 disabledPastHour(parseInt($(this).val()));
             });
-
-        });
-
-        //This function is used to disable the endhour that are before the starthour
-        function disabledPastHour(startHour)
-        {
-            $("#hour-end-dropdown option").each(function(){
-                var endHour = parseInt($(this).val());
-                if(startHour < endHour) $(this).attr('disabled', false);
-                else $(this).attr('disabled', true);
-            });
-        }
-
-        //if the hour start is after the end hour we set the end hour one hour after start hour.
-        $("#hour-start-dropdown").change(function(){
-            $("#hour-start-dropdown option:selected" ).each(function() {
-                var startHour = parseInt($(this).val());
-                $("#hour-end-dropdown option:selected").each(function(){
+            //This function is used to disable the endhour that are before the starthour
+            function disabledPastHour(startHour)
+            {
+                $("#hour-end-dropdown option").each(function(){
                     var endHour = parseInt($(this).val());
-                    if(startHour >= endHour) {
-                        var nextHour = startHour + 1;
-                        $("#hour-end-dropdown").val(nextHour);
-                    }
+                    if(startHour < endHour) $(this).attr('disabled', false);
+                    else $(this).attr('disabled', true);
                 });
-                disabledPastHour(startHour);
+            }
+
+            //if the hour start is after the end hour we set the end hour one hour after start hour.
+            $("#hour-start-dropdown").change(function(){
+                $("#hour-start-dropdown option:selected" ).each(function() {
+                    var startHour = parseInt($(this).val());
+                    $("#hour-end-dropdown option:selected").each(function(){
+                        var endHour = parseInt($(this).val());
+                        if(startHour >= endHour) {
+                            var nextHour = startHour + 1;
+                            $("#hour-end-dropdown").val(nextHour);
+                        }
+                    });
+                    disabledPastHour(startHour);
+                });
+            });
+
+            //if we click on a row of table the checkbox of the row we checked it.
+            $(".selectedReservations").click(function(){
+                toggleChkBox(this);
+            });
+            $("table tr").click(function()
+            {
+                chkBox = $(".selectedReservations", this);
+                toggleChkBox(chkBox);
+            });
+            function toggleChkBox(checkbox)
+            {
+                $(checkbox).prop("checked", !$(checkbox).prop("checked"));
+            }
+            //when we click on the button "delete-selection-reservation"
+            $("#delete-selection-reservation").click(function(){
+                var aryReservations = [];
+                $("#future-reservation input:checkbox:checked").each(function(){
+                    aryReservations.push($(this).val());
+                });
+                if(aryReservations.length > 0)
+                {
+                    var url = '/staff_booking/'+aryReservations.join(',');
+                    var csrfToken = $("meta[name=csrf-token]").attr("content");
+                    generateAndSendDeleteForm(url, csrfToken);
+
+                }
+            });
+
+
+            //display old reservations
+            $("#btnOldReservation").click(function(){
+                $(".old-reservations").toggle();
+                if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les anciennes réservations");
+                else $("#btnOldReservation").text("Afficher les anciennes réservations").data("show", false);
+            });
+
+            //make verifJS then send the form to the backend
+            document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
+                VERIF.verifForm('simple-reservation-form',function(isOk){
+                    if(isOk) document.forms["simple-reservation-form"].submit();
+                });
+            });
+            document.querySelector('#btn-multiple-reservation').addEventListener('click', function(){
+                VERIF.verifForm('multiple-reservation-form',function(isOk){
+                    if(isOk) document.forms["multiple-reservation-form"].submit();
+                });
             });
         });
 
-        //display old reservations
-         $("#btnOldReservation").click(function(){
-           $(".old-reservations").toggle();
-           if($("#btnOldReservation").data("show") == false) $("#btnOldReservation").data("show", true).text("Cacher les anciennes réservations");
-           else $("#btnOldReservation").text("Afficher les anciennes réservations").data("show", false);
-         });
 
-         //make verifJS then send the form to the backend
-        document.querySelector('#btn-simple-reservation').addEventListener('click', function(){
-            VERIF.verifForm('simple-reservation-form',function(isOk){
-                if(isOk) document.forms["simple-reservation-form"].submit();
-            });
-        });
-        document.querySelector('#btn-multiple-reservation').addEventListener('click', function(){
-            VERIF.verifForm('multiple-reservation-form',function(isOk){
-                if(isOk) document.forms["multiple-reservation-form"].submit();
-            });
-        });
     </script>
 @endsection

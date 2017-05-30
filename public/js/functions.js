@@ -96,3 +96,25 @@ function lockForm(idForm, idBtnEdit, idBtnSave, locked, callBackFunction)
         }
     });
 }
+
+// This function is used to generate and send a form to delete using rest uri
+function generateAndSendDeleteForm(url, csrf)
+{
+
+    var form = $("<form>", {
+        'method' :  'POST',
+        'action' :  url
+    });
+    var inputVerb = $("<input>", {
+        'name'  :   '_method',
+        'type'  :   'hidden',
+        'value' :   'DELETE'
+    });
+    var inputCrsf = $("<input>", {
+        'name'  :   '_token',
+        'type'  :   'hidden',
+        'value' :   csrf
+    });
+    form.append(inputCrsf,inputVerb).appendTo('body');
+    form.submit();
+}

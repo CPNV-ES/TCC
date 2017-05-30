@@ -18,9 +18,9 @@
 
         {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
 
-        {!! Html::style('/css/jqx.base.css')!!}
+{{--        {!! Html::style('/css/jqx.base.css')!!}
         {!! Html::style('/css/jqx.bootstrap.css')!!}
-        {!! Html::style('/css/jqx.custom.css')!!}
+        {!! Html::style('/css/jqx.custom.css')!!}--}}
 
         {!! Html::script('/js/jquery-2.2.0.js') !!}
         {!! Html::script('/js/bootstrap.min.js') !!}
@@ -30,18 +30,20 @@
         {!! Html::script('/js/bootstrap-datepicker.fr-CH.min.js') !!}
 
         {{--is like datepicker but with hour --}}
-        {!! Html::script('/js/bootstrap-datetimepicker.min.js') !!}
-        {!! Html::script('/js/bootstrap-datetimepicker.fr.js') !!}
+  {{--      {!! Html::script('/js/bootstrap-datetimepicker.min.js') !!}
+        {!! Html::script('/js/bootstrap-datetimepicker.fr.js') !!}--}}
 
-        {!! Html::script('/js/jqwidget/jqx-all.js') !!}
+        {{--{!! Html::script('/js/jqwidget/jqx-all.js') !!}
         {!! Html::script('/js/jqwidget/globalize.js') !!}
-        {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}
+        {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}--}}
         {!! Html::script('/js/ee.js') !!}
 
         {!! Html::script('/Ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
         {!! Html::script('/js/verif.js') !!}
         {!! Html::script('/js/customVerif.js') !!}
+
+        {!! Html::script('/js/functions.js') !!}
 
     </head>
     <body id="app-layout">
