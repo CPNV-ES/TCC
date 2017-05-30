@@ -80,9 +80,9 @@ class PasswordController extends Controller
         //------------------------------------------------------------------
         $validator->after(function($validator) use ($request)
         {
-            $member = Member::where('email', $request->input('email'))->count();
+            $user = PersonalInformation::where('email', $request->input('email'))->count();
 
-            if(empty($member))
+            if(empty($user))
             {
                 $validator->errors()->add('email', "Cet e-mail n'existe pas.");
             }
@@ -101,28 +101,27 @@ class PasswordController extends Controller
 
         // If validator pass, add token in database and send email
         //--------------------------------------------------------------------------------
-        $member = Member::where('email', $request->input('email'))->get();
-        $member = $member[0];
+        $member = PersonalInformation::where('email', $request->input('email'))->get()->first();
         //Generate the token
-        $validationCode     = str_random(20);
+        $validationCode = str_random(20);
 
-        $member->token = $validationCode;
+        $member->_token = $validationCode;
         $member->save();
 
         // Send email to the user to choose password
         //-------------------------------------------------
         $mailMember = $member->email;
-        Mail::send('emails.user.passwordReset', ['last_name'  => $member->last_name,
-            'first_name' => $member->first_name,
-            'login'      => $member->login,
-            'token'      => $member->token],
+        Mail::send('emails.user.passwordReset', ['last_name'  => $member->lastname,
+            'first_name' => $member->firstname,
+            'login'      => $member->user->username,
+            'token'      => $member->_token],
             function ($message) use($mailMember)
             {
                 $message->to($mailMember)->subject('Réinitialisation du mot de passe');
             });
         /////////////////////////////////////////////
 
-        return view('auth/login/login')->with('message', 'Un email vous a été envoyé.');
+        return redirect('/login')->with('message', 'Un e-mail vous a été envoyé.');
     }
 
     /**

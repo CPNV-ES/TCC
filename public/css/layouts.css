@@ -538,6 +538,11 @@ footer p {
   font-size: 150px
 }
 
+#email-send div {
+  margin-top: 25px;
+  margin-bottom: 0;
+}
+
 @media only screen and (max-width: 767px) {
   #status-info-warning {
     left: 10%;

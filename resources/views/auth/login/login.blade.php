@@ -4,15 +4,12 @@
     <div class="background"></div>
     <div class="container">
         <div class="row">
-            <div class="row">
-                @if (!empty($message))
-
+            <div id="email-send" class="row">
+                @if (session()->has('message'))
                     <div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                        {{ $message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ session('message') }}
                     </div>
-
                 @endif
             </div>
             <div class="col-md-8 col-md-offset-2">
