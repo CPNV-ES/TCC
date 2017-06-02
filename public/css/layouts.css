@@ -543,6 +543,14 @@ footer p {
   margin-bottom: 0;
 }
 
+#future-reservation tbody tr td {
+  vertical-align: middle;
+}
+
+#future-reservation tbody tr td div {
+  margin: 0;
+}
+
 @media only screen and (max-width: 767px) {
   #status-info-warning {
     left: 10%;
