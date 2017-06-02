@@ -285,28 +285,66 @@ class StaffBookingController extends Controller
     public function destroy($id)
     {
 
+        if (strpos($id, ',') !== false) {
+            $ids = explode(',', $id);
+            return $this->destroyMultiple($ids);
+        }
+        else
+        {
+            $reservation = Reservation::find($id);
+            if(!$reservation)
+            {
+                Session::flash('errorMessage', "La réservation sélectionnée n'existe pas");
+                return redirect('/staff_booking');
+            }
+            if($reservation->fkWho != Auth::user()->fkPersonalInformation)
+            {
+                Session::flash('errorMessage', "La réservation sélectionnée ne vous appartient pas");
+                return redirect('/staff_booking');
+            }
 
-        $reservation = Reservation::find($id);
-       if(!$reservation)
-        {
-            Session::flash('errorMessage', "La réservation sélectionnée n'existe pas");
-            return redirect('/staff_booking');
-        }
-        if($reservation->fkWho != Auth::user()->fkPersonalInformation)
-        {
-            Session::flash('errorMessage', "La réservation sélectionnée ne vous appartient pas");
+            $dateTimeToday = new \DateTime();
+            $dateTimeStart = date_create_from_format('Y-m-d H:i:s', $reservation->dateTimeStart);
+            if($dateTimeStart < $dateTimeToday)
+            {
+                Session::flash('errorMessage', "La réservation sélectionnée est déjà passée");
+                return redirect('/staff_booking');
+            }
+            $reservation->delete();
+            Session::flash('successMessage', "La réservation sélectionnée a bien été supprimée");
             return redirect('/staff_booking');
         }
 
-        $dateTimeToday = new \DateTime();
-        $dateTimeStart = date_create_from_format('Y-m-d H:i:s', $reservation->dateTimeStart);
-        if($dateTimeStart < $dateTimeToday)
+    }
+    public function destroyMultiple($idReservations)
+    {
+
+        $reservations = Reservation::whereIn('id', $idReservations)->get();
+
+        if($reservations->count() == 0)
         {
-            Session::flash('errorMessage', "La réservation sélectionnée est déjà passée");
+            Session::flash('errorMessage', "Aucune des réservations existent");
             return redirect('/staff_booking');
         }
-        $reservation->delete();
-        Session::flash('successMessage', "La réservation sélectionnée a bien été supprimée");
+        foreach($reservations as $reservation)
+        {
+            if($reservation->fkWho != Auth::user()->fkPersonalInformation)
+            {
+                Session::flash('errorMessage', "Certaines réservations ne vous appartenaient pas");
+            }
+
+            $dateTimeToday = new \DateTime();
+            $dateTimeStart = date_create_from_format('Y-m-d H:i:s', $reservation->dateTimeStart);
+            if($dateTimeStart < $dateTimeToday)
+            {
+                Session::flash('errorMessage', "Certaines réservations n'ont pas pu être supprimer");
+            }
+            else{
+                Session::flash('successMessage', "Les réservations sélectionnées ont bien été supprimées");
+            }
+            $reservation->delete();
+        }
+
         return redirect('/staff_booking');
     }
 }
