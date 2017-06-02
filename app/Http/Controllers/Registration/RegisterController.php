@@ -46,13 +46,13 @@ class RegisterController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'lastname'     => 'required',
-                'firstname'    => 'required',
-                'street'       => 'required',
-                'streetNbr'    => 'required',
-                'locality'     => 'required',
+                'lastname'     => 'required|max:50',
+                'firstname'    => 'required|max:50',
+                'street'       => 'max:100',
+                'streetNbr'    => 'max:45',
                 'npa'          => 'required|integer|digits:4',
-                'email'        => 'required|email',
+                'locality'     => 'required|max:100',
+                'email'        => 'required|email|max:255',
                 'telephone'    => 'required',
                 'birthDate'    => 'required|date'
             ]);

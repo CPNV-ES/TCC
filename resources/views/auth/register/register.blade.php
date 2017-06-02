@@ -45,10 +45,10 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label mandatory">Rue</label>
+                                <label class="col-md-4 control-label">Rue</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:60" class="form-control" name="street" value="{{ old('street') }}">
+                                    <input type="text" data-verif-group="register_form" data-verif="min_l:2|max_l:60" class="form-control" name="street" value="{{ old('street') }}">
                                     @if ($errors->has('street'))
 
                                         <span class="help-block">
@@ -59,10 +59,10 @@
                                 </div>
                             </div>
                             <div class="form-group{{ $errors->has('streetNbr') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label mandatory">Numéro</label>
+                                <label class="col-md-4 control-label">Numéro de rue</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" data-verif-group="register_form" data-verif="required|min_l:2|max_l:10" class="form-control" name="streetNbr" value="{{ old('streetNbr') }}">
+                                    <input type="text" data-verif-group="register_form" data-verif="min_l:2|max_l:10" class="form-control" name="streetNbr" value="{{ old('streetNbr') }}">
                                     @if ($errors->has('streetNbr'))
 
                                         <span class="help-block">

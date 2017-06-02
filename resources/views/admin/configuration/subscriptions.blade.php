@@ -101,7 +101,7 @@ Description : Displays a table with the inforamtion of the subscriptions form th
             @endif
 
             <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="status">Type</label>
+                <label class="col-md-4 control-label mandatory" for="status">Type</label>
 
                 <div class="col-md-4">
                     <input id="status" type="text" class="form-control" name="status" data-verif="required|max_l:50" data-verif-group="subscriptionCheck"

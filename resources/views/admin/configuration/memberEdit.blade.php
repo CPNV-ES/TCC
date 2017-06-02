@@ -39,8 +39,19 @@ Description: Displays a form with the informations of a member. The inputs of th
           </div>
         @endif
         <div class="row">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('lastname')) {{'has-error'}} @endif">
+            <label for="example-text-input" name="lbl_lastname" class="col-2 col-form-label mandatory">Nom</label>
+            <div >
+                <input class="form-control" id="lastname" name="lastname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $personal_information->lastname }}" >
+                @if ($errors->has('lastname'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('lastname') }}</strong>
+                    </span>
+                @endif
+            </div>
+          </div>
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 @if($errors->has('firstname')) {{'has-error'}} @endif  ">
-              <label for="example-text-input" class="col-2 col-form-label">Prénom <span class="mandatory">*</span></label>
+              <label for="example-text-input" class="col-2 col-form-label mandatory">Prénom</label>
               <div >
                   <input class="form-control" id="firstname" name="firstname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ ((old('firstname'))) ? old('firstname') : $personal_information->firstname }}" >
                   @if ($errors->has('firstname'))
@@ -50,32 +61,10 @@ Description: Displays a form with the informations of a member. The inputs of th
                   @endif
               </div>
           </div>
-            <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('lastname')) {{'has-error'}} @endif">
-              <label for="example-text-input" name="lbl_lastname" class="col-2 col-form-label">Nom <span class="mandatory">*</span></label>
-              <div >
-                  <input class="form-control" id="lastname" name="lastname" data-verif-group="edit-group-form" data-verif="required|text|min_l:2|max_l:50" type="text" value="{{ old('lastname') ? old('lastname') : $personal_information->lastname }}" >
-                  @if ($errors->has('lastname'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('lastname') }}</strong>
-                      </span>
-                  @endif
-              </div>
-            </div>
         </div>
         <div class="row">
-          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('email')) {{'has-error'}} @endif">
-              <label for="example-text-input" name="lbl_email" class="col-2 col-form-label">E-mail <span class="mandatory">*</span></label>
-              <div >
-                  <input class="form-control" name="email" id="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $personal_information->email }}" >
-                  @if ($errors->has('email'))
-                      <span class="help-block">
-                          <strong>{{ $errors->first('email') }}</strong>
-                      </span>
-                  @endif
-              </div>
-          </div>
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('street')) {{'has-error'}} @endif">
-              <label for="example-text-input" name="lbl_street" class="col-2 col-form-label">Rue <span class="mandatory">*</span></label>
+              <label for="example-text-input" name="lbl_street" class="col-2 col-form-label">Rue</label>
               <div>
                   <input class="form-control" name="street" id="street" data-verif-group="edit-group-form" data-verif="text|min_l:2|max_l:50" type="text" value="{{ old('street') ? old('street') : $personal_information->street }}" >
                   @if ($errors->has('street'))
@@ -85,42 +74,46 @@ Description: Displays a form with the informations of a member. The inputs of th
                   @endif
               </div>
           </div>
-        </div>
-        <div class="row">
           <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('streetNbr')) {{'has-error'}} @endif">
-              <label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue <span class="mandatory">*</span></label>
+              <label for="example-text-input" name="lbl_adresse" class="col-2 col-form-label">Numéro de rue</label>
               <div >
                   <input class="form-control" name="streetNbr" id="streetNbr" data-verif-group="edit-group-form" data-verif="text|min_l:1|max_l:45" type="text" value="{{ old('streetNbr') ? old('streetNbr') : $personal_information->streetNbr }}" >
+                  @if ($errors->has('streetNbr'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('streetNbr') }}</strong>
+                      </span>
+                  @endif
               </div>
           </div>
-
-{{--        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('npa')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_npa" class="col-2 col-form-label">NPA*</label>
-            <div >
-                <input class="form-control" name="npa" data-verif-group="edit-group-form" data-verif="required|int|min_l:4|max_l:4" type="number" value="{{ old('npa') ? old('npa') : $user->npa }}" >
-                @if ($errors->has('npa'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('npa') }}</strong>
-                    </span>
-                @endif
-            </div>
-        </div>--}}
-
-        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('locality')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_locality "class="col-2 col-form-label">Ville <span class="mandatory">*</span></label>
-            <div  >
-                <select class="form-control" id="locality" name="locality">
-                    @foreach($localities as $locality)
-                     <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                     <option id="locality{{$locality->id}}" value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
-                    @endforeach
-                </select>
-            </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('locality')) {{'has-error'}} @endif">
+              <label for="example-text-input" name="lbl_locality "class="col-2 col-form-label mandatory">Ville</label>
+              <div  >
+                  <select class="form-control" id="locality" name="locality">
+                      @foreach($localities as $locality)
+                       <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
+                       <option id="locality{{$locality->id}}" value="{{$locality->name}}" {{(old('locality') == $locality->id) ? 'selected': $personal_information->fkLocality == $locality->id && old('locality') =='' ? 'selected' : ''}} > {{$locality->npa.' - '.$locality->name}} </option>
+                      @endforeach
+                  </select>
+              </div>
+          </div>
+          <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12   @if($errors->has('email')) {{'has-error'}} @endif">
+              <label for="example-text-input" name="lbl_email" class="col-2 col-form-label mandatory">E-mail</label>
+              <div >
+                  <input class="form-control" name="email" id="email" data-verif-group="edit-group-form" data-verif="required|email|min_l:4|max_l:100" type="email" value="{{ old('email') ? old('email') : $personal_information->email }}" >
+                  @if ($errors->has('email'))
+                      <span class="help-block">
+                          <strong>{{ $errors->first('email') }}</strong>
+                      </span>
+                  @endif
+              </div>
+          </div>
+        </div>
+
       <div class="row">
         <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12  @if($errors->has('telephone')) {{'has-error'}} @endif">
-            <label for="example-text-input" name="lbl_telephone" class="col-2 col-form-label">Téléphone (format : 012 123 12 12) <span class="mandatory">*</span></label>
+            <label for="example-text-input" name="lbl_telephone" class="col-2 col-form-label mandatory">Téléphone (format : 012 123 12 12)</label>
             <div >
                 <input class="form-control" name="telephone" id="telephone" placeholder="024 454 21 12" data-verif-group="edit-group-form" data-verif="required|phone" type="text" value="{{ old('telephone') ? old('telephone') : $personal_information->telephone }}" >
                 @if ($errors->has('telephone'))
@@ -130,16 +123,7 @@ Description: Displays a form with the informations of a member. The inputs of th
                 @endif
             </div>
         </div>
-        {{--  ACCOUNT TYPE WITH DROPDOWN LIST
-              <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-                  <label>Type de compte</label>
-                  <select class="form-control" name="typeCompte">
-                      <!-- we select the value in the city of the member. If the form as been return with error the old value is selected -->
-                          <option value="0" {{old('localitie') == 0 ? 'selected': $user->personal_information->isMember ==1 ? 'selected':''}} >Membre</option>
-                          <option value="1" {{old('localitie') == 1 ? 'selected': $user->personal_information->isTrainer ==1 ? 'selected':''}} >Staff</option>
-                          <option value="2" {{old('localitie') == 2 ? 'selected': $user->personal_information->isAdmin ==1 ? 'selected':''}} >Administrateur</option>
-                  </select>
-              </div>--}}
+
         @if ($personal_information->user)
           <div class="form-group col-lg-6 col-md-12 col-sm-12 col-xs-12 ">
               <label for="example-text-input" name="lbl_account_options" class="col-2 col-form-label">Rôles du compte</label>
@@ -186,7 +170,6 @@ Description: Displays a form with the informations of a member. The inputs of th
                   @endif
               </div>
             @endif
-
             <div class="checkbox">
                 <label>
                     <input type="checkbox" id="toVerify" value="1" name="toVerify" {{ old('toVerify')==1 ? 'checked' : $personal_information->toVerify==1 ? 'checked':'' }}>
@@ -194,12 +177,6 @@ Description: Displays a form with the informations of a member. The inputs of th
                 </label>
             </div>
             @if ($personal_information->user)
-              {{-- <div class="checkbox">
-                  <label>
-                      <input type="checkbox" id="validated" value="1" name="validated" {{ old('validated')==1 ? 'checked' : ($personal_information->user->validated == 1 ? 'checked' : '')}}>
-                      Compte validé
-                  </label>
-              </div> --}}
               <div class="checkbox">
                   <label>
                       <input type="checkbox" id="invitRight" value="1" name="invitRight" {{ old('invitRight')==1 ? 'checked' : ($personal_information->user->invitRight == 1 ? 'checked' : '')}}>

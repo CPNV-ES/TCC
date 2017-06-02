@@ -110,8 +110,8 @@
                       </div>
 
                       <div class="form-group @if($errors->has('street')) {{'has-error'}} @endif">
-                          <label for="recipient-name" class="control-label mandatory">Rue</label>
-                          <input class="form-control" type="text" name="street" value="{{old('street')}}" data-verif="required|min_l:2|max_l:45"/>
+                          <label for="recipient-name" class="control-label">Rue</label>
+                          <input class="form-control" type="text" name="street" value="{{old('street')}}" data-verif="min_l:2|max_l:45"/>
                           @if ($errors->has('street'))
                               <span class="help-block">
                                   <strong>{{ $errors->first('street') }}</strong>
@@ -120,8 +120,8 @@
                       </div>
 
                       <div class="form-group @if($errors->has('streetNbr')) {{'has-error'}} @endif">
-                          <label for="recipient-name" class="control-label mandatory">Numéro de rue</label>
-                          <input class="form-control" type="text" name="streetNbr" value="{{old('streetNbr')}}" data-verif="required|min_l:1|max_l:45"/>
+                          <label for="recipient-name" class="control-label">Numéro de rue</label>
+                          <input class="form-control" type="text" name="streetNbr" value="{{old('streetNbr')}}" data-verif="min_l:1|max_l:45"/>
                           @if ($errors->has('streetNbr'))
                               <span class="help-block">
                                   <strong>{{ $errors->first('streetNbr') }}</strong>

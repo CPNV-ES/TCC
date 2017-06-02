@@ -82,7 +82,7 @@ Description : Displays a table with the inforamtion of the seasons form the data
             {!! csrf_field() !!}
 
             <div class="form-group{{ $errors->has('dateStart') ? ' has-error' : '' }}">
-                <label class="col-md-6 control-label">Date de début (aaaa-mm-jj)*</label>
+                <label class="col-md-6 control-label mandatory">Date de début (aaaa-mm-jj)</label>
 
                 <div class="col-md-4">
 
@@ -98,7 +98,7 @@ Description : Displays a table with the inforamtion of the seasons form the data
             </div>
 
             <div class="form-group{{ $errors->has('dateEnd') ? ' has-error' : '' }}">
-                <label class="col-md-6 control-label">Date de fin (aaaa-mm-jj)*</label>
+                <label class="col-md-6 control-label mandatory">Date de fin (aaaa-mm-jj)</label>
 
                 <div class="col-md-4">
                     <input id="dateEnd" type="text" class="form-control" name="dateEnd" data-verif="required|date_us|date_us_greater:dateStart" data-verif-group="seasonCheck"

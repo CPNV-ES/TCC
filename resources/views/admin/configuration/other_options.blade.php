@@ -23,7 +23,7 @@
 
         <div class="row">
           <div class="form-group col-lg-3 col-md-6 col-sm-12 col-xs-12 {{ $errors->has('nbReservations') ? ' has-error' : '' }}">
-            <label class="control-label" for="nbReservations">Nombre de réservation simultanées :</label>
+            <label class="control-label" for="nbReservations">Nombre de réservation simultanées</label>
             <input id="nbReservations" class="form-control" name="nbReservations" type="number"
             value="{{ (old('nbReservations') != '' ? old('nbReservations') : (!empty($config) ? $config->nbReservations : '')) }}" data-verif="required|int|min:1">
             @if ($errors->has('nbReservations'))
@@ -34,7 +34,7 @@
 
         <div class="row">
           <div class="form-group col-lg-3 col-md-6 col-sm-12 col-xs-12 {{ $errors->has('nbDaysLimitNonMember') ? ' has-error' : '' }}">
-            <label class="control-label" for="nbDaysLimitNonMember">Fenêtre de réservation non-membre :</label>
+            <label class="control-label" for="nbDaysLimitNonMember">Fenêtre de réservation non-membre</label>
             <input id="nbDaysLimitNonMember" class="form-control" name="nbDaysLimitNonMember" type="number"
             value="{{ (old('nbDaysLimitNonMember') != '' ? old('nbDaysLimitNonMember') : (!empty($config) ? $config->nbDaysLimitNonMember : '')) }}" data-verif="required|int|min:1">
             @if ($errors->has('nbDaysLimitNonMember'))
@@ -45,7 +45,7 @@
 
         <div class="row">
           <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('nbDaysGracePeriod') ? ' has-error' : '' }}">
-            <label class="control-label" for="nbDaysGracePeriod">Période de grâce :</label>
+            <label class="control-label" for="nbDaysGracePeriod">Période de grâce</label>
             <input id="nbDaysGracePeriod" class="form-control" name="nbDaysGracePeriod" type="number"
             value="{{ (old('nbDaysGracePeriod') != '' ? old('nbDaysGracePeriod') : (!empty($config) ? $config->nbDaysGracePeriod : '')) }}" data-verif="required|int|min:0">
             @if ($errors->has('nbDaysGracePeriod'))
@@ -56,7 +56,7 @@
 
         <div class="row">
           <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('courtOpenTime') ? ' has-error' : '' }}">
-            <label class="control-label" for="courtOpenTime">Heure d'ouverture :</label>
+            <label class="control-label" for="courtOpenTime">Heure d'ouverture</label>
             <input id="courtOpenTime" class="form-control" name="courtOpenTime" type="time"
             value="{{ (old('courtOpenTime') != '' ? old('courtOpenTime') : (!empty($config) ? $config->courtOpenTime : '')) }}" data-verif="required|time_long"/>
             @if ($errors->has('courtOpenTime'))
@@ -64,7 +64,7 @@
             @endif
           </div>
           <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('courtCloseTime') ? ' has-error' : '' }}">
-            <label class="control-label" for="courtCloseTime">Heure de fermeture :</label>
+            <label class="control-label" for="courtCloseTime">Heure de fermeture</label>
             <input id="courtCloseTime" class="form-control" name="courtCloseTime" type="time"
             value="{{ (old('courtCloseTime') != '' ? old('courtCloseTime') : (!empty($config) ? $config->courtCloseTime : '')) }}" data-verif="required|time_long"/>
             @if ($errors->has('courtCloseTime'))
@@ -75,7 +75,7 @@
 
         <div class="row">
           <div class="form-group col-lg-2 col-md-4 col-sm-12 col-xs-12 {{ $errors->has('currentAmount') ? ' has-error' : '' }}">
-            <label class="control-label" for="currentAmount">Montant pour les non-membres :</label>
+            <label class="control-label" for="currentAmount">Montant pour les non-membres</label>
             <input id="currentAmount" class="form-control" name="currentAmount" type="number"
             value="{{ (old('currentAmount') != '' ? old('currentAmount') : (!empty($config) ? $config->currentAmount : '')) }}" data-verif="required|double|min:0">
             @if ($errors->has('currentAmount'))

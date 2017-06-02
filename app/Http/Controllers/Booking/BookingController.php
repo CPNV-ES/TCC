@@ -246,24 +246,24 @@ class BookingController extends Controller
           $is_non_member = true;
             $validator = Validator::make($request->all(),
                 [
-                    'firstname' => 'required|max:50',
-                    'lastname' => 'required|max:50',
-                    'street' => 'max:100',
-                    'streetNbr' => 'max:45',
-                    'telephone' => 'required',
-                    'email' => 'required|email|max:255',
-                    'locality'     => 'required',
-                    'npa'          => 'required|integer|digits:4',
+                  'lastname'  => 'required|max:50',
+                  'firstname' => 'required|max:50',
+                  'street'    => 'max:100',
+                  'streetNbr' => 'max:45',
+                  'npa'       => 'required|integer|digits:4',
+                  'locality'  => 'required',
+                  'email'     => 'required|email|max:255',
+                  'telephone' => 'required'
                 ]
                 );
             $validator->setAttributeNames([
-                'firstname' => 'Prénom',
-                'lastname' => 'Nom',
-                'street' => 'Rue',
-                'streetNbr' => 'Numéro de rue',
-                'telephone' => 'Téléphone',
-                'locality' => 'Localité',
-                'npa' => 'NPA'
+              'lastname'  => 'Nom',
+              'firstname' => 'Prénom',
+              'street'    => 'Rue',
+              'streetNbr' => 'Numéro de rue',
+              'npa'       => 'NPA',
+              'locality'  => 'Localité',
+              'telephone' => 'Téléphone'
             ]);
             if($validator->fails())
             {
@@ -282,7 +282,7 @@ class BookingController extends Controller
         //check if the date isn't in th past
         if($todayDateTime > $dateTimeEnd)
         {
-            Session::flash('errorMessage', "Cette date est déjà passée");
+            Session::flash('errorMessage', "Cette heure/date est déjà passée");
             return redirect('/booking');
         }
 
@@ -488,37 +488,6 @@ class BookingController extends Controller
         return redirect('/booking');
     }
 
-    public function MyBookingIndex(Request $request)
-    {
-        // Get all the reservations of the member
-        $reservations = Reservation::where('fk_member_1', Auth::user()->id)->orWhere('fk_member_2', Auth::user()->id)->orderBy('date_hours', 'DESC')->get();
-
-        $data = [];
-        $i = 0;
-        foreach ($reservations as $reservation)
-        {
-            $member1                    = Member::find($reservation->fk_member_1);
-            $member2                    = Member::find($reservation->fk_member_2);
-            $data[$i]['id']             = $reservation->id;
-            $data[$i]['first_name_1']   = $member1->first_name;
-            $data[$i]['last_name_1']    = $member1->last_name;
-            $data[$i]['first_name_2']   = $member2->first_name;
-            $data[$i]['last_name_2']    = $member2->last_name;
-            $data[$i]['date']           = Carbon::createFromFormat('Y-m-d H:i:s', $reservation['date_hours'])->format('d.m.Y H:i');
-            $data[$i]['court']          = $reservation['fk_court'];
-
-            if ($reservation['date_hours'] > Carbon::now())
-            {
-                $data[$i]['deletable']  = true;
-            }
-            else
-            {
-                $data[$i]['deletable']  = false;
-            }
-            $i++;
-        }
-        return view('myBooking/home')->with('bookings', $data);
-    }
     public function askCancellation(Request $request,$id)
     {
         $reservations = Reservation::where('id',$id);
@@ -560,6 +529,7 @@ class BookingController extends Controller
         }
 
     }
+
     public function cancellation(Request $request)
     {
 
@@ -576,6 +546,7 @@ class BookingController extends Controller
             return redirect('/booking');
         }
     }
+
     public function confirmation(Request $request)
     {
         $reservations = Reservation::where('confirmation_token' , $request->token);

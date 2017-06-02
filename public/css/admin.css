@@ -73,6 +73,7 @@
     padding: 3px !important;
 }
 
-.mandatory {
+.mandatory::after {
+  content: " *";
   color: #D9534F;
 }

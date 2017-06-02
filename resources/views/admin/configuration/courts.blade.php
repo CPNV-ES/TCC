@@ -90,7 +90,7 @@ Description : Displays a table with the inforamtion of the courts form the datab
             @endif
 
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="name">Nom</label>
+                <label class="col-md-4 control-label mandatory" for="name">Nom</label>
                 <div class="col-md-4">
                     <input id="name" type="text" class="form-control" name="name" data-verif="required|max_l:50" data-verif-group="courtCheck"
                            value="{{ (old('name') != '' ? old('name') : (!empty($singleCourt) ? $singleCourt->name : '')) }}">
@@ -126,7 +126,7 @@ Description : Displays a table with the inforamtion of the courts form the datab
             </div>
 
             <div class="form-group{{ $errors->has('nbDays') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label" for="nbDays">Fenêtre de réservation membre</label>
+                <label class="col-md-4 control-label mandatory" for="nbDays">Fenêtre de réservation membre</label>
                 <div class="col-md-4">
                     <input id="nbDays" type="number" class="form-control" name="nbDays" data-verif="required|int_neg|min:1" data-verif-group="courtCheck"
                            value="{{ (old('nbDays') != '' ? old('nbDays') : (!empty($singleCourt) ? $singleCourt->nbDays : '')) }}">
