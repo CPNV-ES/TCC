@@ -89,21 +89,19 @@ class ProfileController extends Controller
         //-----------
         $validator = Validator::make($request->all(),
             [
-                'firstname'   => 'required',
+                'firstname'   => 'required|max:50',
                 'lastname'    => 'required',
-                'street'      => 'required',
-                'streetNbr'   => 'required',
-                'npa'         => 'required',
-                'locality'    => 'required',
-                'email'       => 'required|email',
+                'street'      => 'max:100',
+                'streetNbr'   => 'max:45',
+                'npa'         => 'required|integer|digits:4',
+                'locality'    => 'required|max:100',
+                'email'       => 'required|email|max:255',
                 'telephone'   => 'required',
                 'birthDate'   => 'required|date'
             ],
             [
                 'firstname.required' => 'Le champ \'Prénom\' est obligatoire.',
                 'lastname.required' => 'Le champ \'Nom\' est obligatoire.',
-                'street.required' => 'Le champ \'Rue\' est obligatoire.',
-                'streetNbr.required' => 'Le champ \'Numéro\' est obligatoire.',
                 'npa.required' => 'Le champ \'NPA\' est obligatoire.',
                 'locality.required' => 'Le champ \'Ville\' est obligatoire.',
                 'email.required' => 'Le champ \'E-mail\' est obligatoire.',

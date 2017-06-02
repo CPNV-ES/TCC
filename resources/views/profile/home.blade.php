@@ -60,7 +60,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('street') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label mandatory">Rue</label>
+                            <label class="col-md-4 control-label">Rue</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="street" value="{{ (old('street') != '' ? old('street') : (!empty($infosUser) ? $infosUser->street : '')) }}">
@@ -74,7 +74,7 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('streetNbr') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label mandatory">Numéro de rue</label>
+                            <label class="col-md-4 control-label">Numéro de rue</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="streetNbr" value="{{ (old('streetNbr') != '' ? old('streetNbr') : (!empty($infosUser) ? $infosUser->streetNbr : '')) }}">
