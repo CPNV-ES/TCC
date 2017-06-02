@@ -83,7 +83,7 @@ class BookingController extends Controller
                 $q->where('fkWho', $Userid);
                 $q->orWhere('fkWithWho', $Userid);
             })
-            ->orderBy('dateTimeStart', 'desc')
+            ->orderBy('dateTimeStart', 'asc')
             ->get();
           $oldReservations = Reservation::where('dateTimeStart', '<', $startDate->format('Y-m-d H:i'))->has('personal_information_with_who')
               ->where(function($q){

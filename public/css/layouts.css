@@ -551,6 +551,10 @@ footer p {
   margin: 0;
 }
 
+#own-reservations tbody tr td {
+  vertical-align: middle;
+}
+
 @media only screen and (max-width: 767px) {
   #status-info-warning {
     left: 10%;

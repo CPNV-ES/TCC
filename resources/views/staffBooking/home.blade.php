@@ -284,7 +284,7 @@
                             </div>
                         </td>
                         <td> {{ $reservation->title }}</td>
-                        <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
+                        <td> {{ date('d.m.Y H:i', strtotime($reservation->dateTimeStart)) }}</td>
                         <td> {{ $reservation->court->name }}</td>
                         <td> {{ ucfirst($reservation->type_reservation->type) }}</td>
                         <td class="option-zone">
@@ -309,7 +309,7 @@
                 <tr class="old-reservations" style="display:none;">
                   <td>-</td>
                   <td> {{ $reservation->title }}</td>
-                  <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
+                  <td> {{ date('d.m.Y H:i', strtotime($reservation->dateTimeStart)) }}</td>
                   <td> {{ $reservation->court->name }}</td>
                   <td> {{ ucfirst($reservation->type_reservation->type) }}</td>
                   <td class="option-zone">-</td>
