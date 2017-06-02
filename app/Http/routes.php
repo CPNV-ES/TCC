@@ -57,7 +57,7 @@ Route::group(['middleware' => ['web']], function ()
     /*
      * Staff booking
      */
-    Route::group([ 'middleware' => ['profileIsValide', 'userIsStaff']], function(){
+    Route::group([ 'middleware' => ['auth', 'profileIsValide', 'userIsStaff']], function(){
        Route::resource('staff_booking', 'StaffBookingController');
     });
 
