@@ -11,6 +11,7 @@ Modified : Added checks when displaying user information in case a user doesn't 
 
 @section('title')
     Gestion des membres
+    <a href="/register" class="btn btn-success">Ajouter</a>
 @endsection
 
 @section('content')
