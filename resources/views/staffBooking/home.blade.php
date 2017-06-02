@@ -302,11 +302,12 @@
                     </tr>
                 @endforeach
             @else
-                <tr><td colspan="5">Aucune réservation</td><tr>
+                <tr><td colspan="6">Aucune réservation future</td><tr>
             @endif
             @if (count($oldReservations) > 0)
               @foreach($oldReservations as $reservation)
                 <tr class="old-reservations" style="display:none;">
+                  <td>-</td>
                   <td> {{ $reservation->title }}</td>
                   <td> {{ date('H:i d-m-Y', strtotime($reservation->dateTimeStart)) }}</td>
                   <td> {{ $reservation->court->name }}</td>
@@ -315,7 +316,7 @@
                 </tr>
               @endforeach
               <tr>
-                <td colspan="5">
+                <td colspan="6">
                   <button class="btn btn-primary" id="btnOldReservation" data-show="false" >Afficher les anciennes réservations</button>
                 </td>
               <tr>
