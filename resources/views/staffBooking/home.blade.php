@@ -152,7 +152,7 @@
                                               @php($start_hour = new DateTime($config->courtOpenTime))
                                               @for ($i = $start_hour->format('G'); $i < $end_hour->format('G'); $i++)
                                                   @php($start_hour->modify('+1 hour'))
-                                                  <option value="{{$i+1}}" @if(old('hour-end-multiple-res') == $i) selected @endif >{{$start_hour->format('H:i')}}</option>
+                                                  <option value="{{$i+1}}" @if(old('hour-end-multiple-res') == $i+1) selected @endif >{{$start_hour->format('H:i')}}</option>
 
                                               @endfor
                                           </select>

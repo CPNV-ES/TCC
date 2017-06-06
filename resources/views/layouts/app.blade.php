@@ -142,7 +142,7 @@
 
         <footer style="position:absolute;">
           <p>© Centre Professionnel du Nord Vaudois / 2016 - {{Date('Y')}}</p>
-          <p id="GIT_RELEASE" style="position:fixed;bottom: 0px;font-size: 10px;right:15px;color:rgba(0,0,0,.2);">UNDEFINED</p>
+          <p id="GIT_RELEASE" style="position:fixed;bottom: 0px;font-size: 10px;right:15px;color:rgba(0,0,0,.2);">V1.0.0</p>
         </footer>
         <script>
         (function(){
