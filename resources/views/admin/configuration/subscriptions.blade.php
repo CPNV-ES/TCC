@@ -58,14 +58,14 @@ Description : Displays a table with the inforamtion of the subscriptions form th
                             @endphp
                             @if(!$paid)
                                 <button class="btn btn-warning option" data-action="edit" data-url="/admin/config/subscriptions/{{$typeSubscription->id}}/edit">
-                                    <span class="fa fa-edit"></span>
+                                    <i class="fa fa-edit" aria-hidden="true"></i>
                                 </button>
                                 {{-- SFH: Only methode found to call the 'destroy' methode in the controler. Trying to find a better way. --}}
                                 <form class="delete" role="form" method="POST" action="/admin/config/subscriptions/{{$typeSubscription->id}}">
                                     {!! csrf_field() !!}
                                     {!! method_field('DELETE') !!}
                                     <button class="btn btn-danger option" data-action="delete-subscription" data-subscription="{{$typeSubscription->status}}">
-                                        <span class="fa fa-trash"></span>
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </button>
                                 </form>
                             @endif

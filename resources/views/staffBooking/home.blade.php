@@ -103,7 +103,7 @@
                                     </div>
                                     <div class="form-group push-to-bottom ">
                                         <button type="button" id="btn-simple-reservation" class="btn btn-success btn-block" name="btn-reserver">
-                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                          <i class="fa fa-check" aria-hidden="true"></i>
                                             Réserver
                                         </button>
                                     </div>
@@ -222,7 +222,7 @@
                                     </div>
                                     <div class="form-group push-to-bottom ">
                                         <button type="button" id="btn-multiple-reservation" class="btn btn-success btn-block" name="btn-reserver">
-                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                          <i class="fa fa-check" aria-hidden="true"></i>
                                             Réserver
                                         </button>
                                     </div>
@@ -289,13 +289,13 @@
                         <td> {{ ucfirst($reservation->type_reservation->type) }}</td>
                         <td class="option-zone">
                             <!-- <button class="btn btn-warning option" data-action="edit" >
-                                <span class="fa fa-edit"></span>
+                                <i class="fa fa-edit" aria-hidden="true"></i>
                             </button> -->
                             <form class="delete" role="form" method="POST" action="/staff_booking/{{$reservation->id}}">
                                 {!! csrf_field() !!}
                                 {!! method_field('DELETE') !!}
                                 <button class="btn btn-danger option" data-action="delete-reservation" data-court="{{$court->title}}">
-                                    <span class="fa fa-trash"></span>
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
                             </form>
                         </td>
@@ -328,8 +328,6 @@
     </div>
     <script>
         //if a error occurs we display back the modal
-
-
         $(document).ready(function()
         {
             var hasError = false;
@@ -400,7 +398,6 @@
                 }
             });
 
-
             //display old reservations
             $("#btnOldReservation").click(function(){
                 $(".old-reservations").toggle();
@@ -420,7 +417,5 @@
                 });
             });
         });
-
-
     </script>
 @endsection

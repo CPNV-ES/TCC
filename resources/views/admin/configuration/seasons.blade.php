@@ -54,7 +54,7 @@ Description : Displays a table with the inforamtion of the seasons form the data
                                     <button class="btn btn-danger option" data-action="delete-season"
                                             data-seasonstart="{{date_format(date_create($season->dateStart), "d.m.Y")}}"
                                             data-seasonend="{{date_format(date_create($season->dateEnd), "d.m.Y")}}">
-                                        <span class="fa fa-trash"></span>
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </button>
                                 </form>
                             @endif
@@ -86,7 +86,7 @@ Description : Displays a table with the inforamtion of the seasons form the data
 
                 <div class="col-md-4">
 
-                    <input id="dateStart" type="text" class="form-control" name="dateStart" data-verif="required|date_us" data-verif-group="seasonCheck"
+                    <input id="dateStart" type="text" class="form-control date-picker" name="dateStart" data-verif="required|date_us" data-verif-group="seasonCheck"
                            value="{{ (old('dateStart') != '' ? old('dateStart') : (!empty($newSeasonStart) ? $newSeasonStart : '')) }}">
 
                     @if ($errors->has('dateStart'))
@@ -101,7 +101,7 @@ Description : Displays a table with the inforamtion of the seasons form the data
                 <label class="col-md-6 control-label mandatory">Date de fin (aaaa-mm-jj)</label>
 
                 <div class="col-md-4">
-                    <input id="dateEnd" type="text" class="form-control" name="dateEnd" data-verif="required|date_us|date_us_greater:dateStart" data-verif-group="seasonCheck"
+                    <input id="dateEnd" type="text" class="form-control date-picker" name="dateEnd" data-verif="required|date_us|date_us_greater:dateStart" data-verif-group="seasonCheck"
                            value="{{ (old('dateEnd') != '' ? old('dateEnd') : (!empty($newSeasonEnd) ? $newSeasonEnd : '')) }}">
 
                     @if ($errors->has('dateEnd'))
@@ -121,24 +121,15 @@ Description : Displays a table with the inforamtion of the seasons form the data
             {{-- SFH: Added to check form before send --}}
             <script type="text/javascript">
               VERIF.onClickSubmitAfterVerifForm(document.querySelector('#btnSeasonCheck'),'seasonForm');
-            </script>
-            <script type="text/javascript">
-            $(function () {
-              $('#dateStart').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-                language: "fr"
+              $(function () {
+                $('.date-picker').datepicker({
+                  format: 'yyyy-mm-dd',
+                  autoclose: true,
+                  todayHighlight: true,
+                  language: "fr"
+                });
               });
-              $('#dateEnd').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-                language: "fr"
-              });
-            });
             </script>
-
             {{-- SFH: End --}}
 
         </form>

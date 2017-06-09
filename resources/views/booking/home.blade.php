@@ -60,8 +60,6 @@
 
         @include('booking.delete_modal')
 
-        {{--@endif--}}
-
 
     </div>
   </div>
@@ -132,6 +130,4 @@
         .tab-content .hebdomadaire{background-color: #88e6ff;}
     </style>
 
-{{--    {!! Html::script('/ajax/calendar.js') !!}
-    {!! Html::script('/ajax/booking.js') !!}--}}
 @endsection
