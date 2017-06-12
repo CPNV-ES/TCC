@@ -11,7 +11,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-xs-3">
-                            <i class="fa fa-users fa-5x"></i>
+                            <i class="fa fa-users fa-5x" aria-hidden="true"></i>
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge">{{ $nb_users }}</div>
@@ -22,7 +22,7 @@
                 <a href="{{ url('/admin/members') }}">
                     <div class="panel-footer">
                         <span class="pull-left">Plus d'informations</span>
-                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>

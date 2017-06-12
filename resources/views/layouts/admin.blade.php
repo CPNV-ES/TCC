@@ -15,7 +15,7 @@
     {!! Html::style('/css/admin.css')!!}
 
     {!! Html::style('/css/sb-admin-2.css')!!}
-    {!! Html::style('/css/timeline.css')!!}
+    {{-- {!! Html::style('/css/timeline.css')!!} --}}
     {!! Html::style('/css/datatables.css')!!}
 
     {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
@@ -33,9 +33,6 @@
     {!! Html::script('/js/verif.js') !!}
     {!! Html::script('/js/customVerif.js') !!}
     {!! Html::script('/js/functions.js') !!}
-
-    {!! Html::script('/js/verif-duplicate-id.js') !!}
-    
 
 </head>
 <body>
@@ -57,20 +54,20 @@
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    <i class="fa fa-user" aria-hidden="true"></i>  <i class="fa fa-caret-down" aria-hidden="true"></i>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                     @if(Auth::user()->isAdmin == 1)
                         <li>
-                            <a href="{{ url('/admin') }}"><i class="fa fa-gear"></i> Administration</a>
+                            <a href="{{ url('/admin') }}"><i class="fa fa-gear" aria-hidden="true"></i> Administration</a>
                         </li>
                     @endif
                     <li>
-                        <a href="{{ url('/profile') }}"><i class="fa fa-user"></i> Profile</a>
+                        <a href="{{ url('/profile') }}"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
                     </li>
                     <hr />
                     <li>
-                        <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                        <a href="{{ url('/logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -83,10 +80,10 @@
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
-                        <a href="{{ url('/admin') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="{{ url('/admin') }}"><i class="fa fa-dashboard" aria-hidden="true"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-cog fa-fw"></i> Configuration<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Configuration<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="{{ url('/admin/config/courts') }}">Courts</a>
@@ -104,10 +101,10 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
-                        <a href="{{ url('/admin/members') }}"><i class="fa fa-users fa-fw"></i> Membres</a>
+                        <a href="{{ url('/admin/members') }}"><i class="fa fa-users" aria-hidden="true"></i> Membres</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Statistiques</a>
+                        <a href="#"><i class="fa fa-bar-chart-o" aria-hidden="true"></i> Statistiques</a>
                     </li>
                 </ul>
             </div>
@@ -126,9 +123,6 @@
     </div>
 
 </div>
-{!! Html::script('/js/jqwidget/globalize.js') !!}
-{!! Html::script('/js/jqwidget/localization.js') !!}
-
 
 <script>
     $.ajaxSetup({

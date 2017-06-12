@@ -20,8 +20,8 @@
                     <input type="hidden" name="baseurl-del-reserv" id="baseurl-del-reserv" value="{{ url('/booking/')}}">
                     @if (!Auth::check())
                         <div class="form-group @if($errors->has('firstname')) {{'has-error'}} @endif" >
-                          <div class="pull-right"><span class="mandatory">*</span> obligatoire</div>
-                            <label for="recipient-name" class="control-label">Email <span class="mandatory">*</span></label>
+                          <div class="pull-right"><span class="mandatory"></span> obligatoire</div>
+                            <label for="recipient-name" class="control-label mandatory">Email</label>
 
                             <input class="form-control" type="email" placeholder="Entrez votre email" value="{{old('email')}}" name="email" data-verif="required|email" />
                             @if ($errors->has('firstname'))
@@ -33,7 +33,7 @@
                     @endif
                     <div class="form-group push-to-bottom ">
                         <button type="button" id="btn-del-res-modal" class="btn btn-danger btn-block" name="btn-delete">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
                             Supprimer
                         </button>
                         <script type="text/javascript">

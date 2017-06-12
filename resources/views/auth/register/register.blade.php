@@ -150,13 +150,21 @@
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button id="btn_register"  type="button" class="btn btn-primary">
-                                        <i class="fa fa-btn fa-user"></i> S'inscrire
+                                        <i class="fa fa-user" aria-hidden="true"></i> S'inscrire
                                     </button>
                                 </div>
                             </div>
                             <script type="text/javascript">
                                 document.querySelector('#btn_register').addEventListener('click', function(e) {
                                     VERIF.verifGroup('register_form',function(isok){if(isok)document.forms["register_form"].submit();});
+                                });
+                                $(document).ready(function () {
+
+                                    $('#birth_date').datepicker({
+                                        format: "yyyy-mm-dd",
+                                        language: "fr"
+                                    });
+
                                 });
                             </script>
 

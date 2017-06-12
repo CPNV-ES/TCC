@@ -113,11 +113,6 @@ body {
     text-align: justify;
 }
 
-#jqxcourt1, #jqxcourt2 {
-    border: none;
-    padding-top: 10px;
-}
-
 .timeline {
     list-style: none;
     padding: 20px 0 20px;

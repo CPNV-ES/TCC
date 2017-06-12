@@ -29,9 +29,9 @@
                                     <input type="text" class="form-control" name="login" value="{{ old('login') }}">
 
                                     @if ($errors->has('login'))
-
-                                        <span class="help-block"> <strong>{{ $errors->first('login') }}</strong> </span>
-
+                                        <span class="help-block">
+                                          <strong>{{ $errors->first('login') }}</strong>
+                                        </span>
                                     @endif
                                 </div>
                             </div>
@@ -43,9 +43,9 @@
                                     <input type="password" class="form-control" name="password">
 
                                     @if ($errors->has('password'))
-
-                                        <span class="help-block"> <strong>{{ $errors->first('password') }}</strong> </span>
-
+                                        <span class="help-block">
+                                          <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
                                     @endif
 
                                     <a href="{{ url('/password/reset') }}">Mot de passe / login oublié ?</a>

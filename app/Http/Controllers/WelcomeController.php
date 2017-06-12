@@ -24,32 +24,20 @@ class WelcomeController extends Controller
       $courts = Court::where('state', 1)->get()->sortBy('name');
       $localities = Locality::all();
       if (Auth::check()) {
-        // $todayDateTime = date('Y-m-d H:i:s');
-        // $config = Config::first();
-        // $nbReservations = Reservation::where('dateTimeStart', '>=', $todayDateTime)
-        //                     ->where(function($q) {
-        //                         $Userid=Auth::user()->id;
-        //                         $q->where('fkWho', $Userid);
-        //                         $q->where('fkWithWho', '<>', 'null');
-        //                         $q->orWhere('fkWithWho', $Userid);
-        //                     })->count();
-        //
-        // $max_reservations = false;
-        // if ($nbReservations >= $config['nbReservations']) {
-        //   $max_reservations = true;
-        // }
 
-        $allMember = PersonalInformation::where('id', '!=', PersonalInformation::find(Auth::user()->id)->id)->has('user')->get()->sortBy('firstname');
+        $personal_info_id = Auth::user()->fkPersonalInformation;
+
+        $allMember = PersonalInformation::where('id', '!=', $personal_info_id)->has('user')->get()->sortBy('firstname');
 
         $queryWho = DB::table('personal_informations')
                       ->join('reservations AS r', 'r.fkWho', '=', 'personal_informations.id')
-                      ->where('r.fkWithWho', '=', PersonalInformation::find(Auth::user()->id)->id)
+                      ->where('r.fkWithWho', '=', $personal_info_id)
                       ->groupBy('personal_informations.id')
                       ->select(['personal_informations.*', \DB::raw('COUNT(r.fkWho) AS nb_times_played')]);
 
         $queryBoth = DB::table('personal_informations')
                       ->join('reservations AS r', 'r.fkWithWho', '=', 'personal_informations.id')
-                      ->where('r.fkWho', '=', PersonalInformation::find(Auth::user()->id)->id)
+                      ->where('r.fkWho', '=', $personal_info_id)
                       ->union($queryWho)
                       ->groupBy('personal_informations.id')
                       ->select(['personal_informations.*', \DB::raw('COUNT(r.fkWithWho) AS nb_times_played')]);
@@ -61,22 +49,12 @@ class WelcomeController extends Controller
                                           ->get()
                                           ->sortByDesc('reservations_count');
 
-        $id_member_fav = [(int)PersonalInformation::find(Auth::user()->id)->id];
+        $id_member_fav = [(int)$personal_info_id];
         foreach ($memberFav as $value) {
           $id_member_fav[] = $value['id'];
         }
 
         $allMember = PersonalInformation::whereNotIn('id', $id_member_fav)->get()->sortBy('firstname');
-
-        // //we merge the two collections of members then we sort by reservations_count (desc)
-        // $startDate = new \DateTime();
-        // $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-        // $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-        //      ->where(function($q){
-        //          $Userid=Auth::user()->id;
-        //          $q->where('fkWho', $Userid);
-        //          $q->orWhere('fkWithWho', $Userid);
-        //      })->get();
 
         $membersList = $memberFav->merge($allMember);
         return view('welcome', compact('membersList','courts'));

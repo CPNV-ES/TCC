@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Reservation;
-use App\Models\Season;
-use App\Models\Subscription_per_member;
-
 use App\User;
 use App\PersonalInformation;
 use App\Locality;
@@ -19,9 +15,6 @@ use Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
-//to debug, could be delete
-use Illuminate\Support\Facades\Log;
-//use Session;
 
 class MemberController extends Controller
 {
@@ -32,38 +25,6 @@ class MemberController extends Controller
      */
     public function index(Request $request)
     {
-
-        if($request->ajax())
-        {
-            //If the request has a hours input, it's from the booking plugin
-            if($request->has('hours'))
-            {
-                //Select all the reservation in the futur
-                $reservations = Reservation::where('date_hours', '>', Carbon::now())->get(['fk_member_1', 'fk_member_2']);
-
-                //Get all the id from the members having a reservation in the futur
-                $idMember = [];
-                foreach ($reservations as $reservation)
-                {
-                    array_push($idMember, $reservation->fk_member_1);
-                    array_push($idMember, $reservation->fk_member_2);
-                }
-                //Add the id of the connected user so he isn't in the dropdowmlist
-                array_push($idMember, Auth::user()->id);
-                $idMember = array_unique($idMember);
-
-                //Select all the members that don't have a reservation in the futur
-                $members = Member::where('active', 1)->where('login', "!=", "")->where('validate', 1)->whereNotIn('id', $idMember)->orderBy('last_name')->orderBy('first_name')->get();
-                return response()->json($members);
-            }
-
-            $members = Member::where('login', "!=", "")->orderBy('active', 'desc')->get();
-            foreach ($members as $member)
-            {
-                $member->currentStatusName = $member->CurrentStatus->status;
-            }
-            return response()->json($members);
-        }
         //infoUser are information of member and no-members
         $infoUsers = PersonalInformation::all();
         return view('admin/member',compact('infoUsers'));
@@ -98,8 +59,7 @@ class MemberController extends Controller
      */
     public function show($id)
     {
-      $member = Member::find($id);
-      return view('admin/configuration/memberShow',compact('member'));
+      //
     }
 
     /**
@@ -273,13 +233,8 @@ class MemberController extends Controller
         //-----------------------------------------------------
 
         $member = User::where('fkPersonalInformation', $id)->first();
-
         $member->UpdateLogin($request->input('login'.$id));
-
         $member->save();
-
-
-
 
         /////////////////////////////////////////////
         $emailMember = $member->personal_information->email;

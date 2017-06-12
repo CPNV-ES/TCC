@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Court;
 use Faker\Provider\cs_CZ\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Validator;
 use App\Http\Requests;
+use App\Court;
 use App\Reservation;
 use App\Config;
 use Illuminate\Support\Facades\Session;
@@ -316,6 +316,7 @@ class StaffBookingController extends Controller
         }
 
     }
+    
     public function destroyMultiple($idReservations)
     {
 

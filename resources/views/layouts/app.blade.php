@@ -14,13 +14,7 @@
         {!! Html::style('/css/layouts.css')!!}
         {!! Html::style('/css/bootstrap-datepicker3.min.css')!!}
 
-        {!! Html::style('/css/bootstrap-datetimepicker.min.css') !!}
-
         {!! Html::style('/fonts/font-awesome/css/font-awesome.min.css')!!}
-
-{{--        {!! Html::style('/css/jqx.base.css')!!}
-        {!! Html::style('/css/jqx.bootstrap.css')!!}
-        {!! Html::style('/css/jqx.custom.css')!!}--}}
 
         {!! Html::script('/js/jquery-2.2.0.js') !!}
         {!! Html::script('/js/bootstrap.min.js') !!}
@@ -29,20 +23,11 @@
         {!! Html::script('/js/bootstrap-datepicker.min.js') !!}
         {!! Html::script('/js/bootstrap-datepicker.fr-CH.min.js') !!}
 
-        {{--is like datepicker but with hour --}}
-  {{--      {!! Html::script('/js/bootstrap-datetimepicker.min.js') !!}
-        {!! Html::script('/js/bootstrap-datetimepicker.fr.js') !!}--}}
-
-        {{--{!! Html::script('/js/jqwidget/jqx-all.js') !!}
-        {!! Html::script('/js/jqwidget/globalize.js') !!}
-        {!! Html::script('/js/jqwidget/globalize.culture.fr-FR.js') !!}--}}
         {!! Html::script('/js/ee.js') !!}
 
-        {!! Html::script('/Ajax/register.js') !!}
         {!! Html::script('/js/weather.js') !!}
         {!! Html::script('/js/verif.js') !!}
         {!! Html::script('/js/customVerif.js') !!}
-
         {!! Html::script('/js/functions.js') !!}
 
     </head>
@@ -59,8 +44,7 @@
                     </button>
                 </div>
 
-
-                    <div class="navbar-brand"><a href="{{ url('/home') }}">{{ HTML::image("css/images/logo.gif", "TC Chavornay", array('width'=> '100px', 'style' => 'display:inline;')) }}</a></div>
+                <div class="navbar-brand"><a href="{{ url('/home') }}">{{ HTML::image("css/images/logo.gif", "TC Chavornay", array('width'=> '100px', 'style' => 'display:inline;')) }}</a></div>
 
                 <div class="collapse navbar-collapse" id="spark-navbar-collapse">
                     <!-- Left Side Of Navbar -->
@@ -78,8 +62,6 @@
                         @endif
                     </ul>
 
-
-
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
@@ -93,7 +75,7 @@
                         @else
                           @if (Auth::user()->invitRight == 0 || maxReservations())
                             <div id="status-info-warning">
-                              <i id="warning-triangle" class="fa fa-exclamation-triangle fa-2x"></i>
+                              <i id="warning-triangle" class="fa fa-exclamation-triangle fa-2x" aria-hidden="true"></i>
                               <div id="status-info">
                                 <div>
                                   <b><i class="text-warning">Statuts</i></b>
@@ -117,15 +99,15 @@
                               <ul class="dropdown-menu" role="menu">
                                   @if(Auth::user()->isAdmin == 1)
                                   <li>
-                                      <a href="{{ url('/admin') }}"><i class="fa fa-gear"></i> Administration</a>
+                                      <a href="{{ url('/admin') }}"><i class="fa fa-gear" aria-hidden="true"></i> Administration</a>
                                   </li>
                                   @endif
                                   <li>
-                                      <a href="{{ url('/profile') }}"><i class="fa fa-user"></i> Profile</a>
+                                      <a href="{{ url('/profile') }}"><i class="fa fa-user" aria-hidden="true"></i> Profile</a>
                                   </li>
                                   <hr />
                                   <li>
-                                      <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                                      <a href="{{ url('/logout') }}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
                                   </li>
                               </ul>
                           </li>
@@ -137,14 +119,14 @@
         <div class="wrapper">
           @yield('content')
         </div>
-        {!! Html::script('/js/jqwidget/globalize.js') !!}
-        {!! Html::script('/js/jqwidget/localization.js') !!}
 
         <footer style="position:absolute;">
           <p>© Centre Professionnel du Nord Vaudois / 2016 - {{Date('Y')}}</p>
           <p id="GIT_RELEASE" style="position:fixed;bottom: 0px;font-size: 10px;right:15px;color:rgba(0,0,0,.2);">V1.0.0</p>
         </footer>
         <script>
+        // Funtion for the resize of the body.
+        // So that the footer addapts dynamicaly when the size of the page changes.
         (function(){
         var attachEvent = document.attachEvent;
         var isIE = navigator.userAgent.match(/Trident/);
@@ -209,6 +191,7 @@
           }
         }
       })();
+
         function footerAlign() {
           if (($('.navbar.navbar-default').height() + $('.wrapper').height()) < $(window).height()-75) {
             $('footer').css('position', 'fixed');

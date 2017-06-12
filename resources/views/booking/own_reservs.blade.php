@@ -22,7 +22,7 @@
       <td>@if($reserv->personal_information_with_who){{ $reserv->personal_information_with_who->firstname }} {{ $reserv->personal_information_with_who->lastname }}@else - @endif</td>
       <td>
         <button type="button" id="btn-del-res-{{ $reserv->id }}" class="btn btn-danger">
-          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
         </button>
         <script type="text/javascript">
           $("#btn-del-res-{{ $reserv->id }}").click(function(){
