@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Registration;
 
-use App\Models\Member;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;

@@ -6,12 +6,12 @@ use App\Config;
 function maxReservations() {
   $todayDateTime = date('Y-m-d H:i:s');
   $config = Config::first();
+  $personal_info_id = Auth::user()->fkPersonalInformation;
   $nbReservations = Reservation::where('dateTimeStart', '>=', $todayDateTime)
-                      ->where(function($q) {
-                          $Userid=Auth::user()->id;
-                          $q->where('fkWho', $Userid);
+                      ->where(function ($q) use ($personal_info_id) {
+                          $q->where('fkWho', $personal_info_id);
                           $q->where('fkWithWho', '<>', 'null');
-                          $q->orWhere('fkWithWho', $Userid);
+                          $q->orWhere('fkWithWho', $personal_info_id);
                       })->count();
 
   $max_reservations = false;

@@ -41,10 +41,10 @@ class PersonalInformation extends Model
     public static function setLocality($npa,$name){
         return Locality::firstOrCreate(['NPA'=>$npa,'name'=>ucwords($name)])->id;
     }
+    
     public function hasRightToReserve($dateStart, $courtId)
     {
         $config = Config::first();
-
 
         if($this->user) $nbDays = Court::find($courtId)->nbDays;
         else $nbDays = $config->nbDaysLimitNonMember;

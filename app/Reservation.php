@@ -51,13 +51,9 @@ class Reservation extends Model
         else $court = Court::find($courtId);
         if ($startDate == null)  $startDate = new \DateTime();
 
-
         if (is_int($nbDays) && $nbDays > 0) $endDate =(new \DateTime());
         elseif (Auth::check()) $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
         else $endDate = (new \DateTime())->add(new \DateInterval('P'.($config->nbDaysLimitNonMember-1).'D'));
-
-
-
 
         $planifiedReservations = Reservation::where('fkCourt', $court->id)
                                             ->whereNull('confirmation_token')
@@ -68,22 +64,22 @@ class Reservation extends Model
         $res=[];
 
         if (Auth::check()) {
-          $user_id = Auth::user()->fkPersonalInformation;
+          $personal_info_id = Auth::user()->fkPersonalInformation;
 
           $myReservs=Reservation::where('dateTimeStart', '>',$startDate->format('Y-m-d H:i'))
           ->whereNull('confirmation_token')
-          ->where(function($q) use ($user_id){
-              $q->where('fkWho', $user_id);
+          ->where(function($q) use ($personal_info_id){
+              $q->where('fkWho', $personal_info_id);
               $q->where('fkWithWho', '<>', 'null');
-              $q->orWhere('fkWithWho', $user_id);
+              $q->orWhere('fkWithWho', $personal_info_id);
           })->get();
 
           $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
           ->where('fkCourt',$court->id)
           ->whereNull('confirmation_token')
-          ->where(function($q) use ($user_id){
-              $q->where('fkWho', $user_id);
-              $q->orWhere('fkWithWho', $user_id);
+          ->where(function($q) use ($personal_info_id){
+              $q->where('fkWho', $personal_info_id);
+              $q->orWhere('fkWithWho', $personal_info_id);
           })->get();
 
           if(count($myReservs)>=$config->nbReservations ) $readOnly=true;
