@@ -15,11 +15,6 @@ Modified : Added checks when displaying user information in case a user doesn't 
 @endsection
 
 @section('content')
-    <!--<div class="row">
-        <div id="message"></div>
-        <div id="jqxmember">
-        </div>
-    </div>-->
 
 {{--IGI - display the table of members--}}
       <table id="members-table" class="display table member-list" width="100%" cellspacing="0">
@@ -56,7 +51,6 @@ Modified : Added checks when displaying user information in case a user doesn't 
               <td>{{(($infoUser->localities) ? $infoUser->localities->name : '-')}}</td>
               <td>{{(($infoUser->user) ? (($infoUser->user->active == 1) ? 'Oui' : 'Non') : '-')}}</td>
               <td>{{(($infoUser->toVerify == 1) ? 'Oui' : 'Non')}}</td>
-              {{-- <!-- <td>{!! $infoUser->user->username != null ? '<a class="btn btn-primary" href="/admin/members/'.$infoUser->user->id.'/edit" >Voir info</a>' : "" !!}  </td> --> --}}
 
           </tr>
           @endforeach

@@ -60,12 +60,6 @@
                 </div>
             </div>
 
-            {{--<div class="box" style="margin-top:40px;">--}}
-                {{--<div class="info">--}}
-                    {{--<a href="{{ url('/booking') }}"><button class="btn btn-primary btn-lg">Je réserve !</button></a>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-
             <div class="box" style="margin-top:40px;">
                 <div class="info">
                     <a href="{{ url('https://www.google.ch/maps/place/Tennis+Club+de+Chavornay/@46.7100609,6.5010883,12z/data=!4m8!1m2!2m1!1stennis+club+%C3%A0+proximit%C3%A9+de+Chavornay!3m4!1s0x0000000000000000:0x2007be33c2832496!8m2!3d46.7047773!4d6.5773129') }}" target="_blank">{{ Html::image("css/images/google_maps.ico", "Actualité Facebook", array('width'=> '50px')) }}</a>
@@ -181,79 +175,4 @@
         .hebdomadaire{background-color: #88e6ff;}
     </style>
 
-    {{--<div class="container">--}}
-        {{--<div class="row" >--}}
-            {{--<div class="col-md-12" style="margin-top:20px;">--}}
-                {{--<p>--}}
-                    {{--<h1>Bienvenue sur tcchavornay.ch</h1>--}}
-
-                    {{--Ce site est actuellement en construction.--}}
-                    {{--N'hésitez pas à venir le visiter prochainement !<br/><br/>--}}
-
-                    {{--Mais retenez déjà quelques dates clés ci-dessous et la date de notre évènement majeur, Le Double Mixte du mois de Juin 2016 !<br/><br/>--}}
-
-
-                {{--<ul class="timeline">--}}
-                    {{--<li>--}}
-                        {{--<div class="timeline-panel">--}}
-                            {{--<div class="timeline-heading">--}}
-                                {{--<h4 class="timeline-title">Ouverture de la saison</h4>--}}
-                                {{--<p><small class="text-muted"><i class="glyphicon glyphicon-calendar"></i> Le 14 avril</small></p>--}}
-                            {{--</div>--}}
-                            {{--<div class="timeline-body">--}}
-                                {{--<p>Dés 18h, Apéro d'ouverture de la saison avec fondue (sur inscription)</p>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<div class="timeline-panel">--}}
-                            {{--<div class="timeline-heading">--}}
-                                {{--<h4 class="timeline-title">Cours 2016</h4>--}}
-                                {{--<p><small class="text-muted"><i class="glyphicon glyphicon-calendar"></i> Le 18 avril</small></p>--}}
-                            {{--</div>--}}
-                            {{--<div class="timeline-body">--}}
-                                {{--<p>Début de tous les cours 2016 (juniors à adultes) et démarrage du concours de la pyramide</p>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<div class="timeline-panel">--}}
-                            {{--<div class="timeline-heading">--}}
-                                {{--<h4 class="timeline-title">Tournois simple dames</h4>--}}
-                                {{--<p><small class="text-muted"><i class="glyphicon glyphicon-calendar"></i> Du 30 avril au 1er mai</small></p>--}}
-                            {{--</div>--}}
-                            {{--<div class="timeline-body">--}}
-                                {{--<p>Tournoi Simple Dames R5-R9</p>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<div class="timeline-panel">--}}
-                            {{--<div class="timeline-heading">--}}
-                                {{--<h4 class="timeline-title">Tournoi double mixte</h4>--}}
-                                {{--<p><small class="text-muted"><i class="glyphicon glyphicon-calendar"></i> Du 16 au 19 juin</small></p>--}}
-                            {{--</div>--}}
-                            {{--<div class="timeline-body">--}}
-                                {{--<p>Tournoi Double Mixte "Les Pirates"</p>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                        {{--<div class="timeline-panel">--}}
-                            {{--<div class="timeline-heading">--}}
-                                {{--<h4 class="timeline-title">Stage juniors</h4>--}}
-                                {{--<p><small class="text-muted"><i class="glyphicon glyphicon-calendar"></i> Du 4 au 8 juillet</small></p>--}}
-                            {{--</div>--}}
-                            {{--<div class="timeline-body">--}}
-                                {{--<p>Stage d'été Juniors</p>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-                    {{--</li>--}}
-                {{--</ul>--}}
-                {{--</p>--}}
-           {{--</div>--}}
-        {{--</div>--}}
-    {{--</div>--}}
-
-    {{-- {!! Html::script('/ajax/disponibility.js') !!} --}}
 @endsection

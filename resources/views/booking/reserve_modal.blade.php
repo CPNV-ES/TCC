@@ -37,7 +37,7 @@
                             </div>
                             <div class="form-group">
                                 <button type="submit" id="booking" class="btn btn-success btn-block push-to-bottom" name="btn-reserver">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                  <i class="fa fa-check" aria-hidden="true"></i>
                                     Réserver
                                 </button>
                             </div>
@@ -73,7 +73,7 @@
 
                             <div class="form-group push-to-bottom ">
                                 <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
-                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                  <i class="fa fa-check" aria-hidden="true"></i>
                                     Réserver
                                 </button>
                             </div>
@@ -171,7 +171,7 @@
 
                       <div class="form-group push-to-bottom ">
                           <button type="button" id="btn-reserver-member-invite" class="btn btn-success btn-block" name="btn-reserver">
-                              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            <i class="fa fa-check" aria-hidden="true"></i>
                               Réserver
                           </button>
                       </div>

@@ -71,8 +71,6 @@ class OtherOptionController extends Controller
       //-----------------------------------------------------
       $config = Config::findOrFail($id);
       $config->update($request->all());
-      // $config = Config::create($request->all());
-      // $config->save();
       /////////////////////////////////////////////
 
       // SFH: Return a success message to be displayed

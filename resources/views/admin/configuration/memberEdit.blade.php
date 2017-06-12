@@ -187,8 +187,8 @@ Description: Displays a form with the informations of a member. The inputs of th
         </div>
         <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
             <a class="btn btn-primary" href="/admin/members" >Retour à la liste</a>
-            <button id="btn-member-edit" type="button"  class="btn btn-primary" >Modifier</button>
-            <button id="btn-member-save" type="button"  class="btn btn-primary">Sauvegarder</button>
+            <button id="btn-member-edit" type="button"  class="btn btn-warning" >Modifier</button>
+            <button id="btn-member-save" type="button"  class="btn btn-success">Sauvegarder</button>
         </div>
     </form>
   </div>

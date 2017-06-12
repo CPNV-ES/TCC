@@ -36,7 +36,6 @@
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="lastname" value="{{ (old('lastname') != '' ? old('lastname') : (!empty($infosUser) ? $infosUser->lastname : '')) }}">
-
                                 @if ($errors->has('lastname'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('lastname') }}</strong>
@@ -50,7 +49,6 @@
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="firstname" value="{{ (old('firstname') != '' ? old('firstname') : (!empty($infosUser) ? $infosUser->firstname : '')) }}">
-
                                 @if ($errors->has('firstname'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('firstname') }}</strong>
@@ -64,7 +62,6 @@
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="street" value="{{ (old('street') != '' ? old('street') : (!empty($infosUser) ? $infosUser->street : '')) }}">
-
                                 @if ($errors->has('street'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('street') }}</strong>
@@ -78,7 +75,6 @@
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="streetNbr" value="{{ (old('streetNbr') != '' ? old('streetNbr') : (!empty($infosUser) ? $infosUser->streetNbr : '')) }}">
-
                                 @if ($errors->has('streetNbr'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('streetNbr') }}</strong>
@@ -91,7 +87,6 @@
                             <label class="col-md-4 control-label mandatory">NPA</label>
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="npa" value="{{ (old('npa') != '' ? old('npa') : (($infosUser->localities != null) ? $infosUser->localities->npa : '')) }}">
-
                                 @if ($errors->has('npa'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('npa') }}</strong>
@@ -105,7 +100,6 @@
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="locality" value="{{ (old('locality') != '' ? old('locality') : (($infosUser->localities != null) ? $infosUser->localities->name : '')) }}">
-
                                 @if ($errors->has('locality'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('locality') }}</strong>
@@ -119,7 +113,6 @@
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" value="{{ (old('email') != '' ? old('email') : (!empty($infosUser) ? $infosUser->email : '')) }}">
-
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -133,7 +126,6 @@
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="telephone" value="{{ (old('telephone') != '' ? old('telephone') : (!empty($infosUser) ? $infosUser->telephone : '')) }}">
-
                                 @if ($errors->has('telephone'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('telephone') }}</strong>
@@ -147,7 +139,6 @@
 
                             <div class="col-md-6">
                                 <input id="birthDate" type="text" class="form-control" name="birthDate" value="{{ (old('birthDate') != '' ? old('birthDate') : (!empty($infosUser) ? date("Y-m-d", strtotime($infosUser->birthDate)) : '')) }}">
-
                                 @if ($errors->has('birthDate'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('birthDate') }}</strong>

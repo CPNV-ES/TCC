@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers\Booking;
 
-//use App\Models\Reservation;
-//use App\Models\Season;
-
 use App\Locality;
 use App\Reservation;
 use App\Season;
@@ -20,14 +17,10 @@ use App\Http\Requests;
 use Validator;
 use DB;
 
-/*use App\Models\Member;
-use App\Models\Booking;
-use App\Models\Court;*/
 use App\PersonalInformation;
 use App\Court;
 use App\Config;
 use App\User;
-
 
 use Illuminate\Support\Facades\Mail;
 
@@ -43,53 +36,55 @@ class BookingController extends Controller
         $courts = Court::where('state', 1)->get();
         if(Auth::check())
         {
-
+          $personal_info_id = Auth::user()->fkPersonalInformation;
           $queryWho = DB::table('personal_informations')
-                        ->join('reservations AS r', 'r.fkWho', '=', 'personal_informations.id')
-                        ->where('r.fkWithWho', '=', PersonalInformation::find(Auth::user()->id)->id)
-                        ->groupBy('personal_informations.id')
-                        ->select(['personal_informations.*', \DB::raw('COUNT(r.fkWho) AS nb_times_played')]);
+            ->join('reservations AS r', 'r.fkWho', '=', 'personal_informations.id')
+            ->where('r.fkWithWho', '=', $personal_info_id)
+            ->groupBy('personal_informations.id')
+            ->select(['personal_informations.*', \DB::raw('COUNT(r.fkWho) AS nb_times_played')]);
 
           $queryBoth = DB::table('personal_informations')
-                        ->join('reservations AS r', 'r.fkWithWho', '=', 'personal_informations.id')
-                        ->rightJoin('users AS u', 'u.fkPersonalInformation', '=', 'personal_informations.id')
-                        ->where('r.fkWho', '=', PersonalInformation::find(Auth::user()->id)->id)
-                        ->unionAll($queryWho)
-                        ->groupBy('personal_informations.id')
-                        ->select(['personal_informations.*', \DB::raw('COUNT(r.fkWithWho) AS nb_times_played')]);
+            ->join('reservations AS r', 'r.fkWithWho', '=', 'personal_informations.id')
+            ->rightJoin('users AS u', 'u.fkPersonalInformation', '=', 'personal_informations.id')
+            ->where('r.fkWho', '=', $personal_info_id)
+            ->unionAll($queryWho)
+            ->groupBy('personal_informations.id')
+            ->select(['personal_informations.*', \DB::raw('COUNT(r.fkWithWho) AS nb_times_played')]);
 
+          // Get favorit member orderd by the amount of times played with
           $memberFav = PersonalInformation::selectRaw('ps.id, ps.firstname, ps.lastname, ps.street, ps.streetNbr, ps.telephone, ps.email, ps.toVerify, ps.birthDate, ps._token, ps.fkLocality, ps.created_at, ps.updated_at, ps.deleted_at, SUM(ps.nb_times_played) AS reservations_count')
-                                            ->from(\DB::raw('('.$queryBoth->toSql().') AS ps'))
-                                            ->mergeBindings($queryBoth)
-                                            ->groupBy('ps.id')
-                                            ->get()
-                                            ->sortByDesc('reservations_count');
+            ->from(\DB::raw('('.$queryBoth->toSql().') AS ps'))
+            ->mergeBindings($queryBoth)
+            ->groupBy('ps.id')
+            ->get()
+            ->sortByDesc('reservations_count');
 
-          $id_member_fav = [(int)PersonalInformation::find(Auth::user()->id)->id];
+          // Create a table of the member id that the user has already played with
+          $id_member_fav = [(int)$personal_info_id];
           foreach ($memberFav as $value) {
             $id_member_fav[] = $value['id'];
           }
 
+          // Get all members that the user hasn't played with
           $allMember = PersonalInformation::whereNotIn('personal_informations.id', $id_member_fav)
-                        ->rightJoin('users AS u', 'u.fkPersonalInformation', '=', 'personal_informations.id')
-                        ->get()
-                        ->sortBy('firstname');
+            ->rightJoin('users AS u', 'u.fkPersonalInformation', '=', 'personal_informations.id')
+            ->get()
+            ->sortBy('firstname');
 
           $startDate = new \DateTime();
           $endDate= (new \DateTime())->add(new \DateInterval('P5D'));
-          $ownreservs = \App\Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])->has('personal_information_with_who')
-            ->where(function($q){
-                $Userid=Auth::user()->id;
-                $q->where('fkWho', $Userid);
-                $q->orWhere('fkWithWho', $Userid);
+          $ownreservs = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])->has('personal_information_with_who')
+            ->where(function($q) use ($personal_info_id){
+                $q->where('fkWho', $personal_info_id);
+                $q->orWhere('fkWithWho', $personal_info_id);
             })
             ->orderBy('dateTimeStart', 'asc')
             ->get();
+
           $oldReservations = Reservation::where('dateTimeStart', '<', $startDate->format('Y-m-d H:i'))->has('personal_information_with_who')
-              ->where(function($q){
-                  $Userid=Auth::user()->id;
-                  $q->where('fkWho', $Userid);
-                  $q->orWhere('fkWithWho', $Userid);
+              ->where(function($q) use ($personal_info_id){
+                  $q->where('fkWho', $personal_info_id);
+                  $q->orWhere('fkWithWho', $personal_info_id);
               })
               ->orderBy('dateTimeStart', 'desc')
               ->get();
@@ -142,17 +137,18 @@ class BookingController extends Controller
         Session::flash('currentCourt', $fkCourt);
         if(Auth::check())
         {
+          $personal_info_id = Auth::user()->fkPersonalInformation;
+          $user_id = Auth::user()->id;
           $is_non_member = false;
             $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
-            $userWho = User::find(Auth::user()->id);
-            $personalInfoWho = User::find(Auth::user()->id)->personal_information;
+            $userWho = User::find($user_id);
+            $personalInfoWho = User::find($user_id)->personal_information;
 
             $nbReservationWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
-                ->where(function($q){
-                    $Userid=Auth::user()->id;
-                    $q->where('fkWho', $Userid);
+                ->where(function($q) use ($personal_info_id){
+                    $q->where('fkWho', $personal_info_id);
                     $q->where('fkWithWho', '<>', 'null');
-                    $q->orWhere('fkWithWho', $Userid);
+                    $q->orWhere('fkWithWho', $personal_info_id);
                 })->count();
 
 
@@ -225,7 +221,7 @@ class BookingController extends Controller
                     return redirect('/booking');
                 }
                 // Can't reserve with your self
-                if (PersonalInformation::find(Auth::user()->id)->id == $request->input('fkWithWho'))
+                if (PersonalInformation::find($personal_info_id)->id == $request->input('fkWithWho'))
                 {
                     Session::flash('errorMessage', "Impossible de faire une réservation avec vous même");
                     return redirect('/booking');
@@ -460,7 +456,7 @@ class BookingController extends Controller
             Session::flash('errorMessage', "La reservation que vous essayer de supprimer n'existe pas ou plus");
             return redirect('/booking');
         }
-        if (Auth::user()->id != $reservation->fkWho && Auth::user()->id != $reservation->fkWithWho)
+        if (Auth::user()->fkPersonalInformation != $reservation->fkWho && Auth::user()->fkPersonalInformation != $reservation->fkWithWho)
         {
             Session::flash('errorMessage', "Vous essayer de supprimer une réservation qui ne vous appartient pas");
             return redirect('/booking');
