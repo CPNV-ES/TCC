@@ -16,6 +16,7 @@ The different actors of the website are:
 
 
 ## Features
+### Reservation
 - Simple reservation as member with a member
 - Simple reservation as member with a guest
 - Simple reservation as non-member
@@ -23,7 +24,7 @@ The different actors of the website are:
 - Suppression of reservation as member
 - Suppression of reservation as non-member
 - Suppression of staff reservation as staff
-- 
+
 
 The application manages the reservations of the club. There are 2 type of reservations:
 - simple reservations - can be made by member, non-member, club crew (staff member and admin).
@@ -32,13 +33,11 @@ The application manages the reservations of the club. There are 2 type of reserv
 
 In the actual state of the project, the WebApp has these features
 
-| Features                                       | Description         | Route |
-|------------------------------------------------|----------------------|--------|
 
 
 ## improvements
 - Develop a system of pyramid to know the best player of the club
-
+- Use AJAX
 
 
 ## Compatibility
