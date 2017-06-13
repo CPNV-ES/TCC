@@ -41,14 +41,18 @@ In the actual state of the project, the WebApp has these features
 
 
 ## Compatibility
-As ask by the client we \'ve tried to keep our site compatible our site with 3 of the most used Web Browsers: 
+As ask by the client we \'ve tried to keep our site compatible with 3 of the most used Web Browsers: 
 - Firefox (tested with v.53.0.3, 32bits)
 - Chrome (tested with v.58.0.3029.110, 64bits)
-- Internet Explorer(from v.10 to Edge)
+- Internet Explorer(tested from v.10 to Edge)
 
 
 ## Development environment 
 To develop this app we used the vagrant box Homestead with this specification:
+- Nginx 1.11.5
 - MySql v5.7.16
 - Php v7.0.13
+
+## Staging environment
+We also have tested our application on the 
 
