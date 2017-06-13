@@ -61,15 +61,15 @@ Route::group(['middleware' => ['web']], function ()
        Route::resource('staff_booking', 'StaffBookingController');
     });
 
-    /*
-     * MyBooking
-     */
-    Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
-    {
-        Route::delete('mybooking/{id}', 'BookingController@destroy');
-        Route::get('mybooking', 'BookingController@MyBookingIndex');
-
-    });
+    // /*
+    //  * MyBooking
+    //  */
+    // Route::group(['namespace' => 'Booking', 'middleware' => 'profileIsValide'], function()
+    // {
+    //     Route::delete('mybooking/{id}', 'BookingController@destroy');
+    //     Route::get('mybooking', 'BookingController@MyBookingIndex');
+    //
+    // });
 
 
 
