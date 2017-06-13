@@ -239,33 +239,9 @@ class BookingController extends Controller
 
         }
         else {
-          $is_non_member = true;
-            $validator = Validator::make($request->all(),
-                [
-                  'lastname'  => 'required|max:50',
-                  'firstname' => 'required|max:50',
-                  'street'    => 'max:100',
-                  'streetNbr' => 'max:45',
-                  'npa'       => 'required|integer|digits:4',
-                  'locality'  => 'required',
-                  'email'     => 'required|email|max:255',
-                  'telephone' => 'required'
-                ]
-                );
-            $validator->setAttributeNames([
-              'lastname'  => 'Nom',
-              'firstname' => 'Prénom',
-              'street'    => 'Rue',
-              'streetNbr' => 'Numéro de rue',
-              'npa'       => 'NPA',
-              'locality'  => 'Localité',
-              'telephone' => 'Téléphone'
-            ]);
-            if($validator->fails())
-            {
-                return back()->withInput()->withErrors($validator);
-            }
-
+            $is_non_member = true;
+            $this->checkNonMemberReservationInfo($request);
+                
             $endDate = (new \DateTime())->add(new \DateInterval('P'.($config->nbDaysLimitNonMember-1).'D'));
 
             //We don't store the personal informations now
@@ -405,6 +381,34 @@ class BookingController extends Controller
 
         Session::flash('successMessage', "Votre réservation a bien été enregistrée.".$additionalMessage);
         return redirect('/booking');
+    }
+    private function checkNonMemberReservationInfo(Request $request)
+    {
+        $validator = Validator::make($request->all(),
+            [
+                'lastname'  => 'required|max:50',
+                'firstname' => 'required|max:50',
+                'street'    => 'max:100',
+                'streetNbr' => 'max:45',
+                'npa'       => 'required|integer|digits:4',
+                'locality'  => 'required',
+                'email'     => 'required|email|max:255',
+                'telephone' => 'required'
+            ]
+        );
+        $validator->setAttributeNames([
+            'lastname'  => 'Nom',
+            'firstname' => 'Prénom',
+            'street'    => 'Rue',
+            'streetNbr' => 'Numéro de rue',
+            'npa'       => 'NPA',
+            'locality'  => 'Localité',
+            'telephone' => 'Téléphone'
+        ]);
+        if($validator->fails())
+        {
+            return back()->withInput()->withErrors($validator);
+        }
     }
 
     /**
