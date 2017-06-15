@@ -133,6 +133,10 @@ class MemberController extends Controller
               }
             }
 
+            if ($request->input("active") == null) {
+              $request['invalidatedDate'] = date("Y-m-d");
+            }
+
         });
 
         /////////////////////////////////////////////

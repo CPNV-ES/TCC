@@ -14,7 +14,8 @@ class User extends Model
         'active',
         'validated',
         'invitRight',
-        'fkPersonalInformation'
+        'fkPersonalInformation',
+        'invalidatedDate'
     ];
 
     public function personal_information() {
@@ -34,6 +35,7 @@ class User extends Model
         $this->validated = (array_key_exists('validated',$data)) ? $data['validated'] : $this->validated;
         $this->active = (array_key_exists('active',$data)) ? $data['active'] : '0';
         $this->invitRight = (array_key_exists('invitRight',$data)) ? $data['invitRight'] : '0';
+        $this->invalidatedDate = (array_key_exists('invalidatedDate',$data)) ? $data['invalidatedDate'] : null;
     }
     public function UpdateLogin($login){
         $subscription = new Subscription();
