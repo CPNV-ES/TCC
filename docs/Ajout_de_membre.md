@@ -1,18 +1,18 @@
-# Ajout d'un membre
+# Add member
 
-## Pas à pas
+## steb by step
 
-1. L'utillisateur va s'enregistrer sur `/register`
-  - si la vérification réussi, passe au 2
-  - si la vérification échoue : rouvre le formulaire avec les erreurs
-2. le système envoie un mail à l'administrateur
-3. l'administreteur se connecte au site et va sur son panel d'administration
-  - accepte l'inscription : donne un login a l'utilisateur
-  - refuse : ignore le champ
-4. le système envoie un mail a l'utilisateur avec un token et son login
-5. l'utilisateur clique sur le lien du mail
-6. l'utilisateur rentre un mot de passe
-7. l'utilisateur va se connecter avec login / mot de passe
+1. User go on `/register`
+  - if the verification of the inputs are valid, go to step 2
+  - if verification failed : go again to the register form
+2. System send a mail to the admin
+3. Admin log in to his admin panel
+  - accept : fill the login field and go to step 4
+  - refuse : ignore field
+4. System send a mail to the new user with the login and a link to set his password
+5. User click on the link
+6. User set his password
+7. User log in with his new login/password
 
 ## diagramme d'activité
 
