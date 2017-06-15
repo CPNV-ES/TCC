@@ -165,6 +165,7 @@ class StaffBookingController extends Controller
                     case 3:
                         $datetime_intermediate->modify('+1 week');
                         break;
+                    //Not used
                     case 4:
                         $datetime_intermediate->modify('+1 month');
                         break;
