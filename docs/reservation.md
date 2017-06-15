@@ -32,7 +32,9 @@ to play with a member, the member who made the reservation has to give the id of
 to play with in (in the view, it's a dropdown list). If he want to play with a non-member/visitor, he had to give first name
 and last name of the user.
 
+## Store method
 
+![DA store@BookingController](img/reservations/Store-BookingController.png)
 
 
 
