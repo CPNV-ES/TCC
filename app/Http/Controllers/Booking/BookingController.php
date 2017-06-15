@@ -147,6 +147,7 @@ class BookingController extends Controller
             $nbReservationWho = Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
                 ->where(function($q) use ($personal_info_id){
                     $q->where('fkWho', $personal_info_id);
+                    // we exclude the reservation without fkWithWho -> staff reservations
                     $q->where('fkWithWho', '<>', 'null');
                     $q->orWhere('fkWithWho', $personal_info_id);
                 })->count();
@@ -239,7 +240,7 @@ class BookingController extends Controller
 
         }
         else {
-          $is_non_member = true;
+            $is_non_member = true;
             $validator = Validator::make($request->all(),
                 [
                   'lastname'  => 'required|max:50',
@@ -275,7 +276,7 @@ class BookingController extends Controller
         $dateTimeStart = $request->input('dateTimeStart');
         $dateTimeEnd   = date("Y-m-d H:i:s", strtotime($dateTimeStart)+60*60-1);
 
-        //check if the date isn't in th past
+        //check if the date isn't in the past
         if($todayDateTime > $dateTimeEnd)
         {
             Session::flash('errorMessage', "Cette heure/date est déjà passée");
@@ -298,11 +299,6 @@ class BookingController extends Controller
 
         }
 
-
-        // 13:00 -- 14:00+1
-        $dateTimeStartLessDuration =  date("Y-m-d H:i:s", strtotime($dateTimeStart)-60*60+1);
-
-
         if(!Reservation::isHourFree($fkCourt, $dateTimeStart))
         {
             Session::flash('errorMessage', "Cette heure n'est pas libre, veuillez choisir une autre heure.");
@@ -320,6 +316,7 @@ class BookingController extends Controller
         //Get the actual price
         $chargeAmount = Config::first()->currentAmount;
 
+        //we only save personal informations now because we don't want to store personal information of person who failed the previous checks
         if(isset($personalInfoWithWho))$personalInfoWithWho->save();
 
 
