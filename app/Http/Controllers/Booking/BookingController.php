@@ -156,7 +156,7 @@ class BookingController extends Controller
             //check if the creator of the reservation and the invited person
             $invalidatedDateWho = Auth::user()->invalidatedDate;
 
-
+            //if there is not fkWithWho, the member want to play with an invited
             if($request->input('fkWithWho') == null)
             {
                 $validator = Validator::make($request->all(),
@@ -170,7 +170,6 @@ class BookingController extends Controller
                 ]);
                 if($validator->fails())
                 {
-
                     return back()->withInput()->withErrors($validator);
                 }
 
@@ -187,22 +186,20 @@ class BookingController extends Controller
                 $personalInfoWithWho->lastname = $request->input('invitLastname');
             }
             else {
+                $userWithWho = User::find($request->input('fkWithWho'));
 
-                if(!$userWithWho = User::find($request->input('fkWithWho')))
+                if(!$userWithWho)
                 {
                     Session::flash('errorMessage', "Votre invité n'existe pas");
                     return redirect('/booking');
                 }
-
+                $personalInfoWithWho = PersonalInformation::find($userWithWho->id);
                 //check if the number of reservations of the creator of the reservations and the invited person has not been exceeded
                 if ($nbReservationWho >= Config::orderBy('created_at', 'desc')->first()->nbReservations)
                 {
                     Session::flash('errorMessage', "Vous avez déjà atteint votre nombre maximum de reservations");
                     return redirect('/booking');
                 }
-
-                $invalidatedDateWithWho = Auth::user()->invalidatedDate;
-
 
                 //Number of reservations of the person invited;
                 $nbReservationWithWho = Reservation::where('dateTimeStart', '>', $todayDate)->where(function ($query) use ($request){
@@ -221,22 +218,23 @@ class BookingController extends Controller
                     Session::flash('errorMessage', "Votre partenaire a déjà atteint son nombre maximum de reservations");
                     return redirect('/booking');
                 }
-                // Can't reserve with your self
-                if (PersonalInformation::find($personal_info_id)->id == $request->input('fkWithWho'))
-                {
-                    Session::flash('errorMessage', "Impossible de faire une réservation avec vous même");
-                    return redirect('/booking');
-                }
-                $personalInfoWithWho = PersonalInformation::find($userWithWho->id);
-                // We check if there's a date into the field invalidatedDate for the member who has made the reservation and the invited member.
-                // If there is, we add the nb of days of the grace period. If the period has been exceeded we return an error
-                if( Auth::user()->invalidatedDate != null &&
-                    strtotime(Auth::user()->invalidatedDate. ' + '. $configs->nbDaysGracePeriod.' days') < strtotime($todayDate))
-                {
-                    Session::flash('errorMessage', "Votre compte n'est plus valide");
-                    return redirect('/booking');
-                }
             }
+            // Can't reserve with your self
+            if (PersonalInformation::find($personal_info_id)->id == $request->input('fkWithWho'))
+            {
+                Session::flash('errorMessage', "Impossible de faire une réservation avec vous même");
+                return redirect('/booking');
+            }
+
+            // We check if there's a date into the field invalidatedDate for the member who has made the reservation and the invited member.
+            // If there is, we add the nb of days of the grace period. If the period has been exceeded we return an error
+            if( Auth::user()->invalidatedDate != null &&
+                strtotime(Auth::user()->invalidatedDate. ' + '. $configs->nbDaysGracePeriod.' days') < strtotime($todayDate))
+            {
+                Session::flash('errorMessage', "Votre compte n'est plus valide");
+                return redirect('/booking');
+            }
+
 
         }
         else {
@@ -272,6 +270,7 @@ class BookingController extends Controller
             //We don't store the personal informations now
             $personalInfoWho = new PersonalInformation($request->all());
         }
+
         //datetime of the reservation
         $dateTimeStart = $request->input('dateTimeStart');
         $dateTimeEnd   = date("Y-m-d H:i:s", strtotime($dateTimeStart)+60*60-1);
@@ -448,6 +447,7 @@ class BookingController extends Controller
     {
 
         $reservation = Reservation::find($id);
+        // check if reservation really exists
         if($reservation==null){
             dd($id);
             Session::flash('errorMessage', "La reservation que vous essayer de supprimer n'existe pas ou plus");
@@ -465,6 +465,8 @@ class BookingController extends Controller
         $members = User::whereIn('id', [$reservation->fkWho, $reservation->fkWithWho])->with('personal_information');
         $court = Court::where('id', $reservation->fk_court)->get(['name']);
         $dateHour = Carbon::createFromFormat('Y-m-d H:i:s', $reservation->dateTimeStart)->format('d.m.Y H:i');
+
+        //send a email to the two players
         foreach ($members as $member)
         {
             $email = $member->personal_information->email;
@@ -480,15 +482,25 @@ class BookingController extends Controller
         Session::flash('successMessage', "Votre réservation a bien été supprimée");
         return redirect('/booking');
     }
+    /**
+     * Send a email to destroy a reservation made by non-member
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
 
     public function askCancellation(Request $request,$id)
     {
         $reservations = Reservation::where('id',$id);
+        //check if the reservation exists
         if($reservations->count())
         {
             $reservation = $reservations->first();
+            //check that the given email is the same that the email used to create the reservation
             if($reservation->personal_information_who->email == $request->email)
             {
+                //generate token
                 $reservation->remove_token = str_random(20);
                 $reservation->save();
 
@@ -513,20 +525,25 @@ class BookingController extends Controller
                 Session::flash('errorMessage', "L'email ne correspond pas à celui fourni lors de la réservation");
                 return redirect('/booking');
             }
-
         }
         else{
             Session::flash('errorMessage', "Cette réservation n'existe pas ou a déjà été supprimé");
             return redirect('/booking');
-
         }
 
     }
-
+    /**
+     * Destroy a reservation made by non-member after he has clicked on the email sent before
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function cancellation(Request $request)
     {
 
         $reservations = Reservation::where('remove_token', $request->token)->get();
+        //check if there is a reservation with the given token
         if($reservations->count())
         {
             $reservations->first()->delete();
@@ -539,7 +556,13 @@ class BookingController extends Controller
             return redirect('/booking');
         }
     }
-
+    /**
+     * Confirm the reservation made by non-member after he has clicked on the link given in the confirmation email sent before
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function confirmation(Request $request)
     {
         $reservations = Reservation::where('confirmation_token' , $request->token);

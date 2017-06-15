@@ -51,8 +51,9 @@ in addition to the general condition to create a reservation, there are also thi
 a number of day during the account
 is still usable after it has been deactivated). The same condition are applied if the reservation are made with an
 other member (member vs member)
-- the number of future reservations made by the creator has to be equal or less than the number max of reservations describes in the field
+- the number of future reservations made by the creator has to be  less than the number max of reservations describes in the field
 `configs.nbReservations` in database.
+- if the user want to invite someone who isn't member, the user must have the invitRight (in database, `user.invitRight`)
 
 #### Delete/cancel a reservation
 - the reservations has to be his or at least to be the invited person.

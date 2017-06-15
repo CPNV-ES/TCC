@@ -317,7 +317,12 @@ class StaffBookingController extends Controller
         }
 
     }
-    
+    /**
+     * Remove multiple Reservation
+     *
+     * @param  string  $i$idReservationsd
+     * @return \Illuminate\Http\Response
+     */
     public function destroyMultiple($idReservations)
     {
 
