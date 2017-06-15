@@ -51,13 +51,15 @@ Description : Displays a table with the inforamtion of the courts form the datab
                                 <i class="fa fa-edit" aria-hidden="true"></i>
                             </button>
                             {{-- SFH: Only methode found to call the 'destroy' methode in the controler. Trying to find a better way. --}}
-                            <form class="delete" role="form" method="POST" action="/admin/config/courts/{{$court->id}}">
-                                {!! csrf_field() !!}
-                                {!! method_field('DELETE') !!}
-                                <button class="btn btn-danger option" data-action="delete-court" data-court="{{$court->name}}">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                </button>
-                            </form>
+                            @if (count($court->reservations) == 0)
+                              <form class="delete" role="form" method="POST" action="/admin/config/courts/{{$court->id}}">
+                                  {!! csrf_field() !!}
+                                  {!! method_field('DELETE') !!}
+                                  <button class="btn btn-danger option" data-action="delete-court" data-court="{{$court->name}}">
+                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                  </button>
+                              </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
