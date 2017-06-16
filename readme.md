@@ -13,15 +13,15 @@ Download the zip from the github repository [TTC](https://github.com/CPNV-ES/TCC
     ```
 3. Start and connect to homestead
 4. Navigate to the projects folder
-5. Execute the commande `composer install`
+5. Execute the command `composer install`
 6. If you already have an instance of the database, drop all tables and make sure the credentials in config/database.php are correct.  
-Add the DB name in your Homestead.yaml file. Then provision your VM by running the following commande.
+Add the DB name in your Homestead.yaml file. Then provision your VM by running the following command.
     ```
     $ vagrant provision
     ```
 7. Copie the `.env.exemple`, rename it to `.env` and modify the necessary settings, i.e: the DB_* params. (More defails for SMTP in next point)
-8. Execute the commande `php artisan key:generate` and `php artisan migrate --seed`
-9. Open your navigator of choise and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commandes).  
+8. Execute the command `php artisan key:generate` and `php artisan migrate --seed`
+9. Open your navigator of choice and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commands).  
 The seeding process has created a user "admin".
 
 ### SMTP Settings for a gmail account
@@ -41,6 +41,16 @@ MAIL_ENCRYPTION=tls
 
 ## Passwords
 For the passwords, please ask your project manager.
+
+## Database script
+We write a script to ease the reset of the database and execution of the seeds. it's called `resetdb.sh` and is at the root of the project. If you want to use it, fallow these steps:
+
+1. Edit the file and change the variables username='DB_USER', password='DB_PASSWORD', db='DB_NAME' then save it 
+2. Go on your homestead box and make a `sudo chmod u+x resetdb.sh`
+3. Now, you can execute the script with `./resetdb.sh <DB_NAME>`
+
+If the script throws the error unexpected end of file, you've to change the EOF to LF
+
 
 ## Possible problems
 ### Homestead
