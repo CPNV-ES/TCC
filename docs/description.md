@@ -5,33 +5,21 @@ It has been developed under the MAW module.
 
 ## Actors
 The different actors of the website are:
-- Member - simple member of the club who pays cotisation
-- Staff - is apart of the club crew. he can make mulitple reservations (For example for junior training)
-- Administrator - mangage the users, seasons, courts and configuration of the site
-- Non-member - is the person who doesn't pay cotisation
-- guest - is non-member which are inivited by a member.
+- Member - simple member of the club who pays membership fee
+- Staff - is apart of the club crew. he can make multiple reservations (For example for junior training)
+- Administrator - manage the users, seasons, courts and configuration of the site
+- Non-member - is the person who doesn't pay membership fee
+- guest - is non-member which are invited by a member.
 
 ### Reservations
 #### Type of reservations
 
 
 ## Features
-### Reservation
-- Simple reservation as member with a member
-- Simple reservation as member with a guest
-- Simple reservation as non-member
+- Simple reservation
 - Simple / multiple reservation as staff      
-- Suppression of reservation as member
-- Suppression of reservation as non-member
-- Suppression of staff reservation as staff
-
-
-The application manages the reservations of the club. There are 2 type of reservations:
-- simple reservations - can be made by member, non-member, club crew (staff member and admin).
-- staff reservation - as its name let it know, only club crew users can used it
-
-
-In the actual state of the project, the WebApp has these features
+- Manage the site(add court, season, change start/end hour for court etc.)
+- Subscription to the club
 
 
 
@@ -53,5 +41,3 @@ To develop this app we used the vagrant box Homestead with this specification:
 - MySql v5.7.16
 - Php v7.0.13
 
-## Staging environment <--------- A ENLEVER ???
-We also have tested our application on the stagging server.

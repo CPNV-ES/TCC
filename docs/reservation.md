@@ -125,7 +125,7 @@ Layout: `resources/views/layouts/app.blade.php`
 View: `resources/views/staffBooking/home.blade.php`
 
 ## Things to know
-- the staff has to put a title to the reservation for example: "Billy's birthday"
+- the staff has to put a title to the reservation for example: "Billy\'s birthday"
 - the staff reservation belongs to the person who did it. it means that only him can delete the reservation
 - if a staff is also a member and he has made staff reservations. They won't be counted when the system checks
 if the user has reached the number of maximum future reservations that a member can do
