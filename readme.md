@@ -27,7 +27,8 @@ MAIL_ENCRYPTION=tls
 2. Edit security settings for your google account. Go to [Gmail Settings](https://www.google.com/settings/security/lesssecureapps)
 3. Thats done.
 
-
+## Project documentation
+You can find all the documentation here : `/docs`
 
 <!-- Previous readme -->
 ## Laravel PHP Framework
