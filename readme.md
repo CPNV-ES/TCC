@@ -99,4 +99,4 @@ To develop this app we used the vagrant box Homestead with this specification:
 - Php v7.0.13
 
 ## Project documentation
-You can find all the documentation here : `/docs`
+You can find all the documentations here : `/docs`
