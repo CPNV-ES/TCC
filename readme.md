@@ -40,7 +40,7 @@ MAIL_ENCRYPTION=tls
 3. That\'s done.
 
 ## Passwords
-For the passwords please ask your project manager for them.
+For the passwords, please ask your project manager.
 
 ## Possible problems
 ### Homestead
