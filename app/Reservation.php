@@ -37,9 +37,6 @@ class Reservation extends Model
         return $this->belongsTo('App\PersonalInformation', 'fkWithWho');
     }
 
-    public function invitation() {
-        return $this->hasOne('App\Invitation', 'fkReservation');
-    }
 
     //return the config for the visual calendar
     public static function getVcConfigJSON($nbDays = null, $courtId = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
