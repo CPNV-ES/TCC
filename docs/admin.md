@@ -154,7 +154,7 @@ Views:
   * `resources/views/admin/configuration/member.blade.php`
   * `resources/views/admin/configuration/memberEdit.blade.php`
 
-The main page displays a table with all the members, non-members and the people that were invited. Different filters can be applyed to help find specific members.  
+The main page displays a table with all the members, non-members and the people that were invited. Different filters can be applied to help find specific members. The table is generate with the plugin JQuery Datatables, for more information please visit [their website](https://datatables.net/)
 There is also a button that takes the administrator to the `register` page to create a new member.
 
 ### Edit member

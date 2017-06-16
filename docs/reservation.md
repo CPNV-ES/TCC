@@ -1,7 +1,7 @@
 # Reservation
 ## Description
 This part describes how the reservation feature of the application works and what is needed to create a reservation.
-To Begin with, there are multiple kinds of reservations. The first one is, are reservations made by member and non-member. This type of reservation is used by "the client" of the site. It means the people who subscribe to the club and the people who want to play without belonging to the club. Then there's the staff booking, it's used by the staff of the club to make a reservation for an event: for example, a birthday.
+To Begin with, there are multiple kinds of reservations. The first one are,  reservations made by member and non-member. This type of reservation is used by "the client" of the site. It means the people who subscribe to the club and the people who want to play without belonging to the club. Then there's the staff booking, it's used by the staff of the club to make a reservation for an event: for example, a birthday.
 Staff booking is also used to create multiple reservations: daily or weekly reservations for example it could be used to reserve a court for a training course.
 
 #### General conditions to make a reservation

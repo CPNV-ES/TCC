@@ -33,9 +33,11 @@
                             <li role="presentation" @if(session()->has('showSimpleResForm')) class="active" @elseif(!session()->has('showMultResForm')) class="active" @endif><a href="#simple" aria-controls="home" role="tab" data-toggle="tab">Réservation simple</a></li>
                             <li role="presentation" @if(session()->has('showMultResForm')) class="active" @endif><a href="#multiple" aria-controls="profile" role="tab" data-toggle="tab">Réservation multiple</a></li>
                         </ul>
+                        <!-- Simple staff Reservation -->
                         <div class="tab-content">
                           <div class="pull-right"><span class="mandatory"></span> obligatoire</div>
                             <div role="tabpanel" class="tab-pane @if(session()->has('showSimpleResForm') || !session()->has('showMultResForm')) active @endif" id="simple">
+
                                 <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="simple-reservation-form">
                                     {{ csrf_field() }}
                                     {{ method_field('POST') }}
@@ -109,6 +111,7 @@
                                     </div>
                                 </form>
                             </div>
+                            <!-- Multiple staff reservations -->
                             <div role="tabpanel" class="tab-pane @if(session()->has('showMultResForm')) active @endif" id="multiple">
                                 <form method="post" role="form" method="POST" action="{{ url('/staff_booking')}}" name="multiple-reservation-form">
                                     {{ csrf_field() }}

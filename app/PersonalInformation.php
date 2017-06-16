@@ -41,7 +41,7 @@ class PersonalInformation extends Model
     public static function setLocality($npa,$name){
         return Locality::firstOrCreate(['NPA'=>$npa,'name'=>ucwords($name)])->id;
     }
-    
+    // this method is used to know if a member can reserve a court depending on number of day it's allowed to reserve in advance
     public function hasRightToReserve($dateStart, $courtId)
     {
         $config = Config::first();
