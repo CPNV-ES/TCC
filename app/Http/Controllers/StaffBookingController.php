@@ -165,7 +165,7 @@ class StaffBookingController extends Controller
                     case 3:
                         $datetime_intermediate->modify('+1 week');
                         break;
-                    //Not used
+                    //Not used, because it make jump of 30 day, that 's not usable for the client
                     case 4:
                         $datetime_intermediate->modify('+1 month');
                         break;
