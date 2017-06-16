@@ -38,31 +38,52 @@ class Reservation extends Model
     }
 
 
-    //return the config for the visual calendar
+    /**
+     * Génère la configuration pour le calendrier (visualCalendar)
+     * @param  integer $nbDays    le nombre de jours suivant $startDate a inclure dans le calendrier
+     * @param  integer $courtId   l'id du court qui doit générer le calendrier
+     * @param  string  $anchor    la regle css du conteneur du clendrier
+     * @param  boolean $readOnly  définit si le calendrier est en read only ou pas
+     * @param  boolean $multiple  définit si le calendrier est en mode de sélection multiple
+     * @param  Date    $startDate définit la date de début
+     * @return string/JSON        la configuration du calendrier en JSON
+     */
     public static function getVcConfigJSON($nbDays = null, $courtId = null, $anchor = "div#vc-anchor", $readOnly = false, $multiple = false, $startDate = null)
     {
+        // récupère la configuration
         $config = Config::first();
+        // obtient l̈́'heure de debut et de fin doverture d'un court
         $openTime = date('H:i', strtotime($config->courtOpenTime));
         $closeTime = date('H:i', strtotime($config->courtCloseTime));
+        // si pas de court definit, prend le premier de la bdd
         if($courtId == null) $court = Court::first();
+        // sinon le cherhe dans la bdd
         else $court = Court::find($courtId);
+        // si la date de début est null, la définit sur aujourd'hui
         if ($startDate == null)  $startDate = new \DateTime();
-
+        // définit la date de fin en fonction de l'authentification et du nbdays donné en parametre.
         if (is_int($nbDays) && $nbDays > 0) $endDate =(new \DateTime());
         elseif (Auth::check()) $endDate= (new \DateTime())->add(new \DateInterval('P'.($court->nbDays-1).'D'));
         else $endDate = (new \DateTime())->add(new \DateInterval('P'.($config->nbDaysLimitNonMember-1).'D'));
 
+        // récupèrere toutes les réservations du court
         $planifiedReservations = Reservation::where('fkCourt', $court->id)
                                             ->whereNull('confirmation_token')
                                             ->whereBetween('dateTimeStart', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d').' 23:59'])
                                             ->get();
+        // genere la date de commencement avec l'pheure douverture du court
         $zeroDate=new \DateTime($startDate->format('Y-m-d').' '.$openTime);
+        // obtient la différence d'heure entre l'heure de début et celle d'ouverture du court
         $hdiff=$startDate->diff($zeroDate)->format('%H');
+        // cree le ltableu de reservation vide
         $res=[];
 
+        // Si l'utilisateur est authentifié :
         if (Auth::check()) {
+          // obtient l id de personal information 
           $personal_info_id = Auth::user()->fkPersonalInformation;
 
+          // récupere les réservations de la personne authentifiée pour la periode convenue
           $myReservs=Reservation::where('dateTimeStart', '>',$startDate->format('Y-m-d H:i'))
           ->whereNull('confirmation_token')
           ->where(function($q) use ($personal_info_id){
@@ -71,6 +92,7 @@ class Reservation extends Model
               $q->orWhere('fkWithWho', $personal_info_id);
           })->get();
 
+          // récupere les réservations de la personne authentifiée pour la periode convenue en fonction du court
           $myReservsByCourts=Reservation::whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:i'), $endDate->format('Y-m-d').' 23:59'])
           ->where('fkCourt',$court->id)
           ->whereNull('confirmation_token')
@@ -79,7 +101,10 @@ class Reservation extends Model
               $q->orWhere('fkWithWho', $personal_info_id);
           })->get();
 
+          // si le nombre des prochaines réservation de la personne dépasse celles 
+          //    autorisee pas la configuration: passe en mode read only
           if(count($myReservs)>=$config->nbReservations ) $readOnly=true;
+          // insere la configuration pour chacune des réservations personnelles
           foreach($myReservsByCourts as $planifiedReservation )
           {
               $res[]=[
@@ -91,15 +116,17 @@ class Reservation extends Model
               ];
           }
         }
+        // si l'utilisateur n' est pas authentifié : 
         else{
 
+            //récupere toutes les réservations de non-membre
             $nonMemberReservation = Reservation::whereHas('personal_information_who' ,function($q){
                 $q->has('user', '<', 1);
             })->where('confirmation_token', null)->whereBetween('dateTimeStart', [$startDate->format('Y-m-d H:1'), $endDate->format('Y-m-d').' 23:59'])->get();
 
+           // insère toutes les res. de non-membre dans la config
            foreach($nonMemberReservation as $planifiedReservation )
             {
-
                 $res[]=[
                     'datetime' => $planifiedReservation->dateTimeStart,
                     'type' => $planifiedReservation->type_reservation->type.' vc-own-planif', // that's going to the class of the box
@@ -109,7 +136,7 @@ class Reservation extends Model
                 ];
             }
         }
-        // for clickable ->
+        // insère toutes les autres réservations dans la config
         foreach($planifiedReservations as $planifiedReservation )
         {
             $res[]=[
@@ -120,6 +147,8 @@ class Reservation extends Model
                 'clickable' => false
             ];
         }
+        // joute des réservations fictive afin de refuser un nouvelle réservation
+        //    si la heure est déja passée
         for($i=0;$i<$hdiff;$i++)
         {
             $res[]=[
@@ -131,6 +160,7 @@ class Reservation extends Model
             ];
         }
 
+        // génère les éléments principaux de la config et insère les réservations dedans
         $config = [
             'anchor' => $anchor,
             'params' => [
@@ -145,6 +175,7 @@ class Reservation extends Model
             'planified' => $res
 
         ];
+        // retourne la config au format JSON // PS: bien de lamusement si tu dois modifier ça 
         return json_encode($config);
     }
     public static function isHourFree($fkCourt, $dateTimeStart)
