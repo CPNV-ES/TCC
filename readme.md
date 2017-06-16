@@ -46,7 +46,7 @@ For the passwords, please ask your project manager.
 We write a script to ease the reset of the database and execution of the seeds. it's called `resetdb.sh` and is at the root of the project. If you want to use it, fallow these steps:
 
 1. Edit the file and change the variables username='DB_USER', password='DB_PASSWORD', db='DB_NAME' then save it 
-2. Go on your homestead box and make a `sudo chmod u+x resetdb.sh`
+2. If needed, go on your homestead box and make a `sudo chmod u+x resetdb.sh`
 3. Now, you can execute the script with `./resetdb.sh <DB_NAME>`
 
 If the script throws the error unexpected end of file, you've to change the EOF to LF
