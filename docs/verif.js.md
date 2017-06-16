@@ -1,6 +1,6 @@
 # VerifJS
 
-This script is used to verify field easily. Also works asynchronously.(ex: with ajax on the control)<small>compatible : IE10, firefox 45+, chrome</small>
+This script is used to verify field easily. Also works asynchronously. (ex: with ajax on the control) <small>Compatible : IE10, firefox 45+, chrome</small>
 
 ## Getting stated
 

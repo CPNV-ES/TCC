@@ -2,7 +2,7 @@
 Location: `app/Http/helpers.php`
 
 To activate the **helpers.php** file the following needs to be added to the **composer.json** file in the `autoload` section.
-```
+```json
 "files": [
   "app/Http/helpers.php"
 ]

@@ -5,7 +5,7 @@ For more information click [here][75e0c44f].
 Location: `app/Http/Middleware/`
 
 To user the middleware in the **routes.php** file the following lines need to be added to the **Kernel.php** file in the `protected $routeMiddleware = []` section.
-```
+```php
 'admin' => \App\Http\Middleware\AdminMiddleware::class,
 'profileIsValide' => \App\Http\Middleware\ProfileIsValideMiddleware::class,
 'userIsStaff' => \App\Http\Middleware\UserIsStaff::class,
