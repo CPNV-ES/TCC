@@ -1,7 +1,7 @@
 # TTC
 
 ## Getting started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. If during the installation, you come up with any problems, we have a section at the end of the readme that may help you.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. If during the installation, any problems occur, we have a section at the end of the readme that may help you.
 
 ## Installation/Configuration of Homestead
 
