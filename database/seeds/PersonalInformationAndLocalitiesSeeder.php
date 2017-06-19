@@ -34,7 +34,8 @@ class PersonalInformationAndLocalitiesSeeder extends Seeder
       {
           while (($row = fgetcsv($handle, 1000, ';')) !== FALSE)
           {
-              $row = array_map("utf8_encode", $row); //added
+              //SFH: was used when .csv file was encoded in ANSI
+              // $row = array_map("utf8_encode", $row); //added
               if(!$header)
                   $header = $row;
               else
