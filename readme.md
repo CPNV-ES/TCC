@@ -1,27 +1,31 @@
 # TTC
 
 ## Getting started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. If during the installation, you come up any problems, we have a section at the end of the readme that may help you.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. If during the installation, you come up with any problems, we have a section at the end of the readme that may help you.
 
-## Installation with Vagrant Box Homestead
+## Installation/Configuration of Homestead
 
-1. If you don\'t have homestead installed, follow the instructions on their website [Laravel Homestead](https://laravel.com/docs/5.3/homestead).
+1. If you don\'t have homestead installed, follow the instructions on their website [Laravel Homestead](https://laravel.com/docs/5.3/homestead). Don't use the command `vagrant box add laravel/homestead`, clone the project from their github.
 2. You need to clone the project onto your local machine in the syncronised folder for homestead.  
 Download the zip from the github repository [TTC](https://github.com/CPNV-ES/TCC) or use by using the git command.
     ```git
-     $ https://github.com/CPNV-ES/TCC.git
+     $ git clone https://github.com/CPNV-ES/TCC.git
     ```
-3. Start and connect to homestead
-4. Navigate to the projects folder
-5. Execute the command `composer install`
-6. If you already have an instance of the database, drop all tables and make sure the credentials in config/database.php are correct.  
+3. Start and connect to homestead  
+
+If you already have an instance of the database, drop all tables and make sure the credentials in config/database.php are correct.  
 Add the DB name in your Homestead.yaml file. Then provision your VM by running the following command.
     ```
     $ vagrant provision
     ```
-7. Copie the `.env.exemple`, rename it to `.env` and modify the necessary settings, i.e: the DB_* params. (More defails for SMTP in next point)
-8. Execute the command `php artisan key:generate` and `php artisan migrate --seed`
-9. Open your navigator of choice and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commands).  
+    
+## Intallation of the project
+
+1. Navigate to the projects folder
+2. Execute the command `composer install`
+3. Copy the `.env.exemple`, rename it to `.env` and modify the necessary settings, i.e: the DB_* params. (More details for SMTP in next point)
+4. Execute the command `php artisan key:generate` and `php artisan migrate --seed`
+5. Open your navigator of choice and enter the URL for the site (e.g. : 127.0.0.1:8000). If the site shows up good if not try again (.env, commands).  
 The seeding process has created a user "admin".
 
 ### SMTP Settings for a gmail account
@@ -103,7 +107,7 @@ As ask by the client we\'ve tried to keep our site compatible with 3 of the most
 
 
 ## Development environment
-To develop this app we used the vagrant box Homestead-7(2.1.0) with this specification:
+To develop this app we used the vagrant box Homestead-7(2.1.0) with these specifications:
 - Nginx 1.11.5
 - MySql v5.7.16
 - Php v7.0.13
